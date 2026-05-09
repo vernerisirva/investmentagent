@@ -1,0 +1,148 @@
+[
+  {
+    "name": "Remedy Entertainment Oyj",
+    "ticker": "REMEDY",
+    "country": "FI",
+    "exchange": "Nasdaq Helsinki",
+    "segment": "main_market",
+    "sector": "Gaming",
+    "market_cap_eur_m": 330,
+    "currency": "EUR",
+    "ir_url": "https://investors.remedygames.com/",
+    "financials": {
+      "price": 24.0,
+      "currency": "EUR",
+      "pe_ratio": 28.0,
+      "price_to_book": 3.4,
+      "net_cash_eur_m": 20.0,
+      "revenue_growth_pct": 12.0,
+      "operating_margin_pct": 6.0,
+      "one_year_return_pct": -30.0,
+      "distance_from_52w_high_pct": -42.0,
+      "average_daily_value_eur": 250000,
+      "data_quality": "partial"
+    },
+    "catalysts": ["Pipeline releases and publishing model changes"],
+    "risks": ["Hit-driven revenue", "Project timing risk"],
+    "evidence": [
+      {"label": "Investor relations", "url": "https://investors.remedygames.com/", "source": "company"}
+    ]
+  },
+  {
+    "name": "Gofore Oyj",
+    "ticker": "GOFORE",
+    "country": "FI",
+    "exchange": "Nasdaq Helsinki",
+    "segment": "main_market",
+    "sector": "IT Services",
+    "market_cap_eur_m": 300,
+    "currency": "EUR",
+    "ir_url": "https://gofore.com/en/invest/",
+    "financials": {
+      "price": 19.0,
+      "currency": "EUR",
+      "pe_ratio": 16.0,
+      "price_to_book": 2.6,
+      "net_cash_eur_m": 10.0,
+      "revenue_growth_pct": 4.0,
+      "operating_margin_pct": 11.0,
+      "one_year_return_pct": -38.0,
+      "distance_from_52w_high_pct": -45.0,
+      "average_daily_value_eur": 160000,
+      "data_quality": "partial"
+    },
+    "catalysts": ["Digital services demand recovery"],
+    "risks": ["Consulting cycle sensitivity"],
+    "evidence": [
+      {"label": "Investor relations", "url": "https://gofore.com/en/invest/", "source": "company"}
+    ]
+  },
+  {
+    "name": "LeadDesk Oyj",
+    "ticker": "LEADD",
+    "country": "FI",
+    "exchange": "Nasdaq First North Growth Market",
+    "segment": "first_north",
+    "sector": "Software",
+    "market_cap_eur_m": 45,
+    "currency": "EUR",
+    "ir_url": "https://leaddesk.com/investors/",
+    "financials": {
+      "price": 7.0,
+      "currency": "EUR",
+      "pe_ratio": null,
+      "price_to_book": 2.0,
+      "net_cash_eur_m": 2.0,
+      "revenue_growth_pct": 10.0,
+      "operating_margin_pct": 5.0,
+      "one_year_return_pct": -20.0,
+      "distance_from_52w_high_pct": -35.0,
+      "average_daily_value_eur": 40000,
+      "data_quality": "thin"
+    },
+    "catalysts": ["Cloud contact center software expansion"],
+    "risks": ["Small-cap liquidity", "Execution risk"],
+    "evidence": [
+      {"label": "Investor relations", "url": "https://leaddesk.com/investors/", "source": "company"}
+    ]
+  },
+  {
+    "name": "Karnov Group AB",
+    "ticker": "KAR",
+    "country": "SE",
+    "exchange": "Nasdaq Stockholm",
+    "segment": "main_market",
+    "sector": "Information Services",
+    "market_cap_eur_m": 420,
+    "currency": "SEK",
+    "ir_url": "https://www.karnovgroup.com/en/investors/",
+    "financials": {
+      "price": 50.0,
+      "currency": "SEK",
+      "pe_ratio": 11.0,
+      "price_to_book": 1.1,
+      "net_cash_eur_m": -15.0,
+      "debt_to_equity": 0.8,
+      "revenue_growth_pct": 8.0,
+      "operating_margin_pct": 15.0,
+      "one_year_return_pct": -28.0,
+      "distance_from_52w_high_pct": -36.0,
+      "average_daily_value_eur": 220000,
+      "data_quality": "partial"
+    },
+    "catalysts": ["Integration and margin improvement potential"],
+    "risks": ["Leverage after acquisitions"],
+    "evidence": [
+      {"label": "Investor relations", "url": "https://www.karnovgroup.com/en/investors/", "source": "company"}
+    ]
+  },
+  {
+    "name": "Freemelt Holding AB",
+    "ticker": "FREEM",
+    "country": "SE",
+    "exchange": "Nasdaq First North Growth Market",
+    "segment": "first_north",
+    "sector": "Industrial Technology",
+    "market_cap_eur_m": 35,
+    "currency": "SEK",
+    "ir_url": "https://freemelt.com/investors/",
+    "financials": {
+      "price": 5.0,
+      "currency": "SEK",
+      "pe_ratio": null,
+      "price_to_book": 1.0,
+      "net_cash_eur_m": 4.0,
+      "revenue_growth_pct": 20.0,
+      "operating_margin_pct": -25.0,
+      "one_year_return_pct": -55.0,
+      "distance_from_52w_high_pct": -65.0,
+      "average_daily_value_eur": 35000,
+      "data_quality": "thin"
+    },
+    "catalysts": ["Commercialization progress"],
+    "risks": ["Negative earnings", "Low liquidity", "Funding risk"],
+    "evidence": [
+      {"label": "Investor relations", "url": "https://freemelt.com/investors/", "source": "company"}
+    ]
+  }
+]
