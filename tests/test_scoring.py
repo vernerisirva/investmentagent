@@ -41,6 +41,31 @@ def test_score_rewards_small_value_companies_with_catalysts():
     assert "low P/E" in " ".join(score.reasons)
 
 
+def test_score_handles_provider_shaped_first_north_segment_value():
+    research = make_research()
+    company = Company(
+        name=research.company.name,
+        ticker=research.company.ticker,
+        country=research.company.country,
+        exchange=research.company.exchange,
+        segment="first_north",  # type: ignore[arg-type]
+        sector=research.company.sector,
+        market_cap_eur_m=research.company.market_cap_eur_m,
+    )
+    score = score_research(
+        CompanyResearch(
+            company=company,
+            financials=research.financials,
+            catalysts=research.catalysts,
+            risks=research.risks,
+            data_quality=research.data_quality,
+        )
+    )
+
+    assert score.discovery > 0
+    assert "First North listing" in score.reasons
+
+
 def test_score_penalizes_thin_data_quality():
     good = score_research(make_research(data_quality=DataQuality.GOOD))
     thin = score_research(make_research(data_quality=DataQuality.THIN))

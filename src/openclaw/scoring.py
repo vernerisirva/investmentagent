@@ -31,7 +31,7 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
     if company.market_cap_eur_m is not None and company.market_cap_eur_m <= 500:
         discovery += 10.0
         reasons.append("small market cap")
-    if company.segment is ListingSegment.FIRST_NORTH:
+    if company.segment == ListingSegment.FIRST_NORTH:
         discovery += 8.0
         reasons.append("First North listing")
     if financials.one_year_return_pct is not None and financials.one_year_return_pct <= -25:
