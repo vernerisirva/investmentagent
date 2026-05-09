@@ -11,6 +11,9 @@ def build_watchlist(
     limit: int,
     include_first_north: bool,
 ) -> list[WatchlistItem]:
+    if limit < 1:
+        raise ValueError("limit must be at least 1")
+
     companies = provider.list_companies(countries, include_first_north)
     scored_items: list[WatchlistItem] = []
     for company in companies:
@@ -18,7 +21,10 @@ def build_watchlist(
         scored_items.append(
             WatchlistItem(rank=0, research=research, score=score_research(research))
         )
-    ranked_items = sorted(scored_items, key=lambda item: item.score.total, reverse=True)[:limit]
+    ranked_items = sorted(
+        scored_items,
+        key=lambda item: (-item.score.total, item.research.company.ticker),
+    )[:limit]
 
     return [
         WatchlistItem(rank=rank, research=item.research, score=item.score)
@@ -69,7 +75,7 @@ def build_deep_dive(provider: ResearchProvider, ticker: str) -> DeepDiveReport:
 
 
 def _metric_sentence(label: str, value: float | None) -> str:
-    if value is None:
+    if value is None or (label == "P/E" and value <= 0):
         return f"{label} is unavailable in the current dataset."
     return f"{label} is {value:g}."
 

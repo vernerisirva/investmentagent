@@ -1,5 +1,47 @@
+import pytest
+
+from openclaw.models import (
+    Company,
+    CompanyResearch,
+    DataQuality,
+    FinancialSnapshot,
+    ListingSegment,
+)
 from openclaw.providers import FixtureResearchProvider
 from openclaw.reports import build_deep_dive, build_watchlist
+
+
+class FakeResearchProvider:
+    def __init__(self, research: tuple[CompanyResearch, ...]) -> None:
+        self._research_by_ticker = {item.company.ticker: item for item in research}
+        self._companies = [item.company for item in research]
+
+    def list_companies(
+        self, countries: tuple[str, ...], include_first_north: bool
+    ) -> list[Company]:
+        return self._companies
+
+    def get_research(self, ticker: str) -> CompanyResearch:
+        return self._research_by_ticker[ticker]
+
+
+def make_research(ticker: str, *, pe_ratio: float | None = 10.0) -> CompanyResearch:
+    company = Company(
+        name=f"{ticker} AB",
+        ticker=ticker,
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+        sector="Industrials",
+        market_cap_eur_m=200,
+    )
+    financials = FinancialSnapshot(
+        pe_ratio=pe_ratio,
+        price_to_book=1.0,
+        net_cash_eur_m=5.0,
+        data_quality=DataQuality.GOOD,
+    )
+    return CompanyResearch(company=company, financials=financials, data_quality=DataQuality.GOOD)
 
 
 def test_build_watchlist_returns_ranked_items_by_score():
@@ -10,6 +52,24 @@ def test_build_watchlist_returns_ranked_items_by_score():
     assert len(items) == 3
     assert [item.rank for item in items] == [1, 2, 3]
     assert items[0].score.total >= items[1].score.total
+
+
+def test_build_watchlist_rejects_invalid_limit():
+    with pytest.raises(ValueError, match="limit must be at least 1"):
+        build_watchlist(
+            FixtureResearchProvider(),
+            countries=("SE", "FI"),
+            limit=0,
+            include_first_north=True,
+        )
+
+
+def test_build_watchlist_sorts_equal_scores_by_ticker():
+    provider = FakeResearchProvider((make_research("BBB"), make_research("AAA")))
+
+    items = build_watchlist(provider, countries=("SE",), limit=2, include_first_north=True)
+
+    assert [item.research.company.ticker for item in items] == ["AAA", "BBB"]
 
 
 def test_build_deep_dive_includes_manual_checks_and_thesis():
@@ -44,3 +104,13 @@ def test_build_deep_dive_includes_manual_checks_and_thesis():
         "peer",
     ):
         assert required_text in manual_checks_text
+
+
+def test_build_deep_dive_treats_negative_pe_as_not_meaningful():
+    provider = FakeResearchProvider((make_research("NEG", pe_ratio=-5.0),))
+
+    report = build_deep_dive(provider, "NEG")
+
+    pe_text = next(item for item in report.valuation_view if "P/E" in item)
+    assert "-5" not in pe_text
+    assert "unavailable" in pe_text or "not meaningful" in pe_text
