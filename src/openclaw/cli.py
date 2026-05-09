@@ -9,18 +9,24 @@ from openclaw.renderers import (
 from openclaw.reports import build_deep_dive, build_watchlist
 
 
-app = typer.Typer(help="OpenClaw Nordic investing research CLI.")
+app = typer.Typer(help="OpenClaw Nordic investing research CLI.", no_args_is_help=False)
 sources_app = typer.Typer(help="Inspect and validate research sources.")
 app.add_typer(sources_app, name="sources")
 
 
-@app.callback()
-def main() -> None:
+@app.callback(invoke_without_command=True)
+def main(ctx: typer.Context) -> None:
     """OpenClaw Nordic investing research CLI."""
+    if ctx.invoked_subcommand is None:
+        typer.echo(ctx.get_help())
+        raise typer.Exit()
 
 
 def _parse_countries(raw: str) -> tuple[str, ...]:
-    return tuple(country.strip().upper() for country in raw.split(",") if country.strip())
+    countries = tuple(country.strip().upper() for country in raw.split(",") if country.strip())
+    if not countries:
+        raise typer.BadParameter("at least one country code is required")
+    return countries
 
 
 @app.command()

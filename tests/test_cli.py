@@ -1,3 +1,5 @@
+import json
+
 from typer.testing import CliRunner
 
 from openclaw.cli import app
@@ -8,6 +10,15 @@ runner = CliRunner()
 
 def test_console_script_target_exposes_app():
     assert app is not None
+
+
+def test_root_command_without_args_shows_help():
+    result = runner.invoke(app, [])
+
+    assert result.exit_code == 0
+    assert "watchlist" in result.output
+    assert "deep-dive" in result.output
+    assert "sources" in result.output
 
 
 def test_watchlist_command_outputs_ranked_text():
@@ -24,8 +35,16 @@ def test_watchlist_command_outputs_json():
     )
 
     assert result.exit_code == 0
-    assert '"items"' in result.output
-    assert '"rank": 1' in result.output
+    payload = json.loads(result.output)
+    assert payload["items"][0]["rank"] == 1
+    assert "disclaimer" in payload
+
+
+def test_watchlist_command_rejects_blank_country_input():
+    result = runner.invoke(app, ["watchlist", "--country", "   "])
+
+    assert result.exit_code != 0
+    assert "at least one country code is required" in result.output
 
 
 def test_deep_dive_command_outputs_report():
