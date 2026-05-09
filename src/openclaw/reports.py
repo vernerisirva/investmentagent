@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from openclaw.models import DeepDiveReport, WatchlistItem
+from openclaw.models import Company, DeepDiveReport, WatchlistItem
 from openclaw.providers import ResearchProvider
 from openclaw.scoring import score_research
 
@@ -10,6 +10,9 @@ def build_watchlist(
     countries: tuple[str, ...],
     limit: int,
     include_first_north: bool,
+    min_market_cap: float | None = None,
+    max_market_cap: float | None = None,
+    sector: str | None = None,
 ) -> list[WatchlistItem]:
     if limit < 1:
         raise ValueError("limit must be at least 1")
@@ -17,7 +20,12 @@ def build_watchlist(
     companies = provider.list_companies(countries, include_first_north)
     scored_items: list[WatchlistItem] = []
     for company in companies:
-        research = provider.get_research(company.ticker)
+        if not _company_matches_filters(company, min_market_cap, max_market_cap, sector):
+            continue
+        try:
+            research = provider.get_research(company.ticker)
+        except Exception:
+            continue
         scored_items.append(
             WatchlistItem(rank=0, research=research, score=score_research(research))
         )
@@ -30,6 +38,27 @@ def build_watchlist(
         WatchlistItem(rank=rank, research=item.research, score=item.score)
         for rank, item in enumerate(ranked_items, start=1)
     ]
+
+
+def _company_matches_filters(
+    company: Company,
+    min_market_cap: float | None,
+    max_market_cap: float | None,
+    sector: str | None,
+) -> bool:
+    if min_market_cap is not None and (
+        company.market_cap_eur_m is None or company.market_cap_eur_m < min_market_cap
+    ):
+        return False
+    if max_market_cap is not None and (
+        company.market_cap_eur_m is None or company.market_cap_eur_m > max_market_cap
+    ):
+        return False
+    if sector is not None:
+        company_sector = (company.sector or "").strip().lower()
+        if company_sector != sector.strip().lower():
+            return False
+    return True
 
 
 def build_deep_dive(provider: ResearchProvider, ticker: str) -> DeepDiveReport:

@@ -2,6 +2,7 @@ import typer
 
 from openclaw.providers import FixtureResearchProvider
 from openclaw.renderers import (
+    render_deep_dive_json,
     render_deep_dive_text,
     render_watchlist_json,
     render_watchlist_text,
@@ -38,7 +39,11 @@ def watchlist(
     ),
     limit: int = typer.Option(20, "--limit", min=1, max=100),
     include_first_north: bool = typer.Option(True, "--include-first-north/--exclude-first-north"),
+    min_market_cap: float | None = typer.Option(None, "--min-market-cap"),
+    max_market_cap: float | None = typer.Option(None, "--max-market-cap"),
+    sector: str | None = typer.Option(None, "--sector"),
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
+    verbose: bool = typer.Option(False, "--verbose"),
 ) -> None:
     provider = FixtureResearchProvider()
     items = build_watchlist(
@@ -46,10 +51,16 @@ def watchlist(
         countries=_parse_countries(country),
         limit=limit,
         include_first_north=include_first_north,
+        min_market_cap=min_market_cap,
+        max_market_cap=max_market_cap,
+        sector=sector,
     )
 
     normalized_output = output.strip().lower()
     if normalized_output == "text":
+        if verbose:
+            for check in provider.source_checks():
+                typer.echo(f"{check.name}: {check.status} - {check.detail}", err=True)
         typer.echo(render_watchlist_text(items))
         return
     if normalized_output == "json":
@@ -59,13 +70,24 @@ def watchlist(
 
 
 @app.command("deep-dive")
-def deep_dive(ticker: str) -> None:
+def deep_dive(
+    ticker: str,
+    output: str = typer.Option("text", "--output", help="Output format: text or json."),
+) -> None:
     provider = FixtureResearchProvider()
     try:
         report = build_deep_dive(provider, ticker)
     except LookupError as exc:
         raise typer.BadParameter(str(exc)) from exc
-    typer.echo(render_deep_dive_text(report))
+
+    normalized_output = output.strip().lower()
+    if normalized_output == "text":
+        typer.echo(render_deep_dive_text(report))
+        return
+    if normalized_output == "json":
+        typer.echo(render_deep_dive_json(report))
+        return
+    raise typer.BadParameter("output must be 'text' or 'json'")
 
 
 @sources_app.command("test")

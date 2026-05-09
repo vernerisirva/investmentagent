@@ -12,7 +12,12 @@ from openclaw.models import (
     WatchlistItem,
 )
 from openclaw.providers import FixtureResearchProvider
-from openclaw.renderers import render_deep_dive_text, render_watchlist_json, render_watchlist_text
+from openclaw.renderers import (
+    render_deep_dive_json,
+    render_deep_dive_text,
+    render_watchlist_json,
+    render_watchlist_text,
+)
 from openclaw.reports import build_deep_dive, build_watchlist
 
 
@@ -28,6 +33,13 @@ class FakeResearchProvider:
 
     def get_research(self, ticker: str) -> CompanyResearch:
         return self._research_by_ticker[ticker]
+
+
+class MissingResearchProvider(FakeResearchProvider):
+    def get_research(self, ticker: str) -> CompanyResearch:
+        if ticker == "BROKEN":
+            raise RuntimeError("source fetch failed")
+        return super().get_research(ticker)
 
 
 def make_research(ticker: str, *, pe_ratio: float | None = 10.0) -> CompanyResearch:
@@ -75,6 +87,30 @@ def test_build_watchlist_sorts_equal_scores_by_ticker():
     items = build_watchlist(provider, countries=("SE",), limit=2, include_first_north=True)
 
     assert [item.research.company.ticker for item in items] == ["AAA", "BBB"]
+
+
+def test_build_watchlist_skips_missing_research_rows():
+    provider = MissingResearchProvider(
+        (make_research("BROKEN"), make_research("READY"))
+    )
+
+    items = build_watchlist(provider, countries=("SE",), limit=2, include_first_north=True)
+
+    assert [item.research.company.ticker for item in items] == ["READY"]
+
+
+def test_build_watchlist_filters_market_cap_and_sector():
+    items = build_watchlist(
+        FixtureResearchProvider(),
+        countries=("SE", "FI"),
+        limit=10,
+        include_first_north=True,
+        min_market_cap=250,
+        max_market_cap=350,
+        sector="Gaming",
+    )
+
+    assert [item.research.company.ticker for item in items] == ["REMEDY"]
 
 
 def test_build_deep_dive_includes_manual_checks_and_thesis():
@@ -141,6 +177,17 @@ def test_render_watchlist_json_is_machine_readable():
     assert payload["disclaimer"].startswith("Research triage")
     assert payload["items"][0]["rank"] == 1
     assert "evidence" in payload["items"][0]
+
+
+def test_render_deep_dive_json_is_machine_readable():
+    report = build_deep_dive(FixtureResearchProvider(), "FREEM")
+
+    payload = json.loads(render_deep_dive_json(report))
+
+    assert payload["company"]["ticker"] == "FREEM"
+    assert payload["disclaimer"].startswith("Research triage")
+    assert payload["bull_case"]
+    assert payload["next_manual_checks"]
 
 
 def test_render_watchlist_json_normalizes_non_finite_floats():

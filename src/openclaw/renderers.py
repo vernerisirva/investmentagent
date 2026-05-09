@@ -64,6 +64,27 @@ def render_watchlist_json(items: list[WatchlistItem]) -> str:
     return json.dumps(_normalize_json_value(payload), allow_nan=False, indent=2, sort_keys=True)
 
 
+def render_deep_dive_json(report: DeepDiveReport) -> str:
+    payload = {
+        "disclaimer": DISCLAIMER,
+        "company": _company_payload(report.research.company),
+        "financials": _financials_payload(report.research.financials),
+        "score": _score_payload(report.score),
+        "business_summary": report.business_summary,
+        "why_it_appeared": list(report.why_it_appeared),
+        "valuation_view": list(report.valuation_view),
+        "catalysts": list(report.research.catalysts),
+        "risks": list(report.research.risks),
+        "bull_case": list(report.bull_case),
+        "base_case": list(report.base_case),
+        "bear_case": list(report.bear_case),
+        "next_manual_checks": list(report.next_manual_checks),
+        "evidence": [_evidence_payload(evidence) for evidence in report.research.evidence],
+        "data_quality": _stringify(report.research.data_quality),
+    }
+    return json.dumps(_normalize_json_value(payload), allow_nan=False, indent=2, sort_keys=True)
+
+
 def render_deep_dive_text(report: DeepDiveReport) -> str:
     company = report.research.company
     lines = [

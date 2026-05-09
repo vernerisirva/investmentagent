@@ -54,6 +54,29 @@ def test_watchlist_command_outputs_json():
     assert "disclaimer" in payload
 
 
+def test_watchlist_command_accepts_discovery_filters():
+    result = runner.invoke(
+        app,
+        [
+            "watchlist",
+            "--country",
+            "se,fi",
+            "--limit",
+            "10",
+            "--min-market-cap",
+            "250",
+            "--max-market-cap",
+            "350",
+            "--sector",
+            "Gaming",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert "REMEDY" in result.output
+    assert "GOFORE" not in result.output
+
+
 def test_watchlist_command_rejects_blank_country_input():
     result = runner.invoke(app, ["watchlist", "--country", "   "])
 
@@ -67,6 +90,15 @@ def test_deep_dive_command_outputs_report():
     assert result.exit_code == 0
     assert "Freemelt" in result.output
     assert "Next manual checks" in result.output
+
+
+def test_deep_dive_command_outputs_json():
+    result = runner.invoke(app, ["deep-dive", "FREEM", "--output", "json"])
+
+    assert result.exit_code == 0
+    payload = json.loads(result.output)
+    assert payload["company"]["ticker"] == "FREEM"
+    assert payload["score"]["total"] > 0
 
 
 def test_sources_test_command_reports_fixture_status():
