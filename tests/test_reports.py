@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from openclaw.models import (
@@ -8,6 +10,7 @@ from openclaw.models import (
     ListingSegment,
 )
 from openclaw.providers import FixtureResearchProvider
+from openclaw.renderers import render_deep_dive_text, render_watchlist_json, render_watchlist_text
 from openclaw.reports import build_deep_dive, build_watchlist
 
 
@@ -114,3 +117,36 @@ def test_build_deep_dive_treats_negative_pe_as_not_meaningful():
     pe_text = next(item for item in report.valuation_view if "P/E" in item)
     assert "-5" not in pe_text
     assert "unavailable" in pe_text or "not meaningful" in pe_text
+
+
+def test_render_watchlist_text_includes_rank_score_risks_and_links():
+    items = build_watchlist(FixtureResearchProvider(), countries=("SE", "FI"), limit=1, include_first_north=True)
+
+    output = render_watchlist_text(items)
+
+    assert "#1" in output
+    assert "Score:" in output
+    assert "Risks:" in output
+    assert "Evidence:" in output
+    assert "Not financial advice" in output
+
+
+def test_render_watchlist_json_is_machine_readable():
+    items = build_watchlist(FixtureResearchProvider(), countries=("SE", "FI"), limit=1, include_first_north=True)
+
+    payload = json.loads(render_watchlist_json(items))
+
+    assert payload["disclaimer"].startswith("Research triage")
+    assert payload["items"][0]["rank"] == 1
+    assert "evidence" in payload["items"][0]
+
+
+def test_render_deep_dive_text_includes_thesis_sections():
+    report = build_deep_dive(FixtureResearchProvider(), "FREEM")
+
+    output = render_deep_dive_text(report)
+
+    assert "Bull case" in output
+    assert "Base case" in output
+    assert "Bear case" in output
+    assert "Next manual checks" in output
