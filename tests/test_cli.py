@@ -1,5 +1,43 @@
+from typer.testing import CliRunner
+
 from openclaw.cli import app
+
+
+runner = CliRunner()
 
 
 def test_console_script_target_exposes_app():
     assert app is not None
+
+
+def test_watchlist_command_outputs_ranked_text():
+    result = runner.invoke(app, ["watchlist", "--country", "se,fi", "--limit", "2"])
+
+    assert result.exit_code == 0
+    assert "#1" in result.output
+    assert "Not financial advice" in result.output
+
+
+def test_watchlist_command_outputs_json():
+    result = runner.invoke(
+        app, ["watchlist", "--country", "se,fi", "--limit", "1", "--output", "json"]
+    )
+
+    assert result.exit_code == 0
+    assert '"items"' in result.output
+    assert '"rank": 1' in result.output
+
+
+def test_deep_dive_command_outputs_report():
+    result = runner.invoke(app, ["deep-dive", "FREEM"])
+
+    assert result.exit_code == 0
+    assert "Freemelt" in result.output
+    assert "Next manual checks" in result.output
+
+
+def test_sources_test_command_reports_fixture_status():
+    result = runner.invoke(app, ["sources", "test"])
+
+    assert result.exit_code == 0
+    assert "bundled seed data: ok" in result.output
