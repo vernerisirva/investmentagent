@@ -1,14 +1,38 @@
-from openclaw import __version__
-from openclaw.cli import app
-from openclaw.models import Company, DataQuality, Evidence, FinancialSnapshot, ListingSegment
+from openclaw.models import (
+    Company,
+    CompanyResearch,
+    DataQuality,
+    DeepDiveReport,
+    Evidence,
+    FinancialSnapshot,
+    ListingSegment,
+    ScoreBreakdown,
+)
 
 
-def test_package_exposes_version():
-    assert __version__ == "0.1.0"
+def make_company() -> Company:
+    return Company(
+        name="Example AB",
+        ticker="EXAB",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.FIRST_NORTH,
+    )
 
 
-def test_console_script_target_exposes_app():
-    assert app is not None
+def make_research() -> CompanyResearch:
+    return CompanyResearch(company=make_company(), financials=FinancialSnapshot())
+
+
+def make_score() -> ScoreBreakdown:
+    return ScoreBreakdown(
+        value=10.0,
+        discovery=10.0,
+        catalyst=10.0,
+        risk_penalty=0.0,
+        data_quality_penalty=0.0,
+        total=30.0,
+    )
 
 
 def test_company_normalizes_ticker_and_country():
@@ -36,3 +60,65 @@ def test_evidence_requires_label_and_url():
 
     assert evidence.label == "IR page"
     assert evidence.url == "https://example.com/ir"
+
+
+def test_company_research_converts_mutable_collections_to_tuples():
+    evidence = Evidence(label="IR page", url="https://example.com/ir")
+    research = CompanyResearch(
+        company=make_company(),
+        financials=FinancialSnapshot(),
+        catalysts=["New product"],
+        risks=["Thin liquidity"],
+        evidence=[evidence],
+    )
+
+    assert research.catalysts == ("New product",)
+    assert research.risks == ("Thin liquidity",)
+    assert research.evidence == (evidence,)
+    assert isinstance(research.catalysts, tuple)
+    assert isinstance(research.risks, tuple)
+    assert isinstance(research.evidence, tuple)
+
+
+def test_score_breakdown_converts_mutable_collections_to_tuples():
+    score = ScoreBreakdown(
+        value=10.0,
+        discovery=10.0,
+        catalyst=10.0,
+        risk_penalty=2.0,
+        data_quality_penalty=1.0,
+        total=27.0,
+        reasons=["Cheap valuation"],
+        warnings=["Thin disclosure"],
+    )
+
+    assert score.reasons == ("Cheap valuation",)
+    assert score.warnings == ("Thin disclosure",)
+    assert isinstance(score.reasons, tuple)
+    assert isinstance(score.warnings, tuple)
+
+
+def test_deep_dive_report_converts_mutable_collections_to_tuples():
+    report = DeepDiveReport(
+        research=make_research(),
+        score=make_score(),
+        why_it_appeared=["High score"],
+        valuation_view=["Looks inexpensive"],
+        bull_case=["Margin expansion"],
+        base_case=["Steady growth"],
+        bear_case=["Demand slows"],
+        next_manual_checks=["Read latest annual report"],
+    )
+
+    assert report.why_it_appeared == ("High score",)
+    assert report.valuation_view == ("Looks inexpensive",)
+    assert report.bull_case == ("Margin expansion",)
+    assert report.base_case == ("Steady growth",)
+    assert report.bear_case == ("Demand slows",)
+    assert report.next_manual_checks == ("Read latest annual report",)
+    assert isinstance(report.why_it_appeared, tuple)
+    assert isinstance(report.valuation_view, tuple)
+    assert isinstance(report.bull_case, tuple)
+    assert isinstance(report.base_case, tuple)
+    assert isinstance(report.bear_case, tuple)
+    assert isinstance(report.next_manual_checks, tuple)

@@ -68,6 +68,11 @@ class CompanyResearch:
     evidence: tuple[Evidence, ...] = ()
     data_quality: DataQuality = DataQuality.THIN
 
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "catalysts", tuple(self.catalysts))
+        object.__setattr__(self, "risks", tuple(self.risks))
+        object.__setattr__(self, "evidence", tuple(self.evidence))
+
 
 @dataclass(frozen=True)
 class ScoreBreakdown:
@@ -79,6 +84,10 @@ class ScoreBreakdown:
     total: float
     reasons: tuple[str, ...] = ()
     warnings: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "reasons", tuple(self.reasons))
+        object.__setattr__(self, "warnings", tuple(self.warnings))
 
 
 @dataclass(frozen=True)
@@ -99,6 +108,14 @@ class DeepDiveReport:
     base_case: tuple[str, ...] = ()
     bear_case: tuple[str, ...] = ()
     next_manual_checks: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "why_it_appeared", tuple(self.why_it_appeared))
+        object.__setattr__(self, "valuation_view", tuple(self.valuation_view))
+        object.__setattr__(self, "bull_case", tuple(self.bull_case))
+        object.__setattr__(self, "base_case", tuple(self.base_case))
+        object.__setattr__(self, "bear_case", tuple(self.bear_case))
+        object.__setattr__(self, "next_manual_checks", tuple(self.next_manual_checks))
 
 
 @dataclass(frozen=True)
