@@ -8,6 +8,8 @@ from openclaw.models import (
     DataQuality,
     FinancialSnapshot,
     ListingSegment,
+    ScoreBreakdown,
+    WatchlistItem,
 )
 from openclaw.providers import FixtureResearchProvider
 from openclaw.renderers import render_deep_dive_text, render_watchlist_json, render_watchlist_text
@@ -139,6 +141,41 @@ def test_render_watchlist_json_is_machine_readable():
     assert payload["disclaimer"].startswith("Research triage")
     assert payload["items"][0]["rank"] == 1
     assert "evidence" in payload["items"][0]
+
+
+def test_render_watchlist_json_normalizes_non_finite_floats():
+    company = Company(
+        name="Nanotech AB",
+        ticker="NAN",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(price=float("nan"), data_quality=DataQuality.GOOD),
+            data_quality=DataQuality.GOOD,
+        ),
+        score=ScoreBreakdown(
+            value=float("inf"),
+            discovery=0.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=0.0,
+            total=float("-inf"),
+        ),
+    )
+
+    output = render_watchlist_json([item])
+
+    assert "NaN" not in output
+    assert "Infinity" not in output
+    payload = json.loads(output)
+    assert payload["items"][0]["financials"]["price"] is None
+    assert payload["items"][0]["score"]["value"] is None
+    assert payload["items"][0]["score"]["total"] is None
 
 
 def test_render_deep_dive_text_includes_thesis_sections():

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from enum import Enum
 from typing import Any
 
@@ -60,7 +61,7 @@ def render_watchlist_json(items: list[WatchlistItem]) -> str:
             for item in items
         ],
     }
-    return json.dumps(payload, indent=2, sort_keys=True)
+    return json.dumps(_normalize_json_value(payload), allow_nan=False, indent=2, sort_keys=True)
 
 
 def render_deep_dive_text(report: DeepDiveReport) -> str:
@@ -156,6 +157,18 @@ def _evidence_payload(evidence: Evidence) -> dict[str, str | None]:
         "source": evidence.source,
         "timestamp": evidence.timestamp,
     }
+
+
+def _normalize_json_value(value: Any) -> Any:
+    if isinstance(value, Enum):
+        return value.value
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    if isinstance(value, dict):
+        return {key: _normalize_json_value(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_normalize_json_value(item) for item in value]
+    return value
 
 
 def _evidence_lines(evidence_items: tuple[Evidence, ...]) -> list[str]:
