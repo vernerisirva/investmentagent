@@ -73,3 +73,7 @@ def test_sources() -> None:
     provider = FixtureResearchProvider()
     for check in provider.source_checks():
         typer.echo(f"{check.name}: {check.status} - {check.detail}")
+
+
+if __name__ == "__main__":
+    app()

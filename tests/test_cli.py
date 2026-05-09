@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 
 from typer.testing import CliRunner
 
@@ -10,6 +12,18 @@ runner = CliRunner()
 
 def test_console_script_target_exposes_app():
     assert app is not None
+
+
+def test_module_invocation_renders_help():
+    result = subprocess.run(
+        [sys.executable, "-m", "openclaw.cli", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert "watchlist" in result.stdout
 
 
 def test_root_command_without_args_shows_help():
