@@ -34,10 +34,12 @@ def make_research(**financial_overrides):
 def test_score_rewards_small_value_companies_with_catalysts():
     score = score_research(make_research())
 
-    assert score.value > 0
-    assert score.discovery > 0
-    assert score.catalyst > 0
-    assert score.total > 0
+    assert score.value == 45.0
+    assert score.discovery == 40.0
+    assert score.catalyst == 8.0
+    assert score.risk_penalty == 11.0
+    assert score.data_quality_penalty == 0.0
+    assert score.total == 82.0
     assert "low P/E" in " ".join(score.reasons)
 
 

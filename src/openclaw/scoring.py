@@ -18,21 +18,21 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
 
     value = 0.0
     if financials.pe_ratio is not None and financials.pe_ratio <= 12:
-        value += 12.0
-        reasons.append("low P/E")
+        value += 20.0
+        reasons.append(f"low P/E ({financials.pe_ratio:g})")
     if financials.price_to_book is not None and financials.price_to_book <= 1.2:
-        value += 10.0
+        value += 15.0
         reasons.append("low P/B")
     if financials.net_cash_eur_m is not None and financials.net_cash_eur_m > 0:
-        value += 8.0
+        value += 10.0
         reasons.append("net cash balance sheet")
 
     discovery = 0.0
     if company.market_cap_eur_m is not None and company.market_cap_eur_m <= 500:
-        discovery += 10.0
+        discovery += 15.0
         reasons.append("small market cap")
     if company.segment == ListingSegment.FIRST_NORTH:
-        discovery += 8.0
+        discovery += 10.0
         reasons.append("First North listing")
     if financials.one_year_return_pct is not None and financials.one_year_return_pct <= -25:
         discovery += 8.0
@@ -41,10 +41,10 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
         financials.distance_from_52w_high_pct is not None
         and financials.distance_from_52w_high_pct <= -35
     ):
-        discovery += 8.0
+        discovery += 7.0
         reasons.append("far below 52-week high")
 
-    catalyst = float(min(len(research.catalysts) * 8, 24))
+    catalyst = min(len(research.catalysts) * 8.0, 24.0)
     if catalyst:
         reasons.append(f"{len(research.catalysts)} catalyst(s)")
 
@@ -56,19 +56,19 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
         risk_penalty += 8.0
         warnings.append("thin liquidity")
     if financials.debt_to_equity is not None and financials.debt_to_equity > 1.5:
-        risk_penalty += 10.0
+        risk_penalty += 8.0
         warnings.append("high debt/equity")
     if financials.operating_margin_pct is not None and financials.operating_margin_pct < 0:
-        risk_penalty += 12.0
+        risk_penalty += 10.0
         warnings.append("negative operating margin")
     if financials.pe_ratio is not None and financials.pe_ratio > 40:
-        risk_penalty += 18.0
+        risk_penalty += 10.0
         warnings.append("high P/E")
     if financials.price_to_book is not None and financials.price_to_book > 5:
-        risk_penalty += 16.0
+        risk_penalty += 8.0
         warnings.append("high P/B")
 
-    risk_penalty += float(min(len(research.risks) * 3, 15))
+    risk_penalty += min(len(research.risks) * 3.0, 15.0)
     if research.risks:
         warnings.append(f"{len(research.risks)} stated risk(s)")
 
