@@ -22,3 +22,25 @@ def test_build_deep_dive_includes_manual_checks_and_thesis():
     assert report.base_case
     assert report.bear_case
     assert report.next_manual_checks
+
+    valuation_text = " ".join(report.valuation_view)
+    assert "P/E" in valuation_text
+    assert "Price/book" in valuation_text
+    assert (
+        "Net cash" in valuation_text
+        or "Net debt" in valuation_text
+        or "unavailable" in valuation_text
+    )
+
+    manual_checks_text = " ".join(report.next_manual_checks)
+    for required_text in (
+        "annual",
+        "interim",
+        "insider",
+        "ownership",
+        "liquidity",
+        "bid/ask",
+        "Nordic",
+        "peer",
+    ):
+        assert required_text in manual_checks_text

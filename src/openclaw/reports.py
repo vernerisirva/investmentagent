@@ -40,7 +40,7 @@ def build_deep_dive(provider: ResearchProvider, ticker: str) -> DeepDiveReport:
 
     valuation_view = (
         _metric_sentence("P/E", financials.pe_ratio),
-        _metric_sentence("P/B", financials.price_to_book),
+        _metric_sentence("Price/book", financials.price_to_book),
         _net_cash_or_debt_sentence(financials.net_cash_eur_m),
     )
 
@@ -61,9 +61,9 @@ def build_deep_dive(provider: ResearchProvider, ticker: str) -> DeepDiveReport:
         or ("No explicit risk is available in the current research fixture.",),
         next_manual_checks=(
             "Review the latest annual and interim reports.",
-            "Check recent announcements and ownership disclosures.",
-            "Verify liquidity, trading volume, and bid-ask spread.",
-            "Compare valuation against relevant listed peers.",
+            "Check company announcements plus insider and ownership disclosures.",
+            "Verify liquidity, trading volume, and bid/ask spread.",
+            "Compare valuation against Nordic peers.",
         ),
     )
 
