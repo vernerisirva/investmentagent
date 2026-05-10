@@ -156,7 +156,7 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
     assert result.exit_code == 0
     assert isinstance(wrapped["base_provider"], LiveProvider)
     assert isinstance(wrapped["fundamentals_provider"], FundamentalsProvider)
-    assert wrapped["max_enrichments"] == 30
+    assert wrapped["max_enrichments"] == 10
 
 
 def test_watchlist_rejects_invalid_strategy_before_provider_work(monkeypatch):

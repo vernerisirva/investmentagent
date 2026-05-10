@@ -131,7 +131,7 @@ def watchlist(
             provider = EnrichedResearchProvider(
                 provider,
                 YahooFundamentalsProvider(),
-                max_enrichments=max(limit * 3, 20),
+                max_enrichments=limit,
             )
     items = build_watchlist(
         provider,
