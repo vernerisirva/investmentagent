@@ -2,9 +2,11 @@ import json
 
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
+    FinimpulseFundamentalsProvider,
     FinnhubFundamentalsProvider,
     FundamentalsSnapshot,
     YahooFundamentalsProvider,
+    finimpulse_symbol_candidates,
     finnhub_symbol_candidates,
     yahoo_symbol_candidates,
 )
@@ -84,6 +86,41 @@ def finnhub_payload() -> str:
                     "operatingMarginTTM": 14.0,
                     "totalDebt/totalEquityQuarterly": 52.0,
                 }
+            },
+        }
+    )
+
+
+def finimpulse_search_payload() -> str:
+    return json.dumps(
+        {
+            "status_code": 20000,
+            "status_message": "OK",
+            "data": {"symbols": ["KAR.ST"], "quote_types": ["stock"], "limit": 1},
+            "result": {
+                "total_count": 1,
+                "items_count": 1,
+                "items": [
+                    {
+                        "symbol": "KAR.ST",
+                        "short_name": "Karnov Group AB",
+                        "long_name": "Karnov Group AB (publ)",
+                        "quote_type": "stock",
+                        "currency": "SEK",
+                        "regular_market_price": 72.0,
+                        "average_daily_volume_10_day": 485039,
+                        "one_year_return": -16.473,
+                        "fifty_two_week_high_change_percent": -44.272444,
+                        "market_region": "SE",
+                        "sector": "Industrials",
+                        "industry": "Specialty Business Services",
+                        "amount": 7024167424,
+                        "revenue_growth": 0.24636247668524147,
+                        "net_margin": 0.36760195,
+                        "free_cash_flow_margin": 0.19304025,
+                        "debt_to_equity": 0.29354096,
+                    }
+                ],
             },
         }
     )
@@ -227,6 +264,74 @@ def test_finnhub_source_check_ok_when_lookup_succeeds():
 
     assert check.status == "ok"
     assert "1/1 Finnhub lookups parsed" in check.detail
+
+
+def test_finimpulse_symbol_candidates_for_sweden_and_finland():
+    assert finimpulse_symbol_candidates(make_company("KAR", "SE")) == ("KAR.ST",)
+    assert finimpulse_symbol_candidates(make_company("GOFORE", "FI")) == ("GOFORE.HE",)
+
+
+def test_finimpulse_symbol_candidates_normalize_spaces_and_share_classes():
+    assert finimpulse_symbol_candidates(make_company("BEAMMW B", "SE")) == (
+        "BEAMMW-B.ST",
+        "BEAMMWB.ST",
+    )
+
+
+def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
+    requested: list[tuple[str, str, dict[str, str]]] = []
+
+    def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
+        requested.append((url, payload, headers))
+        return finimpulse_search_payload()
+
+    provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert isinstance(snapshot, FundamentalsSnapshot)
+    assert snapshot.symbol == "KAR.ST"
+    assert snapshot.market_cap_eur_m == 702.42
+    assert snapshot.financials.revenue_growth_pct == 24.64
+    assert snapshot.financials.operating_margin_pct == 36.76
+    assert snapshot.financials.debt_to_equity == 0.29354096
+    assert snapshot.financials.one_year_return_pct == -16.473
+    assert snapshot.financials.distance_from_52w_high_pct == -44.272444
+    assert snapshot.financials.average_daily_value_eur == 3_492_280.8
+    assert snapshot.financials.data_quality == DataQuality.PARTIAL
+    assert snapshot.evidence.source == "finimpulse"
+    assert "KAR.ST" in snapshot.evidence.label
+    assert "secret-token" not in snapshot.evidence.url
+    assert requested
+    assert requested[0][0] == "https://api.finimpulse.com/v1/search"
+    assert "secret-token" in requested[0][2]["Authorization"]
+
+
+def test_finimpulse_provider_returns_none_for_empty_search_results():
+    provider = FinimpulseFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url, payload, headers: json.dumps(
+            {"status_code": 20000, "result": {"items": []}}
+        ),
+    )
+
+    assert provider.get_fundamentals(make_company()) is None
+
+
+def test_finimpulse_source_check_warns_without_leaking_token_when_lookups_fail():
+    def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
+        raise RuntimeError(f"failed Authorization: {headers['Authorization']}")
+
+    provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert check.name == "finimpulse fundamentals"
+    assert check.status == "warning"
+    assert "no successful" in check.detail.lower()
+    assert "secret-token" not in check.detail
+    assert "<redacted>" in check.detail
 
 
 def test_yahoo_provider_leaves_unknown_currency_money_fields_empty():

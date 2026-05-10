@@ -31,6 +31,9 @@ FINNHUB_METRIC_URL = (
 )
 FINNHUB_PROFILE_DOC_URL = "https://finnhub.io/docs/api/company-profile2"
 FINNHUB_FETCH_TIMEOUT_SECONDS = 3
+FINIMPULSE_SEARCH_URL = "https://api.finimpulse.com/v1/search"
+FINIMPULSE_SEARCH_DOC_URL = "https://developers.finimpulse.com/v1/search/"
+FINIMPULSE_FETCH_TIMEOUT_SECONDS = 3
 _EUR_RATES = {"EUR": 1.0, "SEK": 0.1}
 
 
@@ -161,6 +164,77 @@ class FinnhubFundamentalsProvider:
         return SourceCheck(name="finnhub fundamentals", status="warning", detail=ratio)
 
 
+class FinimpulseFundamentalsProvider:
+    def __init__(
+        self,
+        api_key: str,
+        fetcher: Callable[[str, str, dict[str, str]], str] | None = None,
+    ) -> None:
+        self.api_key = api_key
+        self._fetcher = fetcher or _post_json
+        self.attempted_lookups = 0
+        self.successful_lookups = 0
+        self.last_error: str | None = None
+
+    def get_fundamentals(self, company: Company) -> FundamentalsSnapshot | None:
+        for symbol in finimpulse_symbol_candidates(company):
+            self.attempted_lookups += 1
+            payload = json.dumps(
+                {"symbols": [symbol], "quote_types": ["stock"], "limit": 1}
+            )
+            headers = {
+                "Accept": "application/json,text/plain,*/*",
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+                "User-Agent": "Mozilla/5.0",
+            }
+            try:
+                snapshot = _parse_finimpulse_search_payload(
+                    payload=self._fetcher(FINIMPULSE_SEARCH_URL, payload, headers),
+                    symbol=symbol,
+                    fallback_currency=company.currency,
+                )
+            except Exception as exc:
+                self.last_error = _token_safe_error(exc, self.api_key)
+                continue
+            if snapshot is not None:
+                self.successful_lookups += 1
+                self.last_error = None
+                return snapshot
+        return None
+
+    def source_check(self) -> SourceCheck:
+        if self.attempted_lookups == 0:
+            return SourceCheck(
+                name="finimpulse fundamentals",
+                status="warning",
+                detail="No lookups attempted for Finimpulse fundamentals",
+            )
+
+        ratio = (
+            f"{self.successful_lookups}/{self.attempted_lookups} "
+            "Finimpulse lookups parsed"
+        )
+        if self.successful_lookups == self.attempted_lookups:
+            return SourceCheck(
+                name="finimpulse fundamentals", status="ok", detail=ratio
+            )
+
+        if self.successful_lookups == 0:
+            detail = f"No successful Finimpulse fundamentals lookups ({ratio})"
+            if self.last_error:
+                detail = f"{detail}: {self.last_error}"
+            return SourceCheck(
+                name="finimpulse fundamentals",
+                status="warning",
+                detail=detail,
+            )
+
+        return SourceCheck(
+            name="finimpulse fundamentals", status="warning", detail=ratio
+        )
+
+
 class EnrichedResearchProvider:
     def __init__(
         self, base_provider, fundamentals_provider, max_enrichments: int | None = None
@@ -285,6 +359,10 @@ def finnhub_symbol_candidates(company: Company) -> tuple[str, ...]:
     return _symbol_candidates(company)
 
 
+def finimpulse_symbol_candidates(company: Company) -> tuple[str, ...]:
+    return _symbol_candidates(company)
+
+
 def _symbol_candidates(company: Company) -> tuple[str, ...]:
     suffix_by_country = {"SE": ".ST", "FI": ".HE"}
     suffix = suffix_by_country.get(company.country.upper())
@@ -344,6 +422,54 @@ def _parse_finnhub_payload(
             label=f"Finnhub fundamentals lookup ({symbol})",
             url=FINNHUB_PROFILE_DOC_URL,
             source="finnhub",
+        ),
+    )
+
+
+def _parse_finimpulse_search_payload(
+    payload: str, symbol: str, fallback_currency: str | None
+) -> FundamentalsSnapshot | None:
+    result = _dict_value(json.loads(payload), "result")
+    items = result.get("items")
+    if not isinstance(items, list) or not items or not isinstance(items[0], dict):
+        return None
+
+    item = items[0]
+    currency = str(item.get("currency") or fallback_currency or "").upper()
+    fx_rate = _EUR_RATES.get(currency)
+    market_cap_eur_m = _eur_m(_number(item, "amount"), fx_rate)
+
+    average_daily_value_eur = None
+    price = _number(item, "regular_market_price")
+    average_daily_volume = _number(item, "average_daily_volume_10_day")
+    if fx_rate is not None and price is not None and average_daily_volume is not None:
+        average_daily_value_eur = round(price * average_daily_volume * fx_rate, 2)
+
+    financials = FinancialSnapshot(
+        revenue_growth_pct=_ratio_to_percent(_number(item, "revenue_growth")),
+        operating_margin_pct=_ratio_to_percent(
+            _first_number(item, ("net_margin", "free_cash_flow_margin"))
+        ),
+        debt_to_equity=_number(item, "debt_to_equity"),
+        one_year_return_pct=_number(item, "one_year_return"),
+        distance_from_52w_high_pct=_number(
+            item, "fifty_two_week_high_change_percent"
+        ),
+        average_daily_value_eur=average_daily_value_eur,
+        data_quality=DataQuality.PARTIAL,
+    )
+    if not _has_meaningful_fields(market_cap_eur_m, financials):
+        return None
+
+    parsed_symbol = str(item.get("symbol") or symbol)
+    return FundamentalsSnapshot(
+        symbol=parsed_symbol,
+        market_cap_eur_m=market_cap_eur_m,
+        financials=financials,
+        evidence=Evidence(
+            label=f"Finimpulse fundamentals lookup ({parsed_symbol})",
+            url=FINIMPULSE_SEARCH_DOC_URL,
+            source="finimpulse",
         ),
     )
 
@@ -461,6 +587,14 @@ def _percent(value: float | None) -> float | None:
     return round(value * 100, 2)
 
 
+def _ratio_to_percent(value: float | None) -> float | None:
+    if value is None:
+        return None
+    if -1 <= value <= 1:
+        value *= 100
+    return round(value, 2)
+
+
 def _eur_m(value: float | None, fx_rate: float | None) -> float | None:
     if value is None or fx_rate is None:
         return None
@@ -501,6 +635,8 @@ def _has_meaningful_fields(
             financials.debt_to_equity,
             financials.net_cash_eur_m,
             financials.average_daily_value_eur,
+            financials.one_year_return_pct,
+            financials.distance_from_52w_high_pct,
         )
     )
 
@@ -544,4 +680,15 @@ def _fetch_finnhub_url(url: str) -> str:
         },
     )
     with urlopen(request, timeout=FINNHUB_FETCH_TIMEOUT_SECONDS) as response:
+        return response.read().decode("utf-8")
+
+
+def _post_json(url: str, payload: str, headers: dict[str, str]) -> str:
+    request = Request(
+        url,
+        data=payload.encode("utf-8"),
+        headers=headers,
+        method="POST",
+    )
+    with urlopen(request, timeout=FINIMPULSE_FETCH_TIMEOUT_SECONDS) as response:
         return response.read().decode("utf-8")
