@@ -255,6 +255,32 @@ def test_live_provider_research_adds_selloff_and_liquidity_risks():
     assert "Low live turnover" in research.risks
 
 
+def test_live_provider_research_adds_extreme_spike_and_low_price_risks():
+    payload = LIVE_NASDAQ_SCREENER_RESPONSE.replace("+6.25%", "+155.65%").replace(
+        "34.90", "0.86"
+    )
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: payload)
+
+    research = provider.get_research("ACAST")
+
+    assert "Extreme intraday spike" in research.risks
+    assert "Speculative low-price share" in research.risks
+
+
+def test_live_provider_deduplicates_nasdaq_rows_by_ticker_and_country():
+    duplicate_payload = LIVE_NASDAQ_SCREENER_RESPONSE.replace(
+        '"fullName": "Foreign Issuer Listed Stockholm"',
+        '"fullName": "Acast Duplicate"',
+    ).replace('"symbol": "FIL"', '"symbol": "ACAST"').replace(
+        '"isin": "DK0000000001"', '"isin": "SE0015960935"'
+    )
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: duplicate_payload)
+
+    companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
+
+    assert [company.ticker for company in companies].count("ACAST") == 1
+
+
 def test_live_provider_ignores_malformed_market_signal_numbers():
     malformed_payload = LIVE_NASDAQ_SCREENER_RESPONSE.replace("34.90", "not-a-price").replace(
         "+6.25%", "n/a"

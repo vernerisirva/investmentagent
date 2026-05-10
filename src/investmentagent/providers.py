@@ -328,7 +328,7 @@ def _parse_nasdaq_nordic_screener_responses(
 ) -> tuple[list[Company], dict[str, dict]]:
     companies: list[Company] = []
     market_rows: dict[str, dict] = {}
-    seen: set[tuple[str, str, str]] = set()
+    seen: set[tuple[str, str]] = set()
     for response in responses:
         country = str(response.get("country") or "").upper()
         exchange = str(response.get("exchange") or "Nasdaq Nordic")
@@ -343,7 +343,7 @@ def _parse_nasdaq_nordic_screener_responses(
             company = _company_from_nasdaq_screener_row(row, country, exchange, segment)
             if company is None:
                 continue
-            key = (company.ticker, company.country, company.exchange)
+            key = (company.ticker, company.country)
             if key in seen:
                 continue
             seen.add(key)
@@ -423,9 +423,14 @@ def _live_market_risks(market_row: dict) -> tuple[str, ...]:
     risks = ["Sparse live-source data"]
     if not market_row:
         return tuple(risks)
+    price = market_row.get("price")
     percentage_change = market_row.get("percentage_change")
+    if percentage_change is not None and percentage_change >= 40.0:
+        risks.append("Extreme intraday spike")
     if percentage_change is not None and percentage_change <= -5.0:
         risks.append("Sharp intraday selloff")
+    if price is not None and 0 < price < 1.0:
+        risks.append("Speculative low-price share")
     turnover = market_row.get("turnover")
     if turnover is not None and turnover < 100_000:
         risks.append("Low live turnover")
