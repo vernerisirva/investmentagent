@@ -7,6 +7,7 @@ from investmentagent.providers import (
     _fetch_nasdaq_nordic_screener_payload,
     create_provider,
 )
+from investmentagent.scoring import score_research
 
 
 LIVE_SAMPLE_CSV = """name,ticker,country,exchange,segment,sector,currency,isin
@@ -46,6 +47,10 @@ LIVE_NASDAQ_SCREENER_RESPONSE = """{
                 "fullName": "Foreign Issuer Listed Stockholm",
                 "symbol": "FIL",
                 "currency": "DKK",
+                "lastSalePrice": "12.00",
+                "percentageChange": "+12.93%",
+                "turnover": "2,500,000",
+                "volume": "400,000",
                 "sector": "Industrials",
                 "isin": "DK0000000001"
               }
@@ -219,7 +224,26 @@ def test_live_provider_research_adds_positive_momentum_signal():
 
     research = provider.get_research("ACAST")
 
-    assert "Positive intraday momentum" in research.catalysts
+    assert "Positive intraday momentum (+6.25%)" in research.catalysts
+    assert "High live turnover" in research.catalysts
+
+
+def test_live_provider_research_adds_strong_momentum_and_high_turnover_signals():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_NASDAQ_SCREENER_RESPONSE)
+
+    research = provider.get_research("FIL")
+
+    assert "Strong intraday momentum (+12.93%)" in research.catalysts
+    assert "High live turnover" in research.catalysts
+
+
+def test_live_provider_scores_stronger_live_signals_higher():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_NASDAQ_SCREENER_RESPONSE)
+
+    stronger = score_research(provider.get_research("FIL"))
+    weaker = score_research(provider.get_research("ACAST"))
+
+    assert stronger.total > weaker.total
 
 
 def test_live_provider_research_adds_selloff_and_liquidity_risks():
@@ -241,7 +265,7 @@ def test_live_provider_ignores_malformed_market_signal_numbers():
 
     assert research.financials.price is None
     assert "Live price available from Nasdaq Nordic" not in research.catalysts
-    assert "Positive intraday momentum" not in research.catalysts
+    assert not any("intraday momentum" in catalyst for catalyst in research.catalysts)
 
 
 def test_live_provider_reports_malformed_payload_as_error():

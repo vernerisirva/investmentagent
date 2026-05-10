@@ -35,7 +35,15 @@ For each Nasdaq live row:
 
 ## Ranking Effect
 
-The existing scoring engine awards 8 catalyst points per catalyst up to 24 points. These graded labels improve ranking naturally through the existing catalyst mechanism without adding a special live-only scoring path.
+The scoring engine should keep ordinary catalysts worth 8 points each, capped at 24 catalyst points. Live catalysts can use transparent weights so stronger signals rank above weaker signals:
+
+- Live price available: 2 points.
+- Positive intraday momentum: 8 points.
+- Strong intraday momentum: 12 points.
+- Moderate live turnover: 4 points.
+- High live turnover: 8 points.
+
+This improves ordering without creating valuation claims.
 
 ## Testing
 

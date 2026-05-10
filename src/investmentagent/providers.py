@@ -407,8 +407,15 @@ def _live_market_catalysts(market_row: dict) -> tuple[str, ...]:
     if market_row.get("price") is not None:
         catalysts.append("Live price available from Nasdaq Nordic")
     percentage_change = market_row.get("percentage_change")
-    if percentage_change is not None and percentage_change >= 5.0:
-        catalysts.append("Positive intraday momentum")
+    if percentage_change is not None and percentage_change >= 10.0:
+        catalysts.append(f"Strong intraday momentum (+{percentage_change:g}%)")
+    elif percentage_change is not None and percentage_change >= 5.0:
+        catalysts.append(f"Positive intraday momentum (+{percentage_change:g}%)")
+    turnover = market_row.get("turnover")
+    if turnover is not None and turnover >= 1_000_000:
+        catalysts.append("High live turnover")
+    elif turnover is not None and turnover >= 250_000:
+        catalysts.append("Moderate live turnover")
     return tuple(catalysts)
 
 

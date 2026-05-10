@@ -9,6 +9,14 @@ DATA_QUALITY_PENALTIES = {
     DataQuality.THIN: 14.0,
 }
 
+CATALYST_SCORE_CAP = 24.0
+DEFAULT_CATALYST_SCORE = 8.0
+LIVE_CATALYST_SCORES = {
+    "Live price available from Nasdaq Nordic": 2.0,
+    "High live turnover": 8.0,
+    "Moderate live turnover": 4.0,
+}
+
 
 def score_research(research: CompanyResearch) -> ScoreBreakdown:
     financials = research.financials
@@ -44,7 +52,7 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
         discovery += 7.0
         reasons.append("far below 52-week high")
 
-    catalyst = min(len(research.catalysts) * 8.0, 24.0)
+    catalyst = min(sum(_catalyst_score(item) for item in research.catalysts), CATALYST_SCORE_CAP)
     if catalyst:
         reasons.extend(research.catalysts[:3])
 
@@ -88,3 +96,11 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
         reasons=tuple(reasons),
         warnings=tuple(warnings),
     )
+
+
+def _catalyst_score(catalyst: str) -> float:
+    if catalyst.startswith("Strong intraday momentum"):
+        return 12.0
+    if catalyst.startswith("Positive intraday momentum"):
+        return 8.0
+    return LIVE_CATALYST_SCORES.get(catalyst, DEFAULT_CATALYST_SCORE)
