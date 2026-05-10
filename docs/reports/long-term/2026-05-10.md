@@ -3,7 +3,7 @@
 > Research triage only. Not financial advice.
 
 ## Metadata
-- generated_at: 2026-05-10T18:26:36.803933+00:00
+- generated_at: 2026-05-10T18:52:21.961367+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -13,6 +13,7 @@
 - max_market_cap: None
 - sector: None
 - strategy: long-term
+- min_country_counts: {'FI': 3}
 
 ## Source Checks
 - nasdaq nordic live data: ok - 937 companies parsed from https://api.nasdaq.com/api/nordic/screener/shares
@@ -20,20 +21,112 @@
 
 ## Watchlist
 
-## #1 Advenica AB (ADVE)
+## #1 Absolent Air Care Group (ABSO)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Absolent Air Care Group AB (publ) designs, develops, sells, installs, and maintains air filtration units. Its air cleaning solutions are used to separate air pollutants across a range of industries, including aerospace, automotive, chemical, electronics, pharmaceuticals, woodworking, and food, as well as in power generation, contract manufacturing, dental laboratories, hotels, and restaurants. The company's commercial kitchen systems handle harmful airborne particles and gases generated from cooking activities, and its product portfolio comprises hoods, filtration technologies, and fire extinguishing systems. Absolent Air Care Group AB (publ) operates in Sweden, the United Kingdom, Canada, China, the United States, Germany, the Netherlands, Finland, France, India, Switzerland, Japan, Hong Kong, Italy, and Norway. The company was formerly known as Absolent Group AB (publ) and changed its name to Absolent Air Care Group AB (publ) in May 2021. Founded in 1993, it is headquartered in Gothenburg, Sweden. Absolent Air Care Group AB (publ) operates as a subsidiary of Mexab Industri AB.
+
+**Score:** 36
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Absolent Air Care Group has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 3/5 | Modest revenue growth of 4.4%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- First North listing
+- Positive operating margin (5.5%)
+- Revenue growth (4.4%)
+- Conservative debt/equity
+- Business description available from profile data
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ABSO.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #2 Admicom Oyj (ADMCM)
+
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
+
+**What the company does:** Admicom Oyj provides software solutions and support services in Finland and internationally. The company offers enterprise resource planning solutions, including project financials, production and site management, and payroll and accounting; project management solutions, such as project lifecycle management, project control and planning, and site quality and safety; and business services comprising statutory accounting and payroll services, as well as additional financial management expert services. It also provides documentation; accounting; training and consulting; customer support; implementation; and service contracts. The company serves construction, building services engineering, and real estate sectors. Admicom Oyj was incorporated in 2004 and is based in Jyväskylä, Finland.
+
+**Score:** 36
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Admicom Oyj has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 8.7%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- First North listing
+- Positive operating margin (14.1%)
+- Revenue growth (8.7%)
+- Conservative debt/equity
+- Business description available from profile data
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ADMCM.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #3 Advenica AB (ADVE)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
 **What the company does:** Advenica AB (publ) develops and sells security solutions for defense and authority, and business customers in Sweden, Finland, and internationally. The company offers data diodes, engine, services, and guards; ZoneGuard, a gateway for controlling two-way filtered information flow supporting third party control for enforcing digitally signed information policy; ZoneGuard Services; encryption systems; remote access devices, file security screeners; SecuriRAM, a self-erasing USB drive designed to transport a limited amount of information, file scanner kiosk; secure database replications; secure machine connections; and secure logging products and solutions. It serves defense, government, infrastructure, and industry sectors. Advenica AB (publ) was incorporated in 1993 and is headquartered in Malmö, Sweden.
 
-**Score:** 25
+**Score:** 36
 **Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Advenica AB has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 15.0%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
+- Positive operating margin (8.2%)
+- Revenue growth (15.0%)
+- Conservative debt/equity
+- Business description available from profile data
 
 ### Risks
 - None provided.
@@ -42,90 +135,111 @@
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ADVE.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #2 4C Group (4C)
+## #4 Detection Technology Oyj (DETEC)
 
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
 
-**What the company does:** 4C Group AB (publ) provides software solutions and expert services for organizational readiness, training, and crisis management worldwide. It offers Exonaut, a software platform that enables management of incidents, crises, risks, and compliance assurance; supports the maintenance and continuity of operations affected by disruptions and crises; and a software solution for military and civilian customers in exercise management and capability development. The company also provides software-related services, such as consultancy services, technical support, and IT continuity, and training and exercises, as well as risk, business continuity, and incident and crisis management. It serves defense, public, and private sectors. The company was founded in 2000 and is headquartered in Stockholm, Sweden.
+**What the company does:** Detection Technology Oyj engages in the provision of X-ray detector solutions for industrial, medical, and security applications in Finland and internationally. The company offers medical computed tomography (CT) detectors; security CT detectors; photon-counting detectors; flat-panel detectors; and line scan detectors, including linear detector arrays and detectors boards. It also provides myDT+ service portfolio comprising application testing, product commissioning, customer support, repair, failure analysis, extended warranty, warehousing, and training services. Its products are used in medical applications for computed tomography, dental, surgical, and veterinary imaging, as well as digital radiography; in security applications for Cabin and hold baggage, parcel and mail, cargo, container, vehicle, and person screening; and industrial applications comprising material sorting in the agriculture, forest, mining, and recycling industries, as well as production process control and quality inspection in the aerospace, automotive, battery, defense, food, pharmaceutical, renewable energy, oil, and gas industries. The company was incorporated in 1991 and is headquartered in Espoo, Finland.
 
-**Score:** 17
+**Score:** 36
 **Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Detection Technology Oyj has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 3/5 | Modest revenue growth of 2.4%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Live price available from Nasdaq Nordic
-- Strong intraday momentum (+10.1%)
-- High live turnover
+- Positive operating margin (6.4%)
+- Revenue growth (2.4%)
+- Conservative debt/equity
+- Business description available from profile data
 
 ### Risks
-- Negative operating margin
-- Long-term strategy penalty applied by the ranking model.
+- None provided.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (4C.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (DETEC.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #3 BeammWave B (BEAMMW B)
+## #5 Arlandastad Group (AGROUP)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** BeammWave AB (publ) provides single radio chips with fully integrated antennas in Sweden, Japan, Taiwan, and South Korea. The company builds a chip-based solution intended for next-generation 5G and 6G. Its products are used in various applications, including phones, fixed wireless CPE's, and base stations. BeammWave AB (publ) was founded in 2017 and is headquartered in Lund, Sweden.
+**What the company does:** Arlandastad Group AB (publ), together with its subsidiaries, operates as a real estate development company in Sweden. It operates through Property Improvement; Management of Real Estate; and Operational Activities segments. The company focuses on identifying strategic land areas and developing properties. It also provides property management, and training for dealers and general agents in the automotive industry. In addition, it conducts event operations; and operates an airport in Skavsta. The company was incorporated in 2005 and is headquartered in Arlandastad, Sweden.
 
-**Score:** 17
+**Score:** 28
 **Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative / needs more proof
+**Thesis:** Arlandastad Group is worth monitoring, but the long-term case needs more proof because the evidence is not strong enough yet.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 10.5%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Live price available from Nasdaq Nordic
-- Strong intraday momentum (+12.69%)
-- High live turnover
-
-### Risks
-- Negative operating margin
-- Long-term strategy penalty applied by the ranking model.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (BEAMMW-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #4 Botnia Gold (BOTX)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** Botnia Gold AB (publ), together with its subsidiaries, engages in the exploration of precious and base metals in Sweden. Its project portfolio includes gold and sulphide ore projects with one environmental permit for mining, four exploration permits, and two processing concessions in the Vindelgransele area in Sweden. The company was formerly known as Botnia Exploration Holding AB (publ) and changed its name to Botnia Gold AB (publ) in August 2025. Botnia Gold AB (publ) was founded in 2007 and is based in Vindelgransele, Sweden.
-
-**Score:** 17
-**Data quality:** partial
-
-### Reasons
-- Small market cap
-- First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
+- Positive operating margin (38.5%)
+- Revenue growth (10.5%)
+- Conservative debt/equity
+- Business description available from profile data
 
 ### Risks
 - Thin liquidity
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (BOTX.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (AGROUP.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #5 AAC Clyde Space (AAC)
+## #6 AAC Clyde Space (AAC)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
 **What the company does:** AAC Clyde Space AB (publ) provides small satellite technologies and services in Sweden, the United Kingdom, rest of Europe, the United States, Asia, and internationally. It offers command and data handling, cubesat batteries, power system, PCDU, communications, solar arrays, cubesat structure, payloads, attitude determination and control systems (ADCS), electrical power systems, laser and radio communications systems, lightweight structure solutions, payload solutions, propulsion systems, and smallsat technologies, as well as on-board data handling solutions. The company also provides space data as a service; data delivery; mission design, manufacturing, and integration of components services; and launch and ground services. In addition, it operates EPIC spacecraft platform. The company offers its products and services under AAC clyde space, omnisys, spacequest, hyperion, space Africa, and spacemertic brand names. It serves the government, businesses, and educational organizations. The company was formerly known as ÅAC Microtec AB (publ) and changed its name to AAC Clyde Space AB (publ) in November 2019. AAC Clyde Space AB (publ) was incorporated in 2005 and is headquartered in Uppsala, Sweden.
 
-**Score:** 15
+**Score:** 18
 **Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative / needs more proof
+**Thesis:** AAC Clyde Space is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 1/5 | Weak - profitability is not yet proven. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 10.4%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
+- Revenue growth (10.4%)
+- Conservative debt/equity
+- Business description available from profile data
 
 ### Risks
 - Negative operating margin
@@ -134,20 +248,35 @@
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (AAC.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #6 Acconeer (ACCON)
+## #7 Acconeer (ACCON)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
 **What the company does:** Acconeer AB (publ) provides mmWave radar solutions worldwide. It offers A121 radar sensors, which detect distance, speed, motion, and objects; XE125 module evaluation kits, including hardware and software; A111 and A121 radar sensors; XM123 presence and motion modules; and XM125 radar modules. The company also provides XM126 and XM122 radar modules with Bluetooth. Its products are for use in cargo detection, level measurement, presence detection, industry and automation, and automotive applications. Acconeer AB (publ) was incorporated in 2011 and is headquartered in Malmö, Sweden.
 
-**Score:** 15
+**Score:** 18
 **Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative / needs more proof
+**Thesis:** Acconeer is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 1/5 | Weak - profitability is not yet proven. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 13.2%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
+- Revenue growth (13.2%)
+- Conservative debt/equity
+- Business description available from profile data
 
 ### Risks
 - Negative operating margin
@@ -156,88 +285,72 @@
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ACCON.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #7 ALM Equity Pref (ALM PREF)
+## #8 Summa Defence Oyj (SUMMA)
 
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
 
-**What the company does:** ALM Equity AB (publ), through its subsidiaries, acquires and develops housing property assets in Sweden. It operates through Development, Contracting, and Management segments. The company offers land and property acquisition, zoning planning process, concept development, and sales services; and turnkey building and property contractor services comprising design, production, and delivery. It is also involved in the management, letting, and operation of properties. In addition, the company provides a platform with working methods that make it adaptable to different volumes and orders. ALM Equity AB (publ) was founded in 1997 and is headquartered in Stockholm, Sweden.
+**What the company does:** Summa Defence Oyj, a defense and security technology group, focuses on dual-use technologies related to security of supply, situational awareness, mobility, and defense in the civilian, security, and defense sectors. It offers aluminum and steel-hulled vessels, multipurpose machine and equipment solutions, watermaster multi-purpose machines, containers and modular spaces, drones, near-eye displays, and renewable energy solutions for industry, energy companies, and properties. The company was formerly known as Meriaura Group Oyj and changed its name to Summa Defence Oyj in June 2025. Summa Defence Oyj was incorporated in 2024 and is based in Helsinki, Finland.
 
-**Score:** 15
+**Score:** 18
 **Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative / needs more proof
+**Thesis:** Summa Defence Oyj is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 1/5 | Weak - profitability is not yet proven. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 3/5 | Modest revenue growth of 1.1%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
+- Revenue growth (1.1%)
+- Conservative debt/equity
+- Business description available from profile data
 
 ### Risks
 - Negative operating margin
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ALM-PREF.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (SUMMA.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #8 Bahnhof B (BAHN B)
+## #9 AcouSort (ACOU)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Bahnhof AB (publ) provides internet services to individuals and businesses in Sweden and internationally. It offers broadband, telephony, VPN and antivirus, TV and streaming, wireless office WiFi, WAN and WAN Lite, backbone and carrier, cloud, and colocation services; and data security services, including backup and recovery, and DDoS protection, as well as data center solutions. The company was founded in 1994 and is headquartered in Stockholm, Sweden. Bahnhof AB (publ) is a subsidiary of KN Telecom AB.
+**What the company does:** AcouSort AB (publ), a technology company, develops components and instruments used in the diagnostics, analytics, and cell therapy processing markets. It offers AcouTrap, a benchtop research instrument for sample preparation of cells, extracellular vesicles, bacteria, and viruses from various media; AcouPlasma, an module that enables in-line analysis of blood plasma from whole blood samples; AQC Module, an in-line optical analysis of particle suspensions for quality control or monitoring applications; and AcouWash, a benchtop research instrument for label-free separation of target cells from various samples. The company has collaboration agreement with global life science company to develop cell therapy and other elements of the future automated systems. AcouSort AB (publ) was founded in 2010 and is based in Lund, Sweden.
 
 **Score:** 10
 **Data quality:** partial
 
-### Reasons
-- First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
+### Long-Term Conviction
+**Bucket:** Speculative / needs more proof
+**Thesis:** AcouSort is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
 
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (BAHN-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #9 Nepa (NEPA)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** Nepa AB (publ) operates as a consumer research and analytics company in Sweden and internationally. The company provides marketing strategy, brand development, visual performance, media strategy, and campaign measurement solutions; and brand tracking, marketing mix modeling, and campaign evaluation solutions. It also operates its Consumer Science Platform. The company was founded in 2006 and is headquartered in Stockholm, Sweden.
-
-**Score:** 9
-**Data quality:** partial
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 1/5 | Weak - profitability is not yet proven. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 17.9%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Live price available from Nasdaq Nordic
-- Strong intraday momentum (+14.16%)
-- High live turnover
-
-### Risks
-- Thin liquidity
-- Negative operating margin
-- Long-term strategy penalty applied by the ranking model.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (NEPA.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #10 Bioextrax (BIOEX)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** Bioextrax AB (publ) develops and commercializes a bio-based extraction platform technology. The company harvests bioplastics (PHA) granules, organic hydrolyzed protein, keratin fibers, bio-oils, protein-rich by products, and amino acids, as well as microfibers from feathers. Bioextrax AB (publ) was incorporated in 2014 and is based in Lund, Sweden.
-
-**Score:** 7
-**Data quality:** partial
-
-### Reasons
-- Small market cap
-- First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
+- Revenue growth (17.9%)
+- Conservative debt/equity
+- Business description available from profile data
 
 ### Risks
 - Thin liquidity
@@ -245,4 +358,42 @@
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (BIOEX.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (ACOU.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #10 Adtraction Group (ADTR)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Adtraction Group AB provides advertising services in Europe. It develops and operates a platform, which connects advertisers with various partners, such as digital magazines, influencers, bloggers, forums, mobile apps, and price comparison sites. The company was founded in 2007 and is headquartered in Stockholm, Sweden.
+
+**Score:** 10
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative / needs more proof
+**Thesis:** Adtraction Group is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 1/5 | Weak - profitability is not yet proven. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 11.2%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- First North listing
+- Revenue growth (11.2%)
+- Conservative debt/equity
+- Business description available from profile data
+
+### Risks
+- Thin liquidity
+- Negative operating margin
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ADTR.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
