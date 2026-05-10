@@ -11,6 +11,7 @@ from investmentagent.models import (
     DeepDiveReport,
     Evidence,
     FinancialSnapshot,
+    ListingSegment,
     ScoreBreakdown,
     WatchlistItem,
 )
@@ -32,6 +33,7 @@ def render_watchlist_text(items: list[WatchlistItem]) -> str:
                     f"{company.country} | {company.exchange} | "
                     f"{_stringify(company.segment)}"
                 ),
+                f"Presentation: {_company_presentation(item)}",
                 f"Score: {item.score.total:g}",
                 f"Reasons: {_joined(item.score.reasons)}",
                 f"Risks: {_joined((*item.research.risks, *item.score.warnings))}",
@@ -169,6 +171,7 @@ def _watchlist_items_payload(items: list[WatchlistItem]) -> list[dict[str, Any]]
         {
             "rank": item.rank,
             "company": _company_payload(item.research.company),
+            "company_presentation": _company_presentation(item),
             "financials": _financials_payload(item.research.financials),
             "score": _score_payload(item.score),
             "risks": list(item.research.risks),
@@ -222,6 +225,73 @@ def _evidence_payload(evidence: Evidence) -> dict[str, str | None]:
 
 def _source_check_payload(check) -> dict[str, str]:
     return {"name": check.name, "status": check.status, "detail": check.detail}
+
+
+def _company_presentation(item: WatchlistItem) -> str:
+    company = item.research.company
+    financials = item.research.financials
+    country = _country_name(company.country)
+    segment = _segment_label(company.segment)
+
+    sector_part = f" {company.sector}" if company.sector else ""
+    base = (
+        f"{company.name} is a {country}-listed {segment}{sector_part} company "
+        f"on {company.exchange}."
+    )
+
+    facts = []
+    market_cap = _market_cap_phrase(company.market_cap_eur_m)
+    if market_cap is not None:
+        facts.append(f"Market cap is about {market_cap}")
+    revenue_growth = _percentage_phrase("revenue growth", financials.revenue_growth_pct)
+    if revenue_growth is not None:
+        facts.append(revenue_growth)
+    operating_margin = _percentage_phrase("operating margin", financials.operating_margin_pct)
+    if operating_margin is not None:
+        facts.append(operating_margin)
+    one_year_return = _percentage_phrase("one-year return", financials.one_year_return_pct)
+    if one_year_return is not None:
+        facts.append(one_year_return)
+
+    if not facts:
+        return base
+    return f"{base} {_join_sentence_facts(facts)}."
+
+
+def _country_name(country: str) -> str:
+    return {"SE": "Sweden", "FI": "Finland"}.get(country.upper(), country.upper())
+
+
+def _segment_label(segment) -> str:
+    if segment == ListingSegment.FIRST_NORTH:
+        return "First North"
+    if segment == ListingSegment.MAIN_MARKET:
+        return "main market"
+    if segment == ListingSegment.SPOTLIGHT:
+        return "Spotlight"
+    return "public market"
+
+
+def _market_cap_phrase(value: float | None) -> str | None:
+    if value is None:
+        return None
+    if abs(value) >= 100:
+        return f"EUR {value:.0f}m"
+    return f"EUR {value:.1f}m"
+
+
+def _percentage_phrase(label: str, value: float | None) -> str | None:
+    if value is None:
+        return None
+    return f"{label} is {value:.1f}%"
+
+
+def _join_sentence_facts(facts: list[str]) -> str:
+    if len(facts) == 1:
+        return facts[0]
+    if len(facts) == 2:
+        return f"{facts[0]} and {facts[1]}"
+    return f"{', '.join(facts[:-1])}, and {facts[-1]}"
 
 
 def _metadata_lines(metadata: dict[str, Any]) -> list[str]:

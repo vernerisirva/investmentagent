@@ -18,6 +18,7 @@ from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
     render_watchlist_json,
+    render_watchlist_report_json,
     render_watchlist_text,
 )
 from investmentagent.reports import build_deep_dive, build_watchlist
@@ -539,6 +540,19 @@ def test_render_watchlist_text_includes_rank_score_risks_and_links():
     assert "Not financial advice" in output
 
 
+def test_render_watchlist_text_includes_company_presentation():
+    items = build_watchlist(
+        FixtureResearchProvider(), countries=("SE", "FI"), limit=1, include_first_north=True
+    )
+
+    output = render_watchlist_text(items)
+
+    assert "Presentation:" in output
+    assert "listed" in output
+    assert "Score:" in output
+    assert output.index("Presentation:") < output.index("Score:")
+
+
 def test_render_watchlist_json_is_machine_readable():
     items = build_watchlist(FixtureResearchProvider(), countries=("SE", "FI"), limit=1, include_first_north=True)
 
@@ -547,6 +561,113 @@ def test_render_watchlist_json_is_machine_readable():
     assert payload["disclaimer"].startswith("Research triage")
     assert payload["items"][0]["rank"] == 1
     assert "evidence" in payload["items"][0]
+
+
+def test_render_watchlist_json_includes_company_presentation():
+    items = build_watchlist(
+        FixtureResearchProvider(), countries=("SE", "FI"), limit=1, include_first_north=True
+    )
+
+    payload = json.loads(render_watchlist_json(items))
+
+    presentation = payload["items"][0]["company_presentation"]
+    assert presentation
+    assert "None" not in presentation
+    assert payload["items"][0]["company"]["name"].split()[0] in presentation
+
+
+def test_render_watchlist_report_json_includes_company_presentation():
+    items = build_watchlist(
+        FixtureResearchProvider(), countries=("SE", "FI"), limit=1, include_first_north=True
+    )
+
+    payload = json.loads(
+        render_watchlist_report_json(
+            items,
+            metadata={"provider": "fixture"},
+            source_checks=[],
+        )
+    )
+
+    assert payload["items"][0]["company_presentation"]
+
+
+def test_render_watchlist_presentation_omits_missing_values():
+    company = Company(
+        name="Sparse AB",
+        ticker="SPRS",
+        country="SE",
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+            data_quality=DataQuality.THIN,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=0.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=0.0,
+            total=0.0,
+        ),
+    )
+
+    payload = json.loads(render_watchlist_json([item]))
+    presentation = payload["items"][0]["company_presentation"]
+
+    assert presentation == (
+        "Sparse AB is a Sweden-listed First North company on "
+        "Nasdaq First North Growth Market Sweden."
+    )
+    assert "None" not in presentation
+    assert "unknown" not in presentation.lower()
+
+
+def test_render_watchlist_presentation_includes_enriched_financial_context():
+    company = Company(
+        name="Karnov Group AB",
+        ticker="KAR",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+        sector="Industrials",
+        market_cap_eur_m=702.42,
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(
+                revenue_growth_pct=24.64,
+                operating_margin_pct=36.76,
+                one_year_return_pct=-16.473,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=0.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=0.0,
+            total=0.0,
+        ),
+    )
+
+    payload = json.loads(render_watchlist_json([item]))
+    presentation = payload["items"][0]["company_presentation"]
+
+    assert presentation == (
+        "Karnov Group AB is a Sweden-listed main market Industrials company on "
+        "Nasdaq Stockholm. Market cap is about EUR 702m, revenue growth is 24.6%, "
+        "operating margin is 36.8%, and one-year return is -16.5%."
+    )
 
 
 def test_render_deep_dive_json_is_machine_readable():
