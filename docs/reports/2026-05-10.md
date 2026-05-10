@@ -29,7 +29,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Sprint Bioscience is a Sweden-listed First North Health Care company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 42.1m, revenue growth is 58.2%, and operating margin is 54.9%.
 Score: 33
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+8.71%); High live turnover
-Risks: Sparse live-source data; 1 stated risk(s); partial data quality
+Risks: None provided.
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -40,7 +40,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: 4C Group is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 28.4m, revenue growth is 6.2%, and operating margin is -4.8%.
 Score: 27
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+10.1%); High live turnover
-Risks: Sparse live-source data; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -51,7 +51,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: BeammWave B is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 63.9m and operating margin is -9.6%.
 Score: 27
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+12.69%); High live turnover
-Risks: Sparse live-source data; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -62,7 +62,7 @@ SE | Nasdaq Stockholm | main_market
 Presentation: Karnell Group B is a Sweden-listed main market Industrials company on Nasdaq Stockholm. Market cap is about EUR 427m, revenue growth is 32.1%, and operating margin is 8.3%.
 Score: 27
 Reasons: small market cap; Live price available from Nasdaq Nordic; Strong intraday momentum (+13.63%); High live turnover
-Risks: Sparse live-source data; 1 stated risk(s); partial data quality
+Risks: None provided.
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -73,7 +73,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Advenica AB is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 101m, revenue growth is 15.0%, and operating margin is 8.2%.
 Score: 25
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; High live turnover
-Risks: Sparse live-source data; 1 stated risk(s); partial data quality
+Risks: None provided.
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -84,7 +84,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Unlimited Travel Group is a Sweden-listed First North Consumer Discretionary company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 26.8m, revenue growth is 36.9%, and operating margin is 2.1%.
 Score: 25
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+6.51%); High live turnover
-Risks: Sparse live-source data; thin liquidity; 1 stated risk(s); partial data quality
+Risks:; thin liquidity
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -95,7 +95,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Unibap Space Solutions is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 9.5m, revenue growth is 0.0%, and operating margin is -2.0%.
 Score: 23
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+7.1%); High live turnover
-Risks: Sparse live-source data; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -106,7 +106,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: AFRICA ENERGY CORP. is a Sweden-listed First North Energy company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 62.5m.
 Score: 21
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+6.09%); Moderate live turnover
-Risks: Sparse live-source data; thin liquidity; 1 stated risk(s); partial data quality
+Risks:; thin liquidity
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -117,7 +117,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Nepa is a Sweden-listed First North Industrials company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 15.5m, revenue growth is -5.5%, and operating margin is -15.3%.
 Score: 19
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+14.16%); High live turnover
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -128,7 +128,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Ortoma B is a Sweden-listed First North Health Care company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 39.5m and operating margin is -29.7%.
 Score: 19
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+6.22%); Moderate live turnover
-Risks: Sparse live-source data; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -139,7 +139,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Modus Therapeutics Holding is a Sweden-listed First North Health Care company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 7.9m.
 Score: 18
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+15.68%); High live turnover
-Risks: Sparse live-source data; Speculative low-price share; thin liquidity; 2 stated risk(s); partial data quality; balanced strategy adjustment applied
+Risks:; Speculative low-price share; thin liquidity; balanced strategy adjustment applied
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -150,7 +150,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Refine Group is a Sweden-listed First North Consumer Discretionary company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 6.3m, revenue growth is 49.5%, and operating margin is -2.1%.
 Score: 16
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+29.31%); High live turnover
-Risks: Sparse live-source data; Speculative low-price share; negative operating margin; 2 stated risk(s); partial data quality; balanced strategy adjustment applied
+Risks:; Speculative low-price share; negative operating margin; balanced strategy adjustment applied
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -161,7 +161,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: AAC Clyde Space is a Sweden-listed First North Telecommunications company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 83.5m, revenue growth is 10.4%, and operating margin is -15.6%.
 Score: 15
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; High live turnover
-Risks: Sparse live-source data; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -172,7 +172,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Acconeer is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 125m, revenue growth is 13.2%, and operating margin is -34.8%.
 Score: 15
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; High live turnover
-Risks: Sparse live-source data; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -183,7 +183,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Corline Biomedical is a Sweden-listed First North Health Care company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 44.8m, revenue growth is 1.6%, and operating margin is -1.9%.
 Score: 15
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+12.17%); Moderate live turnover
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -194,7 +194,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: GRANGEX is a Sweden-listed First North Basic Materials company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 92.6m, revenue growth is 7.4%, and operating margin is -3.7%.
 Score: 15
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+5.28%); High live turnover
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -205,7 +205,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: SeaTwirl is a Sweden-listed First North Energy company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 19.1m and operating margin is -708.1%.
 Score: 15
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+10.76%); Moderate live turnover
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -216,7 +216,7 @@ SE | Nasdaq Stockholm | main_market
 Presentation: Silex Microsystems is a Sweden-listed main market Technology company on Nasdaq Stockholm. Market cap is about EUR 2740m.
 Score: 12
 Reasons: Live price available from Nasdaq Nordic; Strong intraday momentum (+24.6%); High live turnover
-Risks: Sparse live-source data; 1 stated risk(s); partial data quality
+Risks: None provided.
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -227,7 +227,7 @@ SE | Nasdaq Stockholm | main_market
 Presentation: Sinch is a Sweden-listed main market Technology company on Nasdaq Stockholm. Market cap is about EUR 2788m, revenue growth is 10.8%, and operating margin is 0.8%.
 Score: 12
 Reasons: Live price available from Nasdaq Nordic; Strong intraday momentum (+10.91%); High live turnover
-Risks: Sparse live-source data; 1 stated risk(s); partial data quality
+Risks: None provided.
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -238,7 +238,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: 2cureX is a Sweden-listed First North Health Care company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 4.4m and operating margin is -330.8%.
 Score: 11
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+8.33%); Moderate live turnover
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -249,7 +249,7 @@ FI | Nasdaq First North Growth Market Finland | first_north
 Presentation: Aiforia Technologies Oyj is a Finland-listed First North Health Care company on Nasdaq First North Growth Market Finland. Market cap is about EUR 69.6m, revenue growth is 29.4%, and operating margin is -3.6%.
 Score: 11
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+12.93%)
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -260,7 +260,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Intervacc is a Sweden-listed First North Health Care company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 42.5m, revenue growth is 30.8%, and operating margin is -4.0%.
 Score: 11
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+5.41%); Moderate live turnover
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -271,7 +271,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: Litium is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden. Market cap is about EUR 23.4m, revenue growth is 7.1%, and operating margin is -4.1%.
 Score: 11
 Reasons: small market cap; First North listing; Live price available from Nasdaq Nordic; Positive intraday momentum (+9%); Moderate live turnover
-Risks: Sparse live-source data; thin liquidity; negative operating margin; 1 stated risk(s); partial data quality
+Risks:; thin liquidity; negative operating margin
 Data quality: partial
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -282,7 +282,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: K33 is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden.
 Score: 4
 Reasons: First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+11.26%); High live turnover
-Risks: Sparse live-source data; Speculative low-price share; 2 stated risk(s); thin data quality; balanced strategy adjustment applied
+Risks:; Speculative low-price share; balanced strategy adjustment applied
 Data quality: thin
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
@@ -292,7 +292,7 @@ SE | Nasdaq First North Growth Market Sweden | first_north
 Presentation: XMReality is a Sweden-listed First North Technology company on Nasdaq First North Growth Market Sweden.
 Score: 4
 Reasons: First North listing; Live price available from Nasdaq Nordic; Strong intraday momentum (+18.13%); High live turnover
-Risks: Sparse live-source data; Speculative low-price share; 2 stated risk(s); thin data quality; balanced strategy adjustment applied
+Risks:; Speculative low-price share; balanced strategy adjustment applied
 Data quality: thin
 Evidence:
 - Nasdaq Nordic listing source: https://api.nasdaq.com/api/nordic/screener/shares (nasdaq)
