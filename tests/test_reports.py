@@ -51,6 +51,9 @@ def make_research(
     net_cash_eur_m: float | None = 5.0,
     price: float | None = None,
     currency: str | None = None,
+    catalysts=(),
+    risks=(),
+    segment: ListingSegment = ListingSegment.MAIN_MARKET,
     data_quality: DataQuality = DataQuality.GOOD,
     evidence=(),
 ) -> CompanyResearch:
@@ -59,7 +62,7 @@ def make_research(
         ticker=ticker,
         country="SE",
         exchange="Nasdaq Stockholm",
-        segment=ListingSegment.MAIN_MARKET,
+        segment=segment,
         sector="Industrials",
         market_cap_eur_m=200,
     )
@@ -74,6 +77,8 @@ def make_research(
     return CompanyResearch(
         company=company,
         financials=financials,
+        catalysts=catalysts,
+        risks=risks,
         evidence=evidence,
         data_quality=data_quality,
     )
@@ -129,6 +134,98 @@ def test_build_watchlist_filters_market_cap_and_sector():
     )
 
     assert [item.research.company.ticker for item in items] == ["REMEDY"]
+
+
+def test_balanced_strategy_ranks_extreme_spikes_below_orderly_candidates():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "SPIKE",
+                catalysts=("Strong intraday momentum (+155.65%)", "High live turnover"),
+                risks=("Sparse live-source data", "Extreme intraday spike"),
+                data_quality=DataQuality.THIN,
+            ),
+            make_research(
+                "ORDERLY",
+                catalysts=("Positive intraday momentum (+6.25%)", "High live turnover"),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.THIN,
+            ),
+        )
+    )
+
+    items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="balanced"
+    )
+
+    assert [item.research.company.ticker for item in items] == ["ORDERLY", "SPIKE"]
+
+
+def test_momentum_strategy_can_surface_extreme_spikes():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "SPIKE",
+                catalysts=("Strong intraday momentum (+155.65%)", "High live turnover"),
+                risks=("Sparse live-source data", "Extreme intraday spike"),
+                data_quality=DataQuality.THIN,
+            ),
+            make_research(
+                "ORDERLY",
+                catalysts=("Positive intraday momentum (+6.25%)", "High live turnover"),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.THIN,
+            ),
+        )
+    )
+
+    items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="momentum"
+    )
+
+    assert items[0].research.company.ticker == "SPIKE"
+
+
+def test_long_term_strategy_discounts_intraday_trading_setup():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "TRADER",
+                pe_ratio=None,
+                price_to_book=None,
+                net_cash_eur_m=None,
+                catalysts=("Strong intraday momentum (+12.93%)", "High live turnover"),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.THIN,
+            ),
+            make_research(
+                "VALUE",
+                pe_ratio=9.0,
+                price_to_book=0.9,
+                net_cash_eur_m=20.0,
+                catalysts=("Moderate live turnover",),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.PARTIAL,
+            ),
+        )
+    )
+
+    items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="long-term"
+    )
+
+    assert items[0].research.company.ticker == "VALUE"
+
+
+def test_build_watchlist_rejects_unknown_strategy():
+    with pytest.raises(ValueError, match="strategy must be one of"):
+        build_watchlist(
+            FixtureResearchProvider(),
+            countries=("SE", "FI"),
+            limit=1,
+            include_first_north=True,
+            strategy="bad",
+        )
 
 
 def test_build_deep_dive_includes_manual_checks_and_thesis():
