@@ -422,10 +422,9 @@ def _humanize_risk(item: str) -> str:
     if lower == "partial data quality":
         return ""
     if lower == "1 stated risk(s)":
-        return "One risk flag was found in the source data."
+        return ""
     if lower.endswith(" stated risk(s)"):
-        count = lower.split(" ", 1)[0]
-        return f"{count} risk flags were found in the source data."
+        return ""
     if lower.endswith("strategy adjustment applied"):
         strategy = lower.split(" ", 1)[0]
         return f"{strategy.capitalize()} strategy penalty applied by the ranking model."
