@@ -167,6 +167,25 @@ def test_watchlist_reports_live_source_errors(monkeypatch):
     assert "nasdaq nordic live data: error - network unavailable" in result.output
 
 
+def test_deep_dive_reports_live_source_errors(monkeypatch):
+    class FailingLiveProvider:
+        def source_checks(self):
+            return [
+                SourceCheck(
+                    name="nasdaq nordic live data",
+                    status="error",
+                    detail="network unavailable",
+                )
+            ]
+
+    monkeypatch.setattr(cli, "create_provider", lambda name: FailingLiveProvider())
+
+    result = runner.invoke(app, ["deep-dive", "FREEM", "--provider", "live"])
+
+    assert result.exit_code != 0
+    assert "nasdaq nordic live data: error - network unavailable" in result.output
+
+
 def test_sources_test_command_reports_fixture_status():
     result = runner.invoke(app, ["sources", "test"])
 

@@ -99,6 +99,8 @@ def deep_dive(
 ) -> None:
     normalized_output = _normalize_output_option(output)
     provider = _provider_from_option(provider_name)
+    if provider_name.strip().lower() == "live":
+        _raise_for_source_errors(provider)
     try:
         report = build_deep_dive(provider, ticker)
     except LookupError as exc:
