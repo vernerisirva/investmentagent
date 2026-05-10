@@ -171,6 +171,51 @@ def test_finnhub_provider_parses_profile_and_metrics_with_token_safe_evidence():
     assert any("secret-token" in url for url in requested_urls)
 
 
+def test_finnhub_provider_returns_none_for_malformed_or_missing_data():
+    provider = FinnhubFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url: json.dumps({}),
+    )
+
+    assert provider.get_fundamentals(make_company()) is None
+
+
+def test_finnhub_source_check_warns_without_leaking_token_when_all_lookups_fail():
+    def fetcher(url: str) -> str:
+        raise RuntimeError(f"failed url {url}")
+
+    provider = FinnhubFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert check.name == "finnhub fundamentals"
+    assert check.status == "warning"
+    assert "no successful" in check.detail.lower()
+    assert "secret-token" not in check.detail
+    assert "token=" not in check.detail
+
+
+def test_finnhub_source_check_ok_when_lookup_succeeds():
+    payload = json.loads(finnhub_payload())
+
+    def fetcher(url: str) -> str:
+        if "/stock/profile2" in url:
+            return json.dumps(payload["profile"])
+        return json.dumps(payload["metrics"])
+
+    provider = FinnhubFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=fetcher,
+    )
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert check.status == "ok"
+    assert "1/1 Finnhub lookups parsed" in check.detail
+
+
 def test_yahoo_provider_leaves_unknown_currency_money_fields_empty():
     def fetcher(url: str) -> str:
         return json.dumps(

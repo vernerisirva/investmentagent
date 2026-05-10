@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from typing import Any
@@ -124,7 +125,7 @@ class FinnhubFundamentalsProvider:
                     fallback_currency=company.currency,
                 )
             except Exception as exc:
-                self.last_error = str(exc)
+                self.last_error = _token_safe_error(exc)
                 continue
             if snapshot is not None:
                 self.successful_lookups += 1
@@ -476,6 +477,11 @@ def _debt_to_equity_ratio(value: float | None) -> float | None:
     if value is None:
         return None
     return round(value / 100, 4)
+
+
+def _token_safe_error(exc: Exception) -> str:
+    message = str(exc)
+    return re.sub(r"token=[^&\s]+", "token <redacted>", message)
 
 
 def _has_meaningful_fields(
