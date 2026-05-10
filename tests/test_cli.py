@@ -121,7 +121,7 @@ def test_watchlist_accepts_fundamentals_option():
     assert "#1" in result.output
 
 
-def test_watchlist_wraps_live_provider_with_free_fundamentals(monkeypatch):
+def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
     wrapped = {}
 
     class LiveProvider:
@@ -150,7 +150,7 @@ def test_watchlist_wraps_live_provider_with_free_fundamentals(monkeypatch):
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", FundamentalsProvider, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
 
-    result = runner.invoke(app, ["watchlist", "--provider", "live", "--fundamentals", "free"])
+    result = runner.invoke(app, ["watchlist", "--provider", "live"])
 
     assert result.exit_code == 0
     assert isinstance(wrapped["base_provider"], LiveProvider)
@@ -178,7 +178,7 @@ def test_watchlist_rejects_invalid_fundamentals_before_provider_work(monkeypatch
     result = runner.invoke(app, ["watchlist", "--provider", "live", "--fundamentals", "bad"])
 
     assert result.exit_code != 0
-    assert "fundamentals must be 'off' or 'free'" in result.output
+    assert "fundamentals must be 'auto', 'off', or 'free'" in result.output
 
 
 def test_watchlist_saves_strategy_metadata():
@@ -212,6 +212,50 @@ def test_watchlist_saves_fundamentals_metadata():
                 "fixture",
                 "--fundamentals",
                 "off",
+                "--limit",
+                "1",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert payload["metadata"]["fundamentals"] == "off"
+
+
+def test_watchlist_saves_effective_fixture_fundamentals_metadata_by_default():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--provider",
+                "fixture",
+                "--limit",
+                "1",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert payload["metadata"]["fundamentals"] == "off"
+
+
+def test_watchlist_saves_effective_fixture_fundamentals_metadata_for_explicit_free():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--provider",
+                "fixture",
+                "--fundamentals",
+                "free",
                 "--limit",
                 "1",
                 "--save",

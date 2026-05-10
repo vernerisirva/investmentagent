@@ -52,9 +52,17 @@ def _normalize_output_option(output: str) -> str:
 
 def _normalize_fundamentals_option(value: str) -> str:
     normalized = value.strip().lower()
-    if normalized not in {"off", "free"}:
-        raise typer.BadParameter("fundamentals must be 'off' or 'free'")
+    if normalized not in {"auto", "off", "free"}:
+        raise typer.BadParameter("fundamentals must be 'auto', 'off', or 'free'")
     return normalized
+
+
+def _effective_fundamentals_mode(normalized_mode: str, normalized_provider_name: str) -> str:
+    if normalized_provider_name != "live":
+        return "off"
+    if normalized_mode == "auto":
+        return "free"
+    return normalized_mode
 
 
 def _raise_for_source_errors(provider) -> None:
@@ -94,9 +102,9 @@ def watchlist(
         help="Watchlist strategy: balanced, long-term, trading, momentum, or discovery.",
     ),
     fundamentals: str = typer.Option(
-        "free",
+        "auto",
         "--fundamentals",
-        help="Fundamentals enrichment mode: off or free.",
+        help="Fundamentals enrichment mode: auto, off, or free.",
     ),
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     verbose: bool = typer.Option(False, "--verbose"),
@@ -114,9 +122,12 @@ def watchlist(
     countries = _parse_countries(country)
     provider = _provider_from_option(provider_name)
     normalized_provider_name = provider_name.strip().lower()
+    effective_fundamentals = _effective_fundamentals_mode(
+        normalized_fundamentals, normalized_provider_name
+    )
     if normalized_provider_name == "live":
         _raise_for_source_errors(provider)
-        if normalized_fundamentals == "free":
+        if effective_fundamentals == "free":
             provider = EnrichedResearchProvider(provider, YahooFundamentalsProvider())
     items = build_watchlist(
         provider,
@@ -136,7 +147,7 @@ def watchlist(
             {
                 "generated_at": datetime.now(timezone.utc).isoformat(),
                 "provider": normalized_provider_name,
-                "fundamentals": normalized_fundamentals,
+                "fundamentals": effective_fundamentals,
                 "countries": list(countries),
                 "limit": limit,
                 "include_first_north": include_first_north,
