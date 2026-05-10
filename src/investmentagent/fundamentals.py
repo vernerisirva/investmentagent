@@ -125,7 +125,7 @@ class FinnhubFundamentalsProvider:
                     fallback_currency=company.currency,
                 )
             except Exception as exc:
-                self.last_error = _token_safe_error(exc)
+                self.last_error = _token_safe_error(exc, self.api_key)
                 continue
             if snapshot is not None:
                 self.successful_lookups += 1
@@ -479,9 +479,12 @@ def _debt_to_equity_ratio(value: float | None) -> float | None:
     return round(value / 100, 4)
 
 
-def _token_safe_error(exc: Exception) -> str:
+def _token_safe_error(exc: Exception, token: str) -> str:
     message = str(exc)
-    return re.sub(r"token=[^&\s]+", "token <redacted>", message)
+    message = re.sub(r"token=[^&\s]+", "token <redacted>", message)
+    if token:
+        message = message.replace(token, "<redacted>")
+    return message
 
 
 def _has_meaningful_fields(

@@ -196,6 +196,19 @@ def test_finnhub_source_check_warns_without_leaking_token_when_all_lookups_fail(
     assert "token=" not in check.detail
 
 
+def test_finnhub_source_check_redacts_raw_token_in_errors():
+    def fetcher(url: str) -> str:
+        raise RuntimeError("direct secret-token leak")
+
+    provider = FinnhubFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert "secret-token" not in check.detail
+    assert "<redacted>" in check.detail
+
+
 def test_finnhub_source_check_ok_when_lookup_succeeds():
     payload = json.loads(finnhub_payload())
 
