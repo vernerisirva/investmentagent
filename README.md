@@ -59,12 +59,17 @@ Setup:
 2. Enable GitHub Pages: Settings -> Pages -> Build and deployment -> Deploy from a branch -> branch `main`, folder `/docs`.
 3. Run the workflow manually once from Actions -> Daily public watchlist -> Run workflow, or wait for the weekday schedule.
 
-The workflow runs at 08:00 Europe/Helsinki on weekdays, generates a Finimpulse-enriched live watchlist, and writes public Markdown reports under `docs/reports/`.
+The workflow runs at 08:00 Europe/Helsinki on weekdays and writes public Markdown reports under `docs/reports/`. It publishes two top-10 lists:
+
+- Trading ideas, generated with `--strategy trading`.
+- Long-term investment ideas, generated with `--strategy long-term`.
 
 Public pages:
 
 - Latest landing page: `https://vernerisirva.github.io/investmentagent/`
-- Latest report: `https://vernerisirva.github.io/investmentagent/reports/latest.html`
-- Dated reports: `https://vernerisirva.github.io/investmentagent/reports/YYYY-MM-DD.html`
+- Latest trading ideas: `https://vernerisirva.github.io/investmentagent/reports/trading/latest.html`
+- Latest long-term ideas: `https://vernerisirva.github.io/investmentagent/reports/long-term/latest.html`
+- Dated trading ideas: `https://vernerisirva.github.io/investmentagent/reports/trading/YYYY-MM-DD.html`
+- Dated long-term ideas: `https://vernerisirva.github.io/investmentagent/reports/long-term/YYYY-MM-DD.html`
 
 Reports are research triage only. They are not financial advice.

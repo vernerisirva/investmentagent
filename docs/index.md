@@ -1,9 +1,10 @@
-# InvestmentAgent Daily Watchlist
+# InvestmentAgent Daily Ideas
 
-Latest report: [2026-05-10](reports/2026-05-10.html)
+## Today's Reports
 
-Latest generated copy: [reports/latest.html](reports/latest.html)
+- [Top 10 Trading Ideas](reports/trading/latest.html)
+- [Top 10 Long-Term Investment Ideas](reports/long-term/latest.html)
 
-Generated: 2026-05-10 20:47 EEST
+Reports will update after the next scheduled or manually started publishing workflow run.
 
 Reports are research triage only. Not financial advice.
