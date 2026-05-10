@@ -431,10 +431,21 @@ def _parse_finimpulse_search_payload(
 ) -> FundamentalsSnapshot | None:
     result = _dict_value(json.loads(payload), "result")
     items = result.get("items")
-    if not isinstance(items, list) or not items or not isinstance(items[0], dict):
+    if not isinstance(items, list) or not items:
         return None
 
-    item = items[0]
+    item = next(
+        (
+            candidate
+            for candidate in items
+            if isinstance(candidate, dict)
+            and str(candidate.get("symbol") or "").upper() == symbol.upper()
+        ),
+        None,
+    )
+    if item is None:
+        return None
+
     currency = str(item.get("currency") or fallback_currency or "").upper()
     fx_rate = _EUR_RATES.get(currency)
     market_cap_eur_m = _eur_m(_number(item, "amount"), fx_rate)

@@ -318,6 +318,29 @@ def test_finimpulse_provider_returns_none_for_empty_search_results():
     assert provider.get_fundamentals(make_company()) is None
 
 
+def test_finimpulse_provider_ignores_non_matching_search_results():
+    def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
+        return json.dumps(
+            {
+                "status_code": 20000,
+                "result": {
+                    "items": [
+                        {
+                            "symbol": "AAPL",
+                            "currency": "USD",
+                            "amount": 4_000_000_000_000,
+                            "revenue_growth": 0.1,
+                        }
+                    ]
+                },
+            }
+        )
+
+    provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+
+    assert provider.get_fundamentals(make_company()) is None
+
+
 def test_finimpulse_source_check_warns_without_leaking_token_when_lookups_fail():
     def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
         raise RuntimeError(f"failed Authorization: {headers['Authorization']}")
