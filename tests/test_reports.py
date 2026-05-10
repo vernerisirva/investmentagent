@@ -217,6 +217,74 @@ def test_long_term_strategy_discounts_intraday_trading_setup():
     assert items[0].research.company.ticker == "VALUE"
 
 
+def test_trading_strategy_boosts_strong_momentum_and_turnover():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "FAST",
+                pe_ratio=None,
+                price_to_book=None,
+                net_cash_eur_m=None,
+                catalysts=("Strong intraday momentum (+12.93%)", "High live turnover"),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.THIN,
+            ),
+            make_research(
+                "SLOW",
+                pe_ratio=None,
+                price_to_book=None,
+                net_cash_eur_m=None,
+                catalysts=("High live turnover",),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.THIN,
+            ),
+        )
+    )
+
+    items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="trading"
+    )
+
+    assert items[0].research.company.ticker == "FAST"
+    assert items[0].score.catalyst == 31.0
+    assert items[0].score.total == 29.0
+    assert "trading strategy adjustment applied" in items[0].score.reasons
+
+
+def test_discovery_strategy_boosts_first_north_and_penalizes_spikes():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "MAIN",
+                catalysts=("Moderate live turnover",),
+                segment=ListingSegment.MAIN_MARKET,
+            ),
+            make_research(
+                "FIRST",
+                catalysts=("Moderate live turnover",),
+                segment=ListingSegment.FIRST_NORTH,
+            ),
+            make_research(
+                "SPIKE",
+                catalysts=("Strong intraday momentum (+155.65%)",),
+                risks=("Extreme intraday spike", "Missing live turnover"),
+                segment=ListingSegment.FIRST_NORTH,
+            ),
+        )
+    )
+
+    items = build_watchlist(
+        provider, countries=("SE",), limit=3, include_first_north=True, strategy="discovery"
+    )
+
+    assert [item.research.company.ticker for item in items] == ["FIRST", "MAIN", "SPIKE"]
+    assert items[0].score.catalyst == 8.0
+    assert items[0].score.total == 78.0
+    assert "discovery strategy adjustment applied" in items[0].score.reasons
+    assert items[2].score.risk_penalty == 46.0
+    assert "discovery strategy adjustment applied" in items[2].score.warnings
+
+
 def test_build_watchlist_rejects_unknown_strategy():
     with pytest.raises(ValueError, match="strategy must be one of"):
         build_watchlist(

@@ -65,64 +65,80 @@ def build_watchlist(
 
 def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakdown:
     score = score_research(research)
-    adjustment = _strategy_adjustment(research, strategy)
+    positive_adjustment, negative_adjustment = _strategy_adjustments(research, strategy)
+    catalyst = round(score.catalyst + positive_adjustment, 2)
+    risk_penalty = round(score.risk_penalty + negative_adjustment, 2)
+    total = (
+        score.value
+        + score.discovery
+        + catalyst
+        - risk_penalty
+        - score.data_quality_penalty
+    )
+    reasons = score.reasons
+    warnings = score.warnings
+    if positive_adjustment:
+        reasons = (*reasons, f"{strategy} strategy adjustment applied")
+    if negative_adjustment:
+        warnings = (*warnings, f"{strategy} strategy adjustment applied")
     return ScoreBreakdown(
         value=score.value,
         discovery=score.discovery,
-        catalyst=score.catalyst,
-        risk_penalty=score.risk_penalty,
+        catalyst=catalyst,
+        risk_penalty=risk_penalty,
         data_quality_penalty=score.data_quality_penalty,
-        total=round(score.total + adjustment, 2),
-        reasons=score.reasons,
-        warnings=score.warnings,
+        total=round(total, 2),
+        reasons=reasons,
+        warnings=warnings,
     )
 
 
-def _strategy_adjustment(research: CompanyResearch, strategy: str) -> float:
+def _strategy_adjustments(research: CompanyResearch, strategy: str) -> tuple[float, float]:
     if strategy == "momentum":
-        return 0.0
+        return 0.0, 0.0
 
     catalysts = tuple(item.lower() for item in research.catalysts)
     risks = tuple(item.lower() for item in research.risks)
     all_signals = catalysts + risks
 
-    adjustment = 0.0
+    positive_adjustment = 0.0
+    negative_adjustment = 0.0
     if _has_signal(all_signals, "Extreme intraday spike"):
-        adjustment -= 18.0
+        negative_adjustment += 18.0
     if _has_signal(all_signals, "Missing live turnover"):
-        adjustment -= 12.0
+        negative_adjustment += 12.0
     if _has_signal(all_signals, "Low live turnover"):
-        adjustment -= 10.0
+        negative_adjustment += 10.0
     if _has_signal(all_signals, "Speculative low-price share"):
-        adjustment -= 8.0
+        negative_adjustment += 8.0
 
     financials = research.financials
     if strategy == "long-term":
         if _has_signal(catalysts, "intraday momentum"):
-            adjustment -= 10.0
+            negative_adjustment += 10.0
         if financials.pe_ratio is not None and financials.pe_ratio <= 12:
-            adjustment += 6.0
+            positive_adjustment += 6.0
         if financials.price_to_book is not None and financials.price_to_book <= 1.2:
-            adjustment += 4.0
+            positive_adjustment += 4.0
         if financials.net_cash_eur_m is not None and financials.net_cash_eur_m > 0:
-            adjustment += 4.0
+            positive_adjustment += 4.0
     elif strategy == "trading":
         if _has_signal(catalysts, "High live turnover"):
-            adjustment += 6.0
+            positive_adjustment += 6.0
         if _has_signal(catalysts, "Moderate live turnover"):
-            adjustment += 3.0
+            positive_adjustment += 3.0
         if _has_signal(catalysts, "Strong intraday momentum"):
-            adjustment += 5.0
+            positive_adjustment += 5.0
         if _has_signal(all_signals, "Extreme intraday spike"):
-            adjustment -= 8.0
+            negative_adjustment += 8.0
     elif strategy == "discovery":
         if research.company.segment == ListingSegment.FIRST_NORTH:
-            adjustment += 4.0
+            positive_adjustment += 4.0
         if _has_signal(all_signals, "Extreme intraday spike") or _has_signal(
             all_signals, "Missing live turnover"
         ):
-            adjustment -= 10.0
-    return adjustment
+            negative_adjustment += 10.0
+    return positive_adjustment, negative_adjustment
 
 
 def _has_signal(signals: tuple[str, ...], needle: str) -> bool:
