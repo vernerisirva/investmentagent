@@ -46,7 +46,7 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
 
     catalyst = min(len(research.catalysts) * 8.0, 24.0)
     if catalyst:
-        reasons.append(f"{len(research.catalysts)} catalyst(s)")
+        reasons.extend(research.catalysts[:3])
 
     risk_penalty = 0.0
     if (

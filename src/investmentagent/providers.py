@@ -137,6 +137,7 @@ class LiveNasdaqNordicProvider:
         self.source_url = source_url
         self._fetcher = fetcher or _default_fetcher
         self._companies: list[Company] | None = None
+        self._market_rows: dict[str, dict] = {}
         self._last_error: str | None = None
 
     def list_companies(
@@ -154,10 +155,16 @@ class LiveNasdaqNordicProvider:
         normalized = ticker.strip().upper()
         for company in self._load_companies():
             if company.ticker == normalized:
+                market_row = self._market_rows.get(company.ticker, {})
                 return CompanyResearch(
                     company=company,
-                    financials=FinancialSnapshot(data_quality=DataQuality.THIN),
-                    risks=("Sparse live-source data",),
+                    financials=FinancialSnapshot(
+                        price=market_row.get("price"),
+                        currency=market_row.get("currency"),
+                        data_quality=DataQuality.THIN,
+                    ),
+                    catalysts=_live_market_catalysts(market_row),
+                    risks=_live_market_risks(market_row),
                     evidence=(
                         Evidence(
                             label="Nasdaq Nordic listing source",
@@ -191,10 +198,13 @@ class LiveNasdaqNordicProvider:
         if self._companies is not None:
             return self._companies
         try:
-            self._companies = _parse_live_company_payload(self._fetcher(self.source_url))
+            self._companies, self._market_rows = _parse_live_company_payload(
+                self._fetcher(self.source_url)
+            )
             self._last_error = None
         except Exception as exc:
             self._companies = []
+            self._market_rows = {}
             self._last_error = str(exc)
         return self._companies
 
@@ -255,7 +265,7 @@ def _build_nasdaq_nordic_screener_url(base_url: str, request: dict[str, str]) ->
     return f"{base_url}?{urlencode(params)}"
 
 
-def _parse_live_company_payload(payload: str) -> list[Company]:
+def _parse_live_company_payload(payload: str) -> tuple[list[Company], dict[str, dict]]:
     stripped = payload.strip()
     if stripped.startswith("{"):
         return _parse_live_company_json(stripped)
@@ -292,10 +302,10 @@ def _parse_live_company_payload(payload: str) -> list[Company]:
         )
     if not companies:
         raise ValueError("live payload contained no SE/FI listings")
-    return companies
+    return companies, {}
 
 
-def _parse_live_company_json(payload: str) -> list[Company]:
+def _parse_live_company_json(payload: str) -> tuple[list[Company], dict[str, dict]]:
     data = json.loads(payload)
     if data.get("source") == NASDAQ_NORDIC_SCREENER_SOURCE:
         return _parse_nasdaq_nordic_screener_responses(data.get("responses", []))
@@ -313,8 +323,11 @@ def _parse_live_company_json(payload: str) -> list[Company]:
     raise ValueError("live JSON payload is missing supported listing data")
 
 
-def _parse_nasdaq_nordic_screener_responses(responses) -> list[Company]:
+def _parse_nasdaq_nordic_screener_responses(
+    responses,
+) -> tuple[list[Company], dict[str, dict]]:
     companies: list[Company] = []
+    market_rows: dict[str, dict] = {}
     seen: set[tuple[str, str, str]] = set()
     for response in responses:
         country = str(response.get("country") or "").upper()
@@ -335,9 +348,10 @@ def _parse_nasdaq_nordic_screener_responses(responses) -> list[Company]:
                 continue
             seen.add(key)
             companies.append(company)
+            market_rows[company.ticker] = _market_row_from_nasdaq_screener_row(row)
     if not companies:
         raise ValueError("live payload contained no SE/FI listings")
-    return companies
+    return companies, market_rows
 
 
 def _company_from_nasdaq_screener_row(
@@ -364,6 +378,53 @@ def _country_from_isin(isin: str) -> str:
     if prefix in {"SE", "FI"}:
         return prefix
     return ""
+
+
+def _market_row_from_nasdaq_screener_row(row: dict) -> dict:
+    return {
+        "price": _parse_live_float(row.get("lastSalePrice")),
+        "currency": str(row.get("currency") or "").strip() or None,
+        "percentage_change": _parse_live_float(row.get("percentageChange")),
+        "turnover": _parse_live_float(row.get("turnover")),
+        "volume": _parse_live_float(row.get("volume")),
+    }
+
+
+def _parse_live_float(raw) -> float | None:
+    if raw is None:
+        return None
+    cleaned = str(raw).strip().replace(",", "").replace("%", "")
+    if not cleaned:
+        return None
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+
+def _live_market_catalysts(market_row: dict) -> tuple[str, ...]:
+    catalysts: list[str] = []
+    if market_row.get("price") is not None:
+        catalysts.append("Live price available from Nasdaq Nordic")
+    percentage_change = market_row.get("percentage_change")
+    if percentage_change is not None and percentage_change >= 5.0:
+        catalysts.append("Positive intraday momentum")
+    return tuple(catalysts)
+
+
+def _live_market_risks(market_row: dict) -> tuple[str, ...]:
+    risks = ["Sparse live-source data"]
+    if not market_row:
+        return tuple(risks)
+    percentage_change = market_row.get("percentage_change")
+    if percentage_change is not None and percentage_change <= -5.0:
+        risks.append("Sharp intraday selloff")
+    turnover = market_row.get("turnover")
+    if turnover is not None and turnover < 100_000:
+        risks.append("Low live turnover")
+    if turnover is None and market_row.get("volume") is None:
+        risks.append("Missing live turnover")
+    return tuple(risks)
 
 
 def _parse_listing_segment(raw: str) -> ListingSegment:

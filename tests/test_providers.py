@@ -35,6 +35,10 @@ LIVE_NASDAQ_SCREENER_RESPONSE = """{
                 "fullName": "Acast",
                 "symbol": "ACAST",
                 "currency": "SEK",
+                "lastSalePrice": "34.90",
+                "percentageChange": "+6.25%",
+                "turnover": "10,116,648",
+                "volume": "291,265",
                 "sector": "Technology",
                 "isin": "SE0015960935"
               },
@@ -63,6 +67,10 @@ LIVE_NASDAQ_SCREENER_RESPONSE = """{
                 "fullName": "Aallon Group Oyj",
                 "symbol": "AALLON",
                 "currency": "EUR",
+                "lastSalePrice": "9.22",
+                "percentageChange": "-6.40%",
+                "turnover": "3,010",
+                "volume": "337",
                 "sector": "Industrials",
                 "isin": "FI4000369608"
               }
@@ -194,6 +202,46 @@ def test_live_provider_returns_thin_research_with_evidence():
     assert research.financials.data_quality == DataQuality.THIN
     assert research.risks == ("Sparse live-source data",)
     assert research.evidence
+
+
+def test_live_provider_research_includes_market_signal_fields():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_NASDAQ_SCREENER_RESPONSE)
+
+    research = provider.get_research("ACAST")
+
+    assert research.financials.price == 34.9
+    assert research.financials.currency == "SEK"
+    assert "Live price available from Nasdaq Nordic" in research.catalysts
+
+
+def test_live_provider_research_adds_positive_momentum_signal():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_NASDAQ_SCREENER_RESPONSE)
+
+    research = provider.get_research("ACAST")
+
+    assert "Positive intraday momentum" in research.catalysts
+
+
+def test_live_provider_research_adds_selloff_and_liquidity_risks():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_NASDAQ_SCREENER_RESPONSE)
+
+    research = provider.get_research("AALLON")
+
+    assert "Sharp intraday selloff" in research.risks
+    assert "Low live turnover" in research.risks
+
+
+def test_live_provider_ignores_malformed_market_signal_numbers():
+    malformed_payload = LIVE_NASDAQ_SCREENER_RESPONSE.replace("34.90", "not-a-price").replace(
+        "+6.25%", "n/a"
+    )
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: malformed_payload)
+
+    research = provider.get_research("ACAST")
+
+    assert research.financials.price is None
+    assert "Live price available from Nasdaq Nordic" not in research.catalysts
+    assert "Positive intraday momentum" not in research.catalysts
 
 
 def test_live_provider_reports_malformed_payload_as_error():

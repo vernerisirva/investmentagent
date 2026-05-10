@@ -43,6 +43,12 @@ def test_score_rewards_small_value_companies_with_catalysts():
     assert "low P/E" in " ".join(score.reasons)
 
 
+def test_score_names_catalysts_in_reasons():
+    score = score_research(make_research())
+
+    assert "New contract announced" in score.reasons
+
+
 def test_score_handles_provider_shaped_first_north_segment_value():
     research = make_research()
     company = Company(
