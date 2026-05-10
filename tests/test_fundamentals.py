@@ -324,6 +324,28 @@ def test_enriched_provider_preserves_curated_fundamentals():
     assert research.evidence[-1].source == "yahoo"
 
 
+def test_enriched_provider_upgrades_quality_when_only_market_cap_is_filled():
+    base = BaseProvider()
+    snapshot = FundamentalsSnapshot(
+        symbol="KAR.ST",
+        market_cap_eur_m=550.0,
+        financials=FinancialSnapshot(data_quality=DataQuality.PARTIAL),
+        evidence=Evidence(
+            "Yahoo-style fundamentals lookup (KAR.ST)",
+            "https://example.test",
+            "yahoo",
+        ),
+    )
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(snapshot))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.company.market_cap_eur_m == 550.0
+    assert research.financials.data_quality == DataQuality.PARTIAL
+    assert research.data_quality == DataQuality.PARTIAL
+    assert research.evidence[-1].source == "yahoo"
+
+
 def test_enriched_provider_leaves_research_unchanged_when_fundamentals_missing():
     base = BaseProvider()
     provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(None))
