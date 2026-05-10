@@ -183,6 +183,12 @@ def _default_fetcher(url: str) -> str:
 
 def _parse_live_company_payload(payload: str) -> list[Company]:
     reader = csv.DictReader(StringIO(payload))
+    fieldnames = {field.strip().lower() for field in (reader.fieldnames or ())}
+    has_ticker = bool(fieldnames & {"ticker", "symbol"})
+    has_name = bool(fieldnames & {"name", "company"})
+    if not has_ticker or not has_name or "country" not in fieldnames:
+        raise ValueError("live payload is missing required listing columns")
+
     companies: list[Company] = []
     for row in reader:
         ticker = (row.get("ticker") or row.get("symbol") or "").strip()
@@ -201,6 +207,8 @@ def _parse_live_company_payload(payload: str) -> list[Company]:
                 currency=(row.get("currency") or None),
             )
         )
+    if not companies:
+        raise ValueError("live payload contained no SE/FI listings")
     return companies
 
 

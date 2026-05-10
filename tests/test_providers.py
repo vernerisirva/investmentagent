@@ -90,3 +90,14 @@ def test_live_provider_returns_thin_research_with_evidence():
     assert research.financials.data_quality == DataQuality.THIN
     assert research.risks == ("Sparse live-source data",)
     assert research.evidence
+
+
+def test_live_provider_reports_malformed_payload_as_error():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: "<html>not csv</html>")
+
+    companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
+    checks = provider.source_checks()
+
+    assert companies == []
+    assert checks[0].status == "error"
+    assert "required listing columns" in checks[0].detail
