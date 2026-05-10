@@ -416,20 +416,11 @@ def _humanize_risk(item: str) -> str:
     normalized = item.strip()
     lower = normalized.lower()
     if lower == "sparse live-source data":
-        return (
-            "Live data is sparse; verify the latest company announcements and Nasdaq "
-            "data before acting."
-        )
+        return ""
     if lower == "thin data quality":
-        return (
-            "Data quality is thin, so treat the ranking as an early lead rather than "
-            "a finished view."
-        )
+        return ""
     if lower == "partial data quality":
-        return (
-            "Data quality is partial, so confirm the numbers against company reports "
-            "before relying on them."
-        )
+        return ""
     if lower == "1 stated risk(s)":
         return "One risk flag was found in the source data."
     if lower.endswith(" stated risk(s)"):
