@@ -43,6 +43,36 @@ class MissingResearchProvider(FakeResearchProvider):
         return super().get_research(ticker)
 
 
+class CompanyAwareDuplicateTickerProvider:
+    def __init__(self) -> None:
+        self._research = (
+            _make_country_specific_research("SE", "SEK", 12.5),
+            _make_country_specific_research("FI", "EUR", 7.75),
+        )
+        self._companies = [item.company for item in self._research]
+
+    def list_companies(
+        self, countries: tuple[str, ...], include_first_north: bool
+    ) -> list[Company]:
+        wanted = {country.upper() for country in countries}
+        return [company for company in self._companies if company.country in wanted]
+
+    def get_research(self, ticker: str) -> CompanyResearch:
+        for research in self._research:
+            if research.company.ticker == ticker:
+                return research
+        raise LookupError(ticker)
+
+    def get_company_research(self, company: Company) -> CompanyResearch:
+        for research in self._research:
+            if (
+                research.company.ticker == company.ticker
+                and research.company.country == company.country
+            ):
+                return research
+        raise LookupError(company.ticker)
+
+
 def make_research(
     ticker: str,
     *,
@@ -84,6 +114,34 @@ def make_research(
     )
 
 
+def _make_country_specific_research(
+    country: str, currency: str, price: float
+) -> CompanyResearch:
+    company = Company(
+        name=f"Same Symbol {country}",
+        ticker="SAME",
+        country=country,
+        exchange="Nasdaq Stockholm" if country == "SE" else "Nasdaq Helsinki",
+        segment=ListingSegment.MAIN_MARKET,
+        sector="Industrials",
+        market_cap_eur_m=200,
+        currency=currency,
+    )
+    financials = FinancialSnapshot(
+        price=price,
+        currency=currency,
+        pe_ratio=10.0,
+        price_to_book=1.0,
+        net_cash_eur_m=5.0,
+        data_quality=DataQuality.THIN,
+    )
+    return CompanyResearch(
+        company=company,
+        financials=financials,
+        data_quality=DataQuality.THIN,
+    )
+
+
 def test_build_watchlist_returns_ranked_items_by_score():
     items = build_watchlist(
         FixtureResearchProvider(), countries=("SE", "FI"), limit=3, include_first_north=True
@@ -120,6 +178,15 @@ def test_build_watchlist_skips_missing_research_rows():
     items = build_watchlist(provider, countries=("SE",), limit=2, include_first_north=True)
 
     assert [item.research.company.ticker for item in items] == ["READY"]
+
+
+def test_build_watchlist_preserves_company_specific_duplicate_tickers():
+    provider = CompanyAwareDuplicateTickerProvider()
+
+    items = build_watchlist(provider, countries=("SE", "FI"), limit=2, include_first_north=True)
+
+    assert [item.research.company.country for item in items] == ["SE", "FI"]
+    assert [item.research.financials.currency for item in items] == ["SEK", "EUR"]
 
 
 def test_build_watchlist_filters_market_cap_and_sector():

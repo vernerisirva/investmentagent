@@ -45,7 +45,7 @@ def build_watchlist(
         if not _company_matches_filters(company, min_market_cap, max_market_cap, sector):
             continue
         try:
-            research = provider.get_research(company.ticker)
+            research = _get_company_research(provider, company)
         except Exception:
             continue
         score = _score_for_strategy(research, strategy)
@@ -61,6 +61,13 @@ def build_watchlist(
         WatchlistItem(rank=rank, research=item.research, score=item.score)
         for rank, item in enumerate(ranked_items, start=1)
     ]
+
+
+def _get_company_research(provider: ResearchProvider, company: Company) -> CompanyResearch:
+    get_company_research = getattr(provider, "get_company_research", None)
+    if callable(get_company_research):
+        return get_company_research(company)
+    return provider.get_research(company.ticker)
 
 
 def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakdown:

@@ -89,6 +89,60 @@ LIVE_NASDAQ_SCREENER_RESPONSE = """{
   ]
 }"""
 
+LIVE_DUPLICATE_TICKER_SCREENER_RESPONSE = """{
+  "source": "nasdaq_nordic_screener",
+  "responses": [
+    {
+      "country": "SE",
+      "exchange": "Nasdaq Stockholm",
+      "segment": "main_market",
+      "payload": {
+        "data": {
+          "instrumentListing": {
+            "rows": [
+              {
+                "fullName": "Same Symbol Sweden AB",
+                "symbol": "SAME",
+                "currency": "SEK",
+                "lastSalePrice": "12.50",
+                "percentageChange": "+1.50%",
+                "turnover": "500,000",
+                "volume": "40,000",
+                "sector": "Technology",
+                "isin": "SE0000000001"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "country": "FI",
+      "exchange": "Nasdaq Helsinki",
+      "segment": "main_market",
+      "payload": {
+        "data": {
+          "instrumentListing": {
+            "rows": [
+              {
+                "fullName": "Same Symbol Finland Oyj",
+                "symbol": "SAME",
+                "currency": "EUR",
+                "lastSalePrice": "7.75",
+                "percentageChange": "+2.00%",
+                "turnover": "750,000",
+                "volume": "55,000",
+                "sector": "Technology",
+                "isin": "FI0000000002"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}"""
+
 
 def test_fixture_provider_filters_country_and_first_north():
     provider = FixtureResearchProvider()
@@ -293,6 +347,26 @@ def test_live_provider_deduplicates_nasdaq_rows_by_ticker_and_country():
     companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
 
     assert [company.ticker for company in companies].count("ACAST") == 1
+
+
+def test_live_provider_returns_company_specific_research_for_duplicate_country_tickers():
+    provider = LiveNasdaqNordicProvider(
+        fetcher=lambda url: LIVE_DUPLICATE_TICKER_SCREENER_RESPONSE
+    )
+
+    companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
+    swedish = next(company for company in companies if company.country == "SE")
+    finnish = next(company for company in companies if company.country == "FI")
+    swedish_research = provider.get_company_research(swedish)
+    finnish_research = provider.get_company_research(finnish)
+
+    assert [company.ticker for company in companies] == ["SAME", "SAME"]
+    assert swedish_research.company.name == "Same Symbol Sweden AB"
+    assert swedish_research.financials.currency == "SEK"
+    assert swedish_research.financials.price == 12.5
+    assert finnish_research.company.name == "Same Symbol Finland Oyj"
+    assert finnish_research.financials.currency == "EUR"
+    assert finnish_research.financials.price == 7.75
 
 
 def test_live_provider_ignores_malformed_market_signal_numbers():
