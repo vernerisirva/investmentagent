@@ -12,7 +12,7 @@ from investmentagent.renderers import (
     render_watchlist_report_markdown,
     render_watchlist_text,
 )
-from investmentagent.reports import build_deep_dive, build_watchlist
+from investmentagent.reports import build_deep_dive, build_watchlist, normalize_watchlist_strategy
 
 
 app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args_is_help=False)
@@ -80,6 +80,11 @@ def watchlist(
     min_market_cap: float | None = typer.Option(None, "--min-market-cap"),
     max_market_cap: float | None = typer.Option(None, "--max-market-cap"),
     sector: str | None = typer.Option(None, "--sector"),
+    strategy: str = typer.Option(
+        "balanced",
+        "--strategy",
+        help="Watchlist strategy: balanced, long-term, trading, momentum, or discovery.",
+    ),
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     verbose: bool = typer.Option(False, "--verbose"),
     provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
@@ -88,6 +93,10 @@ def watchlist(
     ),
 ) -> None:
     normalized_output = _normalize_output_option(output)
+    try:
+        normalized_strategy = normalize_watchlist_strategy(strategy)
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc)) from exc
     countries = _parse_countries(country)
     provider = _provider_from_option(provider_name)
     if provider_name.strip().lower() == "live":
@@ -100,6 +109,7 @@ def watchlist(
         min_market_cap=min_market_cap,
         max_market_cap=max_market_cap,
         sector=sector,
+        strategy=normalized_strategy,
     )
     source_checks = provider.source_checks()
     if save_path is not None:
@@ -115,6 +125,7 @@ def watchlist(
                 "min_market_cap": min_market_cap,
                 "max_market_cap": max_market_cap,
                 "sector": sector,
+                "strategy": normalized_strategy,
             },
             source_checks,
         )

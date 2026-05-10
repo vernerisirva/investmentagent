@@ -105,6 +105,46 @@ def test_watchlist_rejects_unsupported_save_extension():
     assert "save path must end in .json, .md, or .markdown" in result.output
 
 
+def test_watchlist_accepts_strategy_option():
+    result = runner.invoke(app, ["watchlist", "--strategy", "long-term", "--limit", "1"])
+
+    assert result.exit_code == 0
+    assert "#1" in result.output
+
+
+def test_watchlist_rejects_invalid_strategy_before_provider_work(monkeypatch):
+    def fail_if_called(name: str):
+        raise AssertionError("provider should not be created for invalid strategy")
+
+    monkeypatch.setattr(cli, "create_provider", fail_if_called)
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--strategy", "bad"])
+
+    assert result.exit_code != 0
+    assert "strategy must be one of" in result.output
+
+
+def test_watchlist_saves_strategy_metadata():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--strategy",
+                "trading",
+                "--limit",
+                "1",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert payload["metadata"]["strategy"] == "trading"
+
+
 def test_watchlist_command_accepts_discovery_filters():
     result = runner.invoke(
         app,
