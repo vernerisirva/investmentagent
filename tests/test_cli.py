@@ -337,6 +337,53 @@ def test_watchlist_saves_effective_fixture_fundamentals_metadata_for_explicit_fr
     assert payload["metadata"]["fundamentals"] == "off"
 
 
+def test_watchlist_saves_effective_finnhub_fundamentals_metadata(monkeypatch):
+    class LiveProvider:
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return [SourceCheck("nasdaq nordic live data", "ok", "live data available")]
+
+    class FinnhubProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class EnrichedProvider:
+        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+            self.base_provider = base_provider
+
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return self.base_provider.source_checks()
+
+    monkeypatch.setenv("FINNHUB_API_KEY", "secret-token")
+    monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
+    monkeypatch.setattr(cli, "FinnhubFundamentalsProvider", FinnhubProvider, raising=False)
+    monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
+
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--provider",
+                "live",
+                "--limit",
+                "1",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert payload["metadata"]["fundamentals"] == "finnhub"
+
+
 def test_watchlist_command_accepts_discovery_filters():
     result = runner.invoke(
         app,
