@@ -3,7 +3,7 @@
 > Research triage only. Not financial advice.
 
 ## Metadata
-- generated_at: 2026-05-10T18:20:15.940419+00:00
+- generated_at: 2026-05-10T18:26:36.803933+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -36,7 +36,7 @@
 - High live turnover
 
 ### Risks
-- One risk flag was found in the source data.
+- None provided.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -60,7 +60,6 @@
 
 ### Risks
 - Negative operating margin
-- One risk flag was found in the source data.
 - Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
@@ -85,7 +84,6 @@
 
 ### Risks
 - Negative operating margin
-- One risk flag was found in the source data.
 - Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
@@ -109,7 +107,6 @@
 
 ### Risks
 - Thin liquidity
-- One risk flag was found in the source data.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -132,7 +129,6 @@
 
 ### Risks
 - Negative operating margin
-- One risk flag was found in the source data.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -155,7 +151,6 @@
 
 ### Risks
 - Negative operating margin
-- One risk flag was found in the source data.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -178,7 +173,6 @@
 
 ### Risks
 - Negative operating margin
-- One risk flag was found in the source data.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -199,7 +193,7 @@
 - High live turnover
 
 ### Risks
-- One risk flag was found in the source data.
+- None provided.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -224,7 +218,6 @@
 ### Risks
 - Thin liquidity
 - Negative operating margin
-- One risk flag was found in the source data.
 - Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
@@ -249,7 +242,6 @@
 ### Risks
 - Thin liquidity
 - Negative operating margin
-- One risk flag was found in the source data.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
