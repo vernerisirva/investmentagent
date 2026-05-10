@@ -6,6 +6,7 @@ from investmentagent.models import (
     Company,
     CompanyResearch,
     DataQuality,
+    Evidence,
     FinancialSnapshot,
     ListingSegment,
     ScoreBreakdown,
@@ -42,7 +43,17 @@ class MissingResearchProvider(FakeResearchProvider):
         return super().get_research(ticker)
 
 
-def make_research(ticker: str, *, pe_ratio: float | None = 10.0) -> CompanyResearch:
+def make_research(
+    ticker: str,
+    *,
+    pe_ratio: float | None = 10.0,
+    price_to_book: float | None = 1.0,
+    net_cash_eur_m: float | None = 5.0,
+    price: float | None = None,
+    currency: str | None = None,
+    data_quality: DataQuality = DataQuality.GOOD,
+    evidence=(),
+) -> CompanyResearch:
     company = Company(
         name=f"{ticker} AB",
         ticker=ticker,
@@ -53,12 +64,19 @@ def make_research(ticker: str, *, pe_ratio: float | None = 10.0) -> CompanyResea
         market_cap_eur_m=200,
     )
     financials = FinancialSnapshot(
+        price=price,
+        currency=currency,
         pe_ratio=pe_ratio,
-        price_to_book=1.0,
-        net_cash_eur_m=5.0,
-        data_quality=DataQuality.GOOD,
+        price_to_book=price_to_book,
+        net_cash_eur_m=net_cash_eur_m,
+        data_quality=data_quality,
     )
-    return CompanyResearch(company=company, financials=financials, data_quality=DataQuality.GOOD)
+    return CompanyResearch(
+        company=company,
+        financials=financials,
+        evidence=evidence,
+        data_quality=data_quality,
+    )
 
 
 def test_build_watchlist_returns_ranked_items_by_score():
@@ -155,6 +173,42 @@ def test_build_deep_dive_treats_negative_pe_as_not_meaningful():
     pe_text = next(item for item in report.valuation_view if "P/E" in item)
     assert "-5" not in pe_text
     assert "unavailable" in pe_text or "not meaningful" in pe_text
+
+
+def test_build_deep_dive_includes_live_price_when_available():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "LIVE",
+                price=34.9,
+                currency="SEK",
+                pe_ratio=None,
+                price_to_book=None,
+                net_cash_eur_m=None,
+                data_quality=DataQuality.THIN,
+                evidence=(
+                    Evidence(
+                        label="Nasdaq Nordic listing source",
+                        url="https://api.nasdaq.com/api/nordic/screener/shares",
+                        source="nasdaq",
+                    ),
+                ),
+            ),
+        )
+    )
+
+    report = build_deep_dive(provider, "LIVE")
+
+    assert report.valuation_view[0] == "Live price is 34.9 SEK from Nasdaq Nordic."
+    assert "P/E is unavailable" in report.valuation_view[1]
+
+
+def test_build_deep_dive_uses_neutral_price_wording_for_non_nasdaq_sources():
+    provider = FakeResearchProvider((make_research("FIX", price=5.0, currency="SEK"),))
+
+    report = build_deep_dive(provider, "FIX")
+
+    assert report.valuation_view[0] == "Price is 5 SEK."
 
 
 def test_render_watchlist_text_includes_rank_score_risks_and_links():

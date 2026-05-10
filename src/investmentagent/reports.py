@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from investmentagent.models import Company, DeepDiveReport, WatchlistItem
+from investmentagent.models import Company, DeepDiveReport, Evidence, FinancialSnapshot, WatchlistItem
 from investmentagent.providers import ResearchProvider
 from investmentagent.scoring import score_research
 
@@ -73,11 +73,7 @@ def build_deep_dive(provider: ResearchProvider, ticker: str) -> DeepDiveReport:
         f"{company.exchange}."
     )
 
-    valuation_view = (
-        _metric_sentence("P/E", financials.pe_ratio),
-        _metric_sentence("Price/book", financials.price_to_book),
-        _net_cash_or_debt_sentence(financials.net_cash_eur_m),
-    )
+    valuation_view = _valuation_view(financials, research.evidence)
 
     return DeepDiveReport(
         research=research,
@@ -101,6 +97,27 @@ def build_deep_dive(provider: ResearchProvider, ticker: str) -> DeepDiveReport:
             "Compare valuation against Nordic peers.",
         ),
     )
+
+
+def _valuation_view(
+    financials: FinancialSnapshot, evidence_items: tuple[Evidence, ...]
+) -> tuple[str, ...]:
+    valuation_items: list[str] = []
+    if financials.price is not None and financials.currency:
+        if any(evidence.source == "nasdaq" for evidence in evidence_items):
+            valuation_items.append(
+                f"Live price is {financials.price:g} {financials.currency} from Nasdaq Nordic."
+            )
+        else:
+            valuation_items.append(f"Price is {financials.price:g} {financials.currency}.")
+    valuation_items.extend(
+        (
+            _metric_sentence("P/E", financials.pe_ratio),
+            _metric_sentence("Price/book", financials.price_to_book),
+            _net_cash_or_debt_sentence(financials.net_cash_eur_m),
+        )
+    )
+    return tuple(valuation_items)
 
 
 def _metric_sentence(label: str, value: float | None) -> str:
