@@ -14,6 +14,10 @@ First Growth Oyj,FGRO,FI,Nasdaq First North Growth Market,first_north,Software,E
 Ignored Denmark A/S,IGN,DK,Nasdaq Copenhagen,main_market,Industrials,DKK,DK0000000003
 """
 
+LIVE_CAPITALIZED_HEADER_CSV = """Name,Symbol,Country,Exchange,Market,Sector,Currency
+Capital Header AB,CHAB,SE,Nasdaq Stockholm,Main Market,Industrials,SEK
+"""
+
 
 def test_fixture_provider_filters_country_and_first_north():
     provider = FixtureResearchProvider()
@@ -70,6 +74,15 @@ def test_live_provider_parses_companies_from_sample_payload():
     assert [company.ticker for company in companies] == ["NVAL", "FGRO"]
     assert companies[0].country == "SE"
     assert companies[1].segment == ListingSegment.FIRST_NORTH
+
+
+def test_live_provider_parses_capitalized_headers():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_CAPITALIZED_HEADER_CSV)
+
+    companies = provider.list_companies(countries=("SE",), include_first_north=True)
+
+    assert [company.ticker for company in companies] == ["CHAB"]
+    assert companies[0].segment == ListingSegment.MAIN_MARKET
 
 
 def test_live_provider_filters_first_north():

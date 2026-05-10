@@ -191,9 +191,12 @@ def _parse_live_company_payload(payload: str) -> list[Company]:
 
     companies: list[Company] = []
     for row in reader:
-        ticker = (row.get("ticker") or row.get("symbol") or "").strip()
-        name = (row.get("name") or row.get("company") or "").strip()
-        country = (row.get("country") or "").strip().upper()
+        normalized_row = {
+            (key or "").strip().lower(): value for key, value in row.items()
+        }
+        ticker = (normalized_row.get("ticker") or normalized_row.get("symbol") or "").strip()
+        name = (normalized_row.get("name") or normalized_row.get("company") or "").strip()
+        country = (normalized_row.get("country") or "").strip().upper()
         if not ticker or not name or country not in {"SE", "FI"}:
             continue
         companies.append(
@@ -201,10 +204,12 @@ def _parse_live_company_payload(payload: str) -> list[Company]:
                 name=name,
                 ticker=ticker,
                 country=country,
-                exchange=(row.get("exchange") or "Nasdaq Nordic").strip(),
-                segment=_parse_listing_segment(row.get("segment") or row.get("market") or ""),
-                sector=(row.get("sector") or None),
-                currency=(row.get("currency") or None),
+                exchange=(normalized_row.get("exchange") or "Nasdaq Nordic").strip(),
+                segment=_parse_listing_segment(
+                    normalized_row.get("segment") or normalized_row.get("market") or ""
+                ),
+                sector=(normalized_row.get("sector") or None),
+                currency=(normalized_row.get("currency") or None),
             )
         )
     if not companies:
