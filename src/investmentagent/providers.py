@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+import csv
 import json
+from collections.abc import Callable
 from importlib.resources import files
+from io import StringIO
 from typing import Protocol
+from urllib.request import urlopen
 
 from investmentagent.models import (
     Company,
@@ -13,6 +17,9 @@ from investmentagent.models import (
     ListingSegment,
     SourceCheck,
 )
+
+
+NASDAQ_NORDIC_LISTINGS_URL = "https://www.nasdaqomxnordic.com/shares/listed-companies"
 
 
 class ResearchProvider(Protocol):
@@ -90,22 +97,74 @@ class FixtureResearchProvider:
 
 
 class LiveNasdaqNordicProvider:
+    def __init__(
+        self,
+        source_url: str = NASDAQ_NORDIC_LISTINGS_URL,
+        fetcher: Callable[[str], str] | None = None,
+    ) -> None:
+        self.source_url = source_url
+        self._fetcher = fetcher or _default_fetcher
+        self._companies: list[Company] | None = None
+        self._last_error: str | None = None
+
     def list_companies(
         self, countries: tuple[str, ...] = ("SE", "FI"), include_first_north: bool = True
     ) -> list[Company]:
-        return []
+        wanted = {country.upper() for country in countries}
+        return [
+            company
+            for company in self._load_companies()
+            if company.country in wanted
+            and (include_first_north or company.segment != ListingSegment.FIRST_NORTH)
+        ]
 
     def get_research(self, ticker: str) -> CompanyResearch:
+        normalized = ticker.strip().upper()
+        for company in self._load_companies():
+            if company.ticker == normalized:
+                return CompanyResearch(
+                    company=company,
+                    financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+                    risks=("Sparse live-source data",),
+                    evidence=(
+                        Evidence(
+                            label="Nasdaq Nordic listing source",
+                            url=self.source_url,
+                            source="nasdaq",
+                        ),
+                    ),
+                    data_quality=DataQuality.THIN,
+                )
         raise LookupError(f"No live research found for ticker: {ticker}")
 
     def source_checks(self) -> list[SourceCheck]:
+        companies = self._load_companies()
+        if self._last_error is not None:
+            return [
+                SourceCheck(
+                    name="nasdaq nordic live data",
+                    status="error",
+                    detail=self._last_error,
+                )
+            ]
         return [
             SourceCheck(
                 name="nasdaq nordic live data",
-                status="unavailable",
-                detail="Live provider is not implemented yet",
+                status="ok",
+                detail=f"{len(companies)} companies parsed from {self.source_url}",
             )
         ]
+
+    def _load_companies(self) -> list[Company]:
+        if self._companies is not None:
+            return self._companies
+        try:
+            self._companies = _parse_live_company_payload(self._fetcher(self.source_url))
+            self._last_error = None
+        except Exception as exc:
+            self._companies = []
+            self._last_error = str(exc)
+        return self._companies
 
 
 def create_provider(name: str) -> ResearchProvider:
@@ -115,3 +174,42 @@ def create_provider(name: str) -> ResearchProvider:
     if normalized == "live":
         return LiveNasdaqNordicProvider()
     raise ValueError("provider must be 'fixture' or 'live'")
+
+
+def _default_fetcher(url: str) -> str:
+    with urlopen(url, timeout=20) as response:
+        return response.read().decode("utf-8")
+
+
+def _parse_live_company_payload(payload: str) -> list[Company]:
+    reader = csv.DictReader(StringIO(payload))
+    companies: list[Company] = []
+    for row in reader:
+        ticker = (row.get("ticker") or row.get("symbol") or "").strip()
+        name = (row.get("name") or row.get("company") or "").strip()
+        country = (row.get("country") or "").strip().upper()
+        if not ticker or not name or country not in {"SE", "FI"}:
+            continue
+        companies.append(
+            Company(
+                name=name,
+                ticker=ticker,
+                country=country,
+                exchange=(row.get("exchange") or "Nasdaq Nordic").strip(),
+                segment=_parse_listing_segment(row.get("segment") or row.get("market") or ""),
+                sector=(row.get("sector") or None),
+                currency=(row.get("currency") or None),
+            )
+        )
+    return companies
+
+
+def _parse_listing_segment(raw: str) -> ListingSegment:
+    normalized = raw.strip().lower().replace("-", " ")
+    if "first north" in normalized or normalized == "first_north":
+        return ListingSegment.FIRST_NORTH
+    if "spotlight" in normalized:
+        return ListingSegment.SPOTLIGHT
+    if "main" in normalized:
+        return ListingSegment.MAIN_MARKET
+    return ListingSegment.OTHER_PUBLIC

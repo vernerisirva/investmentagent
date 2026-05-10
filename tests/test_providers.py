@@ -1,7 +1,18 @@
 import pytest
 
-from investmentagent.models import DataQuality
-from investmentagent.providers import FixtureResearchProvider, create_provider
+from investmentagent.models import DataQuality, ListingSegment
+from investmentagent.providers import (
+    FixtureResearchProvider,
+    LiveNasdaqNordicProvider,
+    create_provider,
+)
+
+
+LIVE_SAMPLE_CSV = """name,ticker,country,exchange,segment,sector,currency,isin
+Nordic Value AB,NVAL,SE,Nasdaq Stockholm,main_market,Industrials,SEK,SE0000000001
+First Growth Oyj,FGRO,FI,Nasdaq First North Growth Market,first_north,Software,EUR,FI0000000002
+Ignored Denmark A/S,IGN,DK,Nasdaq Copenhagen,main_market,Industrials,DKK,DK0000000003
+"""
 
 
 def test_fixture_provider_filters_country_and_first_north():
@@ -40,6 +51,42 @@ def test_create_provider_defaults_to_fixture():
     assert isinstance(provider, FixtureResearchProvider)
 
 
+def test_create_provider_returns_live_provider():
+    provider = create_provider("live")
+
+    assert isinstance(provider, LiveNasdaqNordicProvider)
+
+
 def test_create_provider_rejects_unknown_name():
     with pytest.raises(ValueError, match="provider must be 'fixture' or 'live'"):
         create_provider("unknown")
+
+
+def test_live_provider_parses_companies_from_sample_payload():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_SAMPLE_CSV)
+
+    companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
+
+    assert [company.ticker for company in companies] == ["NVAL", "FGRO"]
+    assert companies[0].country == "SE"
+    assert companies[1].segment == ListingSegment.FIRST_NORTH
+
+
+def test_live_provider_filters_first_north():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_SAMPLE_CSV)
+
+    companies = provider.list_companies(countries=("SE", "FI"), include_first_north=False)
+
+    assert [company.ticker for company in companies] == ["NVAL"]
+
+
+def test_live_provider_returns_thin_research_with_evidence():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: LIVE_SAMPLE_CSV)
+
+    research = provider.get_research("FGRO")
+
+    assert research.company.ticker == "FGRO"
+    assert research.data_quality == DataQuality.THIN
+    assert research.financials.data_quality == DataQuality.THIN
+    assert research.risks == ("Sparse live-source data",)
+    assert research.evidence
