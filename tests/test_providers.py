@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from investmentagent.models import DataQuality, ListingSegment
@@ -268,12 +270,24 @@ def test_live_provider_research_adds_extreme_spike_and_low_price_risks():
 
 
 def test_live_provider_deduplicates_nasdaq_rows_by_ticker_and_country():
-    duplicate_payload = LIVE_NASDAQ_SCREENER_RESPONSE.replace(
-        '"fullName": "Foreign Issuer Listed Stockholm"',
-        '"fullName": "Acast Duplicate"',
-    ).replace('"symbol": "FIL"', '"symbol": "ACAST"').replace(
-        '"isin": "DK0000000001"', '"isin": "SE0015960935"'
+    payload = json.loads(LIVE_NASDAQ_SCREENER_RESPONSE)
+    acast_row = dict(
+        payload["responses"][0]["payload"]["data"]["instrumentListing"]["rows"][0]
     )
+    acast_row["fullName"] = "Acast First North Duplicate"
+    payload["responses"].append(
+        {
+            "country": "SE",
+            "exchange": "Nasdaq First North Growth Market Sweden",
+            "segment": "first_north",
+            "source_url": (
+                "https://api.nasdaq.com/api/nordic/screener/shares"
+                "?category=FIRST_NORTH&market=STO&tableonly=false"
+            ),
+            "payload": {"data": {"instrumentListing": {"rows": [acast_row]}}},
+        }
+    )
+    duplicate_payload = json.dumps(payload)
     provider = LiveNasdaqNordicProvider(fetcher=lambda url: duplicate_payload)
 
     companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
