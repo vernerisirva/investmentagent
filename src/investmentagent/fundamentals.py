@@ -61,19 +61,31 @@ class YahooFundamentalsProvider:
         return None
 
     def source_check(self) -> SourceCheck:
-        if self.successful_lookups:
+        if self.attempted_lookups == 0:
             return SourceCheck(
                 name="free fundamentals",
-                status="ok",
-                detail=(
-                    f"{self.successful_lookups}/{self.attempted_lookups} "
-                    "Yahoo-style lookups parsed"
-                ),
+                status="warning",
+                detail="No lookups attempted for Yahoo-style fundamentals",
             )
-        detail = "No successful Yahoo-style fundamentals lookups"
-        if self.last_error:
-            detail = f"{detail}: {self.last_error}"
-        return SourceCheck(name="free fundamentals", status="warning", detail=detail)
+
+        ratio = (
+            f"{self.successful_lookups}/{self.attempted_lookups} "
+            "Yahoo-style lookups parsed"
+        )
+        if self.successful_lookups == self.attempted_lookups:
+            return SourceCheck(name="free fundamentals", status="ok", detail=ratio)
+
+        if self.successful_lookups == 0:
+            detail = f"No successful Yahoo-style fundamentals lookups ({ratio})"
+            if self.last_error:
+                detail = f"{detail}: {self.last_error}"
+            return SourceCheck(
+                name="free fundamentals",
+                status="warning",
+                detail=detail,
+            )
+
+        return SourceCheck(name="free fundamentals", status="warning", detail=ratio)
 
 
 def yahoo_symbol_candidates(company: Company) -> tuple[str, ...]:

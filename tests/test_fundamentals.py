@@ -136,3 +136,50 @@ def test_yahoo_provider_returns_none_for_malformed_or_missing_data():
     provider = YahooFundamentalsProvider(fetcher=lambda url: "{}")
 
     assert provider.get_fundamentals(make_company()) is None
+
+
+def test_yahoo_source_check_warns_when_no_lookups_attempted():
+    provider = YahooFundamentalsProvider(fetcher=lambda url: yahoo_payload())
+
+    check = provider.source_check()
+
+    assert check.name == "free fundamentals"
+    assert check.status == "warning"
+    assert "no lookups attempted" in check.detail.lower()
+
+
+def test_yahoo_source_check_warns_when_all_lookups_fail():
+    def fetcher(url: str) -> str:
+        raise RuntimeError("malformed response")
+
+    provider = YahooFundamentalsProvider(fetcher=fetcher)
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert check.status == "warning"
+    assert "no successful" in check.detail.lower()
+    assert "0/1 Yahoo-style lookups parsed" in check.detail
+    assert "malformed response" in check.detail
+
+
+def test_yahoo_source_check_ok_when_all_attempted_lookups_succeed():
+    provider = YahooFundamentalsProvider(fetcher=lambda url: yahoo_payload())
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert check.status == "ok"
+    assert "1/1 Yahoo-style lookups parsed" in check.detail
+
+
+def test_yahoo_source_check_warns_when_lookup_success_is_mixed():
+    provider = YahooFundamentalsProvider(fetcher=lambda url: yahoo_payload())
+    provider.attempted_lookups = 2
+    provider.successful_lookups = 1
+    provider.last_error = "malformed response"
+
+    check = provider.source_check()
+
+    assert check.status == "warning"
+    assert "1/2 Yahoo-style lookups parsed" in check.detail
