@@ -147,6 +147,7 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
         def source_checks(self):
             return self.base_provider.source_checks()
 
+    monkeypatch.delenv("FINIMPULSE_API_KEY", raising=False)
     monkeypatch.delenv("FINNHUB_API_KEY", raising=False)
     monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", FundamentalsProvider, raising=False)
@@ -189,6 +190,7 @@ def test_watchlist_auto_fundamentals_prefers_finnhub_when_key_is_present(monkeyp
         def source_checks(self):
             return self.base_provider.source_checks()
 
+    monkeypatch.delenv("FINIMPULSE_API_KEY", raising=False)
     monkeypatch.setenv("FINNHUB_API_KEY", "secret-token")
     monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider, raising=False)
@@ -201,6 +203,73 @@ def test_watchlist_auto_fundamentals_prefers_finnhub_when_key_is_present(monkeyp
     assert isinstance(wrapped["fundamentals_provider"], FinnhubProvider)
     assert wrapped["fundamentals_provider"].api_key == "secret-token"
     assert wrapped["max_enrichments"] == 7
+
+
+def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch):
+    wrapped = {}
+
+    class LiveProvider:
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return [SourceCheck("nasdaq nordic live data", "ok", "live data available")]
+
+    class FinimpulseProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class FinnhubProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class EnrichedProvider:
+        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+            wrapped["fundamentals_provider"] = fundamentals_provider
+            wrapped["max_enrichments"] = max_enrichments
+            self.base_provider = base_provider
+
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return self.base_provider.source_checks()
+
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.setenv("FINNHUB_API_KEY", "finnhub-token")
+    monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
+    monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider, raising=False)
+    monkeypatch.setattr(cli, "FinnhubFundamentalsProvider", FinnhubProvider, raising=False)
+    monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "7"])
+
+    assert result.exit_code == 0
+    assert isinstance(wrapped["fundamentals_provider"], FinimpulseProvider)
+    assert wrapped["fundamentals_provider"].api_key == "finimpulse-token"
+    assert wrapped["max_enrichments"] == 7
+
+
+def test_watchlist_explicit_finimpulse_requires_api_key(monkeypatch):
+    monkeypatch.delenv("FINIMPULSE_API_KEY", raising=False)
+
+    result = runner.invoke(
+        app, ["watchlist", "--provider", "live", "--fundamentals", "finimpulse"]
+    )
+
+    assert result.exit_code != 0
+    assert "FINIMPULSE_API_KEY is required" in result.output
+
+
+def test_watchlist_explicit_finimpulse_rejects_blank_api_key(monkeypatch):
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "   ")
+
+    result = runner.invoke(
+        app, ["watchlist", "--provider", "live", "--fundamentals", "finimpulse"]
+    )
+
+    assert result.exit_code != 0
+    assert "FINIMPULSE_API_KEY is required" in result.output
 
 
 def test_watchlist_explicit_finnhub_requires_api_key(monkeypatch):
@@ -246,7 +315,8 @@ def test_watchlist_rejects_invalid_fundamentals_before_provider_work(monkeypatch
     result = runner.invoke(app, ["watchlist", "--provider", "live", "--fundamentals", "bad"])
 
     assert result.exit_code != 0
-    assert "fundamentals must be 'auto', 'off', 'free', or 'finnhub'" in result.output
+    assert "fundamentals must be 'auto', 'off', 'free', 'finnhub', or" in result.output
+    assert "'finimpulse'" in result.output
 
 
 def test_watchlist_saves_strategy_metadata():
@@ -382,6 +452,53 @@ def test_watchlist_saves_effective_finnhub_fundamentals_metadata(monkeypatch):
 
     assert result.exit_code == 0
     assert payload["metadata"]["fundamentals"] == "finnhub"
+
+
+def test_watchlist_saves_effective_finimpulse_fundamentals_metadata(monkeypatch):
+    class LiveProvider:
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return [SourceCheck("nasdaq nordic live data", "ok", "live data available")]
+
+    class FinimpulseProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class EnrichedProvider:
+        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+            self.base_provider = base_provider
+
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return self.base_provider.source_checks()
+
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
+    monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider, raising=False)
+    monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
+
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--provider",
+                "live",
+                "--limit",
+                "1",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert payload["metadata"]["fundamentals"] == "finimpulse"
 
 
 def test_watchlist_command_accepts_discovery_filters():
