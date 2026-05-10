@@ -21,6 +21,7 @@ YAHOO_QUOTE_SUMMARY_URL = (
     "https://query1.finance.yahoo.com/v10/finance/quoteSummary/{symbol}"
     "?modules=price,summaryDetail,financialData"
 )
+YAHOO_FETCH_TIMEOUT_SECONDS = 3
 _EUR_RATES = {"EUR": 1.0, "SEK": 0.1}
 
 
@@ -90,9 +91,13 @@ class YahooFundamentalsProvider:
 
 
 class EnrichedResearchProvider:
-    def __init__(self, base_provider, fundamentals_provider) -> None:
+    def __init__(
+        self, base_provider, fundamentals_provider, max_enrichments: int | None = None
+    ) -> None:
         self.base_provider = base_provider
         self.fundamentals_provider = fundamentals_provider
+        self.max_enrichments = max_enrichments
+        self._enrichment_attempts = 0
 
     def list_companies(self, countries, include_first_north):
         return self.base_provider.list_companies(countries, include_first_north)
@@ -118,6 +123,12 @@ class EnrichedResearchProvider:
         return checks
 
     def _enrich(self, research: CompanyResearch) -> CompanyResearch:
+        if (
+            self.max_enrichments is not None
+            and self._enrichment_attempts >= self.max_enrichments
+        ):
+            return research
+        self._enrichment_attempts += 1
         snapshot = self.fundamentals_provider.get_fundamentals(research.company)
         if snapshot is None:
             return research
@@ -328,5 +339,5 @@ def _fetch_url(url: str) -> str:
             "User-Agent": "Mozilla/5.0",
         },
     )
-    with urlopen(request, timeout=20) as response:
+    with urlopen(request, timeout=YAHOO_FETCH_TIMEOUT_SECONDS) as response:
         return response.read().decode("utf-8")

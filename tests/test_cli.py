@@ -135,9 +135,10 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
         pass
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider):
+        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
             wrapped["base_provider"] = base_provider
             wrapped["fundamentals_provider"] = fundamentals_provider
+            wrapped["max_enrichments"] = max_enrichments
             self.base_provider = base_provider
 
         def list_companies(self, countries, include_first_north):
@@ -150,11 +151,12 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", FundamentalsProvider, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
 
-    result = runner.invoke(app, ["watchlist", "--provider", "live"])
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "10"])
 
     assert result.exit_code == 0
     assert isinstance(wrapped["base_provider"], LiveProvider)
     assert isinstance(wrapped["fundamentals_provider"], FundamentalsProvider)
+    assert wrapped["max_enrichments"] == 30
 
 
 def test_watchlist_rejects_invalid_strategy_before_provider_work(monkeypatch):

@@ -128,7 +128,11 @@ def watchlist(
     if normalized_provider_name == "live":
         _raise_for_source_errors(provider)
         if effective_fundamentals == "free":
-            provider = EnrichedResearchProvider(provider, YahooFundamentalsProvider())
+            provider = EnrichedResearchProvider(
+                provider,
+                YahooFundamentalsProvider(),
+                max_enrichments=max(limit * 3, 20),
+            )
     items = build_watchlist(
         provider,
         countries=countries,

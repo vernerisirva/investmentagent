@@ -222,8 +222,10 @@ class BaseProvider:
 class StaticFundamentalsProvider:
     def __init__(self, snapshot):
         self.snapshot = snapshot
+        self.requests: list[Company] = []
 
     def get_fundamentals(self, company: Company):
+        self.requests.append(company)
         return self.snapshot
 
     def source_check(self):
@@ -355,3 +357,38 @@ def test_enriched_provider_leaves_research_unchanged_when_fundamentals_missing()
     assert research.company.market_cap_eur_m is None
     assert research.financials.pe_ratio is None
     assert research.data_quality == DataQuality.THIN
+
+
+def test_enriched_provider_respects_enrichment_budget():
+    class ThreeCompanyProvider(BaseProvider):
+        def __init__(self) -> None:
+            self.companies = (
+                make_company("ONE"),
+                make_company("TWO"),
+                make_company("THREE"),
+            )
+
+        def list_companies(self, countries, include_first_north):
+            return list(self.companies)
+
+        def get_company_research(self, company: Company) -> CompanyResearch:
+            return CompanyResearch(
+                company=company,
+                financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+                data_quality=DataQuality.THIN,
+            )
+
+    snapshot = FundamentalsSnapshot(
+        symbol="TEST.ST",
+        financials=FinancialSnapshot(pe_ratio=9.5, data_quality=DataQuality.PARTIAL),
+    )
+    fundamentals = StaticFundamentalsProvider(snapshot)
+    provider = EnrichedResearchProvider(
+        ThreeCompanyProvider(), fundamentals, max_enrichments=2
+    )
+
+    companies = provider.list_companies(("SE",), include_first_north=True)
+    research = [provider.get_company_research(company) for company in companies]
+
+    assert [item.financials.pe_ratio for item in research] == [9.5, 9.5, None]
+    assert [company.ticker for company in fundamentals.requests] == ["ONE", "TWO"]
