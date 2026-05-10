@@ -817,6 +817,187 @@ def test_render_watchlist_report_markdown_formats_company_sections():
     assert "Research triage only. Not financial advice.\n\nWatchlist" not in output
 
 
+def test_render_long_term_report_markdown_includes_conviction_layer():
+    company = Company(
+        name="Quality Compounder AB",
+        ticker="QUAL",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+        sector="Software",
+        market_cap_eur_m=240,
+        business_description=(
+            "Quality Compounder sells mission-critical workflow software to "
+            "industrial customers with recurring revenue."
+        ),
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(
+                pe_ratio=11.0,
+                price_to_book=1.1,
+                net_cash_eur_m=25.0,
+                debt_to_equity=0.2,
+                revenue_growth_pct=12.0,
+                operating_margin_pct=18.0,
+                one_year_return_pct=-8.0,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            risks=(),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=10.0,
+            discovery=8.0,
+            catalyst=21.0,
+            risk_penalty=0.0,
+            data_quality_penalty=4.0,
+            total=35.0,
+            reasons=(
+                "Positive operating margin (18.0%)",
+                "Revenue growth (12.0%)",
+                "Conservative debt/equity",
+                "Business description available from profile data",
+            ),
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "long-term", "limit": 10},
+        source_checks=[],
+    )
+
+    assert "### Long-Term Conviction" in output
+    assert "**Bucket:** High conviction candidate" in output
+    assert "**Thesis:** Quality Compounder AB has a profitable software profile" in output
+    assert "| Component | Score | View |" in output
+    assert "| Business quality | 5/5 | Strong - profitable business with a clear profile. |" in output
+    assert "| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |" in output
+    assert "| Growth | 4/5 | Healthy revenue growth of 12.0%. |" in output
+    assert "| Balance sheet | 5/5 | Net cash and conservative debt/equity. |" in output
+    assert "| Data confidence | 4/5 | Several fundamentals plus profile text are available. |" in output
+
+
+def test_render_long_term_report_markdown_flags_trading_only_movers():
+    company = Company(
+        name="Momentum Only AB",
+        ticker="MOMO",
+        country="SE",
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
+        sector="Technology",
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+            catalysts=("Strong intraday momentum (+18.0%)", "High live turnover"),
+            risks=("Sparse live-source data",),
+            data_quality=DataQuality.THIN,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=5.0,
+            catalyst=0.0,
+            risk_penalty=18.0,
+            data_quality_penalty=8.0,
+            total=-21.0,
+            warnings=("long-term strategy penalty applied",),
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "long-term", "limit": 10},
+        source_checks=[],
+    )
+
+    assert "**Bucket:** Trading-only mover" in output
+    assert "treat it as a trading idea rather than a long-term candidate" in output
+    assert "| Business quality | 0/5 | Insufficient business and margin data. |" in output
+    assert "| Data confidence | 0/5 | No useful fundamentals or profile text are available today. |" in output
+    assert "Sparse live-source data" not in output
+    assert "One risk flag" not in output
+
+
+def test_render_long_term_report_markdown_flags_weak_data_without_trading_signal():
+    company = Company(
+        name="Unknown Fundamentals AB",
+        ticker="UNKN",
+        country="SE",
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
+        sector="Technology",
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+            data_quality=DataQuality.THIN,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=5.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=8.0,
+            total=-3.0,
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "long-term", "limit": 10},
+        source_checks=[],
+    )
+
+    assert "**Bucket:** Excluded due to weak data" in output
+    assert "wait for profile, report, or valuation evidence" in output
+
+
+def test_render_trading_report_markdown_omits_long_term_conviction_layer():
+    company = Company(
+        name="Trading Setup AB",
+        ticker="TRADE",
+        country="SE",
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
+        sector="Technology",
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.PARTIAL),
+            catalysts=("Strong intraday momentum (+12.0%)",),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=5.0,
+            catalyst=20.0,
+            risk_penalty=0.0,
+            data_quality_penalty=4.0,
+            total=21.0,
+            reasons=("Strong intraday momentum (+12.0%)",),
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "trading", "limit": 10},
+        source_checks=[],
+    )
+
+    assert "### Long-Term Conviction" not in output
+    assert "**Bucket:**" not in output
+
+
 def test_render_watchlist_report_markdown_humanizes_reason_and_risk_signals():
     company = Company(
         name="Sprint Bioscience",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import math
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
@@ -18,6 +19,20 @@ from investmentagent.models import (
 
 
 DISCLAIMER = "Research triage only. Not financial advice."
+
+
+@dataclass(frozen=True)
+class _ConvictionComponent:
+    name: str
+    score: int
+    view: str
+
+
+@dataclass(frozen=True)
+class _LongTermConviction:
+    bucket: str
+    thesis: str
+    components: tuple[_ConvictionComponent, ...]
 
 
 def render_watchlist_text(items: list[WatchlistItem]) -> str:
@@ -69,6 +84,7 @@ def render_watchlist_report_json(
 def render_watchlist_report_markdown(
     items: list[WatchlistItem], metadata: dict[str, Any], source_checks
 ) -> str:
+    strategy = str(metadata.get("strategy") or "").strip().lower()
     lines = [
         "# InvestmentAgent Watchlist",
         "",
@@ -85,7 +101,7 @@ def render_watchlist_report_markdown(
         "",
         "## Watchlist",
         "",
-        *_watchlist_markdown_sections(items),
+        *_watchlist_markdown_sections(items, strategy),
     ]
     return "\n".join(lines)
 
@@ -228,7 +244,9 @@ def _source_check_payload(check) -> dict[str, str]:
     return {"name": check.name, "status": check.status, "detail": check.detail}
 
 
-def _watchlist_markdown_sections(items: list[WatchlistItem]) -> list[str]:
+def _watchlist_markdown_sections(
+    items: list[WatchlistItem], strategy: str = ""
+) -> list[str]:
     lines: list[str] = []
     for item in items:
         company = item.research.company
@@ -246,6 +264,12 @@ def _watchlist_markdown_sections(items: list[WatchlistItem]) -> list[str]:
                 f"**Score:** {item.score.total:g}",
                 f"**Data quality:** {_stringify(item.research.data_quality)}",
                 "",
+            ]
+        )
+        if strategy == "long-term":
+            lines.extend(_long_term_conviction_lines(item))
+        lines.extend(
+            [
                 "### Reasons",
                 *_public_reason_lines(item.score.reasons),
                 "",
@@ -260,6 +284,378 @@ def _watchlist_markdown_sections(items: list[WatchlistItem]) -> list[str]:
     if lines and lines[-1] == "":
         lines.pop()
     return lines
+
+
+def _long_term_conviction_lines(item: WatchlistItem) -> list[str]:
+    conviction = _long_term_conviction(item)
+    lines = [
+        "### Long-Term Conviction",
+        f"**Bucket:** {conviction.bucket}",
+        f"**Thesis:** {conviction.thesis}",
+        "",
+        "| Component | Score | View |",
+        "| --- | --- | --- |",
+    ]
+    lines.extend(
+        f"| {_table_cell(component.name)} | {component.score}/5 | "
+        f"{_table_cell(component.view)} |"
+        for component in conviction.components
+    )
+    lines.append("")
+    return lines
+
+
+def _long_term_conviction(item: WatchlistItem) -> _LongTermConviction:
+    components = (
+        _business_quality_component(item),
+        _valuation_component(item),
+        _growth_component(item),
+        _balance_sheet_component(item),
+        _momentum_component(item),
+        _risk_component(item),
+        _data_confidence_component(item),
+    )
+    scores = {component.name: component.score for component in components}
+    bucket = _long_term_bucket(item, scores)
+    return _LongTermConviction(
+        bucket=bucket,
+        thesis=_long_term_thesis(item, bucket),
+        components=components,
+    )
+
+
+def _business_quality_component(item: WatchlistItem) -> _ConvictionComponent:
+    margin = item.research.financials.operating_margin_pct
+    has_profile = bool(item.research.company.business_description)
+    if margin is not None and margin >= 15 and has_profile:
+        return _ConvictionComponent(
+            "Business quality", 5, "Strong - profitable business with a clear profile."
+        )
+    if margin is not None and margin > 0 and has_profile:
+        return _ConvictionComponent(
+            "Business quality", 4, "Good - profitable business with a clear profile."
+        )
+    if margin is not None and margin > 0:
+        return _ConvictionComponent(
+            "Business quality", 3, "Profitable, but the business profile is limited."
+        )
+    if has_profile and margin is None:
+        return _ConvictionComponent(
+            "Business quality", 3, "Clear business profile, but margin data is missing."
+        )
+    if margin is not None and margin < 0:
+        return _ConvictionComponent(
+            "Business quality", 1, "Weak - profitability is not yet proven."
+        )
+    return _ConvictionComponent(
+        "Business quality", 0, "Insufficient business and margin data."
+    )
+
+
+def _valuation_component(item: WatchlistItem) -> _ConvictionComponent:
+    financials = item.research.financials
+    attractive = (
+        _positive_at_most(financials.pe_ratio, 12)
+        or _positive_at_most(financials.price_to_book, 1.2)
+        or _positive_at_most(financials.ev_to_ebit, 10)
+    )
+    reasonable = (
+        _positive_at_most(financials.pe_ratio, 20)
+        or _positive_at_most(financials.price_to_book, 2.5)
+        or _positive_at_most(financials.ev_to_ebit, 16)
+    )
+    expensive = (
+        _positive_above(financials.pe_ratio, 35)
+        or _positive_above(financials.price_to_book, 5)
+        or _positive_above(financials.ev_to_ebit, 25)
+    )
+    if attractive:
+        return _ConvictionComponent(
+            "Valuation", 5, "Attractive valuation on available P/E or P/B metrics."
+        )
+    if reasonable:
+        return _ConvictionComponent(
+            "Valuation", 4, "Reasonable valuation on available multiples."
+        )
+    if expensive:
+        return _ConvictionComponent(
+            "Valuation", 1, "Expensive on available valuation multiples."
+        )
+    if any(
+        metric is not None
+        for metric in (financials.pe_ratio, financials.price_to_book, financials.ev_to_ebit)
+    ):
+        return _ConvictionComponent(
+            "Valuation", 2, "Valuation is available but not clearly attractive."
+        )
+    return _ConvictionComponent("Valuation", 1, "No valuation multiple is available.")
+
+
+def _growth_component(item: WatchlistItem) -> _ConvictionComponent:
+    growth = item.research.financials.revenue_growth_pct
+    if growth is None:
+        return _ConvictionComponent("Growth", 1, "Revenue growth is not available.")
+    if growth >= 20:
+        return _ConvictionComponent("Growth", 5, f"Strong revenue growth of {growth:.1f}%.")
+    if growth >= 5:
+        return _ConvictionComponent("Growth", 4, f"Healthy revenue growth of {growth:.1f}%.")
+    if growth > 0:
+        return _ConvictionComponent("Growth", 3, f"Modest revenue growth of {growth:.1f}%.")
+    return _ConvictionComponent("Growth", 1, f"Revenue declined {abs(growth):.1f}%.")
+
+
+def _balance_sheet_component(item: WatchlistItem) -> _ConvictionComponent:
+    financials = item.research.financials
+    net_cash = financials.net_cash_eur_m
+    debt_to_equity = financials.debt_to_equity
+    has_net_cash = net_cash is not None and net_cash > 0
+    conservative_debt = debt_to_equity is not None and debt_to_equity <= 0.5
+    if has_net_cash and conservative_debt:
+        return _ConvictionComponent(
+            "Balance sheet", 5, "Net cash and conservative debt/equity."
+        )
+    if has_net_cash or conservative_debt:
+        return _ConvictionComponent(
+            "Balance sheet", 4, "Balance sheet looks conservative on available metrics."
+        )
+    if debt_to_equity is not None and debt_to_equity <= 1.5:
+        return _ConvictionComponent(
+            "Balance sheet", 3, "Debt/equity looks manageable on available data."
+        )
+    if (net_cash is not None and net_cash < 0) or _positive_above(debt_to_equity, 1.5):
+        return _ConvictionComponent(
+            "Balance sheet", 1, "Leverage or net debt needs close review."
+        )
+    return _ConvictionComponent("Balance sheet", 1, "Balance sheet data is not available.")
+
+
+def _momentum_component(item: WatchlistItem) -> _ConvictionComponent:
+    financials = item.research.financials
+    one_year = financials.one_year_return_pct
+    distance = financials.distance_from_52w_high_pct
+    if _has_trading_signal(item):
+        return _ConvictionComponent(
+            "Momentum", 1, "Intraday move is not enough for a long-term thesis."
+        )
+    if (one_year is not None and one_year <= -25) or (
+        distance is not None and distance <= -30
+    ):
+        return _ConvictionComponent(
+            "Momentum", 3, "Contrarian setup; verify why the market discounted it."
+        )
+    if (one_year is not None and one_year >= 75) or (
+        distance is not None and distance >= -5
+    ):
+        return _ConvictionComponent(
+            "Momentum", 2, "Share price looks hot; do not let momentum drive the thesis."
+        )
+    if one_year is not None or distance is not None:
+        return _ConvictionComponent(
+            "Momentum", 3, "Price context is available but secondary to fundamentals."
+        )
+    return _ConvictionComponent("Momentum", 2, "No medium-term price context is available.")
+
+
+def _risk_component(item: WatchlistItem) -> _ConvictionComponent:
+    risks = _public_risk_items((*item.research.risks, *item.score.warnings))
+    risk_text = " ".join(risks).lower()
+    if "extreme intraday spike" in risk_text or "speculative low-price" in risk_text:
+        return _ConvictionComponent(
+            "Risk", 1, "Speculative market signal; position sizing would matter."
+        )
+    if "negative operating margin" in risk_text or "profitability" in risk_text:
+        return _ConvictionComponent(
+            "Risk", 2, "Profitability risk needs manual confirmation."
+        )
+    if "low live turnover" in risk_text or "thin liquidity" in risk_text:
+        return _ConvictionComponent(
+            "Risk", 2, "Liquidity risk could make entry and exit difficult."
+        )
+    if risks:
+        return _ConvictionComponent("Risk", 3, "; ".join(risks[:2]))
+    return _ConvictionComponent(
+        "Risk", 4, "No specific risk flag surfaced in the current screen."
+    )
+
+
+def _data_confidence_component(item: WatchlistItem) -> _ConvictionComponent:
+    financials = item.research.financials
+    metric_count = sum(
+        metric is not None
+        for metric in (
+            financials.pe_ratio,
+            financials.price_to_book,
+            financials.ev_to_ebit,
+            financials.net_cash_eur_m,
+            financials.debt_to_equity,
+            financials.revenue_growth_pct,
+            financials.operating_margin_pct,
+        )
+    )
+    has_profile = bool(item.research.company.business_description)
+    if metric_count == 0 and not has_profile:
+        return _ConvictionComponent(
+            "Data confidence", 0, "No useful fundamentals or profile text are available today."
+        )
+    if item.research.data_quality == DataQuality.GOOD and metric_count >= 4 and has_profile:
+        return _ConvictionComponent(
+            "Data confidence", 5, "Rich fundamentals and profile text are available."
+        )
+    if metric_count >= 4 and has_profile:
+        return _ConvictionComponent(
+            "Data confidence", 4, "Several fundamentals plus profile text are available."
+        )
+    if metric_count >= 2:
+        return _ConvictionComponent(
+            "Data confidence", 3, "Some fundamentals are available; verify in reports."
+        )
+    return _ConvictionComponent(
+        "Data confidence", 1, "Only limited fundamentals are available today."
+    )
+
+
+def _long_term_bucket(item: WatchlistItem, scores: dict[str, int]) -> str:
+    if _has_trading_signal(item) and scores["Data confidence"] <= 1:
+        return "Trading-only mover"
+    if scores["Data confidence"] == 0:
+        return "Excluded due to weak data"
+    if (
+        scores["Business quality"] >= 4
+        and scores["Valuation"] >= 4
+        and scores["Growth"] >= 3
+    ):
+        if (
+            scores["Balance sheet"] >= 3
+            and scores["Risk"] >= 3
+            and scores["Data confidence"] >= 3
+        ):
+            return "High conviction candidate"
+    if (
+        scores["Business quality"] <= 1
+        or scores["Growth"] <= 1
+        or scores["Risk"] <= 2
+        or scores["Data confidence"] <= 1
+    ):
+        return "Speculative / needs more proof"
+    return "Fundamental watchlist candidate"
+
+
+def _long_term_thesis(item: WatchlistItem, bucket: str) -> str:
+    company = item.research.company
+    financials = item.research.financials
+    sector = (company.sector or "business").lower()
+    if bucket == "High conviction candidate":
+        margin = _metric_or_unknown("operating margin", financials.operating_margin_pct)
+        return (
+            f"{company.name} has a profitable {sector} profile "
+            f"({margin}) "
+            f"with {_growth_fragment(financials)} and {_balance_fragment(financials)}; "
+            f"{_valuation_fragment(financials)}."
+        )
+    if bucket == "Trading-only mover":
+        return (
+            f"{company.name} is mainly showing market activity today; without enough "
+            "fundamental support, treat it as a trading idea rather than a long-term "
+            "candidate."
+        )
+    if bucket == "Excluded due to weak data":
+        return (
+            f"{company.name} lacks enough business and fundamental data for a long-term "
+            "thesis today; wait for profile, report, or valuation evidence."
+        )
+    if bucket == "Speculative / needs more proof":
+        return (
+            f"{company.name} is worth monitoring, but the long-term case needs more "
+            f"proof because {_weakest_long_term_issue(item)}."
+        )
+    return (
+        f"{company.name} has enough fundamental evidence for the research queue, "
+        "but valuation, growth, and risks should be checked manually before it "
+        "moves into a conviction list."
+    )
+
+
+def _growth_fragment(financials: FinancialSnapshot) -> str:
+    if financials.revenue_growth_pct is None:
+        return "revenue growth still needs verification"
+    return f"revenue growth of {financials.revenue_growth_pct:.1f}%"
+
+
+def _balance_fragment(financials: FinancialSnapshot) -> str:
+    if financials.net_cash_eur_m is not None and financials.net_cash_eur_m > 0:
+        return "a net cash balance sheet"
+    if financials.debt_to_equity is not None and financials.debt_to_equity <= 0.5:
+        return "conservative debt/equity"
+    return "a balance sheet that still needs review"
+
+
+def _valuation_fragment(financials: FinancialSnapshot) -> str:
+    if (
+        _positive_at_most(financials.pe_ratio, 12)
+        or _positive_at_most(financials.price_to_book, 1.2)
+        or _positive_at_most(financials.ev_to_ebit, 10)
+    ):
+        return "Valuation looks attractive on the available multiples"
+    if (
+        _positive_at_most(financials.pe_ratio, 20)
+        or _positive_at_most(financials.price_to_book, 2.5)
+        or _positive_at_most(financials.ev_to_ebit, 16)
+    ):
+        return "Valuation looks reasonable on the available multiples"
+    return "Valuation needs manual comparison with Nordic peers"
+
+
+def _weakest_long_term_issue(item: WatchlistItem) -> str:
+    financials = item.research.financials
+    if financials.operating_margin_pct is not None and financials.operating_margin_pct < 0:
+        return "profitability is not yet proven"
+    if not item.research.company.business_description:
+        return "the business profile is still limited"
+    if financials.revenue_growth_pct is None:
+        return "revenue growth is not available"
+    if financials.revenue_growth_pct < 0:
+        return "revenue is declining"
+    return "the evidence is not strong enough yet"
+
+
+def _metric_or_unknown(label: str, value: float | None) -> str:
+    if value is None:
+        return f"{label} unavailable"
+    return f"{label} {value:.1f}%"
+
+
+def _positive_at_most(value: float | None, threshold: float) -> bool:
+    return value is not None and 0 < value <= threshold
+
+
+def _positive_above(value: float | None, threshold: float) -> bool:
+    return value is not None and value > threshold
+
+
+def _has_trading_signal(item: WatchlistItem) -> bool:
+    return any(
+        _is_trading_render_signal(signal)
+        for signal in (
+            *item.research.catalysts,
+            *item.research.risks,
+            *item.score.reasons,
+            *item.score.warnings,
+        )
+    )
+
+
+def _is_trading_render_signal(signal: str) -> bool:
+    lower = signal.lower()
+    return (
+        "intraday" in lower
+        or "live turnover" in lower
+        or "trading strategy" in lower
+        or "long-term strategy penalty" in lower
+    )
+
+
+def _table_cell(value: str) -> str:
+    return value.replace("|", "\\|")
 
 
 def _company_description(item: WatchlistItem) -> str:
@@ -386,12 +782,20 @@ def _public_risk_lines(items: tuple[str, ...]) -> list[str]:
     return _public_bullet_lines(items, _humanize_risk)
 
 
+def _public_risk_items(items: tuple[str, ...]) -> list[str]:
+    return _public_items(items, _humanize_risk)
+
+
 def _public_bullet_lines(items: tuple[str, ...], formatter) -> list[str]:
-    formatted = [formatter(item) for item in items]
-    formatted = [item for item in formatted if item]
+    formatted = _public_items(items, formatter)
     if not formatted:
         return ["- None provided."]
     return [f"- {item}" for item in formatted]
+
+
+def _public_items(items: tuple[str, ...], formatter) -> list[str]:
+    formatted = [formatter(item) for item in items]
+    return [item for item in formatted if item]
 
 
 def _humanize_reason(item: str) -> str:

@@ -65,6 +65,7 @@ The workflow runs at 08:00 Europe/Helsinki on weekdays and writes public Markdow
 - Long-term investment ideas, generated with `--strategy long-term`.
 
 Both public lists use `--min-country FI:3`, so each top 10 includes at least three Finnish companies when enough Finnish candidates are available.
+Long-term reports also include a conviction bucket, a plain-English thesis, and component scores for business quality, valuation, growth, balance sheet, momentum, risk, and data confidence.
 
 Public pages:
 
