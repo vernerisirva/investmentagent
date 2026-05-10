@@ -3,7 +3,7 @@
 > Research triage only. Not financial advice.
 
 ## Metadata
-- generated_at: 2026-05-10T18:07:30.869291+00:00
+- generated_at: 2026-05-10T18:13:24.340934+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -30,17 +30,17 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Positive intraday momentum (+8.71%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -56,18 +56,18 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+10.1%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -83,18 +83,18 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+12.69%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -110,16 +110,16 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+13.63%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -135,18 +135,18 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Positive intraday momentum (+6.51%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -162,19 +162,19 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+14.16%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -190,18 +190,18 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Positive intraday momentum (+7.1%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -217,19 +217,19 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+12.17%)
 - Moderate live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -245,19 +245,19 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+10.76%)
 - Moderate live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -273,19 +273,19 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Positive intraday momentum (+5.28%)
 - High live turnover
-- trading strategy adjustment applied
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)

@@ -3,7 +3,7 @@
 > Research triage only. Not financial advice.
 
 ## Metadata
-- generated_at: 2026-05-10T18:07:57.681987+00:00
+- generated_at: 2026-05-10T18:13:53.330548+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -16,7 +16,7 @@
 
 ## Source Checks
 - nasdaq nordic live data: ok - 937 companies parsed from https://api.nasdaq.com/api/nordic/screener/shares
-- finimpulse fundamentals: warning - 9/10 Finimpulse lookups parsed
+- finimpulse fundamentals: ok - 10/10 Finimpulse lookups parsed
 
 ## Watchlist
 
@@ -30,15 +30,15 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -54,18 +54,18 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+10.1%)
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
-- long-term strategy adjustment applied
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
+- Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -81,18 +81,18 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+12.69%)
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
-- long-term strategy adjustment applied
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
+- Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -108,22 +108,47 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (BOTX.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #5 Acconeer (ACCON)
+## #5 AAC Clyde Space (AAC)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** AAC Clyde Space AB (publ) provides small satellite technologies and services in Sweden, the United Kingdom, rest of Europe, the United States, Asia, and internationally. It offers command and data handling, cubesat batteries, power system, PCDU, communications, solar arrays, cubesat structure, payloads, attitude determination and control systems (ADCS), electrical power systems, laser and radio communications systems, lightweight structure solutions, payload solutions, propulsion systems, and smallsat technologies, as well as on-board data handling solutions. The company also provides space data as a service; data delivery; mission design, manufacturing, and integration of components services; and launch and ground services. In addition, it operates EPIC spacecraft platform. The company offers its products and services under AAC clyde space, omnisys, spacequest, hyperion, space Africa, and spacemertic brand names. It serves the government, businesses, and educational organizations. The company was formerly known as ÅAC Microtec AB (publ) and changed its name to AAC Clyde Space AB (publ) in November 2019. AAC Clyde Space AB (publ) was incorporated in 2005 and is headquartered in Uppsala, Sweden.
+
+**Score:** 15
+**Data quality:** partial
+
+### Reasons
+- Small market cap
+- First North listing
+- Live price available from Nasdaq Nordic
+- High live turnover
+
+### Risks
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (AAC.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #6 Acconeer (ACCON)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -133,22 +158,22 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ACCON.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #6 ALM Equity Pref (ALM PREF)
+## #7 ALM Equity Pref (ALM PREF)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -158,22 +183,22 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ALM-PREF.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #7 Bahnhof B (BAHN B)
+## #8 Bahnhof B (BAHN B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -188,15 +213,15 @@
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (BAHN-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #8 Nepa (NEPA)
+## #9 Nepa (NEPA)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -206,25 +231,25 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - Strong intraday momentum (+14.16%)
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
-- long-term strategy adjustment applied
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
+- Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (NEPA.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #9 Bioextrax (BIOEX)
+## #10 Bioextrax (BIOEX)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -234,40 +259,18 @@
 **Data quality:** partial
 
 ### Reasons
-- small market cap
+- Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
 - High live turnover
 
 ### Risks
-- Sparse live-source data
-- thin liquidity
-- negative operating margin
-- 1 stated risk(s)
-- partial data quality
+- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
+- Thin liquidity
+- Negative operating margin
+- One risk flag was found in the source data.
+- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (BIOEX.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #10 AAC Clyde Space (AAC)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** AAC Clyde Space is a Sweden-listed First North Telecommunications company on Nasdaq First North Growth Market Sweden.
-
-**Score:** 3
-**Data quality:** thin
-
-### Reasons
-- First North listing
-- Live price available from Nasdaq Nordic
-- High live turnover
-
-### Risks
-- Sparse live-source data
-- 1 stated risk(s)
-- thin data quality
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
