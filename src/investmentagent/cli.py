@@ -1,9 +1,14 @@
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
 import typer
 
-from investmentagent.fundamentals import EnrichedResearchProvider, YahooFundamentalsProvider
+from investmentagent.fundamentals import (
+    EnrichedResearchProvider,
+    FinnhubFundamentalsProvider,
+    YahooFundamentalsProvider,
+)
 from investmentagent.providers import create_provider
 from investmentagent.renderers import (
     render_deep_dive_json,
@@ -52,15 +57,19 @@ def _normalize_output_option(output: str) -> str:
 
 def _normalize_fundamentals_option(value: str) -> str:
     normalized = value.strip().lower()
-    if normalized not in {"auto", "off", "free"}:
-        raise typer.BadParameter("fundamentals must be 'auto', 'off', or 'free'")
+    if normalized not in {"auto", "off", "free", "finnhub"}:
+        raise typer.BadParameter("fundamentals must be 'auto', 'off', 'free', or 'finnhub'")
     return normalized
 
 
-def _effective_fundamentals_mode(normalized_mode: str, normalized_provider_name: str) -> str:
+def _effective_fundamentals_mode(
+    normalized_mode: str, normalized_provider_name: str, finnhub_api_key: str | None
+) -> str:
     if normalized_provider_name != "live":
         return "off"
     if normalized_mode == "auto":
+        if finnhub_api_key:
+            return "finnhub"
         return "free"
     return normalized_mode
 
@@ -104,7 +113,7 @@ def watchlist(
     fundamentals: str = typer.Option(
         "auto",
         "--fundamentals",
-        help="Fundamentals enrichment mode: auto, off, or free.",
+        help="Fundamentals enrichment mode: auto, off, free, or finnhub.",
     ),
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     verbose: bool = typer.Option(False, "--verbose"),
@@ -122,15 +131,23 @@ def watchlist(
     countries = _parse_countries(country)
     provider = _provider_from_option(provider_name)
     normalized_provider_name = provider_name.strip().lower()
+    finnhub_api_key = os.environ.get("FINNHUB_API_KEY")
     effective_fundamentals = _effective_fundamentals_mode(
-        normalized_fundamentals, normalized_provider_name
+        normalized_fundamentals, normalized_provider_name, finnhub_api_key
     )
     if normalized_provider_name == "live":
+        if effective_fundamentals == "finnhub" and finnhub_api_key is None:
+            raise typer.BadParameter("FINNHUB_API_KEY is required for --fundamentals finnhub")
         _raise_for_source_errors(provider)
+        fundamentals_provider = None
         if effective_fundamentals == "free":
+            fundamentals_provider = YahooFundamentalsProvider()
+        elif effective_fundamentals == "finnhub":
+            fundamentals_provider = FinnhubFundamentalsProvider(finnhub_api_key)
+        if fundamentals_provider is not None:
             provider = EnrichedResearchProvider(
                 provider,
-                YahooFundamentalsProvider(),
+                fundamentals_provider,
                 max_enrichments=limit,
             )
     items = build_watchlist(
