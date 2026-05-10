@@ -3,6 +3,7 @@ from pathlib import Path
 
 import typer
 
+from investmentagent.fundamentals import EnrichedResearchProvider, YahooFundamentalsProvider
 from investmentagent.providers import create_provider
 from investmentagent.renderers import (
     render_deep_dive_json,
@@ -49,6 +50,13 @@ def _normalize_output_option(output: str) -> str:
     return normalized
 
 
+def _normalize_fundamentals_option(value: str) -> str:
+    normalized = value.strip().lower()
+    if normalized not in {"off", "free"}:
+        raise typer.BadParameter("fundamentals must be 'off' or 'free'")
+    return normalized
+
+
 def _raise_for_source_errors(provider) -> None:
     for check in provider.source_checks():
         if check.status == "error":
@@ -85,6 +93,11 @@ def watchlist(
         "--strategy",
         help="Watchlist strategy: balanced, long-term, trading, momentum, or discovery.",
     ),
+    fundamentals: str = typer.Option(
+        "free",
+        "--fundamentals",
+        help="Fundamentals enrichment mode: off or free.",
+    ),
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     verbose: bool = typer.Option(False, "--verbose"),
     provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
@@ -93,14 +106,18 @@ def watchlist(
     ),
 ) -> None:
     normalized_output = _normalize_output_option(output)
+    normalized_fundamentals = _normalize_fundamentals_option(fundamentals)
     try:
         normalized_strategy = normalize_watchlist_strategy(strategy)
     except ValueError as exc:
         raise typer.BadParameter(str(exc)) from exc
     countries = _parse_countries(country)
     provider = _provider_from_option(provider_name)
-    if provider_name.strip().lower() == "live":
+    normalized_provider_name = provider_name.strip().lower()
+    if normalized_provider_name == "live":
         _raise_for_source_errors(provider)
+        if normalized_fundamentals == "free":
+            provider = EnrichedResearchProvider(provider, YahooFundamentalsProvider())
     items = build_watchlist(
         provider,
         countries=countries,
@@ -118,7 +135,8 @@ def watchlist(
             items,
             {
                 "generated_at": datetime.now(timezone.utc).isoformat(),
-                "provider": provider_name.strip().lower(),
+                "provider": normalized_provider_name,
+                "fundamentals": normalized_fundamentals,
                 "countries": list(countries),
                 "limit": limit,
                 "include_first_north": include_first_north,

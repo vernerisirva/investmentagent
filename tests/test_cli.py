@@ -112,6 +112,51 @@ def test_watchlist_accepts_strategy_option():
     assert "#1" in result.output
 
 
+def test_watchlist_accepts_fundamentals_option():
+    result = runner.invoke(
+        app, ["watchlist", "--provider", "fixture", "--fundamentals", "off", "--limit", "1"]
+    )
+
+    assert result.exit_code == 0
+    assert "#1" in result.output
+
+
+def test_watchlist_wraps_live_provider_with_free_fundamentals(monkeypatch):
+    wrapped = {}
+
+    class LiveProvider:
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return [SourceCheck("nasdaq nordic live data", "ok", "live data available")]
+
+    class FundamentalsProvider:
+        pass
+
+    class EnrichedProvider:
+        def __init__(self, base_provider, fundamentals_provider):
+            wrapped["base_provider"] = base_provider
+            wrapped["fundamentals_provider"] = fundamentals_provider
+            self.base_provider = base_provider
+
+        def list_companies(self, countries, include_first_north):
+            return self.base_provider.list_companies(countries, include_first_north)
+
+        def source_checks(self):
+            return self.base_provider.source_checks()
+
+    monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
+    monkeypatch.setattr(cli, "YahooFundamentalsProvider", FundamentalsProvider, raising=False)
+    monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--fundamentals", "free"])
+
+    assert result.exit_code == 0
+    assert isinstance(wrapped["base_provider"], LiveProvider)
+    assert isinstance(wrapped["fundamentals_provider"], FundamentalsProvider)
+
+
 def test_watchlist_rejects_invalid_strategy_before_provider_work(monkeypatch):
     def fail_if_called(name: str):
         raise AssertionError("provider should not be created for invalid strategy")
@@ -122,6 +167,18 @@ def test_watchlist_rejects_invalid_strategy_before_provider_work(monkeypatch):
 
     assert result.exit_code != 0
     assert "strategy must be one of" in result.output
+
+
+def test_watchlist_rejects_invalid_fundamentals_before_provider_work(monkeypatch):
+    def fail_if_called(name: str):
+        raise AssertionError("provider should not be created for invalid fundamentals mode")
+
+    monkeypatch.setattr(cli, "create_provider", fail_if_called)
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--fundamentals", "bad"])
+
+    assert result.exit_code != 0
+    assert "fundamentals must be 'off' or 'free'" in result.output
 
 
 def test_watchlist_saves_strategy_metadata():
@@ -143,6 +200,29 @@ def test_watchlist_saves_strategy_metadata():
 
     assert result.exit_code == 0
     assert payload["metadata"]["strategy"] == "trading"
+
+
+def test_watchlist_saves_fundamentals_metadata():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--provider",
+                "fixture",
+                "--fundamentals",
+                "off",
+                "--limit",
+                "1",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert payload["metadata"]["fundamentals"] == "off"
 
 
 def test_watchlist_command_accepts_discovery_filters():
