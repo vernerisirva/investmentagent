@@ -284,6 +284,37 @@ def test_long_term_strategy_discounts_intraday_trading_setup():
     assert items[0].research.company.ticker == "VALUE"
 
 
+def test_long_term_strategy_prefers_enriched_value_over_intraday_mover():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "MOVER",
+                pe_ratio=None,
+                price_to_book=None,
+                net_cash_eur_m=None,
+                catalysts=("Strong intraday momentum (+12.93%)", "High live turnover"),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.THIN,
+            ),
+            make_research(
+                "VALUE",
+                pe_ratio=8.5,
+                price_to_book=0.9,
+                net_cash_eur_m=30.0,
+                catalysts=("Live price available from Nasdaq Nordic",),
+                risks=("Sparse live-source data",),
+                data_quality=DataQuality.PARTIAL,
+            ),
+        )
+    )
+
+    items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="long-term"
+    )
+
+    assert items[0].research.company.ticker == "VALUE"
+
+
 def test_trading_strategy_boosts_strong_momentum_and_turnover():
     provider = FakeResearchProvider(
         (
