@@ -3,7 +3,7 @@
 > Research triage only. Not financial advice.
 
 ## Metadata
-- generated_at: 2026-05-10T18:13:53.330548+00:00
+- generated_at: 2026-05-10T18:20:15.940419+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -36,9 +36,7 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -61,10 +59,8 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Negative operating margin
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 - Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
@@ -88,10 +84,8 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Negative operating margin
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 - Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
@@ -114,10 +108,8 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Thin liquidity
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -139,10 +131,8 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Negative operating margin
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -164,10 +154,8 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Negative operating margin
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -189,10 +177,8 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Negative operating margin
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -213,9 +199,7 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
@@ -238,11 +222,9 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Thin liquidity
 - Negative operating margin
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 - Long-term strategy penalty applied by the ranking model.
 
 ### Evidence
@@ -265,11 +247,9 @@
 - High live turnover
 
 ### Risks
-- Live data is sparse; verify the latest company announcements and Nasdaq data before acting.
 - Thin liquidity
 - Negative operating margin
 - One risk flag was found in the source data.
-- Data quality is partial, so confirm the numbers against company reports before relying on them.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
