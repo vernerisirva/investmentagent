@@ -1,11 +1,19 @@
 import json
 
 from investmentagent.fundamentals import (
+    EnrichedResearchProvider,
     FundamentalsSnapshot,
     YahooFundamentalsProvider,
     yahoo_symbol_candidates,
 )
-from investmentagent.models import Company, DataQuality, ListingSegment
+from investmentagent.models import (
+    Company,
+    CompanyResearch,
+    DataQuality,
+    Evidence,
+    FinancialSnapshot,
+    ListingSegment,
+)
 
 
 def make_company(
@@ -183,3 +191,85 @@ def test_yahoo_source_check_warns_when_lookup_success_is_mixed():
 
     assert check.status == "warning"
     assert "1/2 Yahoo-style lookups parsed" in check.detail
+
+
+class BaseProvider:
+    def __init__(self) -> None:
+        self.company = make_company()
+
+    def list_companies(self, countries, include_first_north):
+        return [self.company]
+
+    def get_research(self, ticker: str) -> CompanyResearch:
+        return CompanyResearch(
+            company=self.company,
+            financials=FinancialSnapshot(
+                price=110.0, currency="SEK", data_quality=DataQuality.THIN
+            ),
+            catalysts=("Live price available from Nasdaq Nordic",),
+            risks=("Sparse live-source data",),
+            evidence=(),
+            data_quality=DataQuality.THIN,
+        )
+
+    def get_company_research(self, company: Company) -> CompanyResearch:
+        return self.get_research(company.ticker)
+
+    def source_checks(self):
+        return []
+
+
+class StaticFundamentalsProvider:
+    def __init__(self, snapshot):
+        self.snapshot = snapshot
+
+    def get_fundamentals(self, company: Company):
+        return self.snapshot
+
+    def source_check(self):
+        from investmentagent.models import SourceCheck
+
+        return SourceCheck("free fundamentals", "ok", "fixture fundamentals available")
+
+
+def test_enriched_provider_merges_fundamentals_into_research():
+    base = BaseProvider()
+    snapshot = FundamentalsSnapshot(
+        symbol="KAR.ST",
+        market_cap_eur_m=550.0,
+        financials=FinancialSnapshot(
+            pe_ratio=11.2,
+            price_to_book=1.1,
+            operating_margin_pct=14.0,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        evidence=Evidence(
+            "Yahoo-style fundamentals lookup (KAR.ST)",
+            "https://example.test",
+            "yahoo",
+        ),
+    )
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(snapshot))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.company.market_cap_eur_m == 550.0
+    assert research.financials.price == 110.0
+    assert research.financials.currency == "SEK"
+    assert research.financials.pe_ratio == 11.2
+    assert research.financials.price_to_book == 1.1
+    assert research.financials.operating_margin_pct == 14.0
+    assert research.financials.data_quality == DataQuality.PARTIAL
+    assert research.data_quality == DataQuality.PARTIAL
+    assert research.evidence[-1].source == "yahoo"
+
+
+def test_enriched_provider_leaves_research_unchanged_when_fundamentals_missing():
+    base = BaseProvider()
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(None))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.company.market_cap_eur_m is None
+    assert research.financials.pe_ratio is None
+    assert research.data_quality == DataQuality.THIN

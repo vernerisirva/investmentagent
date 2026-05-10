@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import json
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 from investmentagent.models import (
     Company,
+    CompanyResearch,
     DataQuality,
     Evidence,
     FinancialSnapshot,
@@ -86,6 +87,84 @@ class YahooFundamentalsProvider:
             )
 
         return SourceCheck(name="free fundamentals", status="warning", detail=ratio)
+
+
+class EnrichedResearchProvider:
+    def __init__(self, base_provider, fundamentals_provider) -> None:
+        self.base_provider = base_provider
+        self.fundamentals_provider = fundamentals_provider
+
+    def list_companies(self, countries, include_first_north):
+        return self.base_provider.list_companies(countries, include_first_north)
+
+    def get_research(self, ticker: str) -> CompanyResearch:
+        return self._enrich(self.base_provider.get_research(ticker))
+
+    def get_company_research(self, company: Company) -> CompanyResearch:
+        get_company_research = getattr(
+            self.base_provider, "get_company_research", None
+        )
+        if callable(get_company_research):
+            research = get_company_research(company)
+        else:
+            research = self.base_provider.get_research(company.ticker)
+        return self._enrich(research)
+
+    def source_checks(self):
+        checks = list(self.base_provider.source_checks())
+        source_check = getattr(self.fundamentals_provider, "source_check", None)
+        if callable(source_check):
+            checks.append(source_check())
+        return checks
+
+    def _enrich(self, research: CompanyResearch) -> CompanyResearch:
+        snapshot = self.fundamentals_provider.get_fundamentals(research.company)
+        if snapshot is None:
+            return research
+
+        company = research.company
+        if snapshot.market_cap_eur_m is not None:
+            company = replace(company, market_cap_eur_m=snapshot.market_cap_eur_m)
+
+        financials = _merge_financials(research.financials, snapshot.financials)
+        evidence = research.evidence
+        if snapshot.evidence is not None:
+            evidence = (*evidence, snapshot.evidence)
+
+        return replace(
+            research,
+            company=company,
+            financials=financials,
+            evidence=evidence,
+            data_quality=financials.data_quality,
+        )
+
+
+def _merge_financials(
+    base: FinancialSnapshot, enrichment: FinancialSnapshot
+) -> FinancialSnapshot:
+    preserved_fields = {
+        "price",
+        "currency",
+        "one_year_return_pct",
+        "distance_from_52w_high_pct",
+    }
+    merged_values = {}
+    enrichment_applied = False
+
+    for field_name in FinancialSnapshot.__dataclass_fields__:
+        if field_name in preserved_fields or field_name == "data_quality":
+            continue
+
+        value = getattr(enrichment, field_name)
+        if value is not None:
+            merged_values[field_name] = value
+            enrichment_applied = True
+
+    if enrichment_applied:
+        merged_values["data_quality"] = DataQuality.PARTIAL
+
+    return replace(base, **merged_values)
 
 
 def yahoo_symbol_candidates(company: Company) -> tuple[str, ...]:
