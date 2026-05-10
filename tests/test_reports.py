@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from openclaw.models import (
+from investmentagent.models import (
     Company,
     CompanyResearch,
     DataQuality,
@@ -11,14 +11,14 @@ from openclaw.models import (
     ScoreBreakdown,
     WatchlistItem,
 )
-from openclaw.providers import FixtureResearchProvider
-from openclaw.renderers import (
+from investmentagent.providers import FixtureResearchProvider
+from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
     render_watchlist_json,
     render_watchlist_text,
 )
-from openclaw.reports import build_deep_dive, build_watchlist
+from investmentagent.reports import build_deep_dive, build_watchlist
 
 
 class FakeResearchProvider:

@@ -1,8 +1,8 @@
-# OpenClaw Agent Implementation Plan
+# InvestmentAgent Agent Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a CLI-first OpenClaw v1 that ranks Swedish and Finnish public small/mid-cap stock opportunities and generates evidence-aware deep-dive reports.
+**Goal:** Build a CLI-first InvestmentAgent v1 that ranks Swedish and Finnish public small/mid-cap stock opportunities and generates evidence-aware deep-dive reports.
 
 **Architecture:** Implement a Python package with focused domain models, deterministic scoring, provider interfaces, fixture-backed free-source providers, and Typer CLI commands. The first working version must run offline from bundled seed data while keeping provider boundaries ready for real free web sources later.
 
@@ -14,14 +14,14 @@
 
 - Create `pyproject.toml`: package metadata, console script, pytest config, dependencies.
 - Create `README.md`: quickstart, commands, and research disclaimer.
-- Create `src/openclaw/__init__.py`: package version.
-- Create `src/openclaw/models.py`: domain dataclasses and enums for companies, metrics, evidence, scores, watchlist items, reports, and source checks.
-- Create `src/openclaw/scoring.py`: deterministic scoring engine.
-- Create `src/openclaw/providers.py`: provider protocols and fixture-backed provider implementation.
-- Create `src/openclaw/data/nordic_seed_companies.json`: small bundled seed universe with Swedish/Finnish listed examples.
-- Create `src/openclaw/reports.py`: watchlist and deep-dive builders.
-- Create `src/openclaw/renderers.py`: text and JSON renderers.
-- Create `src/openclaw/cli.py`: Typer CLI commands.
+- Create `src/investmentagent/__init__.py`: package version.
+- Create `src/investmentagent/models.py`: domain dataclasses and enums for companies, metrics, evidence, scores, watchlist items, reports, and source checks.
+- Create `src/investmentagent/scoring.py`: deterministic scoring engine.
+- Create `src/investmentagent/providers.py`: provider protocols and fixture-backed provider implementation.
+- Create `src/investmentagent/data/nordic_seed_companies.json`: small bundled seed universe with Swedish/Finnish listed examples.
+- Create `src/investmentagent/reports.py`: watchlist and deep-dive builders.
+- Create `src/investmentagent/renderers.py`: text and JSON renderers.
+- Create `src/investmentagent/cli.py`: Typer CLI commands.
 - Create `tests/test_models.py`: model sanity tests.
 - Create `tests/test_scoring.py`: scoring tests.
 - Create `tests/test_providers.py`: provider tests.
@@ -33,7 +33,7 @@
 **Files:**
 - Create: `pyproject.toml`
 - Create: `README.md`
-- Create: `src/openclaw/__init__.py`
+- Create: `src/investmentagent/__init__.py`
 - Test: `tests/test_models.py`
 
 - [ ] **Step 1: Write the failing package import test**
@@ -41,7 +41,7 @@
 Create `tests/test_models.py`:
 
 ```python
-from openclaw import __version__
+from investmentagent import __version__
 
 
 def test_package_exposes_version():
@@ -52,7 +52,7 @@ def test_package_exposes_version():
 
 Run: `pytest tests/test_models.py::test_package_exposes_version -v`
 
-Expected: FAIL with `ModuleNotFoundError: No module named 'openclaw'`.
+Expected: FAIL with `ModuleNotFoundError: No module named 'investmentagent'`.
 
 - [ ] **Step 3: Add package metadata**
 
@@ -64,7 +64,7 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "openclaw"
+name = "investmentagent"
 version = "0.1.0"
 description = "CLI-first Nordic small/mid-cap investing research agent"
 readme = "README.md"
@@ -79,13 +79,13 @@ dev = [
 ]
 
 [project.scripts]
-openclaw = "openclaw.cli:app"
+investmentagent = "investmentagent.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-openclaw = ["data/*.json"]
+investmentagent = ["data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -95,22 +95,22 @@ pythonpath = ["src"]
 Create `README.md`:
 
 ```markdown
-# OpenClaw
+# InvestmentAgent
 
-OpenClaw is a CLI-first research triage tool for Swedish and Finnish publicly listed stocks, including First North companies. It focuses on small and mid-cap discovery with a value bias.
+InvestmentAgent is a CLI-first research triage tool for Swedish and Finnish publicly listed stocks, including First North companies. It focuses on small and mid-cap discovery with a value bias.
 
-OpenClaw is not financial advice. It ranks research candidates, shows evidence, and highlights uncertainty so a human investor can decide what to investigate next.
+InvestmentAgent is not financial advice. It ranks research candidates, shows evidence, and highlights uncertainty so a human investor can decide what to investigate next.
 
 ## Commands
 
 ```bash
-openclaw watchlist --country se,fi --limit 20
-openclaw deep-dive <ticker>
-openclaw sources test
+investmentagent watchlist --country se,fi --limit 20
+investmentagent deep-dive <ticker>
+investmentagent sources test
 ```
 ```
 
-Create `src/openclaw/__init__.py`:
+Create `src/investmentagent/__init__.py`:
 
 ```python
 __version__ = "0.1.0"
@@ -125,14 +125,14 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add pyproject.toml README.md src/openclaw/__init__.py tests/test_models.py
-git commit -m "chore: scaffold OpenClaw package"
+git add pyproject.toml README.md src/investmentagent/__init__.py tests/test_models.py
+git commit -m "chore: scaffold InvestmentAgent package"
 ```
 
 ## Task 2: Domain Models
 
 **Files:**
-- Create: `src/openclaw/models.py`
+- Create: `src/investmentagent/models.py`
 - Modify: `tests/test_models.py`
 
 - [ ] **Step 1: Write failing model tests**
@@ -140,7 +140,7 @@ git commit -m "chore: scaffold OpenClaw package"
 Append to `tests/test_models.py`:
 
 ```python
-from openclaw.models import Company, DataQuality, Evidence, FinancialSnapshot, ListingSegment
+from investmentagent.models import Company, DataQuality, Evidence, FinancialSnapshot, ListingSegment
 
 
 def test_company_normalizes_ticker_and_country():
@@ -174,11 +174,11 @@ def test_evidence_requires_label_and_url():
 
 Run: `pytest tests/test_models.py -v`
 
-Expected: FAIL with `ModuleNotFoundError: No module named 'openclaw.models'`.
+Expected: FAIL with `ModuleNotFoundError: No module named 'investmentagent.models'`.
 
 - [ ] **Step 3: Implement models**
 
-Create `src/openclaw/models.py`:
+Create `src/investmentagent/models.py`:
 
 ```python
 from __future__ import annotations
@@ -300,14 +300,14 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/openclaw/models.py tests/test_models.py
-git commit -m "feat: add OpenClaw domain models"
+git add src/investmentagent/models.py tests/test_models.py
+git commit -m "feat: add InvestmentAgent domain models"
 ```
 
 ## Task 3: Scoring Engine
 
 **Files:**
-- Create: `src/openclaw/scoring.py`
+- Create: `src/investmentagent/scoring.py`
 - Create: `tests/test_scoring.py`
 
 - [ ] **Step 1: Write failing scoring tests**
@@ -315,8 +315,8 @@ git commit -m "feat: add OpenClaw domain models"
 Create `tests/test_scoring.py`:
 
 ```python
-from openclaw.models import Company, CompanyResearch, DataQuality, FinancialSnapshot, ListingSegment
-from openclaw.scoring import score_research
+from investmentagent.models import Company, CompanyResearch, DataQuality, FinancialSnapshot, ListingSegment
+from investmentagent.scoring import score_research
 
 
 def make_research(**financial_overrides):
@@ -384,16 +384,16 @@ def test_score_penalizes_expensive_unprofitable_profile():
 
 Run: `pytest tests/test_scoring.py -v`
 
-Expected: FAIL with `ModuleNotFoundError: No module named 'openclaw.scoring'`.
+Expected: FAIL with `ModuleNotFoundError: No module named 'investmentagent.scoring'`.
 
 - [ ] **Step 3: Implement scoring engine**
 
-Create `src/openclaw/scoring.py`:
+Create `src/investmentagent/scoring.py`:
 
 ```python
 from __future__ import annotations
 
-from openclaw.models import CompanyResearch, DataQuality, ListingSegment, ScoreBreakdown
+from investmentagent.models import CompanyResearch, DataQuality, ListingSegment, ScoreBreakdown
 
 
 def score_research(research: CompanyResearch) -> ScoreBreakdown:
@@ -477,15 +477,15 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/openclaw/scoring.py tests/test_scoring.py
+git add src/investmentagent/scoring.py tests/test_scoring.py
 git commit -m "feat: add transparent scoring engine"
 ```
 
 ## Task 4: Fixture-Backed Providers
 
 **Files:**
-- Create: `src/openclaw/providers.py`
-- Create: `src/openclaw/data/nordic_seed_companies.json`
+- Create: `src/investmentagent/providers.py`
+- Create: `src/investmentagent/data/nordic_seed_companies.json`
 - Create: `tests/test_providers.py`
 
 - [ ] **Step 1: Write failing provider tests**
@@ -493,8 +493,8 @@ git commit -m "feat: add transparent scoring engine"
 Create `tests/test_providers.py`:
 
 ```python
-from openclaw.models import DataQuality
-from openclaw.providers import FixtureResearchProvider
+from investmentagent.models import DataQuality
+from investmentagent.providers import FixtureResearchProvider
 
 
 def test_fixture_provider_filters_country_and_first_north():
@@ -531,11 +531,11 @@ def test_source_checks_report_seed_data_available():
 
 Run: `pytest tests/test_providers.py -v`
 
-Expected: FAIL with `ModuleNotFoundError: No module named 'openclaw.providers'`.
+Expected: FAIL with `ModuleNotFoundError: No module named 'investmentagent.providers'`.
 
 - [ ] **Step 3: Add seed data**
 
-Create `src/openclaw/data/nordic_seed_companies.json`:
+Create `src/investmentagent/data/nordic_seed_companies.json`:
 
 ```json
 [
@@ -661,7 +661,7 @@ Create `src/openclaw/data/nordic_seed_companies.json`:
 
 - [ ] **Step 4: Implement provider**
 
-Create `src/openclaw/providers.py`:
+Create `src/investmentagent/providers.py`:
 
 ```python
 from __future__ import annotations
@@ -670,7 +670,7 @@ import json
 from importlib.resources import files
 from typing import Protocol
 
-from openclaw.models import (
+from investmentagent.models import (
     Company,
     CompanyResearch,
     DataQuality,
@@ -694,7 +694,7 @@ class ResearchProvider(Protocol):
 
 class FixtureResearchProvider:
     def __init__(self) -> None:
-        data_path = files("openclaw").joinpath("data/nordic_seed_companies.json")
+        data_path = files("investmentagent").joinpath("data/nordic_seed_companies.json")
         self._rows = json.loads(data_path.read_text(encoding="utf-8"))
 
     def list_companies(self, countries: tuple[str, ...] = ("SE", "FI"), include_first_north: bool = True) -> list[Company]:
@@ -759,14 +759,14 @@ Expected: PASS.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/openclaw/providers.py src/openclaw/data/nordic_seed_companies.json tests/test_providers.py
+git add src/investmentagent/providers.py src/investmentagent/data/nordic_seed_companies.json tests/test_providers.py
 git commit -m "feat: add fixture-backed Nordic research provider"
 ```
 
 ## Task 5: Watchlist and Deep-Dive Builders
 
 **Files:**
-- Create: `src/openclaw/reports.py`
+- Create: `src/investmentagent/reports.py`
 - Create: `tests/test_reports.py`
 
 - [ ] **Step 1: Write failing report tests**
@@ -774,8 +774,8 @@ git commit -m "feat: add fixture-backed Nordic research provider"
 Create `tests/test_reports.py`:
 
 ```python
-from openclaw.providers import FixtureResearchProvider
-from openclaw.reports import build_deep_dive, build_watchlist
+from investmentagent.providers import FixtureResearchProvider
+from investmentagent.reports import build_deep_dive, build_watchlist
 
 
 def test_build_watchlist_returns_ranked_items_by_score():
@@ -802,18 +802,18 @@ def test_build_deep_dive_includes_manual_checks_and_thesis():
 
 Run: `pytest tests/test_reports.py -v`
 
-Expected: FAIL with `ModuleNotFoundError: No module named 'openclaw.reports'`.
+Expected: FAIL with `ModuleNotFoundError: No module named 'investmentagent.reports'`.
 
 - [ ] **Step 3: Implement report builders**
 
-Create `src/openclaw/reports.py`:
+Create `src/investmentagent/reports.py`:
 
 ```python
 from __future__ import annotations
 
-from openclaw.models import DeepDiveReport, WatchlistItem
-from openclaw.providers import ResearchProvider
-from openclaw.scoring import score_research
+from investmentagent.models import DeepDiveReport, WatchlistItem
+from investmentagent.providers import ResearchProvider
+from investmentagent.scoring import score_research
 
 
 def build_watchlist(
@@ -887,14 +887,14 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/openclaw/reports.py tests/test_reports.py
+git add src/investmentagent/reports.py tests/test_reports.py
 git commit -m "feat: build watchlist and deep-dive reports"
 ```
 
 ## Task 6: Renderers
 
 **Files:**
-- Create: `src/openclaw/renderers.py`
+- Create: `src/investmentagent/renderers.py`
 - Modify: `tests/test_reports.py`
 
 - [ ] **Step 1: Write failing renderer tests**
@@ -904,7 +904,7 @@ Append to `tests/test_reports.py`:
 ```python
 import json
 
-from openclaw.renderers import render_deep_dive_text, render_watchlist_json, render_watchlist_text
+from investmentagent.renderers import render_deep_dive_text, render_watchlist_json, render_watchlist_text
 
 
 def test_render_watchlist_text_includes_rank_score_risks_and_links():
@@ -944,11 +944,11 @@ def test_render_deep_dive_text_includes_thesis_sections():
 
 Run: `pytest tests/test_reports.py -v`
 
-Expected: FAIL with `ModuleNotFoundError: No module named 'openclaw.renderers'`.
+Expected: FAIL with `ModuleNotFoundError: No module named 'investmentagent.renderers'`.
 
 - [ ] **Step 3: Implement renderers**
 
-Create `src/openclaw/renderers.py`:
+Create `src/investmentagent/renderers.py`:
 
 ```python
 from __future__ import annotations
@@ -956,7 +956,7 @@ from __future__ import annotations
 import json
 from dataclasses import asdict
 
-from openclaw.models import DeepDiveReport, WatchlistItem
+from investmentagent.models import DeepDiveReport, WatchlistItem
 
 
 DISCLAIMER = "Research triage only. Not financial advice."
@@ -1052,14 +1052,14 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/openclaw/renderers.py tests/test_reports.py
+git add src/investmentagent/renderers.py tests/test_reports.py
 git commit -m "feat: render watchlists and deep dives"
 ```
 
 ## Task 7: CLI Commands
 
 **Files:**
-- Create: `src/openclaw/cli.py`
+- Create: `src/investmentagent/cli.py`
 - Create: `tests/test_cli.py`
 
 - [ ] **Step 1: Write failing CLI tests**
@@ -1069,7 +1069,7 @@ Create `tests/test_cli.py`:
 ```python
 from typer.testing import CliRunner
 
-from openclaw.cli import app
+from investmentagent.cli import app
 
 
 runner = CliRunner()
@@ -1110,11 +1110,11 @@ def test_sources_test_command_reports_fixture_status():
 
 Run: `pytest tests/test_cli.py -v`
 
-Expected: FAIL with `ModuleNotFoundError: No module named 'openclaw.cli'`.
+Expected: FAIL with `ModuleNotFoundError: No module named 'investmentagent.cli'`.
 
 - [ ] **Step 3: Implement CLI**
 
-Create `src/openclaw/cli.py`:
+Create `src/investmentagent/cli.py`:
 
 ```python
 from __future__ import annotations
@@ -1123,12 +1123,12 @@ from typing import Annotated
 
 import typer
 
-from openclaw.providers import FixtureResearchProvider
-from openclaw.renderers import render_deep_dive_text, render_watchlist_json, render_watchlist_text
-from openclaw.reports import build_deep_dive, build_watchlist
+from investmentagent.providers import FixtureResearchProvider
+from investmentagent.renderers import render_deep_dive_text, render_watchlist_json, render_watchlist_text
+from investmentagent.reports import build_deep_dive, build_watchlist
 
 
-app = typer.Typer(help="OpenClaw Nordic investing research CLI.")
+app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.")
 sources_app = typer.Typer(help="Source diagnostics.")
 app.add_typer(sources_app, name="sources")
 
@@ -1191,8 +1191,8 @@ Expected: PASS.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/openclaw/cli.py tests/test_cli.py
-git commit -m "feat: add OpenClaw CLI commands"
+git add src/investmentagent/cli.py tests/test_cli.py
+git commit -m "feat: add InvestmentAgent CLI commands"
 ```
 
 ## Task 8: Final Verification and README Polish
@@ -1205,11 +1205,11 @@ git commit -m "feat: add OpenClaw CLI commands"
 Replace `README.md` with:
 
 ```markdown
-# OpenClaw
+# InvestmentAgent
 
-OpenClaw is a CLI-first research triage tool for Swedish and Finnish publicly listed stocks, including First North companies. It focuses on small and mid-cap discovery with a value bias.
+InvestmentAgent is a CLI-first research triage tool for Swedish and Finnish publicly listed stocks, including First North companies. It focuses on small and mid-cap discovery with a value bias.
 
-OpenClaw is not financial advice. It ranks research candidates, shows evidence, and highlights uncertainty so a human investor can decide what to investigate next.
+InvestmentAgent is not financial advice. It ranks research candidates, shows evidence, and highlights uncertainty so a human investor can decide what to investigate next.
 
 ## Install for local development
 
@@ -1220,10 +1220,10 @@ python -m pip install -e ".[dev]"
 ## Commands
 
 ```bash
-openclaw watchlist --country se,fi --limit 20
-openclaw watchlist --country se,fi --limit 5 --output json
-openclaw deep-dive FREEM
-openclaw sources test
+investmentagent watchlist --country se,fi --limit 20
+investmentagent watchlist --country se,fi --limit 5 --output json
+investmentagent deep-dive FREEM
+investmentagent sources test
 ```
 
 ## Current data mode
@@ -1249,15 +1249,15 @@ Expected: PASS.
 
 - [ ] **Step 3: Run CLI smoke checks**
 
-Run: `python -m openclaw.cli --help`
+Run: `python -m investmentagent.cli --help`
 
 Expected: CLI help renders without traceback.
 
-Run: `python -m openclaw.cli watchlist --country se,fi --limit 3`
+Run: `python -m investmentagent.cli watchlist --country se,fi --limit 3`
 
 Expected: Text output contains `#1`, `Score:`, `Risks:`, `Evidence:`, and `Not financial advice`.
 
-Run: `python -m openclaw.cli deep-dive FREEM`
+Run: `python -m investmentagent.cli deep-dive FREEM`
 
 Expected: Text output contains `Freemelt`, `Bull case`, `Bear case`, and `Next manual checks`.
 
@@ -1271,7 +1271,7 @@ Expected: only intended changes are present.
 
 ```bash
 git add README.md
-git commit -m "docs: document OpenClaw CLI usage"
+git commit -m "docs: document InvestmentAgent CLI usage"
 ```
 
 ## Self-Review

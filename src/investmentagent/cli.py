@@ -1,23 +1,23 @@
 import typer
 
-from openclaw.providers import FixtureResearchProvider
-from openclaw.renderers import (
+from investmentagent.providers import FixtureResearchProvider
+from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
     render_watchlist_json,
     render_watchlist_text,
 )
-from openclaw.reports import build_deep_dive, build_watchlist
+from investmentagent.reports import build_deep_dive, build_watchlist
 
 
-app = typer.Typer(help="OpenClaw Nordic investing research CLI.", no_args_is_help=False)
+app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args_is_help=False)
 sources_app = typer.Typer(help="Inspect and validate research sources.")
 app.add_typer(sources_app, name="sources")
 
 
 @app.callback(invoke_without_command=True)
 def main(ctx: typer.Context) -> None:
-    """OpenClaw Nordic investing research CLI."""
+    """InvestmentAgent Nordic investing research CLI."""
     if ctx.invoked_subcommand is None:
         typer.echo(ctx.get_help())
         raise typer.Exit()

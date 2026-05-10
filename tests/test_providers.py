@@ -1,5 +1,5 @@
-from openclaw.models import DataQuality
-from openclaw.providers import FixtureResearchProvider
+from investmentagent.models import DataQuality
+from investmentagent.providers import FixtureResearchProvider
 
 
 def test_fixture_provider_filters_country_and_first_north():

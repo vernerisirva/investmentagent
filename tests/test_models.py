@@ -1,4 +1,4 @@
-from openclaw.models import (
+from investmentagent.models import (
     Company,
     CompanyResearch,
     DataQuality,

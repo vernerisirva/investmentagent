@@ -1,8 +1,8 @@
-# OpenClaw
+# InvestmentAgent
 
-OpenClaw is a CLI-first research triage tool for Swedish and Finnish publicly listed stocks, including First North companies. It focuses on small and mid-cap discovery with a value bias.
+InvestmentAgent is a CLI-first research triage tool for Swedish and Finnish publicly listed stocks, including First North companies. It focuses on small and mid-cap discovery with a value bias.
 
-OpenClaw is not financial advice. It ranks research candidates, shows evidence, and highlights uncertainty so a human investor can decide what to investigate next.
+InvestmentAgent is not financial advice. It ranks research candidates, shows evidence, and highlights uncertainty so a human investor can decide what to investigate next.
 
 ## Install for local development
 
@@ -13,10 +13,10 @@ python -m pip install -e ".[dev]"
 ## Commands
 
 ```bash
-openclaw watchlist --country se,fi --limit 20
-openclaw watchlist --country se,fi --limit 5 --output json
-openclaw deep-dive FREEM
-openclaw sources test
+investmentagent watchlist --country se,fi --limit 20
+investmentagent watchlist --country se,fi --limit 5 --output json
+investmentagent deep-dive FREEM
+investmentagent sources test
 ```
 
 ## Current data mode

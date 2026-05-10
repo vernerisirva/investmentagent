@@ -4,7 +4,7 @@ import sys
 
 from typer.testing import CliRunner
 
-from openclaw.cli import app
+from investmentagent.cli import app
 
 
 runner = CliRunner()
@@ -16,7 +16,7 @@ def test_console_script_target_exposes_app():
 
 def test_module_invocation_renders_help():
     result = subprocess.run(
-        [sys.executable, "-m", "openclaw.cli", "--help"],
+        [sys.executable, "-m", "investmentagent.cli", "--help"],
         check=False,
         capture_output=True,
         text=True,

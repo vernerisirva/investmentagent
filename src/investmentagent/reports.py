@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from openclaw.models import Company, DeepDiveReport, WatchlistItem
-from openclaw.providers import ResearchProvider
-from openclaw.scoring import score_research
+from investmentagent.models import Company, DeepDiveReport, WatchlistItem
+from investmentagent.providers import ResearchProvider
+from investmentagent.scoring import score_research
 
 
 def build_watchlist(

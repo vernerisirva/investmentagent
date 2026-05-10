@@ -4,7 +4,7 @@ import json
 from importlib.resources import files
 from typing import Protocol
 
-from openclaw.models import (
+from investmentagent.models import (
     Company,
     CompanyResearch,
     DataQuality,
@@ -30,7 +30,7 @@ class ResearchProvider(Protocol):
 
 class FixtureResearchProvider:
     def __init__(self) -> None:
-        data_path = files("openclaw").joinpath("data/nordic_seed_companies.json")
+        data_path = files("investmentagent").joinpath("data/nordic_seed_companies.json")
         self._rows = json.loads(data_path.read_text(encoding="utf-8"))
 
     def list_companies(

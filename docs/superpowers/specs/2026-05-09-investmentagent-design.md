@@ -1,12 +1,12 @@
-# OpenClaw Agent Design
+# InvestmentAgent Agent Design
 
 Date: 2026-05-09
 
 ## Goal
 
-Build OpenClaw as a CLI-first investing research agent for publicly listed Swedish and Finnish companies, including First North companies. The first version focuses on small and mid-cap discovery with a value bias. It produces a daily ranked watchlist and deeper company reports for selected tickers.
+Build InvestmentAgent as a CLI-first investing research agent for publicly listed Swedish and Finnish companies, including First North companies. The first version focuses on small and mid-cap discovery with a value bias. It produces a daily ranked watchlist and deeper company reports for selected tickers.
 
-OpenClaw is a research triage tool, not a financial adviser. Outputs must show evidence, uncertainty, and risks instead of presenting recommendations as certainties.
+InvestmentAgent is a research triage tool, not a financial adviser. Outputs must show evidence, uncertainty, and risks instead of presenting recommendations as certainties.
 
 ## Scope
 
@@ -29,7 +29,7 @@ Excluded from v1:
 
 ## Architecture
 
-OpenClaw uses a modular Python CLI pipeline:
+InvestmentAgent uses a modular Python CLI pipeline:
 
 ```text
 universe -> data collection -> scoring -> ranked watchlist -> optional deep dive
@@ -47,7 +47,7 @@ Provider boundaries should be clean. Free sources may change, block requests, or
 
 ## Daily Watchlist
 
-The `openclaw watchlist` command produces a ranked list of candidates.
+The `investmentagent watchlist` command produces a ranked list of candidates.
 
 Each watchlist item should include:
 
@@ -70,7 +70,7 @@ The watchlist must separate observed facts from interpretation. Missing or unrel
 
 ## Deep-Dive Reports
 
-The `openclaw deep-dive <ticker>` command generates a fuller research note for one company.
+The `investmentagent deep-dive <ticker>` command generates a fuller research note for one company.
 
 Each report should include:
 
@@ -111,9 +111,9 @@ Every output item should include source links for key claims. Unverified claims 
 Initial commands:
 
 ```bash
-openclaw watchlist --country se,fi --limit 20
-openclaw deep-dive <ticker>
-openclaw sources test
+investmentagent watchlist --country se,fi --limit 20
+investmentagent deep-dive <ticker>
+investmentagent sources test
 ```
 
 Useful options:
@@ -157,8 +157,8 @@ The first implementation should make the scoring logic deterministic and easy to
 
 V1 is successful when:
 
-- `openclaw watchlist` can produce a ranked Sweden/Finland public-company watchlist using free sources.
+- `investmentagent watchlist` can produce a ranked Sweden/Finland public-company watchlist using free sources.
 - Each ranked company includes reasons, risks, source links, and data-quality notes.
-- `openclaw deep-dive <ticker>` can produce a balanced research note for a selected company.
+- `investmentagent deep-dive <ticker>` can produce a balanced research note for a selected company.
 - The scoring model is transparent and covered by tests.
 - Source failures degrade gracefully instead of breaking the whole run.

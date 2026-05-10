@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from openclaw.models import CompanyResearch, DataQuality, ListingSegment, ScoreBreakdown
+from investmentagent.models import CompanyResearch, DataQuality, ListingSegment, ScoreBreakdown
 
 
 DATA_QUALITY_PENALTIES = {

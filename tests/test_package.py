@@ -1,4 +1,4 @@
-from openclaw import __version__
+from investmentagent import __version__
 
 
 def test_package_exposes_version():

@@ -1,5 +1,5 @@
-from openclaw.models import Company, CompanyResearch, DataQuality, FinancialSnapshot, ListingSegment
-from openclaw.scoring import score_research
+from investmentagent.models import Company, CompanyResearch, DataQuality, FinancialSnapshot, ListingSegment
+from investmentagent.scoring import score_research
 
 
 def make_research(**financial_overrides):
