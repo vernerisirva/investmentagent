@@ -19,9 +19,25 @@ investmentagent deep-dive FREEM
 investmentagent sources test
 ```
 
-## Current data mode
+## Data providers
 
-V1 starts with bundled fixture data so the scoring, reports, and CLI can be tested deterministically. The provider boundary is intentionally separate from scoring and rendering so future free-source fetchers can replace or augment the fixture provider.
+InvestmentAgent defaults to deterministic fixture data so scoring, reports, and CLI behavior can be tested repeatably:
+
+```bash
+investmentagent watchlist --provider fixture
+investmentagent deep-dive FREEM --provider fixture
+investmentagent sources test --provider fixture
+```
+
+The live provider is an early free-source integration point for Sweden and Finland listed-company discovery:
+
+```bash
+investmentagent sources test --provider live
+investmentagent watchlist --provider live --country se,fi --limit 20
+investmentagent deep-dive FREEM --provider live
+```
+
+The live provider does not silently fall back to fixture data. If the public source cannot be fetched or parsed, `sources test --provider live` reports the failure and live watchlists or deep dives stop with a clear source error.
 
 ## Scoring model
 
