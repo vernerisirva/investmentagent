@@ -126,6 +126,33 @@ def finimpulse_search_payload() -> str:
     )
 
 
+def finimpulse_profile_payload() -> str:
+    return json.dumps(
+        {
+            "status_code": 20000,
+            "status_message": "OK",
+            "result": {
+                "total_count": 1,
+                "items": [
+                    {
+                        "symbol": "KAR.ST",
+                        "quote_type": "stock",
+                        "sector": "Industrials",
+                        "industry": "Specialty Business Services",
+                        "long_business_summary": (
+                            "Karnov Group provides legal, tax, accounting, "
+                            "environmental, and health and safety information "
+                            "services through subscription-based digital workflow "
+                            "tools in the Nordic region."
+                        ),
+                        "ir_website": "https://www.karnovgroup.com/en/investors/",
+                    }
+                ],
+            },
+        }
+    )
+
+
 def test_yahoo_symbol_candidates_for_sweden_and_finland():
     assert yahoo_symbol_candidates(make_company("KAR", "SE")) == ("KAR.ST",)
     assert yahoo_symbol_candidates(make_company("GOFORE", "FI")) == ("GOFORE.HE",)
@@ -305,6 +332,75 @@ def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
     assert requested
     assert requested[0][0] == "https://api.finimpulse.com/v1/search"
     assert "secret-token" in requested[0][2]["Authorization"]
+
+
+def test_finimpulse_provider_fetches_profile_business_description():
+    requested: list[str] = []
+
+    def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
+        requested.append(url)
+        if url.endswith("/v1/profile"):
+            return finimpulse_profile_payload()
+        return finimpulse_search_payload()
+
+    provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert isinstance(snapshot, FundamentalsSnapshot)
+    assert snapshot.business_description.startswith("Karnov Group provides legal")
+    assert snapshot.ir_url == "https://www.karnovgroup.com/en/investors/"
+    assert "https://api.finimpulse.com/v1/search" in requested
+    assert "https://api.finimpulse.com/v1/profile" in requested
+
+
+def test_enriched_provider_merges_finimpulse_business_description_into_company():
+    class BaseProvider:
+        def list_companies(self, countries, include_first_north):
+            return [make_company()]
+
+        def get_research(self, ticker: str) -> CompanyResearch:
+            return CompanyResearch(
+                company=make_company(),
+                financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+                data_quality=DataQuality.THIN,
+            )
+
+        def source_checks(self):
+            return []
+
+    def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
+        if url.endswith("/v1/profile"):
+            return finimpulse_profile_payload()
+        return finimpulse_search_payload()
+
+    provider = EnrichedResearchProvider(
+        BaseProvider(),
+        FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher),
+        max_enrichments=1,
+    )
+
+    research = provider.get_research("KAR")
+
+    assert research.company.business_description.startswith("Karnov Group provides legal")
+    assert research.company.ir_url == "https://www.karnovgroup.com/en/investors/"
+
+
+def test_finimpulse_profile_failure_keeps_search_fundamentals():
+    def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
+        if url.endswith("/v1/profile"):
+            raise RuntimeError(f"profile failed {headers['Authorization']}")
+        return finimpulse_search_payload()
+
+    provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+
+    snapshot = provider.get_fundamentals(make_company())
+    check = provider.source_check()
+
+    assert isinstance(snapshot, FundamentalsSnapshot)
+    assert snapshot.market_cap_eur_m == 702.42
+    assert snapshot.business_description is None
+    assert "secret-token" not in check.detail
 
 
 def test_finimpulse_provider_returns_none_for_empty_search_results():

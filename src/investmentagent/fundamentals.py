@@ -33,6 +33,8 @@ FINNHUB_PROFILE_DOC_URL = "https://finnhub.io/docs/api/company-profile2"
 FINNHUB_FETCH_TIMEOUT_SECONDS = 3
 FINIMPULSE_SEARCH_URL = "https://api.finimpulse.com/v1/search"
 FINIMPULSE_SEARCH_DOC_URL = "https://developers.finimpulse.com/v1/search/"
+FINIMPULSE_PROFILE_URL = "https://api.finimpulse.com/v1/profile"
+FINIMPULSE_PROFILE_DOC_URL = "https://developers.finimpulse.com/v1/profile/"
 FINIMPULSE_FETCH_TIMEOUT_SECONDS = 3
 _EUR_RATES = {"EUR": 1.0, "SEK": 0.1}
 
@@ -41,6 +43,8 @@ _EUR_RATES = {"EUR": 1.0, "SEK": 0.1}
 class FundamentalsSnapshot:
     symbol: str
     market_cap_eur_m: float | None = None
+    business_description: str | None = None
+    ir_url: str | None = None
     financials: FinancialSnapshot = field(
         default_factory=lambda: FinancialSnapshot(data_quality=DataQuality.PARTIAL)
     )
@@ -198,10 +202,31 @@ class FinimpulseFundamentalsProvider:
                 self.last_error = _token_safe_error(exc, self.api_key)
                 continue
             if snapshot is not None:
+                snapshot = self._with_profile(snapshot, headers)
                 self.successful_lookups += 1
                 self.last_error = None
                 return snapshot
         return None
+
+    def _with_profile(
+        self, snapshot: FundamentalsSnapshot, headers: dict[str, str]
+    ) -> FundamentalsSnapshot:
+        payload = json.dumps({"symbol": snapshot.symbol})
+        try:
+            profile = _parse_finimpulse_profile_payload(
+                self._fetcher(FINIMPULSE_PROFILE_URL, payload, headers),
+                symbol=snapshot.symbol,
+            )
+        except Exception as exc:
+            self.last_error = _token_safe_error(exc, self.api_key)
+            return snapshot
+        if profile is None:
+            return snapshot
+        return replace(
+            snapshot,
+            business_description=profile.get("business_description"),
+            ir_url=profile.get("ir_url"),
+        )
 
     def source_check(self) -> SourceCheck:
         if self.attempted_lookups == 0:
@@ -297,6 +322,15 @@ class EnrichedResearchProvider:
         if company.market_cap_eur_m is None and snapshot.market_cap_eur_m is not None:
             company = replace(company, market_cap_eur_m=snapshot.market_cap_eur_m)
             market_cap_enriched = True
+        if (
+            company.business_description is None
+            and snapshot.business_description is not None
+        ):
+            company = replace(
+                company, business_description=snapshot.business_description
+            )
+        if company.ir_url is None and snapshot.ir_url is not None:
+            company = replace(company, ir_url=snapshot.ir_url)
 
         financials = _merge_financials(
             research.financials,
@@ -485,6 +519,33 @@ def _parse_finimpulse_search_payload(
     )
 
 
+def _parse_finimpulse_profile_payload(
+    payload: str, symbol: str
+) -> dict[str, str | None] | None:
+    result = _dict_value(json.loads(payload), "result")
+    items = result.get("items")
+    if not isinstance(items, list) or not items:
+        return None
+
+    item = next(
+        (
+            candidate
+            for candidate in items
+            if isinstance(candidate, dict)
+            and str(candidate.get("symbol") or "").upper() == symbol.upper()
+        ),
+        None,
+    )
+    if item is None:
+        return None
+
+    business_description = _clean_text(item.get("long_business_summary"))
+    ir_url = _clean_text(item.get("ir_website"))
+    if business_description is None and ir_url is None:
+        return None
+    return {"business_description": business_description, "ir_url": ir_url}
+
+
 def _parse_fundamentals_payload(
     payload: str, symbol: str, url: str, fallback_currency: str | None
 ) -> FundamentalsSnapshot | None:
@@ -582,6 +643,13 @@ def _number(source: dict[str, Any], key: str) -> float | None:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def _clean_text(value: Any) -> str | None:
+    if not isinstance(value, str):
+        return None
+    stripped = " ".join(value.split())
+    return stripped or None
 
 
 def _first_number(source: dict[str, Any], keys: tuple[str, ...]) -> float | None:

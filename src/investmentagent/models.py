@@ -36,6 +36,7 @@ class Company:
     market_cap_eur_m: float | None = None
     currency: str | None = None
     ir_url: str | None = None
+    business_description: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "ticker", self.ticker.strip().upper())
