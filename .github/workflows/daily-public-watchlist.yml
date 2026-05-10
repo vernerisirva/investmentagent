@@ -77,9 +77,9 @@ jobs:
           {
             echo "# InvestmentAgent Daily Watchlist"
             echo
-            echo "Latest report: [${report_date}](reports/${report_date}.md)"
+            echo "Latest report: [${report_date}](reports/${report_date}.html)"
             echo
-            echo "Latest generated copy: [reports/latest.md](reports/latest.md)"
+            echo "Latest generated copy: [reports/latest.html](reports/latest.html)"
             echo
             echo "Generated: ${generated_at}"
             echo
