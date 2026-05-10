@@ -73,6 +73,7 @@ jobs:
               --fundamentals finimpulse \
               --country se,fi \
               --limit 10 \
+              --min-country FI:3 \
               --strategy "$strategy" \
               --verbose \
               --save "$report_path" \

@@ -34,6 +34,7 @@ def build_watchlist(
     max_market_cap: float | None = None,
     sector: str | None = None,
     strategy: str = "balanced",
+    min_country_counts: dict[str, int] | None = None,
 ) -> list[WatchlistItem]:
     if limit < 1:
         raise ValueError("limit must be at least 1")
@@ -79,15 +80,83 @@ def build_watchlist(
             )
         scored_items = rescored_items
 
-    ranked_items = sorted(
+    ranked_candidates = sorted(
         scored_items,
         key=lambda item: (-item.score.total, item.research.company.ticker),
-    )[:limit]
+    )
+    ranked_items = _apply_min_country_counts(
+        ranked_candidates,
+        limit=limit,
+        min_country_counts=min_country_counts or {},
+    )
 
     return [
         WatchlistItem(rank=rank, research=item.research, score=item.score)
         for rank, item in enumerate(ranked_items, start=1)
     ]
+
+
+def _apply_min_country_counts(
+    ranked_items: list[WatchlistItem],
+    limit: int,
+    min_country_counts: dict[str, int],
+) -> list[WatchlistItem]:
+    selected = list(ranked_items[:limit])
+    selected_keys = {_watchlist_item_key(item) for item in selected}
+
+    for country, required_count in min_country_counts.items():
+        normalized_country = country.upper()
+        if required_count <= 0:
+            continue
+        current_count = sum(
+            item.research.company.country == normalized_country for item in selected
+        )
+        missing_count = required_count - current_count
+        if missing_count <= 0:
+            continue
+
+        replacements = [
+            item
+            for item in ranked_items[limit:]
+            if item.research.company.country == normalized_country
+            and _watchlist_item_key(item) not in selected_keys
+        ][:missing_count]
+        for replacement in replacements:
+            removable_index = _lowest_ranked_removable_index(
+                selected, min_country_counts
+            )
+            if removable_index is None:
+                break
+            removed = selected.pop(removable_index)
+            selected_keys.remove(_watchlist_item_key(removed))
+            selected.append(replacement)
+            selected_keys.add(_watchlist_item_key(replacement))
+
+    return sorted(
+        selected,
+        key=lambda item: (-item.score.total, item.research.company.ticker),
+    )
+
+
+def _lowest_ranked_removable_index(
+    selected: list[WatchlistItem], min_country_counts: dict[str, int]
+) -> int | None:
+    protected_counts = {country.upper(): count for country, count in min_country_counts.items()}
+    country_counts: dict[str, int] = {}
+    for item in selected:
+        country = item.research.company.country
+        country_counts[country] = country_counts.get(country, 0) + 1
+
+    for index in range(len(selected) - 1, -1, -1):
+        country = selected[index].research.company.country
+        if country_counts[country] > protected_counts.get(country, 0):
+            return index
+    return None
+
+
+def _watchlist_item_key(item: WatchlistItem) -> tuple[str, str]:
+    company = item.research.company
+    return (company.ticker, company.country)
 
 
 def _get_company_research(provider: ResearchProvider, company: Company) -> CompanyResearch:

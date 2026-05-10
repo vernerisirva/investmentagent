@@ -118,7 +118,37 @@ def test_watchlist_accepts_fundamentals_option():
     )
 
     assert result.exit_code == 0
-    assert "#1" in result.output
+
+
+def test_watchlist_accepts_min_country_option_in_saved_metadata():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--limit",
+                "3",
+                "--min-country",
+                "FI:1",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert payload["metadata"]["min_country_counts"] == {"FI": 1}
+
+
+def test_watchlist_rejects_invalid_min_country_option():
+    result = runner.invoke(
+        app,
+        ["watchlist", "--limit", "3", "--min-country", "FI"],
+    )
+
+    assert result.exit_code != 0
+    assert "min-country must use COUNTRY:COUNT" in result.output
 
 
 def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):

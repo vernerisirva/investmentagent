@@ -64,6 +64,8 @@ The workflow runs at 08:00 Europe/Helsinki on weekdays and writes public Markdow
 - Trading ideas, generated with `--strategy trading`.
 - Long-term investment ideas, generated with `--strategy long-term`.
 
+Both public lists use `--min-country FI:3`, so each top 10 includes at least three Finnish companies when enough Finnish candidates are available.
+
 Public pages:
 
 - Latest landing page: `https://vernerisirva.github.io/investmentagent/`

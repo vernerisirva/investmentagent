@@ -42,6 +42,25 @@ def _parse_countries(raw: str) -> tuple[str, ...]:
     return countries
 
 
+def _parse_min_country_options(raw_values: tuple[str, ...]) -> dict[str, int]:
+    parsed: dict[str, int] = {}
+    for raw in raw_values:
+        if ":" not in raw:
+            raise typer.BadParameter("min-country must use COUNTRY:COUNT")
+        country, raw_count = raw.split(":", 1)
+        normalized_country = country.strip().upper()
+        if not normalized_country:
+            raise typer.BadParameter("min-country must use COUNTRY:COUNT")
+        try:
+            count = int(raw_count)
+        except ValueError as exc:
+            raise typer.BadParameter("min-country count must be an integer") from exc
+        if count < 0:
+            raise typer.BadParameter("min-country count must be at least 0")
+        parsed[normalized_country] = count
+    return parsed
+
+
 def _provider_from_option(name: str):
     try:
         return create_provider(name)
@@ -134,6 +153,11 @@ def watchlist(
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     verbose: bool = typer.Option(False, "--verbose"),
     provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
+    min_country: list[str] | None = typer.Option(
+        None,
+        "--min-country",
+        help="Minimum country representation, such as FI:3. Can be repeated.",
+    ),
     save_path: str | None = typer.Option(
         None, "--save", help="Save report to .json, .md, or .markdown."
     ),
@@ -145,6 +169,7 @@ def watchlist(
     except ValueError as exc:
         raise typer.BadParameter(str(exc)) from exc
     countries = _parse_countries(country)
+    min_country_counts = _parse_min_country_options(tuple(min_country or ()))
     normalized_provider_name = provider_name.strip().lower()
     finimpulse_api_key = _api_key_from_environment("FINIMPULSE_API_KEY")
     finnhub_api_key = _api_key_from_environment("FINNHUB_API_KEY")
@@ -186,6 +211,7 @@ def watchlist(
         max_market_cap=max_market_cap,
         sector=sector,
         strategy=normalized_strategy,
+        min_country_counts=min_country_counts,
     )
     source_checks = provider.source_checks()
     if save_path is not None:
@@ -203,6 +229,7 @@ def watchlist(
                 "max_market_cap": max_market_cap,
                 "sector": sector,
                 "strategy": normalized_strategy,
+                "min_country_counts": min_country_counts,
             },
             source_checks,
         )

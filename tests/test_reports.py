@@ -79,6 +79,7 @@ class CompanyAwareDuplicateTickerProvider:
 def make_research(
     ticker: str,
     *,
+    country: str = "SE",
     pe_ratio: float | None = 10.0,
     price_to_book: float | None = 1.0,
     net_cash_eur_m: float | None = 5.0,
@@ -93,11 +94,12 @@ def make_research(
     company = Company(
         name=f"{ticker} AB",
         ticker=ticker,
-        country="SE",
-        exchange="Nasdaq Stockholm",
+        country=country,
+        exchange="Nasdaq Stockholm" if country == "SE" else "Nasdaq Helsinki",
         segment=segment,
         sector="Industrials",
         market_cap_eur_m=200,
+        currency="SEK" if country == "SE" else "EUR",
     )
     financials = FinancialSnapshot(
         price=price,
@@ -171,6 +173,53 @@ def test_build_watchlist_sorts_equal_scores_by_ticker():
     items = build_watchlist(provider, countries=("SE",), limit=2, include_first_north=True)
 
     assert [item.research.company.ticker for item in items] == ["AAA", "BBB"]
+
+
+def test_build_watchlist_can_require_minimum_country_representation():
+    provider = FakeResearchProvider(
+        (
+            make_research("SEA", country="SE", catalysts=("High live turnover",)),
+            make_research("SEB", country="SE", catalysts=("High live turnover",)),
+            make_research("SEC", country="SE", catalysts=("High live turnover",)),
+            make_research("SED", country="SE", catalysts=("High live turnover",)),
+            make_research("FIA", country="FI"),
+            make_research("FIB", country="FI"),
+            make_research("FIC", country="FI"),
+        )
+    )
+
+    items = build_watchlist(
+        provider,
+        countries=("SE", "FI"),
+        limit=5,
+        include_first_north=True,
+        min_country_counts={"FI": 3},
+    )
+
+    assert len(items) == 5
+    assert sum(item.research.company.country == "FI" for item in items) == 3
+    assert [item.rank for item in items] == [1, 2, 3, 4, 5]
+
+
+def test_build_watchlist_uses_available_country_count_when_requirement_exceeds_supply():
+    provider = FakeResearchProvider(
+        (
+            make_research("SEA", country="SE", catalysts=("High live turnover",)),
+            make_research("SEB", country="SE", catalysts=("High live turnover",)),
+            make_research("FIA", country="FI"),
+        )
+    )
+
+    items = build_watchlist(
+        provider,
+        countries=("SE", "FI"),
+        limit=5,
+        include_first_north=True,
+        min_country_counts={"FI": 3},
+    )
+
+    assert len(items) == 3
+    assert sum(item.research.company.country == "FI" for item in items) == 1
 
 
 def test_build_watchlist_skips_missing_research_rows():
