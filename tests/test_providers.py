@@ -114,3 +114,18 @@ def test_live_provider_reports_malformed_payload_as_error():
     assert companies == []
     assert checks[0].status == "error"
     assert "required listing columns" in checks[0].detail
+
+
+def test_live_provider_reports_fetch_failures_in_source_checks():
+    def failing_fetcher(url: str) -> str:
+        raise OSError("network unavailable")
+
+    provider = LiveNasdaqNordicProvider(fetcher=failing_fetcher)
+
+    companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
+    checks = provider.source_checks()
+
+    assert companies == []
+    assert checks[0].name == "nasdaq nordic live data"
+    assert checks[0].status == "error"
+    assert "network unavailable" in checks[0].detail
