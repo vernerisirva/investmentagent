@@ -4,7 +4,9 @@ import sys
 
 from typer.testing import CliRunner
 
+import investmentagent.cli as cli
 from investmentagent.cli import app
+from investmentagent.models import SourceCheck
 
 
 runner = CliRunner()
@@ -120,6 +122,49 @@ def test_cli_rejects_invalid_provider_option():
 
     assert result.exit_code != 0
     assert "provider must be 'fixture' or 'live'" in result.output
+
+
+def test_watchlist_rejects_invalid_output_before_provider_work(monkeypatch):
+    def fail_if_called(name: str):
+        raise AssertionError("provider should not be created for invalid output")
+
+    monkeypatch.setattr(cli, "create_provider", fail_if_called)
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--output", "bad"])
+
+    assert result.exit_code != 0
+    assert "output must be 'text' or 'json'" in result.output
+
+
+def test_deep_dive_rejects_invalid_output_before_provider_work(monkeypatch):
+    def fail_if_called(name: str):
+        raise AssertionError("provider should not be created for invalid output")
+
+    monkeypatch.setattr(cli, "create_provider", fail_if_called)
+
+    result = runner.invoke(app, ["deep-dive", "FREEM", "--provider", "live", "--output", "bad"])
+
+    assert result.exit_code != 0
+    assert "output must be 'text' or 'json'" in result.output
+
+
+def test_watchlist_reports_live_source_errors(monkeypatch):
+    class FailingLiveProvider:
+        def source_checks(self):
+            return [
+                SourceCheck(
+                    name="nasdaq nordic live data",
+                    status="error",
+                    detail="network unavailable",
+                )
+            ]
+
+    monkeypatch.setattr(cli, "create_provider", lambda name: FailingLiveProvider())
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live"])
+
+    assert result.exit_code != 0
+    assert "nasdaq nordic live data: error - network unavailable" in result.output
 
 
 def test_sources_test_command_reports_fixture_status():

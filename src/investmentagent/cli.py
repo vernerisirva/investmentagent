@@ -37,6 +37,19 @@ def _provider_from_option(name: str):
         raise typer.BadParameter(str(exc)) from exc
 
 
+def _normalize_output_option(output: str) -> str:
+    normalized = output.strip().lower()
+    if normalized not in {"text", "json"}:
+        raise typer.BadParameter("output must be 'text' or 'json'")
+    return normalized
+
+
+def _raise_for_source_errors(provider) -> None:
+    for check in provider.source_checks():
+        if check.status == "error":
+            raise typer.BadParameter(f"{check.name}: {check.status} - {check.detail}")
+
+
 @app.command()
 def watchlist(
     country: str = typer.Option(
@@ -53,7 +66,10 @@ def watchlist(
     verbose: bool = typer.Option(False, "--verbose"),
     provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
 ) -> None:
+    normalized_output = _normalize_output_option(output)
     provider = _provider_from_option(provider_name)
+    if provider_name.strip().lower() == "live":
+        _raise_for_source_errors(provider)
     items = build_watchlist(
         provider,
         countries=_parse_countries(country),
@@ -64,7 +80,6 @@ def watchlist(
         sector=sector,
     )
 
-    normalized_output = output.strip().lower()
     if normalized_output == "text":
         if verbose:
             for check in provider.source_checks():
@@ -74,7 +89,6 @@ def watchlist(
     if normalized_output == "json":
         typer.echo(render_watchlist_json(items))
         return
-    raise typer.BadParameter("output must be 'text' or 'json'")
 
 
 @app.command("deep-dive")
@@ -83,20 +97,19 @@ def deep_dive(
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
 ) -> None:
+    normalized_output = _normalize_output_option(output)
     provider = _provider_from_option(provider_name)
     try:
         report = build_deep_dive(provider, ticker)
     except LookupError as exc:
         raise typer.BadParameter(str(exc)) from exc
 
-    normalized_output = output.strip().lower()
     if normalized_output == "text":
         typer.echo(render_deep_dive_text(report))
         return
     if normalized_output == "json":
         typer.echo(render_deep_dive_json(report))
         return
-    raise typer.BadParameter("output must be 'text' or 'json'")
 
 
 @sources_app.command("test")
