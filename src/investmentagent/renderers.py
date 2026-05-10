@@ -47,21 +47,45 @@ def render_watchlist_text(items: list[WatchlistItem]) -> str:
 def render_watchlist_json(items: list[WatchlistItem]) -> str:
     payload = {
         "disclaimer": DISCLAIMER,
-        "items": [
-            {
-                "rank": item.rank,
-                "company": _company_payload(item.research.company),
-                "financials": _financials_payload(item.research.financials),
-                "score": _score_payload(item.score),
-                "risks": list(item.research.risks),
-                "catalysts": list(item.research.catalysts),
-                "evidence": [_evidence_payload(evidence) for evidence in item.research.evidence],
-                "data_quality": _stringify(item.research.data_quality),
-            }
-            for item in items
-        ],
+        "items": _watchlist_items_payload(items),
     }
     return json.dumps(_normalize_json_value(payload), allow_nan=False, indent=2, sort_keys=True)
+
+
+def render_watchlist_report_json(
+    items: list[WatchlistItem], metadata: dict[str, Any], source_checks
+) -> str:
+    payload = {
+        "disclaimer": DISCLAIMER,
+        "metadata": metadata,
+        "source_checks": [_source_check_payload(check) for check in source_checks],
+        "items": _watchlist_items_payload(items),
+    }
+    return json.dumps(_normalize_json_value(payload), allow_nan=False, indent=2, sort_keys=True)
+
+
+def render_watchlist_report_markdown(
+    items: list[WatchlistItem], metadata: dict[str, Any], source_checks
+) -> str:
+    lines = [
+        "# InvestmentAgent Watchlist",
+        "",
+        f"> {DISCLAIMER}",
+        "",
+        "## Metadata",
+        *_metadata_lines(metadata),
+        "",
+        "## Source Checks",
+        *[
+            f"- {check.name}: {check.status} - {check.detail}"
+            for check in source_checks
+        ],
+        "",
+        "## Watchlist",
+        "",
+        render_watchlist_text(items),
+    ]
+    return "\n".join(lines)
 
 
 def render_deep_dive_json(report: DeepDiveReport) -> str:
@@ -140,6 +164,22 @@ def _company_payload(company: Company) -> dict[str, Any]:
     }
 
 
+def _watchlist_items_payload(items: list[WatchlistItem]) -> list[dict[str, Any]]:
+    return [
+        {
+            "rank": item.rank,
+            "company": _company_payload(item.research.company),
+            "financials": _financials_payload(item.research.financials),
+            "score": _score_payload(item.score),
+            "risks": list(item.research.risks),
+            "catalysts": list(item.research.catalysts),
+            "evidence": [_evidence_payload(evidence) for evidence in item.research.evidence],
+            "data_quality": _stringify(item.research.data_quality),
+        }
+        for item in items
+    ]
+
+
 def _financials_payload(financials: FinancialSnapshot) -> dict[str, Any]:
     return {
         "price": financials.price,
@@ -178,6 +218,22 @@ def _evidence_payload(evidence: Evidence) -> dict[str, str | None]:
         "source": evidence.source,
         "timestamp": evidence.timestamp,
     }
+
+
+def _source_check_payload(check) -> dict[str, str]:
+    return {"name": check.name, "status": check.status, "detail": check.detail}
+
+
+def _metadata_lines(metadata: dict[str, Any]) -> list[str]:
+    return [f"- {key}: {_stringify_metadata_value(value)}" for key, value in metadata.items()]
+
+
+def _stringify_metadata_value(value: Any) -> str:
+    if isinstance(value, (list, tuple)):
+        return ", ".join(str(item) for item in value)
+    if value is None:
+        return "None"
+    return str(value)
 
 
 def _normalize_json_value(value: Any) -> Any:

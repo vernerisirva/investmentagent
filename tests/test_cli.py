@@ -1,6 +1,7 @@
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 from typer.testing import CliRunner
 
@@ -61,6 +62,47 @@ def test_watchlist_accepts_fixture_provider_option():
 
     assert result.exit_code == 0
     assert "#1" in result.output
+
+
+def test_watchlist_saves_json_report():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            ["watchlist", "--limit", "1", "--save", "reports/watchlist.json"],
+        )
+
+        report_path = Path("reports/watchlist.json")
+        payload = json.loads(report_path.read_text())
+
+    assert result.exit_code == 0
+    assert "#1" in result.output
+    assert payload["metadata"]["provider"] == "fixture"
+    assert payload["metadata"]["countries"] == ["SE", "FI"]
+    assert payload["source_checks"][0]["name"] == "bundled seed data"
+    assert payload["items"][0]["rank"] == 1
+
+
+def test_watchlist_saves_markdown_report():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            ["watchlist", "--limit", "1", "--save", "reports/watchlist.md"],
+        )
+
+        content = Path("reports/watchlist.md").read_text()
+
+    assert result.exit_code == 0
+    assert "# InvestmentAgent Watchlist" in content
+    assert "## Metadata" in content
+    assert "## Source Checks" in content
+    assert "## Watchlist" in content
+
+
+def test_watchlist_rejects_unsupported_save_extension():
+    result = runner.invoke(app, ["watchlist", "--limit", "1", "--save", "reports/watchlist.txt"])
+
+    assert result.exit_code != 0
+    assert "save path must end in .json, .md, or .markdown" in result.output
 
 
 def test_watchlist_command_accepts_discovery_filters():

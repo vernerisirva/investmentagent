@@ -1,3 +1,6 @@
+from datetime import datetime, timezone
+from pathlib import Path
+
 import typer
 
 from investmentagent.providers import create_provider
@@ -5,6 +8,8 @@ from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
     render_watchlist_json,
+    render_watchlist_report_json,
+    render_watchlist_report_markdown,
     render_watchlist_text,
 )
 from investmentagent.reports import build_deep_dive, build_watchlist
@@ -50,6 +55,19 @@ def _raise_for_source_errors(provider) -> None:
             raise typer.BadParameter(f"{check.name}: {check.status} - {check.detail}")
 
 
+def _save_watchlist_report(path: str, items, metadata: dict, source_checks) -> None:
+    report_path = Path(path)
+    suffix = report_path.suffix.lower()
+    if suffix == ".json":
+        content = render_watchlist_report_json(items, metadata, source_checks)
+    elif suffix in {".md", ".markdown"}:
+        content = render_watchlist_report_markdown(items, metadata, source_checks)
+    else:
+        raise typer.BadParameter("save path must end in .json, .md, or .markdown")
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(content + "\n", encoding="utf-8")
+
+
 @app.command()
 def watchlist(
     country: str = typer.Option(
@@ -65,24 +83,45 @@ def watchlist(
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     verbose: bool = typer.Option(False, "--verbose"),
     provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
+    save_path: str | None = typer.Option(
+        None, "--save", help="Save report to .json, .md, or .markdown."
+    ),
 ) -> None:
     normalized_output = _normalize_output_option(output)
+    countries = _parse_countries(country)
     provider = _provider_from_option(provider_name)
     if provider_name.strip().lower() == "live":
         _raise_for_source_errors(provider)
     items = build_watchlist(
         provider,
-        countries=_parse_countries(country),
+        countries=countries,
         limit=limit,
         include_first_north=include_first_north,
         min_market_cap=min_market_cap,
         max_market_cap=max_market_cap,
         sector=sector,
     )
+    source_checks = provider.source_checks()
+    if save_path is not None:
+        _save_watchlist_report(
+            save_path,
+            items,
+            {
+                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "provider": provider_name.strip().lower(),
+                "countries": list(countries),
+                "limit": limit,
+                "include_first_north": include_first_north,
+                "min_market_cap": min_market_cap,
+                "max_market_cap": max_market_cap,
+                "sector": sector,
+            },
+            source_checks,
+        )
 
     if normalized_output == "text":
         if verbose:
-            for check in provider.source_checks():
+            for check in source_checks:
                 typer.echo(f"{check.name}: {check.status} - {check.detail}", err=True)
         typer.echo(render_watchlist_text(items))
         return
