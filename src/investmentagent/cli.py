@@ -74,6 +74,14 @@ def _effective_fundamentals_mode(
     return normalized_mode
 
 
+def _finnhub_api_key_from_environment() -> str | None:
+    api_key = os.environ.get("FINNHUB_API_KEY")
+    if api_key is None:
+        return None
+    stripped = api_key.strip()
+    return stripped or None
+
+
 def _raise_for_source_errors(provider) -> None:
     for check in provider.source_checks():
         if check.status == "error":
@@ -131,7 +139,7 @@ def watchlist(
     countries = _parse_countries(country)
     provider = _provider_from_option(provider_name)
     normalized_provider_name = provider_name.strip().lower()
-    finnhub_api_key = os.environ.get("FINNHUB_API_KEY")
+    finnhub_api_key = _finnhub_api_key_from_environment()
     effective_fundamentals = _effective_fundamentals_mode(
         normalized_fundamentals, normalized_provider_name, finnhub_api_key
     )

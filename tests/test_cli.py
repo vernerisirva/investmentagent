@@ -147,6 +147,7 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
         def source_checks(self):
             return self.base_provider.source_checks()
 
+    monkeypatch.delenv("FINNHUB_API_KEY", raising=False)
     monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", FundamentalsProvider, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
@@ -204,6 +205,17 @@ def test_watchlist_auto_fundamentals_prefers_finnhub_when_key_is_present(monkeyp
 
 def test_watchlist_explicit_finnhub_requires_api_key(monkeypatch):
     monkeypatch.delenv("FINNHUB_API_KEY", raising=False)
+
+    result = runner.invoke(
+        app, ["watchlist", "--provider", "live", "--fundamentals", "finnhub"]
+    )
+
+    assert result.exit_code != 0
+    assert "FINNHUB_API_KEY is required" in result.output
+
+
+def test_watchlist_explicit_finnhub_rejects_blank_api_key(monkeypatch):
+    monkeypatch.setenv("FINNHUB_API_KEY", "   ")
 
     result = runner.invoke(
         app, ["watchlist", "--provider", "live", "--fundamentals", "finnhub"]
