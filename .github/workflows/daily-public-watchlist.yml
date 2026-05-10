@@ -34,6 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
 
       - name: Set up Python
         if: env.RUN_DAILY_REPORT == 'true'
@@ -98,4 +99,4 @@ jobs:
           fi
           report_date="$(TZ=Europe/Helsinki date +%F)"
           git commit -m "reports: publish daily watchlist ${report_date}"
-          git push
+          git push origin HEAD:main
