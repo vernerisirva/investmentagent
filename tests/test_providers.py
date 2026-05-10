@@ -1,5 +1,7 @@
+import pytest
+
 from investmentagent.models import DataQuality
-from investmentagent.providers import FixtureResearchProvider
+from investmentagent.providers import FixtureResearchProvider, create_provider
 
 
 def test_fixture_provider_filters_country_and_first_north():
@@ -30,3 +32,14 @@ def test_source_checks_report_seed_data_available():
 
     assert checks[0].name == "bundled seed data"
     assert checks[0].status == "ok"
+
+
+def test_create_provider_defaults_to_fixture():
+    provider = create_provider("fixture")
+
+    assert isinstance(provider, FixtureResearchProvider)
+
+
+def test_create_provider_rejects_unknown_name():
+    with pytest.raises(ValueError, match="provider must be 'fixture' or 'live'"):
+        create_provider("unknown")

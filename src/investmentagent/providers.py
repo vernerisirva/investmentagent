@@ -87,3 +87,31 @@ class FixtureResearchProvider:
             evidence=evidence,
             data_quality=financials.data_quality,
         )
+
+
+class LiveNasdaqNordicProvider:
+    def list_companies(
+        self, countries: tuple[str, ...] = ("SE", "FI"), include_first_north: bool = True
+    ) -> list[Company]:
+        return []
+
+    def get_research(self, ticker: str) -> CompanyResearch:
+        raise LookupError(f"No live research found for ticker: {ticker}")
+
+    def source_checks(self) -> list[SourceCheck]:
+        return [
+            SourceCheck(
+                name="nasdaq nordic live data",
+                status="unavailable",
+                detail="Live provider is not implemented yet",
+            )
+        ]
+
+
+def create_provider(name: str) -> ResearchProvider:
+    normalized = name.strip().lower()
+    if normalized == "fixture":
+        return FixtureResearchProvider()
+    if normalized == "live":
+        return LiveNasdaqNordicProvider()
+    raise ValueError("provider must be 'fixture' or 'live'")
