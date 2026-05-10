@@ -54,7 +54,12 @@ def build_watchlist(
             WatchlistItem(rank=0, research=research, score=score)
         )
 
-    enrichment_candidates = _watchlist_enrichment_candidates(provider, scored_items)
+    enrichment_candidates = _watchlist_enrichment_candidates(
+        provider,
+        scored_items,
+        limit=limit,
+        min_country_counts=min_country_counts or {},
+    )
     if enrichment_candidates:
         _prepare_watchlist_enrichment(provider, enrichment_candidates)
         enriched_keys = {
@@ -174,7 +179,10 @@ def _get_base_company_research(provider: ResearchProvider, company: Company) -> 
 
 
 def _watchlist_enrichment_candidates(
-    provider: ResearchProvider, scored_items: list[WatchlistItem]
+    provider: ResearchProvider,
+    scored_items: list[WatchlistItem],
+    limit: int,
+    min_country_counts: dict[str, int],
 ) -> tuple[Company, ...]:
     budget = getattr(provider, "max_enrichments", None)
     if budget is None or budget < 1:
@@ -183,7 +191,12 @@ def _watchlist_enrichment_candidates(
         scored_items,
         key=lambda item: (-item.score.total, item.research.company.ticker),
     )
-    return tuple(item.research.company for item in ranked_items[:budget])
+    constrained_items = _apply_min_country_counts(
+        ranked_items,
+        limit=limit,
+        min_country_counts=min_country_counts,
+    )
+    return tuple(item.research.company for item in constrained_items[:budget])
 
 
 def _prepare_watchlist_enrichment(
@@ -196,6 +209,9 @@ def _prepare_watchlist_enrichment(
 
 def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakdown:
     score = score_research(research)
+    if strategy == "long-term":
+        return _long_term_score(research, score)
+
     positive_adjustment, negative_adjustment = _strategy_adjustments(research, strategy)
     catalyst = round(score.catalyst + positive_adjustment, 2)
     risk_penalty = round(score.risk_penalty + negative_adjustment, 2)
@@ -220,6 +236,77 @@ def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakd
         data_quality_penalty=score.data_quality_penalty,
         total=round(total, 2),
         reasons=reasons,
+        warnings=warnings,
+    )
+
+
+def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreBreakdown:
+    financials = research.financials
+    reasons = tuple(
+        reason for reason in score.reasons if not _is_trading_only_signal(reason)
+    )
+    catalyst = round(
+        min(
+            sum(
+                8.0
+                for catalyst_reason in research.catalysts
+                if not _is_trading_only_signal(catalyst_reason)
+            ),
+            16.0,
+        ),
+        2,
+    )
+
+    quality_adjustment = 0.0
+    quality_reasons: list[str] = []
+    if financials.operating_margin_pct is not None and financials.operating_margin_pct > 0:
+        quality_adjustment += 8.0
+        quality_reasons.append(
+            f"Positive operating margin ({financials.operating_margin_pct:.1f}%)"
+        )
+    if financials.revenue_growth_pct is not None and financials.revenue_growth_pct > 0:
+        quality_adjustment += 6.0
+        quality_reasons.append(f"Revenue growth ({financials.revenue_growth_pct:.1f}%)")
+    if financials.debt_to_equity is not None and financials.debt_to_equity <= 0.5:
+        quality_adjustment += 4.0
+        quality_reasons.append("Conservative debt/equity")
+    if research.company.business_description:
+        quality_adjustment += 3.0
+        quality_reasons.append("Business description available from profile data")
+
+    trading_penalty = 0.0
+    if any(
+        _is_intraday_signal(signal)
+        for signal in (*research.catalysts, *research.risks)
+    ):
+        trading_penalty += 18.0
+    if any(
+        _has_signal((signal.lower(),), "Extreme intraday spike")
+        for signal in research.risks
+    ):
+        trading_penalty += 18.0
+
+    risk_penalty = round(score.risk_penalty + trading_penalty, 2)
+    total = (
+        score.value
+        + score.discovery
+        + catalyst
+        + quality_adjustment
+        - risk_penalty
+        - score.data_quality_penalty
+    )
+    warnings = score.warnings
+    if trading_penalty:
+        warnings = (*warnings, "long-term strategy penalty applied")
+
+    return ScoreBreakdown(
+        value=score.value,
+        discovery=score.discovery,
+        catalyst=round(catalyst + quality_adjustment, 2),
+        risk_penalty=risk_penalty,
+        data_quality_penalty=score.data_quality_penalty,
+        total=round(total, 2),
+        reasons=(*reasons, *quality_reasons),
         warnings=warnings,
     )
 
@@ -270,6 +357,22 @@ def _strategy_adjustments(research: CompanyResearch, strategy: str) -> tuple[flo
         ):
             negative_adjustment += 10.0
     return positive_adjustment, negative_adjustment
+
+
+def _is_trading_only_signal(signal: str) -> bool:
+    return (
+        _is_intraday_signal(signal)
+        or signal
+        in {
+            "Live price available from Nasdaq Nordic",
+            "High live turnover",
+            "Moderate live turnover",
+        }
+    )
+
+
+def _is_intraday_signal(signal: str) -> bool:
+    return "intraday momentum" in signal.lower()
 
 
 def _has_signal(signals: tuple[str, ...], needle: str) -> bool:

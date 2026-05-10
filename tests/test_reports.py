@@ -367,6 +367,67 @@ def test_long_term_strategy_prefers_enriched_value_over_intraday_mover():
     assert items[0].research.company.ticker == "VALUE"
 
 
+def test_long_term_strategy_prioritizes_fundamental_quality_over_momentum():
+    quality = make_research(
+        "QUALITY",
+        pe_ratio=11.0,
+        price_to_book=1.1,
+        net_cash_eur_m=25.0,
+        catalysts=("Live price available from Nasdaq Nordic",),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.PARTIAL,
+    )
+    quality = CompanyResearch(
+        company=Company(
+            name=quality.company.name,
+            ticker=quality.company.ticker,
+            country=quality.company.country,
+            exchange=quality.company.exchange,
+            segment=quality.company.segment,
+            sector=quality.company.sector,
+            market_cap_eur_m=quality.company.market_cap_eur_m,
+            currency=quality.company.currency,
+            business_description="Quality AB sells profitable niche software to industrial customers.",
+        ),
+        financials=FinancialSnapshot(
+            pe_ratio=11.0,
+            price_to_book=1.1,
+            net_cash_eur_m=25.0,
+            revenue_growth_pct=12.0,
+            operating_margin_pct=18.0,
+            debt_to_equity=0.2,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        catalysts=quality.catalysts,
+        risks=quality.risks,
+        data_quality=DataQuality.PARTIAL,
+    )
+    mover = make_research(
+        "MOVER",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        catalysts=("Strong intraday momentum (+14.16%)", "High live turnover"),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.PARTIAL,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((mover, quality)),
+        countries=("SE",),
+        limit=2,
+        include_first_north=True,
+        strategy="long-term",
+    )
+
+    assert items[0].research.company.ticker == "QUALITY"
+    assert "Strong intraday momentum (+14.16%)" not in items[0].score.reasons
+    assert "High live turnover" not in items[0].score.reasons
+    assert "Positive operating margin (18.0%)" in items[0].score.reasons
+    assert "Revenue growth (12.0%)" in items[0].score.reasons
+    assert "Business description available from profile data" in items[0].score.reasons
+
+
 def test_watchlist_fundamentals_budget_uses_preliminary_ranking_not_listing_order():
     weak = make_research(
         "WEAK",
@@ -417,6 +478,61 @@ def test_watchlist_fundamentals_budget_uses_preliminary_ranking_not_listing_orde
     assert [company.ticker for company in fundamentals.requests] == ["VALUE"]
     assert items[0].research.company.ticker == "VALUE"
     assert items[0].research.financials.pe_ratio == 8.5
+
+
+def test_watchlist_fundamentals_budget_includes_min_country_candidates():
+    sweden = make_research(
+        "SWEA",
+        country="SE",
+        catalysts=("High live turnover",),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+    finland = make_research(
+        "FINA",
+        country="FI",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        catalysts=(),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+
+    class StaticFundamentalsProvider:
+        def __init__(self) -> None:
+            self.requests: list[Company] = []
+
+        def get_fundamentals(self, company: Company):
+            self.requests.append(company)
+            if company.ticker != "FINA":
+                return None
+            return FundamentalsSnapshot(
+                symbol="FINA.HE",
+                financials=FinancialSnapshot(
+                    revenue_growth_pct=9.0,
+                    operating_margin_pct=12.0,
+                    data_quality=DataQuality.PARTIAL,
+                ),
+            )
+
+    fundamentals = StaticFundamentalsProvider()
+    provider = EnrichedResearchProvider(
+        FakeResearchProvider((sweden, finland)), fundamentals, max_enrichments=1
+    )
+
+    items = build_watchlist(
+        provider,
+        countries=("SE", "FI"),
+        limit=1,
+        include_first_north=True,
+        strategy="long-term",
+        min_country_counts={"FI": 1},
+    )
+
+    assert [company.ticker for company in fundamentals.requests] == ["FINA"]
+    assert items[0].research.company.ticker == "FINA"
+    assert items[0].research.financials.operating_margin_pct == 12.0
 
 
 def test_trading_strategy_boosts_strong_momentum_and_turnover():
