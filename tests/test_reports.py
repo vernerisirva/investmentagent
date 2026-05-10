@@ -646,10 +646,58 @@ def test_render_watchlist_report_markdown_formats_company_sections():
     assert "- Profitable niche data provider" in output
     assert "### Risks" in output
     assert "- Execution risk" in output
-    assert "- partial data quality" in output
+    assert "- Data quality is partial, so confirm the numbers against company reports before relying on them." in output
     assert "[Finimpulse profile lookup (KAR.ST)]" in output
     assert "Presentation:" not in output
     assert "Research triage only. Not financial advice.\n\nWatchlist" not in output
+
+
+def test_render_watchlist_report_markdown_humanizes_reason_and_risk_signals():
+    company = Company(
+        name="Sprint Bioscience",
+        ticker="SPRINT",
+        country="SE",
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
+        sector="Health Care",
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.PARTIAL),
+            risks=("Sparse live-source data",),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=0.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=0.0,
+            total=33.0,
+            reasons=(
+                "small market cap",
+                "Positive intraday momentum (+8.71%)",
+                "trading strategy adjustment applied",
+            ),
+            warnings=("1 stated risk(s)", "partial data quality"),
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "trading"},
+        source_checks=[],
+    )
+
+    assert "- Small market cap" in output
+    assert "- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist." in output
+    assert "- Live data is sparse; verify the latest company announcements and Nasdaq data before acting." in output
+    assert "- One risk flag was found in the source data." in output
+    assert "- partial data quality" not in output
+    assert "- 1 stated risk(s)" not in output
+    assert "- trading strategy adjustment applied" not in output
 
 
 def test_render_watchlist_report_markdown_falls_back_to_presentation():

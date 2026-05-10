@@ -247,10 +247,10 @@ def _watchlist_markdown_sections(items: list[WatchlistItem]) -> list[str]:
                 f"**Data quality:** {_stringify(item.research.data_quality)}",
                 "",
                 "### Reasons",
-                *_bullet_lines(item.score.reasons),
+                *_public_reason_lines(item.score.reasons),
                 "",
                 "### Risks",
-                *_bullet_lines((*item.research.risks, *item.score.warnings)),
+                *_public_risk_lines((*item.research.risks, *item.score.warnings)),
                 "",
                 "### Evidence",
                 *_markdown_evidence_lines(item.research.evidence),
@@ -376,6 +376,75 @@ def _markdown_evidence_lines(evidence_items: tuple[Evidence, ...]) -> list[str]:
         f"- [{evidence.label}]({evidence.url}){_source_suffix(evidence)}"
         for evidence in evidence_items
     ]
+
+
+def _public_reason_lines(items: tuple[str, ...]) -> list[str]:
+    return _public_bullet_lines(items, _humanize_reason)
+
+
+def _public_risk_lines(items: tuple[str, ...]) -> list[str]:
+    return _public_bullet_lines(items, _humanize_risk)
+
+
+def _public_bullet_lines(items: tuple[str, ...], formatter) -> list[str]:
+    formatted = [formatter(item) for item in items]
+    formatted = [item for item in formatted if item]
+    if not formatted:
+        return ["- None provided."]
+    return [f"- {item}" for item in formatted]
+
+
+def _humanize_reason(item: str) -> str:
+    normalized = item.strip()
+    lower = normalized.lower()
+    if lower == "trading strategy adjustment applied":
+        return (
+            "Trading strategy boost: liquidity and momentum signals make this more "
+            "relevant for a short-term watchlist."
+        )
+    if lower == "long-term strategy adjustment applied":
+        return (
+            "Long-term strategy boost: valuation or balance-sheet signals make this "
+            "more relevant for fundamental research."
+        )
+    if lower == "discovery strategy adjustment applied":
+        return "Discovery strategy boost: smaller or less-covered listing profile."
+    return _capitalize_first(normalized)
+
+
+def _humanize_risk(item: str) -> str:
+    normalized = item.strip()
+    lower = normalized.lower()
+    if lower == "sparse live-source data":
+        return (
+            "Live data is sparse; verify the latest company announcements and Nasdaq "
+            "data before acting."
+        )
+    if lower == "thin data quality":
+        return (
+            "Data quality is thin, so treat the ranking as an early lead rather than "
+            "a finished view."
+        )
+    if lower == "partial data quality":
+        return (
+            "Data quality is partial, so confirm the numbers against company reports "
+            "before relying on them."
+        )
+    if lower == "1 stated risk(s)":
+        return "One risk flag was found in the source data."
+    if lower.endswith(" stated risk(s)"):
+        count = lower.split(" ", 1)[0]
+        return f"{count} risk flags were found in the source data."
+    if lower.endswith("strategy adjustment applied"):
+        strategy = lower.split(" ", 1)[0]
+        return f"{strategy.capitalize()} strategy penalty applied by the ranking model."
+    return _capitalize_first(normalized)
+
+
+def _capitalize_first(value: str) -> str:
+    if not value:
+        return value
+    return f"{value[0].upper()}{value[1:]}"
 
 
 def _source_suffix(evidence: Evidence) -> str:
