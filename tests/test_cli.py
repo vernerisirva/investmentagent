@@ -54,6 +54,13 @@ def test_watchlist_command_outputs_json():
     assert "disclaimer" in payload
 
 
+def test_watchlist_accepts_fixture_provider_option():
+    result = runner.invoke(app, ["watchlist", "--provider", "fixture", "--limit", "1"])
+
+    assert result.exit_code == 0
+    assert "#1" in result.output
+
+
 def test_watchlist_command_accepts_discovery_filters():
     result = runner.invoke(
         app,
@@ -99,6 +106,20 @@ def test_deep_dive_command_outputs_json():
     payload = json.loads(result.output)
     assert payload["company"]["ticker"] == "FREEM"
     assert payload["score"]["total"] > 0
+
+
+def test_sources_test_accepts_fixture_provider_option():
+    result = runner.invoke(app, ["sources", "test", "--provider", "fixture"])
+
+    assert result.exit_code == 0
+    assert "bundled seed data: ok" in result.output
+
+
+def test_cli_rejects_invalid_provider_option():
+    result = runner.invoke(app, ["watchlist", "--provider", "bad"])
+
+    assert result.exit_code != 0
+    assert "provider must be 'fixture' or 'live'" in result.output
 
 
 def test_sources_test_command_reports_fixture_status():

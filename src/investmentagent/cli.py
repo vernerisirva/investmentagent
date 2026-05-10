@@ -1,6 +1,6 @@
 import typer
 
-from investmentagent.providers import FixtureResearchProvider
+from investmentagent.providers import create_provider
 from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
@@ -30,6 +30,13 @@ def _parse_countries(raw: str) -> tuple[str, ...]:
     return countries
 
 
+def _provider_from_option(name: str):
+    try:
+        return create_provider(name)
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc)) from exc
+
+
 @app.command()
 def watchlist(
     country: str = typer.Option(
@@ -44,8 +51,9 @@ def watchlist(
     sector: str | None = typer.Option(None, "--sector"),
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
     verbose: bool = typer.Option(False, "--verbose"),
+    provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
 ) -> None:
-    provider = FixtureResearchProvider()
+    provider = _provider_from_option(provider_name)
     items = build_watchlist(
         provider,
         countries=_parse_countries(country),
@@ -73,8 +81,9 @@ def watchlist(
 def deep_dive(
     ticker: str,
     output: str = typer.Option("text", "--output", help="Output format: text or json."),
+    provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
 ) -> None:
-    provider = FixtureResearchProvider()
+    provider = _provider_from_option(provider_name)
     try:
         report = build_deep_dive(provider, ticker)
     except LookupError as exc:
@@ -91,8 +100,10 @@ def deep_dive(
 
 
 @sources_app.command("test")
-def test_sources() -> None:
-    provider = FixtureResearchProvider()
+def test_sources(
+    provider_name: str = typer.Option("fixture", "--provider", help="Data provider: fixture or live."),
+) -> None:
+    provider = _provider_from_option(provider_name)
     for check in provider.source_checks():
         typer.echo(f"{check.name}: {check.status} - {check.detail}")
 
