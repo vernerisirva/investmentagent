@@ -19,6 +19,7 @@ from investmentagent.renderers import (
     render_deep_dive_text,
     render_watchlist_json,
     render_watchlist_report_json,
+    render_watchlist_report_markdown,
     render_watchlist_text,
 )
 from investmentagent.reports import build_deep_dive, build_watchlist
@@ -590,6 +591,102 @@ def test_render_watchlist_report_json_includes_company_presentation():
     )
 
     assert payload["items"][0]["company_presentation"]
+
+
+def test_render_watchlist_report_markdown_formats_company_sections():
+    company = Company(
+        name="Karnov Group AB",
+        ticker="KAR",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+        sector="Industrials",
+        business_description=(
+            "Karnov Group provides legal, tax, accounting, environmental, "
+            "and health and safety information services through digital tools."
+        ),
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.PARTIAL),
+            risks=("Execution risk",),
+            evidence=(
+                Evidence(
+                    label="Finimpulse profile lookup (KAR.ST)",
+                    url="https://developers.finimpulse.com/v1/profile/",
+                    source="finimpulse",
+                ),
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=4.0,
+            discovery=3.0,
+            catalyst=2.0,
+            risk_penalty=1.0,
+            data_quality_penalty=0.0,
+            total=8.0,
+            reasons=("Profitable niche data provider", "Small-cap discovery"),
+            warnings=("partial data quality",),
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "long-term", "limit": 10},
+        source_checks=[],
+    )
+
+    assert "## #1 Karnov Group AB (KAR)" in output
+    assert "**What the company does:** Karnov Group provides legal" in output
+    assert "**Score:** 8" in output
+    assert "### Reasons" in output
+    assert "- Profitable niche data provider" in output
+    assert "### Risks" in output
+    assert "- Execution risk" in output
+    assert "- partial data quality" in output
+    assert "[Finimpulse profile lookup (KAR.ST)]" in output
+    assert "Presentation:" not in output
+    assert "Research triage only. Not financial advice.\n\nWatchlist" not in output
+
+
+def test_render_watchlist_report_markdown_falls_back_to_presentation():
+    company = Company(
+        name="Sparse AB",
+        ticker="SPRS",
+        country="SE",
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+            data_quality=DataQuality.THIN,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=0.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=0.0,
+            total=0.0,
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "trading"},
+        source_checks=[],
+    )
+
+    assert (
+        "**What the company does:** Sparse AB is a Sweden-listed First North company "
+        "on Nasdaq First North Growth Market Sweden."
+    ) in output
 
 
 def test_render_watchlist_presentation_omits_missing_values():

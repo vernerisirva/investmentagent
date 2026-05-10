@@ -85,7 +85,7 @@ def render_watchlist_report_markdown(
         "",
         "## Watchlist",
         "",
-        render_watchlist_text(items),
+        *_watchlist_markdown_sections(items),
     ]
     return "\n".join(lines)
 
@@ -163,6 +163,7 @@ def _company_payload(company: Company) -> dict[str, Any]:
         "market_cap_eur_m": company.market_cap_eur_m,
         "currency": company.currency,
         "ir_url": company.ir_url,
+        "business_description": company.business_description,
     }
 
 
@@ -225,6 +226,47 @@ def _evidence_payload(evidence: Evidence) -> dict[str, str | None]:
 
 def _source_check_payload(check) -> dict[str, str]:
     return {"name": check.name, "status": check.status, "detail": check.detail}
+
+
+def _watchlist_markdown_sections(items: list[WatchlistItem]) -> list[str]:
+    lines: list[str] = []
+    for item in items:
+        company = item.research.company
+        lines.extend(
+            [
+                f"## #{item.rank} {company.name} ({company.ticker})",
+                "",
+                (
+                    f"`{company.country}` | {company.exchange} | "
+                    f"`{_stringify(company.segment)}`"
+                ),
+                "",
+                f"**What the company does:** {_company_description(item)}",
+                "",
+                f"**Score:** {item.score.total:g}",
+                f"**Data quality:** {_stringify(item.research.data_quality)}",
+                "",
+                "### Reasons",
+                *_bullet_lines(item.score.reasons),
+                "",
+                "### Risks",
+                *_bullet_lines((*item.research.risks, *item.score.warnings)),
+                "",
+                "### Evidence",
+                *_markdown_evidence_lines(item.research.evidence),
+                "",
+            ]
+        )
+    if lines and lines[-1] == "":
+        lines.pop()
+    return lines
+
+
+def _company_description(item: WatchlistItem) -> str:
+    description = item.research.company.business_description
+    if description:
+        return description
+    return _company_presentation(item)
 
 
 def _company_presentation(item: WatchlistItem) -> str:
@@ -323,6 +365,15 @@ def _evidence_lines(evidence_items: tuple[Evidence, ...]) -> list[str]:
         return ["- None provided."]
     return [
         f"- {evidence.label}: {evidence.url}{_source_suffix(evidence)}"
+        for evidence in evidence_items
+    ]
+
+
+def _markdown_evidence_lines(evidence_items: tuple[Evidence, ...]) -> list[str]:
+    if not evidence_items:
+        return ["- None provided."]
+    return [
+        f"- [{evidence.label}]({evidence.url}){_source_suffix(evidence)}"
         for evidence in evidence_items
     ]
 
