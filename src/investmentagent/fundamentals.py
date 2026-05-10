@@ -123,7 +123,7 @@ class EnrichedResearchProvider:
             return research
 
         company = research.company
-        if snapshot.market_cap_eur_m is not None:
+        if company.market_cap_eur_m is None and snapshot.market_cap_eur_m is not None:
             company = replace(company, market_cap_eur_m=snapshot.market_cap_eur_m)
 
         financials = _merge_financials(research.financials, snapshot.financials)
@@ -156,12 +156,15 @@ def _merge_financials(
         if field_name in preserved_fields or field_name == "data_quality":
             continue
 
-        value = getattr(enrichment, field_name)
-        if value is not None:
-            merged_values[field_name] = value
+        if getattr(base, field_name) is not None:
+            continue
+
+        enrichment_value = getattr(enrichment, field_name)
+        if enrichment_value is not None:
+            merged_values[field_name] = enrichment_value
             enrichment_applied = True
 
-    if enrichment_applied:
+    if enrichment_applied and base.data_quality == DataQuality.THIN:
         merged_values["data_quality"] = DataQuality.PARTIAL
 
     return replace(base, **merged_values)

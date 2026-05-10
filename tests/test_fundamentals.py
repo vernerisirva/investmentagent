@@ -264,6 +264,66 @@ def test_enriched_provider_merges_fundamentals_into_research():
     assert research.evidence[-1].source == "yahoo"
 
 
+def test_enriched_provider_preserves_curated_fundamentals():
+    class CuratedBaseProvider(BaseProvider):
+        def __init__(self) -> None:
+            super().__init__()
+            self.company = Company(
+                name=self.company.name,
+                ticker=self.company.ticker,
+                country=self.company.country,
+                exchange=self.company.exchange,
+                segment=self.company.segment,
+                market_cap_eur_m=700.0,
+                currency=self.company.currency,
+            )
+
+        def get_research(self, ticker: str) -> CompanyResearch:
+            return CompanyResearch(
+                company=self.company,
+                financials=FinancialSnapshot(
+                    price=110.0,
+                    currency="SEK",
+                    pe_ratio=9.0,
+                    price_to_book=0.8,
+                    operating_margin_pct=20.0,
+                    data_quality=DataQuality.GOOD,
+                ),
+                catalysts=("Curated fundamentals available",),
+                risks=(),
+                evidence=(),
+                data_quality=DataQuality.GOOD,
+            )
+
+    base = CuratedBaseProvider()
+    snapshot = FundamentalsSnapshot(
+        symbol="KAR.ST",
+        market_cap_eur_m=550.0,
+        financials=FinancialSnapshot(
+            pe_ratio=11.2,
+            price_to_book=1.1,
+            operating_margin_pct=14.0,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        evidence=Evidence(
+            "Yahoo-style fundamentals lookup (KAR.ST)",
+            "https://example.test",
+            "yahoo",
+        ),
+    )
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(snapshot))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.company.market_cap_eur_m == 700.0
+    assert research.financials.pe_ratio == 9.0
+    assert research.financials.price_to_book == 0.8
+    assert research.financials.operating_margin_pct == 20.0
+    assert research.financials.data_quality == DataQuality.GOOD
+    assert research.data_quality == DataQuality.GOOD
+    assert research.evidence[-1].source == "yahoo"
+
+
 def test_enriched_provider_leaves_research_unchanged_when_fundamentals_missing():
     base = BaseProvider()
     provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(None))
