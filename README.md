@@ -48,3 +48,23 @@ total score = value score + discovery score + catalyst score - risk penalty - da
 ```
 
 Every report should show reasons, risks, data quality, and evidence links.
+
+## Public weekday reports
+
+The repository includes a GitHub Actions workflow named `Daily public watchlist` that can publish a public watchlist every weekday morning.
+
+Setup:
+
+1. Add a repository secret named `FINIMPULSE_API_KEY` in GitHub: Settings -> Secrets and variables -> Actions -> New repository secret.
+2. Enable GitHub Pages: Settings -> Pages -> Build and deployment -> Deploy from a branch -> branch `main`, folder `/docs`.
+3. Run the workflow manually once from Actions -> Daily public watchlist -> Run workflow, or wait for the weekday schedule.
+
+The workflow runs at 08:00 Europe/Helsinki on weekdays, generates a Finimpulse-enriched live watchlist, and writes public Markdown reports under `docs/reports/`.
+
+Public pages:
+
+- Latest landing page: `https://vernerisirva.github.io/investmentagent/`
+- Latest report: `https://vernerisirva.github.io/investmentagent/reports/latest.html`
+- Dated reports: `https://vernerisirva.github.io/investmentagent/reports/YYYY-MM-DD.html`
+
+Reports are research triage only. They are not financial advice.
