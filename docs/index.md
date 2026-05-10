@@ -1,7 +1,9 @@
 # InvestmentAgent Daily Watchlist
 
-Latest public report: [reports/latest.html](reports/latest.html)
+Latest report: [2026-05-10](reports/2026-05-10.html)
 
-Dated reports will appear in [reports/](reports/) after the first scheduled or manually started publishing workflow run.
+Latest generated copy: [reports/latest.html](reports/latest.html)
 
-Research triage only. Not financial advice.
+Generated: 2026-05-10 20:47 EEST
+
+Reports are research triage only. Not financial advice.
