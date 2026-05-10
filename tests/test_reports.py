@@ -2,6 +2,7 @@ import json
 
 import pytest
 
+from investmentagent.fundamentals import EnrichedResearchProvider, FundamentalsSnapshot
 from investmentagent.models import (
     Company,
     CompanyResearch,
@@ -313,6 +314,58 @@ def test_long_term_strategy_prefers_enriched_value_over_intraday_mover():
     )
 
     assert items[0].research.company.ticker == "VALUE"
+
+
+def test_watchlist_fundamentals_budget_uses_preliminary_ranking_not_listing_order():
+    weak = make_research(
+        "WEAK",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        catalysts=(),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+    value = make_research(
+        "VALUE",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        catalysts=("High live turnover",),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+
+    class StaticFundamentalsProvider:
+        def __init__(self) -> None:
+            self.requests: list[Company] = []
+
+        def get_fundamentals(self, company: Company):
+            self.requests.append(company)
+            if company.ticker != "VALUE":
+                return None
+            return FundamentalsSnapshot(
+                symbol="VALUE.ST",
+                financials=FinancialSnapshot(
+                    pe_ratio=8.5,
+                    price_to_book=0.9,
+                    net_cash_eur_m=30.0,
+                    data_quality=DataQuality.PARTIAL,
+                ),
+            )
+
+    fundamentals = StaticFundamentalsProvider()
+    provider = EnrichedResearchProvider(
+        FakeResearchProvider((weak, value)), fundamentals, max_enrichments=1
+    )
+
+    items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="long-term"
+    )
+
+    assert [company.ticker for company in fundamentals.requests] == ["VALUE"]
+    assert items[0].research.company.ticker == "VALUE"
+    assert items[0].research.financials.pe_ratio == 8.5
 
 
 def test_trading_strategy_boosts_strong_momentum_and_turnover():

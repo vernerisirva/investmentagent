@@ -392,3 +392,30 @@ def test_enriched_provider_respects_enrichment_budget():
 
     assert [item.financials.pe_ratio for item in research] == [9.5, 9.5, None]
     assert [company.ticker for company in fundamentals.requests] == ["ONE", "TWO"]
+
+
+def test_enriched_provider_can_restrict_enrichment_to_prepared_companies():
+    class CompanyEchoProvider(BaseProvider):
+        def get_company_research(self, company: Company) -> CompanyResearch:
+            return CompanyResearch(
+                company=company,
+                financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+                data_quality=DataQuality.THIN,
+            )
+
+    snapshot = FundamentalsSnapshot(
+        symbol="TEST.ST",
+        financials=FinancialSnapshot(pe_ratio=9.5, data_quality=DataQuality.PARTIAL),
+    )
+    fundamentals = StaticFundamentalsProvider(snapshot)
+    provider = EnrichedResearchProvider(CompanyEchoProvider(), fundamentals, max_enrichments=2)
+    eligible = make_company("ELIGIBLE")
+    skipped = make_company("SKIPPED")
+
+    provider.prepare_watchlist_enrichment((eligible,))
+    enriched = provider.get_company_research(eligible)
+    not_enriched = provider.get_company_research(skipped)
+
+    assert enriched.financials.pe_ratio == 9.5
+    assert not_enriched.financials.pe_ratio is None
+    assert [company.ticker for company in fundamentals.requests] == ["ELIGIBLE"]

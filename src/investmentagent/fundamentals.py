@@ -98,6 +98,7 @@ class EnrichedResearchProvider:
         self.fundamentals_provider = fundamentals_provider
         self.max_enrichments = max_enrichments
         self._enrichment_attempts = 0
+        self._eligible_enrichment_keys: set[tuple[str, str]] | None = None
 
     def list_companies(self, countries, include_first_north):
         return self.base_provider.list_companies(countries, include_first_north)
@@ -106,14 +107,21 @@ class EnrichedResearchProvider:
         return self._enrich(self.base_provider.get_research(ticker))
 
     def get_company_research(self, company: Company) -> CompanyResearch:
+        return self._enrich(self.get_base_company_research(company))
+
+    def get_base_company_research(self, company: Company) -> CompanyResearch:
         get_company_research = getattr(
             self.base_provider, "get_company_research", None
         )
         if callable(get_company_research):
-            research = get_company_research(company)
-        else:
-            research = self.base_provider.get_research(company.ticker)
-        return self._enrich(research)
+            return get_company_research(company)
+        return self.base_provider.get_research(company.ticker)
+
+    def prepare_watchlist_enrichment(self, companies: tuple[Company, ...]) -> None:
+        self._enrichment_attempts = 0
+        self._eligible_enrichment_keys = {
+            (company.ticker, company.country) for company in companies
+        }
 
     def source_checks(self):
         checks = list(self.base_provider.source_checks())
@@ -123,6 +131,12 @@ class EnrichedResearchProvider:
         return checks
 
     def _enrich(self, research: CompanyResearch) -> CompanyResearch:
+        key = (research.company.ticker, research.company.country)
+        if (
+            self._eligible_enrichment_keys is not None
+            and key not in self._eligible_enrichment_keys
+        ):
+            return research
         if (
             self.max_enrichments is not None
             and self._enrichment_attempts >= self.max_enrichments

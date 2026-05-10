@@ -45,13 +45,40 @@ def build_watchlist(
         if not _company_matches_filters(company, min_market_cap, max_market_cap, sector):
             continue
         try:
-            research = _get_company_research(provider, company)
+            research = _get_base_company_research(provider, company)
         except Exception:
             continue
         score = _score_for_strategy(research, strategy)
         scored_items.append(
             WatchlistItem(rank=0, research=research, score=score)
         )
+
+    enrichment_candidates = _watchlist_enrichment_candidates(provider, scored_items)
+    if enrichment_candidates:
+        _prepare_watchlist_enrichment(provider, enrichment_candidates)
+        enriched_keys = {
+            (company.ticker, company.country) for company in enrichment_candidates
+        }
+        rescored_items: list[WatchlistItem] = []
+        for item in scored_items:
+            company = item.research.company
+            if (company.ticker, company.country) not in enriched_keys:
+                rescored_items.append(item)
+                continue
+            try:
+                research = _get_company_research(provider, company)
+            except Exception:
+                rescored_items.append(item)
+                continue
+            rescored_items.append(
+                WatchlistItem(
+                    rank=0,
+                    research=research,
+                    score=_score_for_strategy(research, strategy),
+                )
+            )
+        scored_items = rescored_items
+
     ranked_items = sorted(
         scored_items,
         key=lambda item: (-item.score.total, item.research.company.ticker),
@@ -68,6 +95,34 @@ def _get_company_research(provider: ResearchProvider, company: Company) -> Compa
     if callable(get_company_research):
         return get_company_research(company)
     return provider.get_research(company.ticker)
+
+
+def _get_base_company_research(provider: ResearchProvider, company: Company) -> CompanyResearch:
+    get_base_company_research = getattr(provider, "get_base_company_research", None)
+    if callable(get_base_company_research):
+        return get_base_company_research(company)
+    return _get_company_research(provider, company)
+
+
+def _watchlist_enrichment_candidates(
+    provider: ResearchProvider, scored_items: list[WatchlistItem]
+) -> tuple[Company, ...]:
+    budget = getattr(provider, "max_enrichments", None)
+    if budget is None or budget < 1:
+        return ()
+    ranked_items = sorted(
+        scored_items,
+        key=lambda item: (-item.score.total, item.research.company.ticker),
+    )
+    return tuple(item.research.company for item in ranked_items[:budget])
+
+
+def _prepare_watchlist_enrichment(
+    provider: ResearchProvider, companies: tuple[Company, ...]
+) -> None:
+    prepare_watchlist_enrichment = getattr(provider, "prepare_watchlist_enrichment", None)
+    if callable(prepare_watchlist_enrichment):
+        prepare_watchlist_enrichment(companies)
 
 
 def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakdown:
