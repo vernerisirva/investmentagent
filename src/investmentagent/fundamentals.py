@@ -22,6 +22,14 @@ YAHOO_QUOTE_SUMMARY_URL = (
     "?modules=price,summaryDetail,financialData"
 )
 YAHOO_FETCH_TIMEOUT_SECONDS = 3
+FINNHUB_PROFILE_URL = (
+    "https://finnhub.io/api/v1/stock/profile2?symbol={symbol}&token={token}"
+)
+FINNHUB_METRIC_URL = (
+    "https://finnhub.io/api/v1/stock/metric?symbol={symbol}&metric=all&token={token}"
+)
+FINNHUB_PROFILE_DOC_URL = "https://finnhub.io/docs/api/company-profile2"
+FINNHUB_FETCH_TIMEOUT_SECONDS = 3
 _EUR_RATES = {"EUR": 1.0, "SEK": 0.1}
 
 
@@ -88,6 +96,68 @@ class YahooFundamentalsProvider:
             )
 
         return SourceCheck(name="free fundamentals", status="warning", detail=ratio)
+
+
+class FinnhubFundamentalsProvider:
+    def __init__(
+        self, api_key: str, fetcher: Callable[[str], str] | None = None
+    ) -> None:
+        self.api_key = api_key
+        self._fetcher = fetcher or _fetch_finnhub_url
+        self.attempted_lookups = 0
+        self.successful_lookups = 0
+        self.last_error: str | None = None
+
+    def get_fundamentals(self, company: Company) -> FundamentalsSnapshot | None:
+        for symbol in finnhub_symbol_candidates(company):
+            self.attempted_lookups += 1
+            try:
+                profile = json.loads(
+                    self._fetcher(_finnhub_profile_url(symbol, self.api_key))
+                )
+                metrics = json.loads(
+                    self._fetcher(_finnhub_metric_url(symbol, self.api_key))
+                )
+                snapshot = _parse_finnhub_payload(
+                    payload={"profile": profile, "metrics": metrics},
+                    symbol=symbol,
+                    fallback_currency=company.currency,
+                )
+            except Exception as exc:
+                self.last_error = str(exc)
+                continue
+            if snapshot is not None:
+                self.successful_lookups += 1
+                self.last_error = None
+                return snapshot
+        return None
+
+    def source_check(self) -> SourceCheck:
+        if self.attempted_lookups == 0:
+            return SourceCheck(
+                name="finnhub fundamentals",
+                status="warning",
+                detail="No lookups attempted for Finnhub fundamentals",
+            )
+
+        ratio = (
+            f"{self.successful_lookups}/{self.attempted_lookups} "
+            "Finnhub lookups parsed"
+        )
+        if self.successful_lookups == self.attempted_lookups:
+            return SourceCheck(name="finnhub fundamentals", status="ok", detail=ratio)
+
+        if self.successful_lookups == 0:
+            detail = f"No successful Finnhub fundamentals lookups ({ratio})"
+            if self.last_error:
+                detail = f"{detail}: {self.last_error}"
+            return SourceCheck(
+                name="finnhub fundamentals",
+                status="warning",
+                detail=detail,
+            )
+
+        return SourceCheck(name="finnhub fundamentals", status="warning", detail=ratio)
 
 
 class EnrichedResearchProvider:
@@ -207,6 +277,14 @@ def _merge_financials(
 
 
 def yahoo_symbol_candidates(company: Company) -> tuple[str, ...]:
+    return _symbol_candidates(company)
+
+
+def finnhub_symbol_candidates(company: Company) -> tuple[str, ...]:
+    return _symbol_candidates(company)
+
+
+def _symbol_candidates(company: Company) -> tuple[str, ...]:
     suffix_by_country = {"SE": ".ST", "FI": ".HE"}
     suffix = suffix_by_country.get(company.country.upper())
     if suffix is None:
@@ -220,6 +298,53 @@ def yahoo_symbol_candidates(company: Company) -> tuple[str, ...]:
     if compact != normalized:
         candidates.append(f"{compact}{suffix}")
     return tuple(dict.fromkeys(candidates))
+
+
+def _parse_finnhub_payload(
+    payload: dict[str, Any], symbol: str, fallback_currency: str | None
+) -> FundamentalsSnapshot | None:
+    profile = _dict_value(payload, "profile")
+    metrics = _dict_value(payload, "metrics")
+    metric = _dict_value(metrics, "metric")
+    currency = str(profile.get("currency") or fallback_currency or "").upper()
+    fx_rate = _EUR_RATES.get(currency)
+
+    market_cap_eur_m = _currency_m_to_eur_m(
+        _number(profile, "marketCapitalization"), fx_rate
+    )
+    financials = FinancialSnapshot(
+        pe_ratio=_first_number(metric, ("peBasicExclExtraTTM", "peNormalizedAnnual")),
+        price_to_book=_first_number(metric, ("pbQuarterly", "pbAnnual")),
+        revenue_growth_pct=_first_number(
+            metric, ("revenueGrowthTTMYoy", "revenueGrowthQuarterlyYoy")
+        ),
+        operating_margin_pct=_first_number(
+            metric, ("operatingMarginTTM", "operatingMarginAnnual")
+        ),
+        debt_to_equity=_debt_to_equity_ratio(
+            _first_number(
+                metric,
+                (
+                    "totalDebt/totalEquityQuarterly",
+                    "totalDebt/totalEquityAnnual",
+                ),
+            )
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+    if not _has_meaningful_fields(market_cap_eur_m, financials):
+        return None
+
+    return FundamentalsSnapshot(
+        symbol=symbol,
+        market_cap_eur_m=market_cap_eur_m,
+        financials=financials,
+        evidence=Evidence(
+            label=f"Finnhub fundamentals lookup ({symbol})",
+            url=FINNHUB_PROFILE_DOC_URL,
+            source="finnhub",
+        ),
+    )
 
 
 def _parse_fundamentals_payload(
@@ -311,6 +436,24 @@ def _raw(source: dict[str, Any], key: str) -> float | None:
         return None
 
 
+def _number(source: dict[str, Any], key: str) -> float | None:
+    value = source.get(key)
+    if isinstance(value, bool) or value is None:
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _first_number(source: dict[str, Any], keys: tuple[str, ...]) -> float | None:
+    for key in keys:
+        value = _number(source, key)
+        if value is not None:
+            return value
+    return None
+
+
 def _percent(value: float | None) -> float | None:
     if value is None:
         return None
@@ -321,6 +464,18 @@ def _eur_m(value: float | None, fx_rate: float | None) -> float | None:
     if value is None or fx_rate is None:
         return None
     return round(value * fx_rate / 1_000_000, 2)
+
+
+def _currency_m_to_eur_m(value: float | None, fx_rate: float | None) -> float | None:
+    if value is None or fx_rate is None:
+        return None
+    return round(value * fx_rate, 2)
+
+
+def _debt_to_equity_ratio(value: float | None) -> float | None:
+    if value is None:
+        return None
+    return round(value / 100, 4)
 
 
 def _has_meaningful_fields(
@@ -345,6 +500,20 @@ def _yahoo_quote_summary_url(symbol: str) -> str:
     return YAHOO_QUOTE_SUMMARY_URL.format(symbol=quote(symbol, safe=""))
 
 
+def _finnhub_profile_url(symbol: str, token: str) -> str:
+    return FINNHUB_PROFILE_URL.format(
+        symbol=quote(symbol, safe=""),
+        token=quote(token, safe=""),
+    )
+
+
+def _finnhub_metric_url(symbol: str, token: str) -> str:
+    return FINNHUB_METRIC_URL.format(
+        symbol=quote(symbol, safe=""),
+        token=quote(token, safe=""),
+    )
+
+
 def _fetch_url(url: str) -> str:
     request = Request(
         url,
@@ -354,4 +523,16 @@ def _fetch_url(url: str) -> str:
         },
     )
     with urlopen(request, timeout=YAHOO_FETCH_TIMEOUT_SECONDS) as response:
+        return response.read().decode("utf-8")
+
+
+def _fetch_finnhub_url(url: str) -> str:
+    request = Request(
+        url,
+        headers={
+            "Accept": "application/json,text/plain,*/*",
+            "User-Agent": "Mozilla/5.0",
+        },
+    )
+    with urlopen(request, timeout=FINNHUB_FETCH_TIMEOUT_SECONDS) as response:
         return response.read().decode("utf-8")

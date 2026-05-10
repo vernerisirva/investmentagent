@@ -2,8 +2,10 @@ import json
 
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
+    FinnhubFundamentalsProvider,
     FundamentalsSnapshot,
     YahooFundamentalsProvider,
+    finnhub_symbol_candidates,
     yahoo_symbol_candidates,
 )
 from investmentagent.models import (
@@ -63,6 +65,30 @@ def yahoo_payload() -> str:
     )
 
 
+def finnhub_payload() -> str:
+    return json.dumps(
+        {
+            "profile": {
+                "country": "SE",
+                "currency": "SEK",
+                "exchange": "ST",
+                "marketCapitalization": 5500.0,
+                "name": "Karnov Group AB",
+                "ticker": "KAR.ST",
+            },
+            "metrics": {
+                "metric": {
+                    "peBasicExclExtraTTM": 11.2,
+                    "pbQuarterly": 1.1,
+                    "revenueGrowthTTMYoy": 8.0,
+                    "operatingMarginTTM": 14.0,
+                    "totalDebt/totalEquityQuarterly": 52.0,
+                }
+            },
+        }
+    )
+
+
 def test_yahoo_symbol_candidates_for_sweden_and_finland():
     assert yahoo_symbol_candidates(make_company("KAR", "SE")) == ("KAR.ST",)
     assert yahoo_symbol_candidates(make_company("GOFORE", "FI")) == ("GOFORE.HE",)
@@ -100,6 +126,49 @@ def test_yahoo_provider_parses_fundamentals_with_evidence():
     assert snapshot.evidence.source == "yahoo"
     assert "KAR.ST" in snapshot.evidence.label
     assert requested_urls
+
+
+def test_finnhub_symbol_candidates_for_sweden_and_finland():
+    assert finnhub_symbol_candidates(make_company("KAR", "SE")) == ("KAR.ST",)
+    assert finnhub_symbol_candidates(make_company("GOFORE", "FI")) == ("GOFORE.HE",)
+
+
+def test_finnhub_symbol_candidates_normalize_spaces_and_share_classes():
+    assert finnhub_symbol_candidates(make_company("BEAMMW B", "SE")) == (
+        "BEAMMW-B.ST",
+        "BEAMMWB.ST",
+    )
+
+
+def test_finnhub_provider_parses_profile_and_metrics_with_token_safe_evidence():
+    requested_urls: list[str] = []
+    payload = json.loads(finnhub_payload())
+
+    def fetcher(url: str) -> str:
+        requested_urls.append(url)
+        if "/stock/profile2" in url:
+            return json.dumps(payload["profile"])
+        return json.dumps(payload["metrics"])
+
+    provider = FinnhubFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert isinstance(snapshot, FundamentalsSnapshot)
+    assert snapshot.symbol == "KAR.ST"
+    assert snapshot.market_cap_eur_m == 550.0
+    assert snapshot.financials.pe_ratio == 11.2
+    assert snapshot.financials.price_to_book == 1.1
+    assert snapshot.financials.revenue_growth_pct == 8.0
+    assert snapshot.financials.operating_margin_pct == 14.0
+    assert snapshot.financials.debt_to_equity == 0.52
+    assert snapshot.financials.data_quality == DataQuality.PARTIAL
+    assert snapshot.evidence.source == "finnhub"
+    assert "KAR.ST" in snapshot.evidence.label
+    assert "secret-token" not in snapshot.evidence.url
+    assert "token=" not in snapshot.evidence.url
+    assert requested_urls
+    assert any("secret-token" in url for url in requested_urls)
 
 
 def test_yahoo_provider_leaves_unknown_currency_money_fields_empty():
