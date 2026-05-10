@@ -103,7 +103,7 @@ def _parse_fundamentals_payload(
     summary = _dict_value(result, "summaryDetail")
     financial_data = _dict_value(result, "financialData")
     currency = str(price.get("currency") or fallback_currency or "").upper()
-    fx_rate = _EUR_RATES.get(currency, 1.0)
+    fx_rate = _EUR_RATES.get(currency)
 
     market_cap = _raw(price, "marketCap")
     trailing_pe = _raw(summary, "trailingPE")
@@ -118,11 +118,15 @@ def _parse_fundamentals_payload(
 
     market_cap_eur_m = _eur_m(market_cap, fx_rate)
     net_cash_eur_m = None
-    if total_cash is not None and total_debt is not None:
+    if fx_rate is not None and total_cash is not None and total_debt is not None:
         net_cash_eur_m = _eur_m(total_cash - total_debt, fx_rate)
 
     average_daily_value_eur = None
-    if average_daily_volume is not None and previous_close is not None:
+    if (
+        fx_rate is not None
+        and average_daily_volume is not None
+        and previous_close is not None
+    ):
         average_daily_value_eur = average_daily_volume * previous_close * fx_rate
 
     financials = FinancialSnapshot(
@@ -183,8 +187,8 @@ def _percent(value: float | None) -> float | None:
     return round(value * 100, 2)
 
 
-def _eur_m(value: float | None, fx_rate: float) -> float | None:
-    if value is None:
+def _eur_m(value: float | None, fx_rate: float | None) -> float | None:
+    if value is None or fx_rate is None:
         return None
     return round(value * fx_rate / 1_000_000, 2)
 
