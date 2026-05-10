@@ -429,6 +429,7 @@ def test_watchlist_saves_effective_finnhub_fundamentals_metadata(monkeypatch):
         def source_checks(self):
             return self.base_provider.source_checks()
 
+    monkeypatch.delenv("FINIMPULSE_API_KEY", raising=False)
     monkeypatch.setenv("FINNHUB_API_KEY", "secret-token")
     monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
     monkeypatch.setattr(cli, "FinnhubFundamentalsProvider", FinnhubProvider, raising=False)
