@@ -173,7 +173,7 @@ def update_due_outcomes(
             outcome = pick["outcomes"][horizon]
             if outcome["status"] != "not_due":
                 continue
-            due_date = report_date + timedelta(days=days)
+            due_date = _add_trading_days(report_date, days)
             if as_of_date < due_date:
                 continue
             if as_of_date > due_date:
@@ -227,6 +227,20 @@ def update_due_outcomes(
                 }
             )
     return updated
+
+
+def _add_trading_days(start_date: date, days: int) -> date:
+    current = start_date
+    remaining = days
+    while remaining > 0:
+        current += timedelta(days=1)
+        if _is_weekday_trading_day(current):
+            remaining -= 1
+    return current
+
+
+def _is_weekday_trading_day(value: date) -> bool:
+    return value.weekday() < 5
 
 
 def summarize_ledger(ledger: dict[str, Any]) -> dict[str, Any]:

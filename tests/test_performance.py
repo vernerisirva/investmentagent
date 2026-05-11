@@ -138,7 +138,7 @@ def test_update_due_outcomes_prices_due_horizons_and_leaves_future_horizons_open
     )
     updated = update_due_outcomes(
         updated,
-        as_of_date=date(2026, 5, 16),
+        as_of_date=date(2026, 5, 18),
         price_lookup={("STABL", "SE"): {"price": 1.10, "currency": "SEK"}},
     )
 
@@ -148,6 +148,30 @@ def test_update_due_outcomes_prices_due_horizons_and_leaves_future_horizons_open
     assert outcomes["5d"]["status"] == "priced"
     assert outcomes["5d"]["return_pct"] == 29.41
     assert outcomes["20d"]["status"] == "not_due"
+
+
+def test_update_due_outcomes_uses_weekday_trading_days_for_due_dates():
+    ledger = add_report_picks(
+        empty_ledger(),
+        report_payload(),
+        report_date=date(2026, 5, 15),
+        report_url="reports/trading/2026-05-15.html",
+    )
+
+    weekend = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 16),
+        price_lookup={("STABL", "SE"): {"price": 1.02, "currency": "SEK"}},
+    )
+    monday = update_due_outcomes(
+        weekend,
+        as_of_date=date(2026, 5, 18),
+        price_lookup={("STABL", "SE"): {"price": 1.02, "currency": "SEK"}},
+    )
+
+    assert weekend["picks"][0]["outcomes"]["1d"]["status"] == "not_due"
+    assert monday["picks"][0]["outcomes"]["1d"]["status"] == "priced"
+    assert monday["picks"][0]["outcomes"]["1d"]["return_pct"] == 20.0
 
 
 def test_update_due_outcomes_marks_missed_window_instead_of_using_late_quote():
@@ -251,7 +275,7 @@ def test_summarize_ledger_separates_trading_and_long_term_results():
     )
     ledger = update_due_outcomes(
         ledger,
-        as_of_date=date(2026, 5, 16),
+        as_of_date=date(2026, 5, 18),
         price_lookup={
             ("STABL", "SE"): {"price": 1.02, "currency": "SEK"},
             ("ADMCM", "FI"): {"price": 11.0, "currency": "EUR"},
@@ -275,7 +299,7 @@ def test_render_scorecard_markdown_includes_strategy_sections_and_disclaimer():
     )
     ledger = update_due_outcomes(
         ledger,
-        as_of_date=date(2026, 5, 16),
+        as_of_date=date(2026, 5, 18),
         price_lookup={("STABL", "SE"): {"price": 1.02, "currency": "SEK"}},
     )
 
