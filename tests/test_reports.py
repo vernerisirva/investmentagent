@@ -1027,7 +1027,11 @@ def test_render_watchlist_report_markdown_humanizes_reason_and_risk_signals():
                 "Positive intraday momentum (+8.71%)",
                 "trading strategy adjustment applied",
             ),
-            warnings=("1 stated risk(s)", "partial data quality"),
+            warnings=(
+                "1 stated risk(s)",
+                "partial data quality",
+                "trading strategy adjustment applied",
+            ),
         ),
     )
 
@@ -1045,6 +1049,7 @@ def test_render_watchlist_report_markdown_humanizes_reason_and_risk_signals():
     assert "- partial data quality" not in output
     assert "- 1 stated risk(s)" not in output
     assert "- trading strategy adjustment applied" not in output
+    assert "Trading strategy penalty applied by the ranking model" not in output
 
 
 def test_render_watchlist_report_markdown_keeps_specific_risks_only():

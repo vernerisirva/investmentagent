@@ -830,8 +830,7 @@ def _humanize_risk(item: str) -> str:
     if lower.endswith(" stated risk(s)"):
         return ""
     if lower.endswith("strategy adjustment applied"):
-        strategy = lower.split(" ", 1)[0]
-        return f"{strategy.capitalize()} strategy penalty applied by the ranking model."
+        return ""
     return _capitalize_first(normalized)
 
 
