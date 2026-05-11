@@ -1,11 +1,12 @@
 # InvestmentAgent Daily Ideas
 
-Generated: 2026-05-11 10:36 EEST
+Generated: 2026-05-11 13:33 EEST
 
 ## Today's Reports
 
 - [Top 10 Trading Ideas](reports/trading/latest.html)
 - [Top 10 Long-Term Investment Ideas](reports/long-term/latest.html)
+- [Performance Scorecard](performance/index.html)
 
 ## Dated Reports
 

@@ -3,7 +3,7 @@
 > Research triage only. Not financial advice.
 
 ## Metadata
-- generated_at: 2026-05-11T07:36:10.099392+00:00
+- generated_at: 2026-05-11T10:34:18.339842+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -21,81 +21,84 @@
 
 ## Watchlist
 
-## #1 Stayble Therapeutics (STABL)
+## #1 AFRICA ENERGY CORP. (AEC)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Stayble Therapeutics AB (publ) a clinical pharmaceutical company, developing an injection-based treatments for disc herniation. It develops STA363, an injection into the disc that targets chronic low back and leg pain. The company was incorporated in 2015 and is based in Gothenburg, Sweden.
+**What the company does:** Africa Energy Corp. operates as an oil and gas exploration company in South Africa. The company focuses on potential gas condensate development on Block 11B/12B in offshore South Africa. The company was formerly known as Horn Petroleum Corporation and changed its name to Africa Energy Corp. in March 2015. Africa Energy Corp. is based in Vancouver, Canada.
 
-**Score:** 37
+**Score:** 33
 **Data quality:** partial
 
 ### Reasons
 - Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
-- Strong intraday momentum (+34.14%)
-- High live turnover
+- Strong intraday momentum (+14.94%)
+- Moderate live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Speculative low-price share
+- Thin liquidity
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (STABL.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (AEC.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #2 Cheffelo (CHEF)
+## #2 Nanoform Finland Oyj (NANOFS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Cheffelo AB (publ) engages in the supply and delivery of meal kits to various customers in Sweden, Norway, and Denmark. The company operates under the Linas Matkasse, Godtlevert, Adams Matkasse, and RetNemt brand names. The company was formerly known as LMK Group AB (publ) and changed its name to Cheffelo AB (publ) in October 2023. The company was founded in 2008 and is headquartered in Sundbyberg, Sweden.
+**What the company does:** Nanoform Finland Oyj engages in the provision of nanotechnology and drug particle engineering services for the pharma and biotech industries in Europe and the United States. The company provides nanoforming technologies, formulation, and analytical services, including controlled expansion of supercritical solutions technology that enables the creation of active pharmaceutical ingredients (API) nanoparticles directly from solution; biological nanoforming technology; and flexible dosage forms of nanoformed drug substances. It also offers STARMAP, an online platform to pick winners among candidate molecules for CESS powered nanoforming. The company was founded in 2008 and is headquartered in Helsinki, Finland.
 
-**Score:** 31
+**Score:** 33
 **Data quality:** partial
 
 ### Reasons
 - Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
-- High live turnover
+- Strong intraday momentum (+15.55%)
+- Moderate live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- None provided.
+- Thin liquidity
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (CHEF.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (NANOFS.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #3 Coffee Stain Group B (COFFEE B)
+## #3 Intervacc (IVACC)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Coffee Stain Group AB (publ) develops and publishes community-driven games primarily for PC and console platforms in Scandinavia and internationally. It operates game studios, including Coffee Stain, Ghost Ship, and Tuxedo Labs. The company's titles include Goat Simulator, Satisfactory, Deep Rock Galactic, Valheim, Teardown, and Welcome to Bloxburg. It serves gamers and digital entertainment consumers. The company was founded in 2010 and is headquartered in Karlstad, Sweden.
+**What the company does:** Intervacc AB (publ) develops novel veterinary vaccines for animals in Sweden. The company's product pipeline includes Stangvac, a vaccine against equine strangles for horses; INV274, antigens for a vaccine against streptococcus suis for the treatment of weaned piglets; and INV412, a multi-component vaccine to protect against several bacteria which cause mastitis for treating cows. It also engages in marketing and distribution of veterinary products in the Nordic markets, which includes vaccines and pharmaceuticals for swine, horses, cattle, and sheep. The company was incorporated in 1983 and is based in Hägersten, Sweden.
 
-**Score:** 31
+**Score:** 30
 **Data quality:** partial
 
 ### Reasons
 - Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
+- Strong intraday momentum (+15.56%)
 - High live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- None provided.
+- Thin liquidity
+- Negative operating margin
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (COFFEE-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (IVACC.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #4 Diamyd Medical B (DMYD B)
+## #4 Gapwaves B (GAPW B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Diamyd Medical AB (publ) develops precision medicine therapies for the treatment of autoimmune diabetes. The company develops Diamyd, an antigen-specific immunotherapy, which is in phase III clinical trial for the treatment of type 1 diabetes and latent autoimmune diabetes in adults (LADA); and Remygen, an immunomodulation therapy, that is in phase I/II clinical trial for the treatment of with type 1 diabetes, type 2 diabetes, and LADA. It has a research and development collaboration agreement with Juvenile Diabetes Research Foundation to develop DIAGNODE-3 Phase 3 trial in type 1 diabetes. Diamyd Medical AB (publ) was formerly known as Diamyd Therapeutics AB and changed its name to Diamyd Medical AB (publ) in April 2013. The company was founded in 1984 and is headquartered in Stockholm, Sweden.
+**What the company does:** Gapwaves AB (publ) designs, develops, manufactures, and delivers waveguide products in Sweden, rest of European Union, and internationally. It offers automotive radar antennas, flat panel antennas, 5G phased arrays antennas, flange adapters, and waveguide filters. Gapwaves AB (publ) was incorporated in 2011 and is headquartered in Gothenburg, Sweden.
 
 **Score:** 29
 **Data quality:** partial
@@ -104,7 +107,7 @@
 - Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
-- Positive intraday momentum (+6.64%)
+- Positive intraday momentum (+6.67%)
 - High live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
@@ -113,35 +116,62 @@
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (DMYD-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (GAPW-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #5 Silex Microsystems (SILEX)
+## #5 SaltX Technology Holding B (SALT B)
 
-`SE` | Nasdaq Stockholm | `main_market`
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Silex Microsystems AB (publ.) operates as a pure-play MEMS foundry, providing engineering and manufacturing services for MEMS devices. The company offers MEMS foundry services that support customers from concept through to market, including customized MEMS manufacturing programs. It delivers process technologies and technical know-how through a suite of generic process technologies and foundry programs, and addresses unique needs and challenges throughout the product development cycle. The company serves clients in the semiconductor, MEMS, medical, heavy industries, and construction sectors. The company was founded in 2000 and is based in Järfälla, Sweden.
+**What the company does:** SaltX Technology Holding AB (publ) engages in the development and sale of sustainable technology in Sweden. It offers electric arc calciner, a technology where fossil-driven heating is replaced with renewable electricity and separate the CO2 emissions released during the heating process. The company's technology is used in quicklime, cement production, energy storage, and carbon dioxide capture, as well as in production of aluminum and magnesium. SaltX Technology Holding AB (publ) was founded in 2001 and is headquartered in Hägersten, Sweden.
+
+**Score:** 29
+**Data quality:** partial
+
+### Reasons
+- Small market cap
+- First North listing
+- Live price available from Nasdaq Nordic
+- Positive intraday momentum (+8.7%)
+- High live turnover
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
+
+### Risks
+- Negative operating margin
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (SALT-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #6 2cureX (2CUREX)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** 2cureX AB (publ) operates as a medical technology company in Europe. The company's principal product is IndiTreat, an IVD test for the treatment of cancer by establishing 3D copies of the patient's tumor and directly testing them against therapies. 2cureX AB (publ) was incorporated in 2006 and is based in Copenhagen, Denmark.
 
 **Score:** 23
 **Data quality:** partial
 
 ### Reasons
+- Small market cap
+- First North listing
 - Live price available from Nasdaq Nordic
-- Strong intraday momentum (+17.41%)
-- High live turnover
+- Strong intraday momentum (+11.65%)
+- Moderate live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- None provided.
+- Thin liquidity
+- Negative operating margin
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (SILEX.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (2CUREX.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #6 BeammWave B (BEAMMW B)
+## #7 GRANGEX (GRANGX)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** BeammWave AB (publ) provides single radio chips with fully integrated antennas in Sweden, Japan, Taiwan, and South Korea. The company builds a chip-based solution intended for next-generation 5G and 6G. Its products are used in various applications, including phones, fixed wireless CPE's, and base stations. BeammWave AB (publ) was founded in 2017 and is headquartered in Lund, Sweden.
+**What the company does:** Grangex AB engages in the exploration, identification, evaluation, and development of mineral projects in Sweden and Norway. It explores for iron ore, magnetite, apatite, phosphate, and lead deposits. The company was formerly known as Grängesberg Exploration Holding AB (publ) and changed its name to Grangex AB in May 2023. Grangex AB was incorporated in 2006 and is headquartered in Stockholm, Sweden.
 
 **Score:** 21
 **Data quality:** partial
@@ -150,43 +180,69 @@
 - Small market cap
 - First North listing
 - Live price available from Nasdaq Nordic
+- Positive intraday momentum (+6.07%)
 - High live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
+
+### Risks
+- Thin liquidity
+- Negative operating margin
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (GRANGX.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #8 Aiforia Technologies Oyj (AIFORIA)
+
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
+
+**What the company does:** Aiforia Technologies Oyj, together with its subsidiary, Aiforia Inc., provides AI-based image analysis software used in clinical, preclinical, and academic laboratories to pathologists and researchers in Finland, rest of Europe, North America, and internationally. It offers tools for AI-supported diagnostics and visualization of patient samples, as well as automated screening and reporting tools for the treatment of various cancers, such as breast, lung, and prostate cancer; CE-IVD marked Aiforia clinical suite viewer for the clinical pathology workflow; and Aiforia Create, an agile solution to develop an AI model for image analysis application. The company's products are used for the treatment of Parkinson's disease, organ transplantation, and liver and inflammatory bowel diseases. It serves academic institutes and pharmaceutical companies through direct and sales partners. The company was incorporated in 2013 and is headquartered in Helsinki, Finland.
+
+**Score:** 15
+**Data quality:** partial
+
+### Reasons
+- Small market cap
+- First North listing
+- Live price available from Nasdaq Nordic
+- Positive intraday momentum (+6.06%)
 
 ### Risks
 - Negative operating margin
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (BEAMMW-B.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (AIFORIA.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #7 Sivers Semiconductors (SIVE)
+## #9 Nanoform Finland Oyj (NANOFH)
 
-`SE` | Nasdaq Stockholm | `main_market`
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
 
-**What the company does:** Sivers Semiconductors AB (publ), through its subsidiaries, develops, manufactures, and sells chips, components, modules, and subsystems in North America, Europe, and Asia. The company operates through Wireless and Photonics segments. It provides products based on semiconductor technology for 5G mmWave networks, as well as optical semiconductors for fiber networks, wireless optical networks, and sensors. In addition, the company offers radio-frequency integrated circuits, radiofrequency modules, evaluation kits and 5G RFICs for various applications, such as fixed wireless access, 5G Open RAN, radar, train tracking, and satellite communications. Further, III-V compound semiconductor laser devices for optical communication, sensing/sensors, and wireless networks. Sivers Semiconductors AB (publ) has a partnership agreement with LioniX International to develop laser technology. Additionally, it has a strategic partnership with O-Net Technologies and Enablence Technologies Inc. to develop an advanced external light source module for AI datacenters and HPC systems. The company was founded in 1951 and is based in Kista, Sweden.
+**What the company does:** Nanoform Finland Oyj engages in the provision of nanotechnology and drug particle engineering services for the pharma and biotech industries in Europe and the United States. The company provides nanoforming technologies, formulation, and analytical services, including controlled expansion of supercritical solutions technology that enables the creation of active pharmaceutical ingredients (API) nanoparticles directly from solution; biological nanoforming technology; and flexible dosage forms of nanoformed drug substances. It also offers STARMAP, an online platform to pick winners among candidate molecules for CESS powered nanoforming. The company was founded in 2008 and is headquartered in Helsinki, Finland.
 
 **Score:** 13
 **Data quality:** partial
 
 ### Reasons
+- Small market cap
+- First North listing
 - Live price available from Nasdaq Nordic
-- Strong intraday momentum (+10.06%)
-- High live turnover
+- Strong intraday momentum (+15.63%)
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
+- Speculative low-price share
 - Negative operating margin
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (SIVE.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (NANOFH.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #8 KONE Oyj (KNEBV)
+## #10 Elisa Oyj (ELISA)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
-**What the company does:** KONE Oyj, together with its subsidiaries, engages in the elevator and escalator business worldwide. The company provides elevators, escalators, automatic building doors, and integrated access control solutions, as well as maintenance and modernization solutions. It also offers KONE Office Flow, a modular connected people flow solution that delivers personalized access and enhanced user experiences in workplaces; health and well-being solutions for elevators, escalators, and doors; KONE Access, an access control system, which is integrated with elevator system and building doors; KONE Destination, a destination control system that reduce waiting and travel times; KONE infotainment, a communication channel for building tenants and visitors; and monitoring solutions that enable real-time inspection of elevators and escalators. In addition, the company provides people flow planning and consulting services; solutions for special buildings and large projects; cybersecurity solutions; and energy solutions for greener buildings. It also offers hands-on, immersive training to technicians, engineers, and service professional through a training center in Egypt. KONE Oyj was founded in 1908 and is based in Espoo, Finland.
+**What the company does:** Elisa Oyj provides telecommunications, information and communication technology (ICT), and online services in Finland, rest of Europe, and internationally. It operates through two segments: Consumer Customers and Corporate Customers. The company offers consumers with telecommunications and communications services, including fixed and mobile subscriptions, supplementary digital services, cable TV subscriptions, and entertainment services, as well as IT and communication solutions. It provides sedApta, supply chain management and operational planning software; camLine, an automation, MES, and data analytics software; CalcuQuote, a integrated software for sourcing, quoting, procurement, and supplier collaboration; and TenForce, a platform to strengthen safety culture and operational oversight across complex industrial environments. It also offers Polystar, an intelligent network analytics and optimization software. The company markets its solutions under Elisa IndustrIQ brand. Further, it provides Gridle, an AI-powered energy flexibility optimization service; and Elisa Kotiakku, that smooths out spikes in electricity spot prices and stores electricity generated by solar panels. In addition, the company offers automation solutions for network management and operation for mobile operators, industrial IoT solutions and distributed energy solutions. It serves consumers, corporates, and public administration organizations. Elisa Oyj was founded in 1882 and is headquartered in Helsinki, Finland.
 
 **Score:** 6
 **Data quality:** partial
@@ -201,46 +257,4 @@
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (KNEBV.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #9 Mandatum (MANTA)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Mandatum Oyj provides various financial services in Finland. The company offers asset and wealth management, savings and investment, compensation, and rewards consultation, as well as pension plans and personal risk insurance solutions. It also operates online trading platform. The company serves corporate, retail, institutional, and wealth management clients. Mandatum Oyj was founded in 1874 and is headquartered in Helsinki, Finland.
-
-**Score:** 6
-**Data quality:** partial
-
-### Reasons
-- Live price available from Nasdaq Nordic
-- High live turnover
-- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (MANTA.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #10 Nordea Bank Abp (NDA FI)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Nordea Bank Abp offers banking products and services for individuals, families, and businesses in Sweden, Finland, Norway, Denmark, and internationally. It operates through Personal Banking, Business Banking, Large Corporates & Institutions, and Asset & Wealth Management segments. The company provides various financial services to customers through mobile banking, over the phone, online meetings, and branch offices. It also offers payments, cash management, cards, working capital management, and cards and finance solutions. In addition, the company provides financing, payment, investment banking, capital market products, and securities services; and investment, savings, and risk management solutions. Further, it offers savings products and asset management, including investment funds, discretionary management, portfolio advice, and equity trading and pension accounts; and asset-based financing through leasing, hire purchase, factoring, and sales to finance partners, such as dealers, vendors and retailers, as well as life insurance and pension products and services. The company was founded in 1820 and is headquartered in Helsinki, Finland.
-
-**Score:** 6
-**Data quality:** partial
-
-### Reasons
-- Live price available from Nasdaq Nordic
-- High live turnover
-- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (NDA-FI.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (ELISA.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)

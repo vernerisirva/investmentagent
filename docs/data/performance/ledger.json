@@ -1,0 +1,1513 @@
+{
+  "picks": [
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 30.1,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 8.7%."
+          },
+          "Momentum": {
+            "score": 2,
+            "view": "No medium-term price context is available."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Admicom Oyj has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list."
+      },
+      "name": "Admicom Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|FI|ADMCM",
+      "rank": 2,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Positive operating margin (14.1%)",
+        "Revenue growth (8.7%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 36.0,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ADMCM"
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 8.0,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Speculative / needs more proof",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue growth is not available."
+          },
+          "Momentum": {
+            "score": 2,
+            "view": "No medium-term price context is available."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Canatu Oyj A is worth monitoring, but the long-term case needs more proof because profitability is not yet proven."
+      },
+      "name": "Canatu Oyj A",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|FI|CANATU",
+      "rank": 10,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 4.0,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "CANATU"
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 8.88,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 2.4%."
+          },
+          "Momentum": {
+            "score": 2,
+            "view": "No medium-term price context is available."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Detection Technology Oyj has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list."
+      },
+      "name": "Detection Technology Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|FI|DETEC",
+      "rank": 4,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Positive operating margin (6.4%)",
+        "Revenue growth (2.4%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 36.0,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "DETEC"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 7.3,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative / needs more proof",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 6.2%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "4C Group is worth monitoring, but the long-term case needs more proof because profitability is not yet proven."
+      },
+      "name": "4C Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|SE|4C",
+      "rank": 5,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Revenue growth (6.2%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 18.0,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "4C"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 116.8,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative / needs more proof",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 10.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "AAC Clyde Space is worth monitoring, but the long-term case needs more proof because profitability is not yet proven."
+      },
+      "name": "AAC Clyde Space",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|SE|AAC",
+      "rank": 6,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Revenue growth (10.4%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 18.0,
+      "sector": "Telecommunications",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "AAC"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 198.0,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 4.4%."
+          },
+          "Momentum": {
+            "score": 2,
+            "view": "No medium-term price context is available."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Absolent Air Care Group has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list."
+      },
+      "name": "Absolent Air Care Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|SE|ABSO",
+      "rank": 1,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Positive operating margin (5.5%)",
+        "Revenue growth (4.4%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 36.0,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ABSO"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 15.92,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative / needs more proof",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 13.2%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Acconeer is worth monitoring, but the long-term case needs more proof because profitability is not yet proven."
+      },
+      "name": "Acconeer",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|SE|ACCON",
+      "rank": 7,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Revenue growth (13.2%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 18.0,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ACCON"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 11.08,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative / needs more proof",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 31.7%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Acuvi is worth monitoring, but the long-term case needs more proof because profitability is not yet proven."
+      },
+      "name": "Acuvi",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|SE|ACUVI",
+      "rank": 8,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Revenue growth (31.7%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 18.0,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ACUVI"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 36.9,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative / needs more proof",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 11.2%."
+          },
+          "Momentum": {
+            "score": 2,
+            "view": "No medium-term price context is available."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Adtraction Group is worth monitoring, but the long-term case needs more proof because profitability is not yet proven."
+      },
+      "name": "Adtraction Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|SE|ADTR",
+      "rank": 9,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Revenue growth (11.2%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 10.0,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ADTR"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 22.2,
+      "entry_timestamp": "2026-05-11T10:34:47.789635+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 15.0%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Advenica AB has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list."
+      },
+      "name": "Advenica AB",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|long-term|SE|ADVE",
+      "rank": 3,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Positive operating margin (8.2%)",
+        "Revenue growth (15.0%)",
+        "Conservative debt/equity",
+        "Business description available from profile data"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/long-term/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 36.0,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ADVE"
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 2.185,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "name": "Aiforia Technologies Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|FI|AIFORIA",
+      "rank": 8,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Positive intraday momentum (+6.06%)"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 15.0,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "AIFORIA"
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 40.7,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "name": "Elisa Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|FI|ELISA",
+      "rank": 10,
+      "reasons": [
+        "Live price available from Nasdaq Nordic",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 6.0,
+      "sector": "Telecommunications",
+      "segment": "main_market",
+      "strategy": "trading",
+      "ticker": "ELISA"
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 0.71,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "name": "Nanoform Finland Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|FI|NANOFH",
+      "rank": 9,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Strong intraday momentum (+15.63%)",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share"
+      ],
+      "score_total": 13.0,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "NANOFH"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 1.974,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "2cureX",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|SE|2CUREX",
+      "rank": 6,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Strong intraday momentum (+11.65%)",
+        "Moderate live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 23.0,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "2CUREX"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 1.5,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "AFRICA ENERGY CORP.",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|SE|AEC",
+      "rank": 1,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Strong intraday momentum (+14.94%)",
+        "Moderate live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 33.0,
+      "sector": "Energy",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "AEC"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 12.14,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "Gapwaves B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|SE|GAPW B",
+      "rank": 4,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Positive intraday momentum (+6.67%)",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 29.0,
+      "sector": "Telecommunications",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "GAPW B"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 69.8,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "GRANGEX",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|SE|GRANGX",
+      "rank": 7,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Positive intraday momentum (+6.07%)",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 21.0,
+      "sector": "Basic Materials",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "GRANGX"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 1.44,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "Intervacc",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|SE|IVACC",
+      "rank": 3,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Strong intraday momentum (+15.56%)",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 30.0,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "IVACC"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 7.65,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "Nanoform Finland Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|SE|NANOFS",
+      "rank": 2,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Strong intraday momentum (+15.55%)",
+        "Moderate live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 33.0,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "NANOFS"
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 5.87,
+      "entry_timestamp": "2026-05-11T10:34:18.339842+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "SaltX Technology Holding B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-05-11|trading|SE|SALT B",
+      "rank": 5,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Live price available from Nasdaq Nordic",
+        "Positive intraday momentum (+8.7%)",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-05-11",
+      "report_url": "../reports/trading/2026-05-11.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 29.0,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "SALT B"
+    }
+  ],
+  "schema_version": 1
+}

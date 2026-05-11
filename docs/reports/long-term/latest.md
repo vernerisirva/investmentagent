@@ -3,7 +3,7 @@
 > Research triage only. Not financial advice.
 
 ## Metadata
-- generated_at: 2026-05-11T07:36:33.961711+00:00
+- generated_at: 2026-05-11T10:34:47.789635+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -21,7 +21,83 @@
 
 ## Watchlist
 
-## #1 Advenica AB (ADVE)
+## #1 Absolent Air Care Group (ABSO)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Absolent Air Care Group AB (publ) designs, develops, sells, installs, and maintains air filtration units. Its air cleaning solutions are used to separate air pollutants across a range of industries, including aerospace, automotive, chemical, electronics, pharmaceuticals, woodworking, and food, as well as in power generation, contract manufacturing, dental laboratories, hotels, and restaurants. The company's commercial kitchen systems handle harmful airborne particles and gases generated from cooking activities, and its product portfolio comprises hoods, filtration technologies, and fire extinguishing systems. Absolent Air Care Group AB (publ) operates in Sweden, the United Kingdom, Canada, China, the United States, Germany, the Netherlands, Finland, France, India, Switzerland, Japan, Hong Kong, Italy, and Norway. The company was formerly known as Absolent Group AB (publ) and changed its name to Absolent Air Care Group AB (publ) in May 2021. Founded in 1993, it is headquartered in Gothenburg, Sweden. Absolent Air Care Group AB (publ) operates as a subsidiary of Mexab Industri AB.
+
+**Score:** 36
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Absolent Air Care Group has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 3/5 | Modest revenue growth of 4.4%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- First North listing
+- Positive operating margin (5.5%)
+- Revenue growth (4.4%)
+- Conservative debt/equity
+- Business description available from profile data
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ABSO.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #2 Admicom Oyj (ADMCM)
+
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
+
+**What the company does:** Admicom Oyj provides software solutions and support services in Finland and internationally. The company offers enterprise resource planning solutions, including project financials, production and site management, and payroll and accounting; project management solutions, such as project lifecycle management, project control and planning, and site quality and safety; and business services comprising statutory accounting and payroll services, as well as additional financial management expert services. It also provides documentation; accounting; training and consulting; customer support; implementation; and service contracts. The company serves construction, building services engineering, and real estate sectors. Admicom Oyj was incorporated in 2004 and is based in Jyväskylä, Finland.
+
+**Score:** 36
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Admicom Oyj has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 8.7%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- First North listing
+- Positive operating margin (14.1%)
+- Revenue growth (8.7%)
+- Conservative debt/equity
+- Business description available from profile data
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ADMCM.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #3 Advenica AB (ADVE)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -40,7 +116,7 @@
 | Valuation | 1/5 | No valuation multiple is available. |
 | Growth | 4/5 | Healthy revenue growth of 15.0%. |
 | Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 2/5 | No medium-term price context is available. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
 | Risk | 4/5 | No specific risk flag surfaced in the current screen. |
 | Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
@@ -59,84 +135,45 @@
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ADVE.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #2 Admicom Oyj (ADMCM)
+## #4 Detection Technology Oyj (DETEC)
 
 `FI` | Nasdaq First North Growth Market Finland | `first_north`
 
-**What the company does:** Admicom Oyj provides software solutions and support services in Finland and internationally. The company offers enterprise resource planning solutions, including project financials, production and site management, and payroll and accounting; project management solutions, such as project lifecycle management, project control and planning, and site quality and safety; and business services comprising statutory accounting and payroll services, as well as additional financial management expert services. It also provides documentation; accounting; training and consulting; customer support; implementation; and service contracts. The company serves construction, building services engineering, and real estate sectors. Admicom Oyj was incorporated in 2004 and is based in Jyväskylä, Finland.
+**What the company does:** Detection Technology Oyj engages in the provision of X-ray detector solutions for industrial, medical, and security applications in Finland and internationally. The company offers medical computed tomography (CT) detectors; security CT detectors; photon-counting detectors; flat-panel detectors; and line scan detectors, including linear detector arrays and detectors boards. It also provides myDT+ service portfolio comprising application testing, product commissioning, customer support, repair, failure analysis, extended warranty, warehousing, and training services. Its products are used in medical applications for computed tomography, dental, surgical, and veterinary imaging, as well as digital radiography; in security applications for Cabin and hold baggage, parcel and mail, cargo, container, vehicle, and person screening; and industrial applications comprising material sorting in the agriculture, forest, mining, and recycling industries, as well as production process control and quality inspection in the aerospace, automotive, battery, defense, food, pharmaceutical, renewable energy, oil, and gas industries. The company was incorporated in 1991 and is headquartered in Espoo, Finland.
 
-**Score:** 33
+**Score:** 36
 **Data quality:** partial
 
 ### Long-Term Conviction
-**Bucket:** Speculative / needs more proof
-**Thesis:** Admicom Oyj is worth monitoring, but the long-term case needs more proof because the evidence is not strong enough yet.
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Detection Technology Oyj has enough fundamental evidence for the research queue, but valuation, growth, and risks should be checked manually before it moves into a conviction list.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 4/5 | Good - profitable business with a clear profile. |
 | Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 4/5 | Healthy revenue growth of 8.7%. |
+| Growth | 3/5 | Modest revenue growth of 2.4%. |
 | Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
 | Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Positive operating margin (14.1%)
-- Revenue growth (8.7%)
+- Positive operating margin (6.4%)
+- Revenue growth (2.4%)
 - Conservative debt/equity
 - Business description available from profile data
 
 ### Risks
-- Low live turnover
+- None provided.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ADMCM.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (DETEC.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #3 Aallon Group Oyj (AALLON)
-
-`FI` | Nasdaq First North Growth Market Finland | `first_north`
-
-**What the company does:** Aallon Group Oyj provides accounting services in Finland. The company offers financial management services, including outsourced financial management, company accounting, association accounting, and foundation accounting; payroll and HR solutions, such as payroll as a service, electronic payroll administration, and HR solutions and system; outsourced CFO, business support, financial statement analysis, performance coach, budget tool, customized CFO and controller services, and customized reports and Bl systems; and legal services, tax advice, and corporate restructuring, and acquisitions services. It serves construction, expert services, tourism and hospitality, service, real estate, wholesale, transport sector, and care services sectors. Aallon Group Oyj was incorporated in 2018 and is based in Helsinki, Finland.
-
-**Score:** 25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Speculative / needs more proof
-**Thesis:** Aallon Group Oyj is worth monitoring, but the long-term case needs more proof because the evidence is not strong enough yet.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 4/5 | Healthy revenue growth of 10.1%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
-| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
-
-### Reasons
-- Small market cap
-- First North listing
-- Positive operating margin (5.8%)
-- Revenue growth (10.1%)
-- Conservative debt/equity
-- Business description available from profile data
-
-### Risks
-- Missing live turnover
-- Thin liquidity
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (AALLON.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #4 4C Group (4C)
+## #5 4C Group (4C)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -155,7 +192,7 @@
 | Valuation | 1/5 | No valuation multiple is available. |
 | Growth | 4/5 | Healthy revenue growth of 6.2%. |
 | Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 2/5 | No medium-term price context is available. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
 | Risk | 2/5 | Profitability risk needs manual confirmation. |
 | Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
@@ -173,7 +210,7 @@
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (4C.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #5 AAC Clyde Space (AAC)
+## #6 AAC Clyde Space (AAC)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -210,7 +247,7 @@
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (AAC.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #6 Acconeer (ACCON)
+## #7 Acconeer (ACCON)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -247,61 +284,24 @@
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ACCON.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #7 Alcadon Group (ALCA)
+## #8 Acuvi (ACUVI)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Alcadon Group AB (publ) provides data and telecommunication products and systems in Sweden, Norway, Denmark, Germany, the United Kingdom, and the Benelux. The company offers structured cabling systems for offices, industry, municipalities, and county councils; multi-fiber push on systems and data center solutions; and active communications equipment, such as switches and routers. It also provides fiber networks/FTTx solutions, including fiber network solutions comprising fiber to the home/building/premises and 5G solutions, and fiber solutions for energy companies, city networks, and operators; and smart home solutions for connected homes, as well as solutions for electricity and communication in residential properties. In addition, the company offers training, network design, troubleshooting, fiber welds, and rental services, as well as measuring instrument copper/fiber and fiber blowing equipment. It serves installers, telecommunication operators, construction companies, system integrators, municipalities, data centers, and other end users. The company was founded in 1988 and is based in Stockholm, Sweden.
+**What the company does:** Acuvi AB provides engineering products for OEM solutions in Sweden and internationally. The company offers linear actuators, which includes Piezo LEGS vacuum capable and non-magnetic linear motors and actuators; linear and rotary stages; microplate robots; rotary piezo legs motors; controlling the actuator/motor; custom linear actuators; custom curved rail systems; and corrosion resistant telescopic slides. It also provides solutions in the field of life science instrumentations. The company was formerly known as PiezoMotor Uppsala AB (publ) and changed its name to Acuvi AB in April 2022. Acuvi AB was incorporated in 1997 and is based in Uppsala, Sweden.
 
 **Score:** 18
 **Data quality:** partial
 
 ### Long-Term Conviction
 **Bucket:** Speculative / needs more proof
-**Thesis:** Alcadon Group is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
+**Thesis:** Acuvi is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 1/5 | Weak - profitability is not yet proven. |
 | Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 4/5 | Healthy revenue growth of 14.2%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 2/5 | No medium-term price context is available. |
-| Risk | 2/5 | Profitability risk needs manual confirmation. |
-| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
-
-### Reasons
-- Small market cap
-- First North listing
-- Revenue growth (14.2%)
-- Conservative debt/equity
-- Business description available from profile data
-
-### Risks
-- Negative operating margin
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ALCA.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #8 ALM Equity Pref (ALM PREF)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** ALM Equity AB (publ), through its subsidiaries, acquires and develops housing property assets in Sweden. It operates through Development, Contracting, and Management segments. The company offers land and property acquisition, zoning planning process, concept development, and sales services; and turnkey building and property contractor services comprising design, production, and delivery. It is also involved in the management, letting, and operation of properties. In addition, the company provides a platform with working methods that make it adaptable to different volumes and orders. ALM Equity AB (publ) was founded in 1997 and is headquartered in Stockholm, Sweden.
-
-**Score:** 12
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Speculative / needs more proof
-**Thesis:** ALM Equity Pref is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 1/5 | Weak - profitability is not yet proven. |
-| Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 1/5 | Revenue declined 28.5%. |
+| Growth | 5/5 | Strong revenue growth of 31.7%. |
 | Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
 | Risk | 2/5 | Profitability risk needs manual confirmation. |
@@ -310,6 +310,7 @@
 ### Reasons
 - Small market cap
 - First North listing
+- Revenue growth (31.7%)
 - Conservative debt/equity
 - Business description available from profile data
 
@@ -318,77 +319,79 @@
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ALM-PREF.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (ACUVI.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #9 Administer Oyj (ADMIN)
+## #9 Adtraction Group (ADTR)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Adtraction Group AB provides advertising services in Europe. It develops and operates a platform, which connects advertisers with various partners, such as digital magazines, influencers, bloggers, forums, mobile apps, and price comparison sites. The company was founded in 2007 and is headquartered in Stockholm, Sweden.
+
+**Score:** 10
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative / needs more proof
+**Thesis:** Adtraction Group is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 1/5 | Weak - profitability is not yet proven. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 11.2%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- First North listing
+- Revenue growth (11.2%)
+- Conservative debt/equity
+- Business description available from profile data
+
+### Risks
+- Thin liquidity
+- Negative operating margin
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ADTR.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #10 Canatu Oyj A (CANATU)
 
 `FI` | Nasdaq First North Growth Market Finland | `first_north`
 
-**What the company does:** Administer Oyj provides human resources and financial services in Finland and internationally. It offers Sarastia, a product for financial and payroll services, and software solutions for municipalities and cities; Silta for HR services and payroll administration; econia, a product for financial and HR administration; Administer for financial management and payroll administration; and emcee, a software that connects people and business processes. The company also provides work permits, payroll, employee services, establishment services, grey economy prevention, taxation, and accounting services. It serves small and medium-sized enterprises, large companies, municipalities, and other public sectors. Administer Oyj was founded in 1985 and is headquartered in Helsinki, Finland.
+**What the company does:** Canatu Oyj develops and sells carbon nanotubes (CNTs) and related products, and manufacturing equipment for the semiconductor, automotive, and medical diagnostics industries in Finland, the United States, Japan, and Taiwan. The company offers custom CNT synthesis reactors; CNT membrane for high-power EUV lithography and X-Ray filter applications; EUV pellicies to protect photomask for contamination while permitting high EUV transmission; optical filters for use in X-Ray filter applications; and inspection membranes that enhances quality control by filtering debris from EUV light source and optical paths. It also provides film, advanced driver assistance systems (ADAS) LIDAR, ADAS camera, and headlight heaters, as well as touch sensors in 3D; and electrochemical biosensors and electrochemical sensors, as well as carbon nanotube transistors. Canatu Oyj was founded in 2004 and is headquartered in Vantaa, Finland.
 
-**Score:** 7
+**Score:** 4
 **Data quality:** partial
 
 ### Long-Term Conviction
 **Bucket:** Speculative / needs more proof
-**Thesis:** Administer Oyj is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
+**Thesis:** Canatu Oyj A is worth monitoring, but the long-term case needs more proof because profitability is not yet proven.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 1/5 | Weak - profitability is not yet proven. |
 | Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 4/5 | Healthy revenue growth of 11.8%. |
+| Growth | 1/5 | Revenue growth is not available. |
 | Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Momentum | 2/5 | No medium-term price context is available. |
 | Risk | 2/5 | Profitability risk needs manual confirmation. |
 | Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
 
 ### Reasons
 - Small market cap
 - First North listing
-- Revenue growth (11.8%)
 - Conservative debt/equity
 - Business description available from profile data
 
 ### Risks
-- Missing live turnover
 - Thin liquidity
 - Negative operating margin
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ADMIN.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #10 ARENIT Industrie SDB (ARENIT SDB)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** Arenit Industrie SE engages in identifying, acquiring, and developing companies in Germany, Austria, and Switzerland. The company operates through two segments, Devices and Industrial Solutions, and Precision Manufacturing. It develops, manufactures, and supplies specialized products, devices, and technical systems to B2B customers. The company was founded in 2016 and is headquartered in Hamburg, Germany.
-
-**Score:** -5
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Speculative / needs more proof
-**Thesis:** ARENIT Industrie SDB is worth monitoring, but the long-term case needs more proof because revenue growth is not available.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 3/5 | Clear business profile, but margin data is missing. |
-| Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 1/5 | Revenue growth is not available. |
-| Balance sheet | 1/5 | Balance sheet data is not available. |
-| Momentum | 2/5 | No medium-term price context is available. |
-| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
-| Data confidence | 1/5 | Only limited fundamentals are available today. |
-
-### Reasons
-- First North listing
-- Business description available from profile data
-
-### Risks
-- Thin liquidity
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ARENIT-SDB.ST)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+- [Finimpulse fundamentals lookup (CANATU.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
