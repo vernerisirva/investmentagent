@@ -2,7 +2,7 @@ name: Daily public watchlist
 
 on:
   schedule:
-    - cron: "17 7,8 * * 1-5"
+    - cron: "48 5,6 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -24,9 +24,9 @@ jobs:
         if: github.event_name == 'schedule'
         run: |
           helsinki_hour="$(TZ=Europe/Helsinki date +%H)"
-          if [ "$helsinki_hour" != "10" ]; then
+          if [ "$helsinki_hour" != "08" ]; then
             echo "RUN_DAILY_REPORT=false" >> "$GITHUB_ENV"
-            echo "Skipping because current Helsinki hour is $helsinki_hour, not 10."
+            echo "Skipping because current Helsinki hour is $helsinki_hour, not 08."
           fi
 
       - name: Check out repository

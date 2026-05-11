@@ -59,7 +59,7 @@ Setup:
 2. Enable GitHub Pages: Settings -> Pages -> Build and deployment -> Deploy from a branch -> branch `main`, folder `/docs`.
 3. Run the workflow manually once from Actions -> Daily public watchlist -> Run workflow, or wait for the weekday schedule.
 
-The workflow runs at about 10:17 Europe/Helsinki on weekdays, shortly after the Nordic markets open, and writes public Markdown reports under `docs/reports/`. It publishes two top-10 lists:
+The workflow runs at about 08:48 Europe/Helsinki on weekdays and writes public Markdown reports under `docs/reports/`. It publishes two top-10 lists:
 
 - Trading ideas, generated with `--strategy trading`.
 - Long-term investment ideas, generated with `--strategy long-term`.
