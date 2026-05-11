@@ -67,11 +67,14 @@ The workflow runs at about 08:48 Europe/Helsinki on weekdays and writes public M
 Both public lists use `--min-country FI:3`, so each top 10 includes at least three Finnish companies when enough Finnish candidates are available.
 Long-term reports also include a conviction bucket, a plain-English thesis, and component scores for business quality, valuation, growth, balance sheet, momentum, risk, and data confidence.
 
+The performance page tracks published picks over 1d, 5d, 20d, and 60d horizons. It summarizes results publicly and may suggest scoring ideas after enough observations, but it does not change ranking weights automatically.
+
 Public pages:
 
 - Latest landing page: `https://vernerisirva.github.io/investmentagent/`
 - Latest trading ideas: `https://vernerisirva.github.io/investmentagent/reports/trading/latest.html`
 - Latest long-term ideas: `https://vernerisirva.github.io/investmentagent/reports/long-term/latest.html`
+- Performance scorecard: `https://vernerisirva.github.io/investmentagent/performance/`
 - Dated trading ideas: `https://vernerisirva.github.io/investmentagent/reports/trading/YYYY-MM-DD.html`
 - Dated long-term ideas: `https://vernerisirva.github.io/investmentagent/reports/long-term/YYYY-MM-DD.html`
 

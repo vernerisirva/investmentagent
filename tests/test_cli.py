@@ -98,6 +98,29 @@ def test_watchlist_saves_markdown_report():
     assert "## Watchlist" in content
 
 
+def test_watchlist_can_save_markdown_and_json_from_one_run():
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--limit",
+                "1",
+                "--save",
+                "reports/watchlist.md",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+
+        markdown = Path("reports/watchlist.md").read_text()
+        payload = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert "# InvestmentAgent Watchlist" in markdown
+    assert payload["items"][0]["rank"] == 1
+
+
 def test_watchlist_rejects_unsupported_save_extension():
     result = runner.invoke(app, ["watchlist", "--limit", "1", "--save", "reports/watchlist.txt"])
 
@@ -584,6 +607,67 @@ def test_sources_test_accepts_fixture_provider_option():
 
     assert result.exit_code == 0
     assert "bundled seed data: ok" in result.output
+
+
+def test_performance_update_creates_ledger_and_scorecard():
+    report = {
+        "metadata": {
+            "generated_at": "2026-05-11T07:36:10+00:00",
+            "strategy": "trading",
+        },
+        "items": [
+            {
+                "rank": 1,
+                "company": {
+                    "ticker": "KAR",
+                    "name": "Karnov Group AB",
+                    "country": "SE",
+                    "exchange": "Nasdaq Stockholm",
+                    "segment": "main_market",
+                    "sector": "Industrials",
+                },
+                "financials": {"price": 100.0, "currency": "SEK"},
+                "score": {"total": 20, "reasons": ["High live turnover"], "warnings": []},
+                "risks": [],
+                "data_quality": "partial",
+            }
+        ],
+    }
+    with runner.isolated_filesystem():
+        Path("reports").mkdir()
+        Path("reports/trading.json").write_text(json.dumps(report))
+
+        result = runner.invoke(
+            app,
+            [
+                "performance",
+                "update",
+                "--report-json",
+                "reports/trading.json",
+                "--report-date",
+                "2026-05-11",
+                "--ledger",
+                "docs/data/performance/ledger.json",
+                "--output",
+                "docs/performance/index.md",
+                "--latest",
+                "docs/performance/latest.md",
+                "--price-provider",
+                "off",
+                "--generated-at",
+                "2026-05-11 08:48 EEST",
+            ],
+        )
+
+        ledger = json.loads(Path("docs/data/performance/ledger.json").read_text())
+        scorecard = Path("docs/performance/index.md").read_text()
+        latest = Path("docs/performance/latest.md").read_text()
+
+    assert result.exit_code == 0
+    assert ledger["picks"][0]["ticker"] == "KAR"
+    assert ledger["picks"][0]["report_url"] == "../reports/trading/2026-05-11.html"
+    assert "# InvestmentAgent Performance" in scorecard
+    assert latest == scorecard
 
 
 def test_cli_rejects_invalid_provider_option():

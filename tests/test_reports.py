@@ -758,6 +758,58 @@ def test_render_watchlist_report_json_includes_company_presentation():
     assert payload["items"][0]["company_presentation"]
 
 
+def test_render_watchlist_report_json_includes_long_term_conviction_payload():
+    company = Company(
+        name="Quality Compounder AB",
+        ticker="QUAL",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+        sector="Software",
+        business_description="Quality Compounder sells workflow software.",
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(
+                pe_ratio=11.0,
+                price_to_book=1.1,
+                net_cash_eur_m=25.0,
+                debt_to_equity=0.2,
+                revenue_growth_pct=12.0,
+                operating_margin_pct=18.0,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=10.0,
+            discovery=8.0,
+            catalyst=21.0,
+            risk_penalty=0.0,
+            data_quality_penalty=4.0,
+            total=35.0,
+        ),
+    )
+
+    payload = json.loads(
+        render_watchlist_report_json(
+            [item],
+            metadata={"strategy": "long-term"},
+            source_checks=[],
+        )
+    )
+
+    conviction = payload["items"][0]["long_term_conviction"]
+    assert conviction["bucket"] == "High conviction candidate"
+    assert "profitable software profile" in conviction["thesis"]
+    assert conviction["components"]["Business quality"]["score"] == 5
+    assert conviction["components"]["Valuation"]["view"].startswith(
+        "Attractive valuation"
+    )
+
+
 def test_render_watchlist_report_markdown_formats_company_sections():
     company = Company(
         name="Karnov Group AB",

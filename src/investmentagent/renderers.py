@@ -72,11 +72,12 @@ def render_watchlist_json(items: list[WatchlistItem]) -> str:
 def render_watchlist_report_json(
     items: list[WatchlistItem], metadata: dict[str, Any], source_checks
 ) -> str:
+    strategy = str(metadata.get("strategy") or "").strip().lower()
     payload = {
         "disclaimer": DISCLAIMER,
         "metadata": metadata,
         "source_checks": [_source_check_payload(check) for check in source_checks],
-        "items": _watchlist_items_payload(items),
+        "items": _watchlist_items_payload(items, strategy=strategy),
     }
     return json.dumps(_normalize_json_value(payload), allow_nan=False, indent=2, sort_keys=True)
 
@@ -183,9 +184,12 @@ def _company_payload(company: Company) -> dict[str, Any]:
     }
 
 
-def _watchlist_items_payload(items: list[WatchlistItem]) -> list[dict[str, Any]]:
-    return [
-        {
+def _watchlist_items_payload(
+    items: list[WatchlistItem], strategy: str = ""
+) -> list[dict[str, Any]]:
+    payloads = []
+    for item in items:
+        payload = {
             "rank": item.rank,
             "company": _company_payload(item.research.company),
             "company_presentation": _company_presentation(item),
@@ -196,8 +200,10 @@ def _watchlist_items_payload(items: list[WatchlistItem]) -> list[dict[str, Any]]
             "evidence": [_evidence_payload(evidence) for evidence in item.research.evidence],
             "data_quality": _stringify(item.research.data_quality),
         }
-        for item in items
-    ]
+        if strategy == "long-term":
+            payload["long_term_conviction"] = _long_term_conviction_payload(item)
+        payloads.append(payload)
+    return payloads
 
 
 def _financials_payload(financials: FinancialSnapshot) -> dict[str, Any]:
@@ -322,6 +328,21 @@ def _long_term_conviction(item: WatchlistItem) -> _LongTermConviction:
         thesis=_long_term_thesis(item, bucket),
         components=components,
     )
+
+
+def _long_term_conviction_payload(item: WatchlistItem) -> dict[str, Any]:
+    conviction = _long_term_conviction(item)
+    return {
+        "bucket": conviction.bucket,
+        "thesis": conviction.thesis,
+        "components": {
+            component.name: {
+                "score": component.score,
+                "view": component.view,
+            }
+            for component in conviction.components
+        },
+    }
 
 
 def _business_quality_component(item: WatchlistItem) -> _ConvictionComponent:

@@ -1,5 +1,6 @@
+import json
 import os
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import typer
@@ -11,6 +12,15 @@ from investmentagent.fundamentals import (
     YahooFundamentalsProvider,
 )
 from investmentagent.providers import create_provider
+from investmentagent.performance import (
+    add_report_picks,
+    load_ledger,
+    parse_report_date,
+    price_lookup_from_provider,
+    render_scorecard_markdown,
+    save_ledger,
+    update_due_outcomes,
+)
 from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
@@ -24,7 +34,9 @@ from investmentagent.reports import build_deep_dive, build_watchlist, normalize_
 
 app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args_is_help=False)
 sources_app = typer.Typer(help="Inspect and validate research sources.")
+performance_app = typer.Typer(help="Track and publish watchlist performance.")
 app.add_typer(sources_app, name="sources")
+app.add_typer(performance_app, name="performance")
 
 
 @app.callback(invoke_without_command=True)
@@ -158,8 +170,10 @@ def watchlist(
         "--min-country",
         help="Minimum country representation, such as FI:3. Can be repeated.",
     ),
-    save_path: str | None = typer.Option(
-        None, "--save", help="Save report to .json, .md, or .markdown."
+    save_paths: list[str] | None = typer.Option(
+        None,
+        "--save",
+        help="Save report to .json, .md, or .markdown. Can be repeated.",
     ),
 ) -> None:
     normalized_output = _normalize_output_option(output)
@@ -214,25 +228,21 @@ def watchlist(
         min_country_counts=min_country_counts,
     )
     source_checks = provider.source_checks()
-    if save_path is not None:
-        _save_watchlist_report(
-            save_path,
-            items,
-            {
-                "generated_at": datetime.now(timezone.utc).isoformat(),
-                "provider": normalized_provider_name,
-                "fundamentals": effective_fundamentals,
-                "countries": list(countries),
-                "limit": limit,
-                "include_first_north": include_first_north,
-                "min_market_cap": min_market_cap,
-                "max_market_cap": max_market_cap,
-                "sector": sector,
-                "strategy": normalized_strategy,
-                "min_country_counts": min_country_counts,
-            },
-            source_checks,
-        )
+    metadata = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "provider": normalized_provider_name,
+        "fundamentals": effective_fundamentals,
+        "countries": list(countries),
+        "limit": limit,
+        "include_first_north": include_first_north,
+        "min_market_cap": min_market_cap,
+        "max_market_cap": max_market_cap,
+        "sector": sector,
+        "strategy": normalized_strategy,
+        "min_country_counts": min_country_counts,
+    }
+    for save_path in save_paths or ():
+        _save_watchlist_report(save_path, items, metadata, source_checks)
 
     if normalized_output == "text":
         if verbose:
@@ -275,6 +285,71 @@ def test_sources(
     provider = _provider_from_option(provider_name)
     for check in provider.source_checks():
         typer.echo(f"{check.name}: {check.status} - {check.detail}")
+
+
+@performance_app.command("update")
+def performance_update(
+    report_json_paths: list[str] = typer.Option(
+        ..., "--report-json", help="Saved watchlist report JSON file. Can be repeated."
+    ),
+    report_date_raw: str = typer.Option(..., "--report-date", help="Report date YYYY-MM-DD."),
+    ledger_path: str = typer.Option(
+        "docs/data/performance/ledger.json", "--ledger", help="Performance ledger path."
+    ),
+    output_path: str = typer.Option(
+        "docs/performance/index.md", "--output", help="Performance scorecard Markdown path."
+    ),
+    latest_path: str | None = typer.Option(
+        None, "--latest", help="Optional latest scorecard copy path."
+    ),
+    price_provider_name: str = typer.Option(
+        "live", "--price-provider", help="Price provider: live, fixture, or off."
+    ),
+    generated_at: str | None = typer.Option(
+        None, "--generated-at", help="Display timestamp for the scorecard."
+    ),
+) -> None:
+    report_date = parse_report_date(report_date_raw)
+    ledger_file = Path(ledger_path)
+    ledger = load_ledger(ledger_file)
+    for report_json_path in report_json_paths:
+        report_path = Path(report_json_path)
+        report_payload = json.loads(report_path.read_text(encoding="utf-8"))
+        strategy = report_payload.get("metadata", {}).get("strategy")
+        if strategy not in {"trading", "long-term"}:
+            raise typer.BadParameter("report-json metadata strategy must be trading or long-term")
+        report_url = f"../reports/{strategy}/{report_date.isoformat()}.html"
+        ledger = add_report_picks(
+            ledger,
+            report_payload,
+            report_date=report_date,
+            report_url=report_url,
+        )
+
+    normalized_price_provider = price_provider_name.strip().lower()
+    if normalized_price_provider == "off":
+        price_lookup = {}
+    else:
+        provider = _provider_from_option(normalized_price_provider)
+        if normalized_price_provider == "live":
+            _raise_for_source_errors(provider)
+        price_lookup = price_lookup_from_provider(provider)
+
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date.today(),
+        price_lookup=price_lookup,
+    )
+    save_ledger(ledger_file, ledger)
+    display_timestamp = generated_at or datetime.now(timezone.utc).isoformat()
+    scorecard = render_scorecard_markdown(ledger, generated_at=display_timestamp)
+    output_file = Path(output_path)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    output_file.write_text(scorecard + "\n", encoding="utf-8")
+    if latest_path is not None:
+        latest_file = Path(latest_path)
+        latest_file.parent.mkdir(parents=True, exist_ok=True)
+        latest_file.write_text(scorecard + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
