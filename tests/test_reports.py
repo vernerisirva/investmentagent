@@ -79,6 +79,7 @@ class CompanyAwareDuplicateTickerProvider:
 def make_research(
     ticker: str,
     *,
+    name: str | None = None,
     country: str = "SE",
     pe_ratio: float | None = 10.0,
     price_to_book: float | None = 1.0,
@@ -92,7 +93,7 @@ def make_research(
     evidence=(),
 ) -> CompanyResearch:
     company = Company(
-        name=f"{ticker} AB",
+        name=name or f"{ticker} AB",
         ticker=ticker,
         country=country,
         exchange="Nasdaq Stockholm" if country == "SE" else "Nasdaq Helsinki",
@@ -239,6 +240,40 @@ def test_build_watchlist_preserves_company_specific_duplicate_tickers():
 
     assert [item.research.company.country for item in items] == ["SE", "FI"]
     assert [item.research.financials.currency for item in items] == ["SEK", "EUR"]
+
+
+def test_build_watchlist_deduplicates_dual_listed_company_names():
+    provider = FakeResearchProvider(
+        (
+            make_research(
+                "NANOFS",
+                name="Nanoform Finland Oyj",
+                country="SE",
+                catalysts=("High live turnover",),
+            ),
+            make_research(
+                "NANOFH",
+                name="Nanoform Finland Oyj",
+                country="FI",
+                catalysts=("Positive intraday momentum (+5.1%)",),
+            ),
+            make_research("AIFORIA", name="Aiforia Technologies Oyj", country="FI"),
+            make_research("ELISA", name="Elisa Oyj", country="FI"),
+            make_research("IVACC", name="Intervacc AB", country="SE"),
+        )
+    )
+
+    items = build_watchlist(
+        provider,
+        countries=("SE", "FI"),
+        limit=4,
+        include_first_north=True,
+        min_country_counts={"FI": 2},
+    )
+
+    assert len(items) == 4
+    assert [item.research.company.name for item in items].count("Nanoform Finland Oyj") == 1
+    assert sum(item.research.company.country == "FI" for item in items) >= 2
 
 
 def test_build_watchlist_filters_market_cap_and_sector():

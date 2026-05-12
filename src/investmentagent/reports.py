@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from investmentagent.models import (
     Company,
     CompanyResearch,
@@ -85,10 +87,7 @@ def build_watchlist(
             )
         scored_items = rescored_items
 
-    ranked_candidates = sorted(
-        scored_items,
-        key=lambda item: (-item.score.total, item.research.company.ticker),
-    )
+    ranked_candidates = _rank_watchlist_items(_deduplicate_company_ideas(scored_items))
     ranked_items = _apply_min_country_counts(
         ranked_candidates,
         limit=limit,
@@ -137,10 +136,7 @@ def _apply_min_country_counts(
             selected.append(replacement)
             selected_keys.add(_watchlist_item_key(replacement))
 
-    return sorted(
-        selected,
-        key=lambda item: (-item.score.total, item.research.company.ticker),
-    )
+    return _rank_watchlist_items(selected)
 
 
 def _lowest_ranked_removable_index(
@@ -162,6 +158,57 @@ def _lowest_ranked_removable_index(
 def _watchlist_item_key(item: WatchlistItem) -> tuple[str, str]:
     company = item.research.company
     return (company.ticker, company.country)
+
+
+def _deduplicate_company_ideas(items: list[WatchlistItem]) -> list[WatchlistItem]:
+    selected_by_company: dict[str, WatchlistItem] = {}
+    for item in items:
+        company_key = _company_idea_key(item.research.company)
+        selected = selected_by_company.get(company_key)
+        if selected is None or _watchlist_rank_key(item) < _watchlist_rank_key(
+            selected
+        ):
+            selected_by_company[company_key] = item
+    return list(selected_by_company.values())
+
+
+def _company_idea_key(company: Company) -> str:
+    normalized_name = _normalize_company_name(company.name)
+    if normalized_name:
+        return normalized_name
+    return f"{company.ticker}|{company.country}"
+
+
+def _normalize_company_name(name: str) -> str:
+    normalized = re.sub(r"[^a-z0-9]+", " ", name.lower()).strip()
+    legal_suffixes = {
+        "ab",
+        "ag",
+        "corp",
+        "corporation",
+        "inc",
+        "limited",
+        "ltd",
+        "oy",
+        "oyj",
+        "plc",
+        "publ",
+    }
+    share_classes = {"a", "b"}
+    words = normalized.split()
+    removable_suffixes = legal_suffixes | share_classes
+    while words and words[-1] in removable_suffixes:
+        words.pop()
+    return " ".join(words)
+
+
+def _rank_watchlist_items(items: list[WatchlistItem]) -> list[WatchlistItem]:
+    return sorted(items, key=_watchlist_rank_key)
+
+
+def _watchlist_rank_key(item: WatchlistItem) -> tuple[float, str]:
+    company = item.research.company
+    return (-item.score.total, company.ticker)
 
 
 def _get_company_research(provider: ResearchProvider, company: Company) -> CompanyResearch:
@@ -187,10 +234,7 @@ def _watchlist_enrichment_candidates(
     budget = getattr(provider, "max_enrichments", None)
     if budget is None or budget < 1:
         return ()
-    ranked_items = sorted(
-        scored_items,
-        key=lambda item: (-item.score.total, item.research.company.ticker),
-    )
+    ranked_items = _rank_watchlist_items(_deduplicate_company_ideas(scored_items))
     constrained_items = _apply_min_country_counts(
         ranked_items,
         limit=limit,
