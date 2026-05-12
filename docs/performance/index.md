@@ -5,52 +5,100 @@
 Generated: 2026-05-12 09:03 EEST
 
 ## Trading Ideas
+
+### Horizon Scorecard
+
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 10 | 80.0% | 2.2% | 1.79% |
+| 1d | 10 | 80% | +2.2% | +1.79% |
 | 5d | 0 | - | - | - |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
-## Long-Term Ideas
+### Best Trading Picks
+
+- **Nanoform Finland Oyj (NANOFS)** - 1d return **+7.58%** ([report](../reports/trading/2026-05-11.html))
+- **SaltX Technology Holding B (SALT B)** - 1d return **+5.28%** ([report](../reports/trading/2026-05-11.html))
+- **2cureX (2CUREX)** - 1d return **+2.58%** ([report](../reports/trading/2026-05-11.html))
+- **Gapwaves B (GAPW B)** - 1d return **+2.14%** ([report](../reports/trading/2026-05-11.html))
+- **GRANGEX (GRANGX)** - 1d return **+1.43%** ([report](../reports/trading/2026-05-11.html))
+
+### Worst Trading Picks
+
+- **Intervacc (IVACC)** - 1d return **-3.75%** ([report](../reports/trading/2026-05-11.html))
+- **AFRICA ENERGY CORP. (AEC)** - 1d return **0%** ([report](../reports/trading/2026-05-11.html))
+- **Elisa Oyj (ELISA)** - 1d return **+0.44%** ([report](../reports/trading/2026-05-11.html))
+- **Aiforia Technologies Oyj (AIFORIA)** - 1d return **+0.69%** ([report](../reports/trading/2026-05-11.html))
+
+### Trading Signal Review
+
+| Signal | Observations | Average Return | Hit Rate |
+| --- | ---: | ---: | ---: |
+| Reason: Live price available from Nasdaq Nordic | 10 | +2.2% | 80% |
+| Reason: First North listing | 9 | +2.4% | 77.8% |
+| Reason: Small market cap | 9 | +2.4% | 77.8% |
+| Reason: Trading strategy adjustment applied | 9 | +2.37% | 77.8% |
+| Segment: First north | 9 | +2.4% | 77.8% |
+| Country: SE | 7 | +2.18% | 71.4% |
+| Reason: High live turnover | 5 | +1.11% | 80% |
+| Country: FI | 3 | +2.25% | 100% |
+| Reason: Moderate live turnover | 3 | +3.39% | 66.7% |
+| Reason: Positive intraday momentum (+6.06%) | 1 | +0.69% | 100% |
+| Reason: Positive intraday momentum (+6.07%) | 1 | +1.43% | 100% |
+| Reason: Positive intraday momentum (+6.67%) | 1 | +2.14% | 100% |
+
+### Trading Learning Suggestions
+
+- Reason: Live price available from Nasdaq Nordic has produced a positive average return of +2.2% across 10 completed observations. Review whether its scoring weight should change.
+
+## Long-Term Investment Ideas
+
+### Horizon Scorecard
+
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 10 | 60.0% | 1.03% | 0.32% |
+| 1d | 10 | 60% | +1.03% | +0.32% |
 | 5d | 0 | - | - | - |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
-## Best Completed Picks
-- Nanoform Finland Oyj (NANOFS), trading 1d: 7.58% - [../reports/trading/2026-05-11.html](../reports/trading/2026-05-11.html)
-- Adtraction Group (ADTR), long-term 1d: 5.69% - [../reports/long-term/2026-05-11.html](../reports/long-term/2026-05-11.html)
-- Nanoform Finland Oyj (NANOFH), trading 1d: 5.63% - [../reports/trading/2026-05-11.html](../reports/trading/2026-05-11.html)
-- SaltX Technology Holding B (SALT B), trading 1d: 5.28% - [../reports/trading/2026-05-11.html](../reports/trading/2026-05-11.html)
-- AAC Clyde Space (AAC), long-term 1d: 3.25% - [../reports/long-term/2026-05-11.html](../reports/long-term/2026-05-11.html)
+### Best Long-Term Picks
 
-## Worst Completed Picks
-- Intervacc (IVACC), trading 1d: -3.75% - [../reports/trading/2026-05-11.html](../reports/trading/2026-05-11.html)
-- Admicom Oyj (ADMCM), long-term 1d: -1.5% - [../reports/long-term/2026-05-11.html](../reports/long-term/2026-05-11.html)
-- Canatu Oyj A (CANATU), long-term 1d: -0.38% - [../reports/long-term/2026-05-11.html](../reports/long-term/2026-05-11.html)
-- Detection Technology Oyj (DETEC), long-term 1d: -0.23% - [../reports/long-term/2026-05-11.html](../reports/long-term/2026-05-11.html)
-- Acuvi (ACUVI), long-term 1d: -0.18% - [../reports/long-term/2026-05-11.html](../reports/long-term/2026-05-11.html)
+- **Adtraction Group (ADTR)** - 1d return **+5.69%** ([report](../reports/long-term/2026-05-11.html))
+- **AAC Clyde Space (AAC)** - 1d return **+3.25%** ([report](../reports/long-term/2026-05-11.html))
+- **Absolent Air Care Group (ABSO)** - 1d return **+2.53%** ([report](../reports/long-term/2026-05-11.html))
+- **Acconeer (ACCON)** - 1d return **+0.5%** ([report](../reports/long-term/2026-05-11.html))
+- **4C Group (4C)** - 1d return **+0.41%** ([report](../reports/long-term/2026-05-11.html))
 
-## Signal Review
-- reason:First North listing: 19 observations, 1.68% average return, 68.4% hit rate
-- reason:small market cap: 19 observations, 1.68% average return, 68.4% hit rate
-- segment:first_north: 19 observations, 1.68% average return, 68.4% hit rate
-- country:SE: 14 observations, 1.98% average return, 78.6% hit rate
-- reason:Business description available from profile data: 10 observations, 1.03% average return, 60.0% hit rate
-- reason:Conservative debt/equity: 10 observations, 1.03% average return, 60.0% hit rate
-- reason:Live price available from Nasdaq Nordic: 10 observations, 2.2% average return, 80.0% hit rate
-- strategy:long-term: 10 observations, 1.03% average return, 60.0% hit rate
-- strategy:trading: 10 observations, 2.2% average return, 80.0% hit rate
-- reason:trading strategy adjustment applied: 9 observations, 2.37% average return, 77.8% hit rate
-- bucket:Speculative / needs more proof: 6 observations, 1.55% average return, 66.7% hit rate
-- country:FI: 6 observations, 0.77% average return, 50.0% hit rate
+### Worst Long-Term Picks
 
-## Learning Suggestions
-- reason:First North listing has produced a positive average return of 1.68% across 19 completed observations. Review whether its scoring weight should change.
-- reason:small market cap has produced a positive average return of 1.68% across 19 completed observations. Review whether its scoring weight should change.
-- segment:first_north has produced a positive average return of 1.68% across 19 completed observations. Review whether its scoring weight should change.
-- country:SE has produced a positive average return of 1.98% across 14 completed observations. Review whether its scoring weight should change.
-- reason:Business description available from profile data has produced a positive average return of 1.03% across 10 completed observations. Review whether its scoring weight should change.
+- **Admicom Oyj (ADMCM)** - 1d return **-1.5%** ([report](../reports/long-term/2026-05-11.html))
+- **Canatu Oyj A (CANATU)** - 1d return **-0.38%** ([report](../reports/long-term/2026-05-11.html))
+- **Detection Technology Oyj (DETEC)** - 1d return **-0.23%** ([report](../reports/long-term/2026-05-11.html))
+- **Acuvi (ACUVI)** - 1d return **-0.18%** ([report](../reports/long-term/2026-05-11.html))
+- **Advenica AB (ADVE)** - 1d return **+0.23%** ([report](../reports/long-term/2026-05-11.html))
+
+### Long-Term Signal Review
+
+| Signal | Observations | Average Return | Hit Rate |
+| --- | ---: | ---: | ---: |
+| Reason: Business description available from profile data | 10 | +1.03% | 60% |
+| Reason: Conservative debt/equity | 10 | +1.03% | 60% |
+| Reason: First North listing | 10 | +1.03% | 60% |
+| Reason: Small market cap | 10 | +1.03% | 60% |
+| Segment: First north | 10 | +1.03% | 60% |
+| Country: SE | 7 | +1.78% | 85.7% |
+| Bucket: Speculative / needs more proof | 6 | +1.55% | 66.7% |
+| Bucket: Fundamental watchlist candidate | 4 | +0.26% | 50% |
+| Country: FI | 3 | -0.7% | 0% |
+| Reason: Positive operating margin (14.1%) | 1 | -1.5% | 0% |
+| Reason: Positive operating margin (5.5%) | 1 | +2.53% | 100% |
+| Reason: Positive operating margin (6.4%) | 1 | -0.23% | 0% |
+
+### Long-Term Learning Suggestions
+
+- Reason: Business description available from profile data has produced a positive average return of +1.03% across 10 completed observations. Review whether its scoring weight should change.
+- Reason: Conservative debt/equity has produced a positive average return of +1.03% across 10 completed observations. Review whether its scoring weight should change.
+- Reason: First North listing has produced a positive average return of +1.03% across 10 completed observations. Review whether its scoring weight should change.
+- Reason: Small market cap has produced a positive average return of +1.03% across 10 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a positive average return of +1.03% across 10 completed observations. Review whether its scoring weight should change.

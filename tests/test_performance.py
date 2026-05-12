@@ -1,3 +1,4 @@
+from copy import deepcopy
 from datetime import date
 
 from investmentagent.performance import (
@@ -311,9 +312,93 @@ def test_render_scorecard_markdown_includes_strategy_sections_and_disclaimer():
     assert "# InvestmentAgent Performance" in output
     assert "Research triage only. Not financial advice." in output
     assert "## Trading Ideas" in output
-    assert "| 5d | 1 | 100.0% | 20.0% | 20.0% |" in output
-    assert "## Long-Term Ideas" in output
-    assert "## Learning Suggestions" in output
+    assert "| 5d | 1 | 100% | +20% | +20% |" in output
+    assert "## Long-Term Investment Ideas" in output
+    assert "### Trading Learning Suggestions" in output
+
+
+def test_render_scorecard_markdown_keeps_strategy_details_separate():
+    ledger = empty_ledger()
+    trading_payload = report_payload(strategy="trading")
+    trading_payload["items"].append(deepcopy(trading_payload["items"][0]))
+    trading_payload["items"][0]["company"]["ticker"] = "TRADEWIN"
+    trading_payload["items"][0]["company"]["name"] = "Trading Winner"
+    trading_payload["items"][1]["rank"] = 2
+    trading_payload["items"][1]["company"]["ticker"] = "TRADELOSS"
+    trading_payload["items"][1]["company"]["name"] = "Trading Loser"
+
+    long_term_payload = report_payload(strategy="long-term")
+    long_term_payload["items"].append(deepcopy(long_term_payload["items"][0]))
+    long_term_payload["items"][0]["company"]["ticker"] = "LONGWIN"
+    long_term_payload["items"][0]["company"]["name"] = "Long-Term Winner"
+    long_term_payload["items"][1]["rank"] = 2
+    long_term_payload["items"][1]["company"]["ticker"] = "LONGLOSS"
+    long_term_payload["items"][1]["company"]["name"] = "Long-Term Loser"
+
+    ledger = add_report_picks(
+        ledger,
+        trading_payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/trading/2026-05-11.html",
+    )
+    ledger = add_report_picks(
+        ledger,
+        long_term_payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/long-term/2026-05-11.html",
+    )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={
+            ("TRADEWIN", "SE"): {"price": 1.02, "currency": "SEK"},
+            ("TRADELOSS", "SE"): {"price": 0.75, "currency": "SEK"},
+            ("LONGWIN", "SE"): {"price": 0.94, "currency": "SEK"},
+            ("LONGLOSS", "SE"): {"price": 0.68, "currency": "SEK"},
+        },
+    )
+
+    output = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
+    trading_section = output.split("## Long-Term Investment Ideas")[0]
+    long_term_section = output.split("## Long-Term Investment Ideas")[1]
+
+    assert "### Horizon Scorecard\n\n| Horizon | Completed" in output
+    assert "### Best Trading Picks" in trading_section
+    assert "Trading Winner" in trading_section
+    assert "Long-Term Winner" not in trading_section
+    assert "### Best Long-Term Picks" in long_term_section
+    assert "Long-Term Winner" in long_term_section
+    assert "Trading Winner" not in long_term_section
+    assert "| Signal | Observations | Average Return | Hit Rate |" in output
+    assert "Reason: High live turnover" in output
+
+
+def test_render_scorecard_deduplicates_company_names_in_pick_highlights():
+    payload = report_payload(strategy="trading")
+    payload["items"].append(deepcopy(payload["items"][0]))
+    payload["items"][0]["company"]["ticker"] = "NANOFS"
+    payload["items"][0]["company"]["name"] = "Nanoform Finland Oyj"
+    payload["items"][1]["rank"] = 2
+    payload["items"][1]["company"]["ticker"] = "NANOFH"
+    payload["items"][1]["company"]["name"] = "Nanoform Finland Oyj"
+    ledger = add_report_picks(
+        empty_ledger(),
+        payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/trading/2026-05-11.html",
+    )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={
+            ("NANOFS", "SE"): {"price": 1.10, "currency": "SEK"},
+            ("NANOFH", "SE"): {"price": 1.05, "currency": "SEK"},
+        },
+    )
+
+    output = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
+
+    assert output.count("Nanoform Finland Oyj") == 1
 
 
 def test_learning_suggestions_require_minimum_sample_size():

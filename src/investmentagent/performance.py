@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from copy import deepcopy
 from datetime import date, timedelta
 from pathlib import Path
@@ -11,6 +12,15 @@ LEDGER_SCHEMA_VERSION = 1
 HORIZONS = ("1d", "5d", "20d", "60d")
 HORIZON_DAYS = {"1d": 1, "5d": 5, "20d": 20, "60d": 60}
 DISCLAIMER = "Research triage only. Not financial advice."
+STRATEGIES = ("trading", "long-term")
+STRATEGY_TITLES = {
+    "trading": "Trading Ideas",
+    "long-term": "Long-Term Investment Ideas",
+}
+STRATEGY_LABELS = {
+    "trading": "Trading",
+    "long-term": "Long-Term",
+}
 
 
 def empty_ledger() -> dict[str, Any]:
@@ -250,11 +260,27 @@ def summarize_ledger(ledger: dict[str, Any]) -> dict[str, Any]:
                 horizon: _strategy_horizon_summary(ledger, strategy, horizon)
                 for horizon in HORIZONS
             }
-            for strategy in ("trading", "long-term")
+            for strategy in STRATEGIES
         },
         "best_picks": _ranked_completed_picks(ledger, reverse=True),
         "worst_picks": _ranked_completed_picks(ledger, reverse=False),
+        "best_picks_by_strategy": {
+            strategy: _ranked_completed_picks(
+                ledger, reverse=True, strategy=strategy
+            )
+            for strategy in STRATEGIES
+        },
+        "worst_picks_by_strategy": {
+            strategy: _ranked_completed_picks(
+                ledger, reverse=False, strategy=strategy
+            )
+            for strategy in STRATEGIES
+        },
         "signals": _signal_summaries(ledger),
+        "signals_by_strategy": {
+            strategy: _signal_summaries(ledger, strategy=strategy)
+            for strategy in STRATEGIES
+        },
     }
 
 
@@ -267,31 +293,20 @@ def render_scorecard_markdown(ledger: dict[str, Any], *, generated_at: str) -> s
         "",
         f"Generated: {generated_at}",
         "",
-        "## Trading Ideas",
-        *_strategy_table(summary, "trading"),
-        "",
-        "## Long-Term Ideas",
-        *_strategy_table(summary, "long-term"),
-        "",
-        "## Best Completed Picks",
-        *_pick_lines(summary["best_picks"]),
-        "",
-        "## Worst Completed Picks",
-        *_pick_lines(summary["worst_picks"]),
-        "",
-        "## Signal Review",
-        *_signal_lines(summary["signals"]),
-        "",
-        "## Learning Suggestions",
-        *[f"- {suggestion}" for suggestion in learning_suggestions(ledger)],
     ]
+    for strategy in STRATEGIES:
+        lines.extend(_strategy_performance_section(summary, ledger, strategy))
+    while lines and lines[-1] == "":
+        lines.pop()
     return "\n".join(lines)
 
 
-def learning_suggestions(ledger: dict[str, Any]) -> list[str]:
+def learning_suggestions(
+    ledger: dict[str, Any], *, strategy: str | None = None
+) -> list[str]:
     eligible = [
         signal
-        for signal in _signal_summaries(ledger)
+        for signal in _signal_summaries(ledger, strategy=strategy)
         if signal["observations"] >= 10
     ]
     if not eligible:
@@ -302,8 +317,9 @@ def learning_suggestions(ledger: dict[str, Any]) -> list[str]:
     for signal in eligible[:5]:
         direction = "positive" if signal["average_return_pct"] > 0 else "negative"
         suggestions.append(
-            f"{signal['signal']} has produced a {direction} average return "
-            f"of {signal['average_return_pct']}% across {signal['observations']} "
+            f"{_humanize_signal(signal['signal'])} has produced a {direction} "
+            f"average return of {_format_percent(signal['average_return_pct'], signed=True)} "
+            f"across {signal['observations']} "
             "completed observations. Review whether its scoring weight should change."
         )
     return suggestions
@@ -341,9 +357,13 @@ def _strategy_horizon_summary(
     }
 
 
-def _ranked_completed_picks(ledger: dict[str, Any], *, reverse: bool) -> list[dict[str, Any]]:
+def _ranked_completed_picks(
+    ledger: dict[str, Any], *, reverse: bool, strategy: str | None = None
+) -> list[dict[str, Any]]:
     completed = []
     for pick in ledger["picks"]:
+        if strategy is not None and pick["strategy"] != strategy:
+            continue
         for horizon, outcome in pick["outcomes"].items():
             if outcome["status"] == "priced" and outcome["return_pct"] is not None:
                 completed.append(
@@ -356,20 +376,26 @@ def _ranked_completed_picks(ledger: dict[str, Any], *, reverse: bool) -> list[di
                         "report_url": pick["report_url"],
                     }
                 )
-    return sorted(completed, key=lambda item: item["return_pct"], reverse=reverse)[:5]
+    ranked = sorted(completed, key=lambda item: item["return_pct"], reverse=reverse)
+    return _deduplicate_completed_pick_rows(ranked)[:5]
 
 
-def _signal_summaries(ledger: dict[str, Any]) -> list[dict[str, Any]]:
+def _signal_summaries(
+    ledger: dict[str, Any], *, strategy: str | None = None
+) -> list[dict[str, Any]]:
     buckets: dict[str, list[float]] = {}
     for pick in ledger["picks"]:
+        if strategy is not None and pick["strategy"] != strategy:
+            continue
         return_pct = _latest_completed_return_pct(pick)
         if return_pct is None:
             continue
         signals = [
             f"country:{pick.get('country')}",
             f"segment:{pick.get('segment')}",
-            f"strategy:{pick.get('strategy')}",
         ]
+        if strategy is None:
+            signals.append(f"strategy:{pick.get('strategy')}")
         signals.extend(f"reason:{reason}" for reason in pick.get("reasons", []))
         conviction = pick.get("long_term_conviction")
         if conviction:
@@ -399,6 +425,49 @@ def _latest_completed_return_pct(pick: dict[str, Any]) -> float | None:
     return None
 
 
+def _strategy_performance_section(
+    summary: dict[str, Any], ledger: dict[str, Any], strategy: str
+) -> list[str]:
+    label = STRATEGY_LABELS[strategy]
+    best_picks = summary["best_picks_by_strategy"][strategy]
+    worst_picks = _exclude_pick_rows(
+        summary["worst_picks_by_strategy"][strategy], best_picks
+    )
+    return [
+        f"## {STRATEGY_TITLES[strategy]}",
+        "",
+        "### Horizon Scorecard",
+        "",
+        *_strategy_table(summary, strategy),
+        "",
+        f"### Best {label} Picks",
+        "",
+        *_pick_lines(
+            best_picks,
+            empty_label=f"No completed {label.lower()} picks yet.",
+        ),
+        "",
+        f"### Worst {label} Picks",
+        "",
+        *_pick_lines(
+            worst_picks,
+            empty_label=f"No completed {label.lower()} picks yet.",
+        ),
+        "",
+        f"### {label} Signal Review",
+        "",
+        *_signal_table(summary["signals_by_strategy"][strategy]),
+        "",
+        f"### {label} Learning Suggestions",
+        "",
+        *[
+            f"- {suggestion}"
+            for suggestion in learning_suggestions(ledger, strategy=strategy)
+        ],
+        "",
+    ]
+
+
 def _strategy_table(summary: dict[str, Any], strategy: str) -> list[str]:
     lines = [
         "| Horizon | Completed | Hit Rate | Average Return | Median Return |",
@@ -411,34 +480,117 @@ def _strategy_table(summary: dict[str, Any], strategy: str) -> list[str]:
             f"{horizon} | "
             f"{row['completed']} | "
             f"{_percent_cell(row['hit_rate_pct'])} | "
-            f"{_percent_cell(row['average_return_pct'])} | "
-            f"{_percent_cell(row['median_return_pct'])} |"
+            f"{_percent_cell(row['average_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['median_return_pct'], signed=True)} |"
         )
     return lines
 
 
-def _pick_lines(picks: list[dict[str, Any]]) -> list[str]:
+def _pick_lines(picks: list[dict[str, Any]], *, empty_label: str) -> list[str]:
     if not picks:
-        return ["- No completed picks yet."]
+        return [f"- {empty_label}"]
     return [
-        f"- {pick['name']} ({pick['ticker']}), {pick['strategy']} {pick['horizon']}: "
-        f"{pick['return_pct']}% - [{pick['report_url']}]({pick['report_url']})"
+        f"- **{pick['name']} ({pick['ticker']})** - {pick['horizon']} return "
+        f"**{_format_percent(pick['return_pct'], signed=True)}** "
+        f"([report]({pick['report_url']}))"
         for pick in picks
     ]
 
 
-def _signal_lines(signals: list[dict[str, Any]]) -> list[str]:
+def _signal_table(signals: list[dict[str, Any]]) -> list[str]:
     if not signals:
-        return ["- No completed signal observations yet."]
+        return ["_No completed signal observations yet._"]
+    lines = [
+        "| Signal | Observations | Average Return | Hit Rate |",
+        "| --- | ---: | ---: | ---: |",
+    ]
+    for signal in signals[:12]:
+        lines.append(
+            "| "
+            f"{_humanize_signal(signal['signal'])} | "
+            f"{signal['observations']} | "
+            f"{_format_percent(signal['average_return_pct'], signed=True)} | "
+            f"{_format_percent(signal['hit_rate_pct'])} |"
+        )
+    return lines
+
+
+def _percent_cell(value: float | None, *, signed: bool = False) -> str:
+    if value is None:
+        return "-"
+    return _format_percent(value, signed=signed)
+
+
+def _format_percent(value: float, *, signed: bool = False) -> str:
+    text = f"{abs(value):.2f}".rstrip("0").rstrip(".")
+    if signed and value > 0:
+        return f"+{text}%"
+    if value < 0:
+        return f"-{text}%"
+    return f"{text}%"
+
+
+def _deduplicate_completed_pick_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduplicated = []
+    seen = set()
+    for row in rows:
+        key = _completed_pick_company_key(row)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduplicated.append(row)
+    return deduplicated
+
+
+def _exclude_pick_rows(
+    rows: list[dict[str, Any]], excluded_rows: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    excluded_keys = {_completed_pick_company_key(row) for row in excluded_rows}
     return [
-        f"- {signal['signal']}: {signal['observations']} observations, "
-        f"{signal['average_return_pct']}% average return, "
-        f"{signal['hit_rate_pct']}% hit rate"
-        for signal in signals[:12]
+        row for row in rows if _completed_pick_company_key(row) not in excluded_keys
     ]
 
 
-def _percent_cell(value: float | None) -> str:
-    if value is None:
-        return "-"
-    return f"{value}%"
+def _completed_pick_company_key(row: dict[str, Any]) -> str:
+    name = str(row.get("name") or "").strip()
+    if name:
+        return _normalize_company_name(name)
+    return str(row.get("ticker") or "").strip().upper()
+
+
+def _normalize_company_name(name: str) -> str:
+    normalized = re.sub(r"[^a-z0-9]+", " ", name.lower()).strip()
+    suffixes = {
+        "ab",
+        "ag",
+        "corp",
+        "corporation",
+        "inc",
+        "limited",
+        "ltd",
+        "oy",
+        "oyj",
+        "plc",
+        "publ",
+        "a",
+        "b",
+    }
+    words = normalized.split()
+    while words and words[-1] in suffixes:
+        words.pop()
+    return " ".join(words)
+
+
+def _humanize_signal(signal: str) -> str:
+    prefix, _, value = signal.partition(":")
+    labels = {
+        "bucket": "Bucket",
+        "country": "Country",
+        "reason": "Reason",
+        "segment": "Segment",
+        "strategy": "Strategy",
+    }
+    readable_value = value.replace("_", " ")
+    if readable_value:
+        readable_value = readable_value[0].upper() + readable_value[1:]
+    return f"{labels.get(prefix, prefix.title())}: {readable_value}"
