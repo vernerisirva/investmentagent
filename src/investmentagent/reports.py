@@ -319,18 +319,26 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
         quality_reasons.append("Business description available from profile data")
 
     trading_penalty = 0.0
-    if any(
+    has_intraday_signal = any(
         _is_intraday_signal(signal)
         for signal in (*research.catalysts, *research.risks)
-    ):
+    )
+    if has_intraday_signal:
         trading_penalty += 18.0
     if any(
         _has_signal((signal.lower(),), "Extreme intraday spike")
         for signal in research.risks
     ):
         trading_penalty += 18.0
+    missing_anchor_penalty = (
+        12.0
+        if has_intraday_signal and not _has_long_term_fundamental_anchor(financials)
+        else 0.0
+    )
 
-    risk_penalty = round(score.risk_penalty + trading_penalty, 2)
+    risk_penalty = round(
+        score.risk_penalty + trading_penalty + missing_anchor_penalty, 2
+    )
     total = (
         score.value
         + score.discovery
@@ -342,6 +350,8 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
     warnings = score.warnings
     if trading_penalty:
         warnings = (*warnings, "long-term strategy penalty applied")
+    if missing_anchor_penalty:
+        warnings = (*warnings, "missing long-term fundamental support")
 
     return ScoreBreakdown(
         value=score.value,
@@ -352,6 +362,20 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
         total=round(total, 2),
         reasons=(*reasons, *quality_reasons),
         warnings=warnings,
+    )
+
+
+def _has_long_term_fundamental_anchor(financials: FinancialSnapshot) -> bool:
+    return any(
+        (
+            financials.pe_ratio is not None and financials.pe_ratio <= 18,
+            financials.price_to_book is not None and financials.price_to_book <= 2.0,
+            financials.net_cash_eur_m is not None and financials.net_cash_eur_m > 0,
+            financials.operating_margin_pct is not None
+            and financials.operating_margin_pct > 0,
+            financials.revenue_growth_pct is not None and financials.revenue_growth_pct > 0,
+            financials.debt_to_equity is not None and financials.debt_to_equity <= 0.5,
+        )
     )
 
 

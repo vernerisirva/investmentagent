@@ -463,6 +463,47 @@ def test_long_term_strategy_prioritizes_fundamental_quality_over_momentum():
     assert "Business description available from profile data" in items[0].score.reasons
 
 
+def test_long_term_strategy_penalizes_intraday_mover_without_fundamental_anchor():
+    momentum = make_research(
+        "MOMO",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        catalysts=("Positive intraday momentum (+5.9%)", "High live turnover"),
+        segment=ListingSegment.FIRST_NORTH,
+        data_quality=DataQuality.GOOD,
+    )
+    momentum = CompanyResearch(
+        company=Company(
+            name=momentum.company.name,
+            ticker=momentum.company.ticker,
+            country=momentum.company.country,
+            exchange=momentum.company.exchange,
+            segment=momentum.company.segment,
+            sector=momentum.company.sector,
+            market_cap_eur_m=momentum.company.market_cap_eur_m,
+            currency=momentum.company.currency,
+            business_description="Momo AB has a business description, but no supporting fundamentals.",
+        ),
+        financials=momentum.financials,
+        catalysts=momentum.catalysts,
+        risks=momentum.risks,
+        data_quality=momentum.data_quality,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((momentum,)),
+        countries=("SE",),
+        limit=1,
+        include_first_north=True,
+        strategy="long-term",
+    )
+
+    assert items[0].score.total <= 0
+    assert "missing long-term fundamental support" in items[0].score.warnings
+    assert not any("intraday momentum" in reason.lower() for reason in items[0].score.reasons)
+
+
 def test_watchlist_fundamentals_budget_uses_preliminary_ranking_not_listing_order():
     weak = make_research(
         "WEAK",
@@ -599,8 +640,8 @@ def test_trading_strategy_boosts_strong_momentum_and_turnover():
     )
 
     assert items[0].research.company.ticker == "FAST"
-    assert items[0].score.catalyst == 31.0
-    assert items[0].score.total == 29.0
+    assert items[0].score.catalyst == 26.0
+    assert items[0].score.total == 24.0
     assert "trading strategy adjustment applied" in items[0].score.reasons
 
 

@@ -100,7 +100,7 @@ def score_research(research: CompanyResearch) -> ScoreBreakdown:
 
 def _catalyst_score(catalyst: str) -> float:
     if catalyst.startswith("Strong intraday momentum"):
-        return 12.0
+        return 7.0
     if catalyst.startswith("Positive intraday momentum"):
-        return 8.0
+        return 3.0
     return LIVE_CATALYST_SCORES.get(catalyst, DEFAULT_CATALYST_SCORE)
