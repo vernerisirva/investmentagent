@@ -68,7 +68,7 @@ Trading ideas require a short-term setup, such as strong momentum, unusual turno
 Both public lists use `--min-country FI:3`, so each top 10 includes at least three Finnish companies when enough Finnish candidates are available.
 Long-term reports also include a conviction bucket, a plain-English thesis, and component scores for business quality, valuation, growth, balance sheet, momentum, risk, and data confidence.
 
-The performance page tracks published picks over 1d, 5d, 20d, and 60d horizons. It summarizes results publicly and may suggest scoring ideas after enough observations, but it does not change ranking weights automatically.
+The performance page tracks published picks over 1d, 5d, 20d, and 60d horizons. It includes hit rate, average return, downside/risk metrics, broad market context, and same-country equal-weight benchmark comparison when matching market snapshots are available. It summarizes results publicly and may suggest scoring ideas after enough observations, but it does not change ranking weights automatically.
 
 Public pages:
 

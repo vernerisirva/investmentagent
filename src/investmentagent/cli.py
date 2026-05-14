@@ -17,6 +17,7 @@ from investmentagent.performance import (
     load_ledger,
     parse_report_date,
     price_lookup_from_provider,
+    record_market_snapshot,
     render_scorecard_markdown,
     save_ledger,
     update_due_outcomes,
@@ -334,6 +335,11 @@ def performance_update(
         if normalized_price_provider == "live":
             _raise_for_source_errors(provider)
         price_lookup = price_lookup_from_provider(provider)
+        ledger = record_market_snapshot(
+            ledger,
+            as_of_date=date.today(),
+            price_lookup=price_lookup,
+        )
 
     ledger = update_due_outcomes(
         ledger,

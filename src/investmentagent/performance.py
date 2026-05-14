@@ -24,7 +24,7 @@ STRATEGY_LABELS = {
 
 
 def empty_ledger() -> dict[str, Any]:
-    return {"schema_version": LEDGER_SCHEMA_VERSION, "picks": []}
+    return {"schema_version": LEDGER_SCHEMA_VERSION, "picks": [], "market_snapshots": {}}
 
 
 def load_ledger(path: Path) -> dict[str, Any]:
@@ -37,6 +37,7 @@ def load_ledger(path: Path) -> dict[str, Any]:
         )
     if not isinstance(ledger.get("picks"), list):
         raise ValueError("performance ledger is missing picks list")
+    ledger.setdefault("market_snapshots", {})
     return ledger
 
 
@@ -164,8 +165,48 @@ def price_lookup_from_provider(
         lookup[(company.ticker, company.country)] = {
             "price": research.financials.price,
             "currency": research.financials.currency,
+            "name": company.name,
+            "segment": str(
+                company.segment.value
+                if hasattr(company.segment, "value")
+                else company.segment
+            ),
+            "sector": company.sector,
+            "catalysts": list(research.catalysts),
+            "risks": list(research.risks),
         }
     return lookup
+
+
+def record_market_snapshot(
+    ledger: dict[str, Any],
+    *,
+    as_of_date: date,
+    price_lookup: dict[tuple[str, str], dict[str, Any]],
+) -> dict[str, Any]:
+    updated = deepcopy(ledger)
+    snapshots = updated.setdefault("market_snapshots", {})
+    snapshot: dict[str, dict[str, Any]] = {}
+    for (ticker, country), quote in price_lookup.items():
+        price = quote.get("price")
+        currency = quote.get("currency")
+        if price is None or currency is None:
+            continue
+        normalized_ticker = str(ticker).upper()
+        normalized_country = str(country).upper()
+        snapshot[f"{normalized_country}|{normalized_ticker}"] = {
+            "ticker": normalized_ticker,
+            "country": normalized_country,
+            "price": price,
+            "currency": currency,
+            "name": quote.get("name"),
+            "segment": quote.get("segment"),
+            "sector": quote.get("sector"),
+            "catalysts": list(quote.get("catalysts") or ()),
+            "risks": list(quote.get("risks") or ()),
+        }
+    snapshots[as_of_date.isoformat()] = snapshot
+    return updated
 
 
 def update_due_outcomes(
@@ -227,6 +268,12 @@ def update_due_outcomes(
                 )
                 continue
             return_pct = ((quote["price"] - entry_price) / entry_price) * 100
+            benchmark_return_pct = _country_benchmark_return_pct(
+                updated,
+                country=pick["country"],
+                entry_date=report_date,
+                as_of_date=as_of_date,
+            )
             outcome.update(
                 {
                     "as_of_date": as_of_date.isoformat(),
@@ -236,7 +283,49 @@ def update_due_outcomes(
                     "status": "priced",
                 }
             )
+            if benchmark_return_pct is not None:
+                outcome.update(
+                    {
+                        "benchmark_label": f"Equal-weight {pick['country']} market",
+                        "benchmark_return_pct": benchmark_return_pct,
+                        "excess_return_pct": round(
+                            round(return_pct, 2) - benchmark_return_pct, 2
+                        ),
+                    }
+                )
     return updated
+
+
+def _country_benchmark_return_pct(
+    ledger: dict[str, Any],
+    *,
+    country: str,
+    entry_date: date,
+    as_of_date: date,
+) -> float | None:
+    snapshots = ledger.get("market_snapshots") or {}
+    entry_snapshot = snapshots.get(entry_date.isoformat()) or {}
+    exit_snapshot = snapshots.get(as_of_date.isoformat()) or {}
+    returns: list[float] = []
+    normalized_country = country.upper()
+    for key, entry in entry_snapshot.items():
+        if entry.get("country") != normalized_country:
+            continue
+        exit_quote = exit_snapshot.get(key)
+        if not exit_quote:
+            continue
+        entry_price = entry.get("price")
+        exit_price = exit_quote.get("price")
+        if (
+            entry_price in (None, 0)
+            or exit_price is None
+            or entry.get("currency") != exit_quote.get("currency")
+        ):
+            continue
+        returns.append(((exit_price - entry_price) / entry_price) * 100)
+    if not returns:
+        return None
+    return round(sum(returns) / len(returns), 2)
 
 
 def _add_trading_days(start_date: date, days: int) -> date:
@@ -294,6 +383,21 @@ def render_scorecard_markdown(ledger: dict[str, Any], *, generated_at: str) -> s
         f"Generated: {generated_at}",
         "",
     ]
+    market_context = _latest_market_context(ledger)
+    if market_context is not None:
+        lines.extend(
+            [
+                "## Market Context",
+                "",
+                f"- Latest snapshot: {market_context['snapshot_date']}",
+                f"- Market tone: {market_context['tone']}",
+                f"- Companies tracked: {market_context['companies']}",
+                f"- Large positive movers: {market_context['positive_movers']}",
+                f"- Sharp selloffs: {market_context['selloffs']}",
+                f"- Active turnover signals: {market_context['active_turnover']}",
+                "",
+            ]
+        )
     for strategy in STRATEGIES:
         lines.extend(_strategy_performance_section(summary, ledger, strategy))
     while lines and lines[-1] == "":
@@ -325,6 +429,48 @@ def learning_suggestions(
     return suggestions
 
 
+def _latest_market_context(ledger: dict[str, Any]) -> dict[str, Any] | None:
+    snapshots = ledger.get("market_snapshots") or {}
+    if not snapshots:
+        return None
+    snapshot_date = sorted(snapshots)[-1]
+    snapshot = snapshots.get(snapshot_date) or {}
+    companies = len(snapshot)
+    if companies == 0:
+        return None
+    positive_movers = 0
+    selloffs = 0
+    active_turnover = 0
+    for entry in snapshot.values():
+        catalysts = tuple(str(item).lower() for item in entry.get("catalysts") or ())
+        risks = tuple(str(item).lower() for item in entry.get("risks") or ())
+        if any("intraday momentum" in catalyst for catalyst in catalysts):
+            positive_movers += 1
+        if any("sharp intraday selloff" in risk for risk in risks):
+            selloffs += 1
+        if any(
+            "high live turnover" in catalyst or "moderate live turnover" in catalyst
+            for catalyst in catalysts
+        ):
+            active_turnover += 1
+    return {
+        "snapshot_date": snapshot_date,
+        "tone": _market_tone(positive_movers, selloffs),
+        "companies": companies,
+        "positive_movers": positive_movers,
+        "selloffs": selloffs,
+        "active_turnover": active_turnover,
+    }
+
+
+def _market_tone(positive_movers: int, selloffs: int) -> str:
+    if positive_movers >= 2 and positive_movers >= selloffs * 2:
+        return "Risk-on / broad momentum"
+    if selloffs >= 2 and selloffs >= positive_movers * 2:
+        return "Risk-off / broad selloff"
+    return "Mixed / quiet"
+
+
 def _strategy_horizon_summary(
     ledger: dict[str, Any], strategy: str, horizon: str
 ) -> dict[str, Any]:
@@ -341,6 +487,13 @@ def _strategy_horizon_summary(
             "hit_rate_pct": None,
             "average_return_pct": None,
             "median_return_pct": None,
+            "worst_return_pct": None,
+            "loss_rate_pct": None,
+            "large_loser_count": 0,
+            "volatility_pct": None,
+            "average_benchmark_return_pct": None,
+            "average_excess_return_pct": None,
+            "excess_hit_rate_pct": None,
         }
     sorted_returns = sorted(returns)
     midpoint = len(sorted_returns) // 2
@@ -349,12 +502,57 @@ def _strategy_horizon_summary(
     else:
         median = (sorted_returns[midpoint - 1] + sorted_returns[midpoint]) / 2
     hits = sum(value > 0 for value in returns)
+    benchmark_returns = [
+        pick["outcomes"][horizon].get("benchmark_return_pct")
+        for pick in ledger["picks"]
+        if pick["strategy"] == strategy
+        and pick["outcomes"][horizon]["status"] == "priced"
+        and pick["outcomes"][horizon].get("benchmark_return_pct") is not None
+    ]
+    excess_returns = [
+        pick["outcomes"][horizon].get("excess_return_pct")
+        for pick in ledger["picks"]
+        if pick["strategy"] == strategy
+        and pick["outcomes"][horizon]["status"] == "priced"
+        and pick["outcomes"][horizon].get("excess_return_pct") is not None
+    ]
     return {
         "completed": len(returns),
         "hit_rate_pct": round((hits / len(returns)) * 100, 1),
         "average_return_pct": round(sum(returns) / len(returns), 2),
         "median_return_pct": round(median, 2),
+        "worst_return_pct": round(min(returns), 2),
+        "loss_rate_pct": round(
+            (sum(value < 0 for value in returns) / len(returns)) * 100, 1
+        ),
+        "large_loser_count": sum(value <= -10 for value in returns),
+        "volatility_pct": _volatility_pct(returns),
+        "average_benchmark_return_pct": _average_or_none(benchmark_returns),
+        "average_excess_return_pct": _average_or_none(excess_returns),
+        "excess_hit_rate_pct": (
+            round(
+                (sum(value > 0 for value in excess_returns) / len(excess_returns))
+                * 100,
+                1,
+            )
+            if excess_returns
+            else None
+        ),
     }
+
+
+def _average_or_none(values: list[float]) -> float | None:
+    if not values:
+        return None
+    return round(sum(values) / len(values), 2)
+
+
+def _volatility_pct(values: list[float]) -> float:
+    if len(values) <= 1:
+        return 0.0
+    average = sum(values) / len(values)
+    variance = sum((value - average) ** 2 for value in values) / len(values)
+    return round(variance**0.5, 2)
 
 
 def _ranked_completed_picks(
@@ -440,6 +638,10 @@ def _strategy_performance_section(
         "",
         *_strategy_table(summary, strategy),
         "",
+        "### Risk And Benchmark",
+        "",
+        *_risk_benchmark_table(summary, strategy),
+        "",
         f"### Best {label} Picks",
         "",
         *_pick_lines(
@@ -482,6 +684,30 @@ def _strategy_table(summary: dict[str, Any], strategy: str) -> list[str]:
             f"{_percent_cell(row['hit_rate_pct'])} | "
             f"{_percent_cell(row['average_return_pct'], signed=True)} | "
             f"{_percent_cell(row['median_return_pct'], signed=True)} |"
+        )
+    return lines
+
+
+def _risk_benchmark_table(summary: dict[str, Any], strategy: str) -> list[str]:
+    lines = [
+        (
+            "| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | "
+            "Benchmark | Excess Return | Excess Hit Rate |"
+        ),
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for horizon in HORIZONS:
+        row = summary["strategies"][strategy][horizon]
+        lines.append(
+            "| "
+            f"{horizon} | "
+            f"{_percent_cell(row['worst_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['loss_rate_pct'])} | "
+            f"{row['large_loser_count']} | "
+            f"{_percent_cell(row['volatility_pct'])} | "
+            f"{_percent_cell(row['average_benchmark_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['average_excess_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['excess_hit_rate_pct'])} |"
         )
     return lines
 

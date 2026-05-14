@@ -6,6 +6,7 @@ from investmentagent.performance import (
     add_report_picks,
     empty_ledger,
     learning_suggestions,
+    record_market_snapshot,
     render_scorecard_markdown,
     summarize_ledger,
     update_due_outcomes,
@@ -254,6 +255,47 @@ def test_update_due_outcomes_does_not_rewrite_terminal_missing_price_status():
     assert updated["picks"][0]["outcomes"]["1d"]["return_pct"] is None
 
 
+def test_update_due_outcomes_adds_country_benchmark_and_excess_return():
+    payload = report_payload()
+    payload["items"][0]["financials"]["price"] = 10.0
+    ledger = add_report_picks(
+        empty_ledger(),
+        payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/trading/2026-05-11.html",
+    )
+    ledger = record_market_snapshot(
+        ledger,
+        as_of_date=date(2026, 5, 11),
+        price_lookup={
+            ("STABL", "SE"): {"price": 10.0, "currency": "SEK"},
+            ("PEER", "SE"): {"price": 10.0, "currency": "SEK"},
+            ("LOSS", "SE"): {"price": 10.0, "currency": "SEK"},
+        },
+    )
+    ledger = record_market_snapshot(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={
+            ("STABL", "SE"): {"price": 12.0, "currency": "SEK"},
+            ("PEER", "SE"): {"price": 11.0, "currency": "SEK"},
+            ("LOSS", "SE"): {"price": 9.0, "currency": "SEK"},
+        },
+    )
+
+    updated = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={("STABL", "SE"): {"price": 12.0, "currency": "SEK"}},
+    )
+
+    outcome = updated["picks"][0]["outcomes"]["1d"]
+    assert outcome["return_pct"] == 20.0
+    assert outcome["benchmark_label"] == "Equal-weight SE market"
+    assert outcome["benchmark_return_pct"] == 6.67
+    assert outcome["excess_return_pct"] == 13.33
+
+
 def test_summarize_ledger_separates_trading_and_long_term_results():
     trading = report_payload(strategy="trading")
     long_term = report_payload(strategy="long-term")
@@ -291,6 +333,45 @@ def test_summarize_ledger_separates_trading_and_long_term_results():
     assert summary["strategies"]["long-term"]["5d"]["average_return_pct"] == 10.0
 
 
+def test_summarize_ledger_includes_risk_and_benchmark_metrics():
+    payload = report_payload(strategy="trading")
+    payload["items"].append(deepcopy(payload["items"][0]))
+    payload["items"][0]["company"]["ticker"] = "WIN"
+    payload["items"][0]["financials"]["price"] = 10.0
+    payload["items"][1]["rank"] = 2
+    payload["items"][1]["company"]["ticker"] = "LOSS"
+    payload["items"][1]["financials"]["price"] = 10.0
+    ledger = add_report_picks(
+        empty_ledger(),
+        payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/trading/2026-05-11.html",
+    )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={
+            ("WIN", "SE"): {"price": 12.0, "currency": "SEK"},
+            ("LOSS", "SE"): {"price": 8.8, "currency": "SEK"},
+        },
+    )
+    ledger["picks"][0]["outcomes"]["1d"]["benchmark_return_pct"] = 5.0
+    ledger["picks"][0]["outcomes"]["1d"]["excess_return_pct"] = 15.0
+    ledger["picks"][1]["outcomes"]["1d"]["benchmark_return_pct"] = 0.0
+    ledger["picks"][1]["outcomes"]["1d"]["excess_return_pct"] = -12.0
+
+    summary = summarize_ledger(ledger)
+    row = summary["strategies"]["trading"]["1d"]
+
+    assert row["worst_return_pct"] == -12.0
+    assert row["loss_rate_pct"] == 50.0
+    assert row["large_loser_count"] == 1
+    assert row["volatility_pct"] == 16.0
+    assert row["average_benchmark_return_pct"] == 2.5
+    assert row["average_excess_return_pct"] == 1.5
+    assert row["excess_hit_rate_pct"] == 50.0
+
+
 def test_render_scorecard_markdown_includes_strategy_sections_and_disclaimer():
     ledger = add_report_picks(
         empty_ledger(),
@@ -315,6 +396,67 @@ def test_render_scorecard_markdown_includes_strategy_sections_and_disclaimer():
     assert "| 5d | 1 | 100% | +20% | +20% |" in output
     assert "## Long-Term Investment Ideas" in output
     assert "### Trading Learning Suggestions" in output
+
+
+def test_render_scorecard_markdown_includes_risk_and_benchmark_table():
+    ledger = add_report_picks(
+        empty_ledger(),
+        report_payload(),
+        report_date=date(2026, 5, 11),
+        report_url="reports/trading/2026-05-11.html",
+    )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={("STABL", "SE"): {"price": 1.02, "currency": "SEK"}},
+    )
+    ledger["picks"][0]["outcomes"]["1d"]["benchmark_return_pct"] = 5.0
+    ledger["picks"][0]["outcomes"]["1d"]["excess_return_pct"] = 15.0
+
+    output = render_scorecard_markdown(
+        ledger,
+        generated_at="2026-05-16 08:48 EEST",
+    )
+
+    assert "### Risk And Benchmark" in output
+    assert "| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |" in output
+    assert "| 1d | +20% | 0% | 0 | 0% | +5% | +15% | 100% |" in output
+
+
+def test_render_scorecard_markdown_includes_latest_market_context():
+    ledger = record_market_snapshot(
+        empty_ledger(),
+        as_of_date=date(2026, 5, 12),
+        price_lookup={
+            ("AAA", "SE"): {
+                "price": 10.0,
+                "currency": "SEK",
+                "catalysts": ["Strong intraday momentum (+12.0%)", "High live turnover"],
+            },
+            ("BBB", "SE"): {
+                "price": 20.0,
+                "currency": "SEK",
+                "catalysts": ["Positive intraday momentum (+6.0%)"],
+            },
+            ("CCC", "FI"): {
+                "price": 5.0,
+                "currency": "EUR",
+                "risks": ["Sharp intraday selloff"],
+            },
+        },
+    )
+
+    output = render_scorecard_markdown(
+        ledger,
+        generated_at="2026-05-12 09:03 EEST",
+    )
+
+    assert "## Market Context" in output
+    assert "- Latest snapshot: 2026-05-12" in output
+    assert "- Market tone: Risk-on / broad momentum" in output
+    assert "- Large positive movers: 2" in output
+    assert "- Sharp selloffs: 1" in output
+    assert "- Active turnover signals: 1" in output
 
 
 def test_render_scorecard_markdown_keeps_strategy_details_separate():
