@@ -51,7 +51,7 @@ def render_watchlist_text(items: list[WatchlistItem]) -> str:
                 f"Presentation: {_company_presentation(item)}",
                 f"Score: {item.score.total:g}",
                 f"Reasons: {_joined(item.score.reasons)}",
-                f"Risks: {_joined((*item.research.risks, *item.score.warnings))}",
+                f"Risks: {_joined_public_risks((*item.research.risks, *item.score.warnings))}",
                 f"Data quality: {_stringify(item.research.data_quality)}",
                 "Evidence:",
             ]
@@ -807,6 +807,13 @@ def _public_risk_items(items: tuple[str, ...]) -> list[str]:
     return _public_items(items, _humanize_risk)
 
 
+def _joined_public_risks(items: tuple[str, ...]) -> str:
+    formatted = _public_risk_items(items)
+    if not formatted:
+        return "None provided."
+    return "; ".join(formatted)
+
+
 def _public_bullet_lines(items: tuple[str, ...], formatter) -> list[str]:
     formatted = _public_items(items, formatter)
     if not formatted:
@@ -845,6 +852,8 @@ def _humanize_risk(item: str) -> str:
     if lower == "thin data quality":
         return ""
     if lower == "partial data quality":
+        return ""
+    if lower == "missing live turnover":
         return ""
     if lower == "1 stated risk(s)":
         return ""

@@ -795,6 +795,38 @@ def test_render_watchlist_text_includes_company_presentation():
     assert output.index("Presentation:") < output.index("Score:")
 
 
+def test_render_watchlist_text_hides_internal_live_turnover_flag():
+    company = Company(
+        name="Turnover Missing AB",
+        ticker="TURN",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(data_quality=DataQuality.PARTIAL),
+            risks=("Missing live turnover",),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=0.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=0.0,
+            total=1.0,
+        ),
+    )
+
+    output = render_watchlist_text([item])
+
+    assert "Risks: None provided." in output
+    assert "Missing live turnover" not in output
+
+
 def test_render_watchlist_json_is_machine_readable():
     items = build_watchlist(FixtureResearchProvider(), countries=("SE", "FI"), limit=1, include_first_north=True)
 
@@ -1140,7 +1172,7 @@ def test_render_watchlist_report_markdown_humanizes_reason_and_risk_signals():
         research=CompanyResearch(
             company=company,
             financials=FinancialSnapshot(data_quality=DataQuality.PARTIAL),
-            risks=("Sparse live-source data",),
+            risks=("Sparse live-source data", "Missing live turnover"),
             data_quality=DataQuality.PARTIAL,
         ),
         score=ScoreBreakdown(
@@ -1176,6 +1208,7 @@ def test_render_watchlist_report_markdown_humanizes_reason_and_risk_signals():
     assert "Data quality is partial" not in output
     assert "- partial data quality" not in output
     assert "- 1 stated risk(s)" not in output
+    assert "Missing live turnover" not in output
     assert "- trading strategy adjustment applied" not in output
     assert "Trading strategy penalty applied by the ranking model" not in output
 
