@@ -641,8 +641,145 @@ def test_trading_strategy_boosts_strong_momentum_and_turnover():
 
     assert items[0].research.company.ticker == "FAST"
     assert items[0].score.catalyst == 26.0
-    assert items[0].score.total == 24.0
+    assert items[0].score.total == 12.75
     assert "trading strategy adjustment applied" in items[0].score.reasons
+
+
+def test_trading_strategy_requires_short_term_setup():
+    generic_value = make_research(
+        "VALUE",
+        pe_ratio=8.0,
+        price_to_book=0.8,
+        net_cash_eur_m=30.0,
+        catalysts=("Live price available from Nasdaq Nordic",),
+        segment=ListingSegment.FIRST_NORTH,
+    )
+    event_setup = make_research(
+        "EVENT",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        catalysts=("Order win announced",),
+        segment=ListingSegment.MAIN_MARKET,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((generic_value, event_setup)),
+        countries=("SE",),
+        limit=2,
+        include_first_north=True,
+        strategy="trading",
+    )
+
+    assert [item.research.company.ticker for item in items] == ["EVENT"]
+    assert "Order win announced" in items[0].score.reasons
+
+
+def test_trading_and_long_term_strategies_diverge_on_their_criteria():
+    durable_quality = make_research(
+        "QUALITY",
+        pe_ratio=10.0,
+        price_to_book=1.0,
+        net_cash_eur_m=30.0,
+        catalysts=("Live price available from Nasdaq Nordic",),
+        segment=ListingSegment.FIRST_NORTH,
+    )
+    durable_quality = CompanyResearch(
+        company=Company(
+            name=durable_quality.company.name,
+            ticker=durable_quality.company.ticker,
+            country=durable_quality.company.country,
+            exchange=durable_quality.company.exchange,
+            segment=durable_quality.company.segment,
+            sector=durable_quality.company.sector,
+            market_cap_eur_m=durable_quality.company.market_cap_eur_m,
+            currency=durable_quality.company.currency,
+            business_description="Quality AB sells profitable niche software.",
+        ),
+        financials=FinancialSnapshot(
+            pe_ratio=10.0,
+            price_to_book=1.0,
+            net_cash_eur_m=30.0,
+            revenue_growth_pct=9.0,
+            operating_margin_pct=18.0,
+            debt_to_equity=0.1,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        catalysts=durable_quality.catalysts,
+        risks=durable_quality.risks,
+        data_quality=DataQuality.PARTIAL,
+    )
+    short_term_setup = make_research(
+        "TRADE",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        catalysts=("Strong intraday momentum (+12.0%)", "High live turnover"),
+        segment=ListingSegment.MAIN_MARKET,
+        data_quality=DataQuality.THIN,
+    )
+
+    provider = FakeResearchProvider((durable_quality, short_term_setup))
+
+    trading_items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="trading"
+    )
+    long_term_items = build_watchlist(
+        provider, countries=("SE",), limit=2, include_first_north=True, strategy="long-term"
+    )
+
+    assert [item.research.company.ticker for item in trading_items] == ["TRADE"]
+    assert long_term_items[0].research.company.ticker == "QUALITY"
+
+
+def test_long_term_strategy_downweights_discovery_without_fundamentals():
+    first_north_shell = make_research(
+        "SHELL",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        segment=ListingSegment.FIRST_NORTH,
+    )
+    quality_main_market = make_research(
+        "QUALITY",
+        pe_ratio=16.0,
+        price_to_book=2.5,
+        net_cash_eur_m=None,
+        segment=ListingSegment.MAIN_MARKET,
+    )
+    quality_main_market = CompanyResearch(
+        company=Company(
+            name=quality_main_market.company.name,
+            ticker=quality_main_market.company.ticker,
+            country=quality_main_market.company.country,
+            exchange=quality_main_market.company.exchange,
+            segment=quality_main_market.company.segment,
+            sector=quality_main_market.company.sector,
+            market_cap_eur_m=900,
+            currency=quality_main_market.company.currency,
+        ),
+        financials=FinancialSnapshot(
+            pe_ratio=16.0,
+            price_to_book=2.5,
+            revenue_growth_pct=8.0,
+            operating_margin_pct=16.0,
+            debt_to_equity=0.2,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        catalysts=quality_main_market.catalysts,
+        risks=quality_main_market.risks,
+        data_quality=DataQuality.PARTIAL,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((first_north_shell, quality_main_market)),
+        countries=("SE",),
+        limit=2,
+        include_first_north=True,
+        strategy="long-term",
+    )
+
+    assert items[0].research.company.ticker == "QUALITY"
 
 
 def test_discovery_strategy_boosts_first_north_and_penalizes_spikes():

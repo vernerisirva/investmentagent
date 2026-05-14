@@ -51,6 +51,8 @@ def build_watchlist(
             research = _get_base_company_research(provider, company)
         except Exception:
             continue
+        if strategy == "trading" and not _has_trading_setup(research):
+            continue
         score = _score_for_strategy(research, strategy)
         scored_items.append(
             WatchlistItem(rank=0, research=research, score=score)
@@ -255,6 +257,8 @@ def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakd
     score = score_research(research)
     if strategy == "long-term":
         return _long_term_score(research, score)
+    if strategy == "trading":
+        return _trading_score(research, score)
 
     positive_adjustment, negative_adjustment = _strategy_adjustments(research, strategy)
     catalyst = round(score.catalyst + positive_adjustment, 2)
@@ -289,6 +293,7 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
     reasons = tuple(
         reason for reason in score.reasons if not _is_trading_only_signal(reason)
     )
+    discovery = round(score.discovery * 0.35, 2)
     catalyst = round(
         min(
             sum(
@@ -341,7 +346,7 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
     )
     total = (
         score.value
-        + score.discovery
+        + discovery
         + catalyst
         + quality_adjustment
         - risk_penalty
@@ -355,12 +360,41 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
 
     return ScoreBreakdown(
         value=score.value,
-        discovery=score.discovery,
+        discovery=discovery,
         catalyst=round(catalyst + quality_adjustment, 2),
         risk_penalty=risk_penalty,
         data_quality_penalty=score.data_quality_penalty,
         total=round(total, 2),
         reasons=(*reasons, *quality_reasons),
+        warnings=warnings,
+    )
+
+
+def _trading_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreBreakdown:
+    positive_adjustment, negative_adjustment = _strategy_adjustments(research, "trading")
+    value = round(score.value * 0.15, 2)
+    discovery = round(score.discovery * 0.25, 2)
+    catalyst = round(score.catalyst + positive_adjustment, 2)
+    risk_penalty = round(score.risk_penalty + negative_adjustment, 2)
+    total = value + discovery + catalyst - risk_penalty - score.data_quality_penalty
+
+    reasons = tuple(
+        reason for reason in score.reasons if _is_trading_relevant_reason(reason)
+    )
+    if positive_adjustment:
+        reasons = (*reasons, "trading strategy adjustment applied")
+    warnings = score.warnings
+    if negative_adjustment:
+        warnings = (*warnings, "trading strategy adjustment applied")
+
+    return ScoreBreakdown(
+        value=value,
+        discovery=discovery,
+        catalyst=catalyst,
+        risk_penalty=risk_penalty,
+        data_quality_penalty=score.data_quality_penalty,
+        total=round(total, 2),
+        reasons=reasons,
         warnings=warnings,
     )
 
@@ -425,6 +459,50 @@ def _strategy_adjustments(research: CompanyResearch, strategy: str) -> tuple[flo
         ):
             negative_adjustment += 10.0
     return positive_adjustment, negative_adjustment
+
+
+def _has_trading_setup(research: CompanyResearch) -> bool:
+    catalysts = tuple(item.lower() for item in research.catalysts)
+    if any(_is_material_event_catalyst(catalyst) for catalyst in research.catalysts):
+        return True
+    if _has_signal(catalysts, "High live turnover"):
+        return True
+    if _has_signal(catalysts, "Strong intraday momentum"):
+        return True
+    return _has_signal(catalysts, "Positive intraday momentum") and (
+        _has_signal(catalysts, "High live turnover")
+        or _has_signal(catalysts, "Moderate live turnover")
+    )
+
+
+def _is_trading_relevant_reason(reason: str) -> bool:
+    return (
+        _is_intraday_signal(reason)
+        or reason in {"High live turnover", "Moderate live turnover"}
+        or _is_material_event_catalyst(reason)
+    )
+
+
+def _is_material_event_catalyst(catalyst: str) -> bool:
+    lower = catalyst.lower()
+    if _is_trading_only_signal(catalyst):
+        return False
+    event_terms = (
+        "announced",
+        "contract",
+        "customer",
+        "earnings",
+        "guidance",
+        "launch",
+        "order",
+        "partnership",
+        "release",
+        "report",
+        "result",
+        "tender",
+        "win",
+    )
+    return any(term in lower for term in event_terms)
 
 
 def _is_trading_only_signal(signal: str) -> bool:

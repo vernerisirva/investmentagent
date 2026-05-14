@@ -64,6 +64,7 @@ The workflow polls through the weekday morning window and publishes after 08:00 
 - Trading ideas, generated with `--strategy trading`.
 - Long-term investment ideas, generated with `--strategy long-term`.
 
+Trading ideas require a short-term setup, such as strong momentum, unusual turnover, or an event-style catalyst. On quiet days the trading list may include fewer than 10 names instead of filling the report with generic small-cap ideas.
 Both public lists use `--min-country FI:3`, so each top 10 includes at least three Finnish companies when enough Finnish candidates are available.
 Long-term reports also include a conviction bucket, a plain-English thesis, and component scores for business quality, valuation, growth, balance sheet, momentum, risk, and data confidence.
 
