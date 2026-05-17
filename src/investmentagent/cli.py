@@ -2,6 +2,7 @@ import json
 import os
 from datetime import date, datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import typer
 
@@ -11,6 +12,7 @@ from investmentagent.fundamentals import (
     FinnhubFundamentalsProvider,
     YahooFundamentalsProvider,
 )
+from investmentagent.market_calendar import market_day_status
 from investmentagent.providers import create_provider
 from investmentagent.performance import (
     add_report_picks,
@@ -36,8 +38,10 @@ from investmentagent.reports import build_deep_dive, build_watchlist, normalize_
 app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args_is_help=False)
 sources_app = typer.Typer(help="Inspect and validate research sources.")
 performance_app = typer.Typer(help="Track and publish watchlist performance.")
+markets_app = typer.Typer(help="Inspect Nordic stock-market calendars.")
 app.add_typer(sources_app, name="sources")
 app.add_typer(performance_app, name="performance")
+app.add_typer(markets_app, name="markets")
 
 
 @app.callback(invoke_without_command=True)
@@ -53,6 +57,13 @@ def _parse_countries(raw: str) -> tuple[str, ...]:
     if not countries:
         raise typer.BadParameter("at least one country code is required")
     return countries
+
+
+def _parse_iso_date(raw: str) -> date:
+    try:
+        return date.fromisoformat(raw)
+    except ValueError as exc:
+        raise typer.BadParameter("date must use YYYY-MM-DD") from exc
 
 
 def _parse_min_country_options(raw_values: tuple[str, ...]) -> dict[str, int]:
@@ -139,6 +150,39 @@ def _save_watchlist_report(path: str, items, metadata: dict, source_checks) -> N
         raise typer.BadParameter("save path must end in .json, .md, or .markdown")
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(content + "\n", encoding="utf-8")
+
+
+@markets_app.command("open")
+def markets_open(
+    target_date: str | None = typer.Option(
+        None,
+        "--date",
+        help="Market date in YYYY-MM-DD format. Defaults to today in Europe/Helsinki.",
+    ),
+    markets: list[str] | None = typer.Option(
+        None,
+        "--market",
+        help="Required market: stockholm or helsinki. Can be repeated.",
+    ),
+) -> None:
+    day = (
+        _parse_iso_date(target_date)
+        if target_date is not None
+        else datetime.now(ZoneInfo("Europe/Helsinki")).date()
+    )
+    requested_markets = tuple(markets or ("stockholm", "helsinki"))
+    try:
+        statuses = [market_day_status(day, market) for market in requested_markets]
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc)) from exc
+
+    closed_statuses = [status for status in statuses if not status.is_open]
+    if closed_statuses:
+        for status in closed_statuses:
+            typer.echo(f"{status.market}: closed ({status.reason})")
+        raise typer.Exit(1)
+
+    typer.echo(f"All requested markets are open on {day.isoformat()}.")
 
 
 @app.command()

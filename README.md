@@ -59,7 +59,7 @@ Setup:
 2. Enable GitHub Pages: Settings -> Pages -> Build and deployment -> Deploy from a branch -> branch `main`, folder `/docs`.
 3. Run the workflow manually once from Actions -> Daily public watchlist -> Run workflow, or wait for the weekday schedule.
 
-The workflow polls through the weekday morning window and publishes after 08:00 Europe/Helsinki once per day. GitHub scheduled runs are best-effort, so the report can still drift, but the repeated checks make late starts less likely. It writes public Markdown reports under `docs/reports/` and publishes two top-10 lists:
+The workflow polls through the weekday morning window and publishes after 08:00 Europe/Helsinki once per day, but scheduled runs skip days when Nasdaq Stockholm or Nasdaq Helsinki is closed. GitHub scheduled runs are best-effort, so the report can still drift, but the repeated checks make late starts less likely. It writes public Markdown reports under `docs/reports/` and publishes two top-10 lists:
 
 - Trading ideas, generated with `--strategy trading`.
 - Long-term investment ideas, generated with `--strategy long-term`.

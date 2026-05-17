@@ -56,6 +56,18 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e .
 
+      - name: Skip closed Nordic market days
+        if: github.event_name == 'schedule' && env.RUN_DAILY_REPORT == 'true'
+        run: |
+          report_date="$(TZ=Europe/Helsinki date +%F)"
+          if ! investmentagent markets open \
+            --date "$report_date" \
+            --market stockholm \
+            --market helsinki; then
+            echo "RUN_DAILY_REPORT=false" >> "$GITHUB_ENV"
+            echo "Skipping because Stockholm and Helsinki are not both open on ${report_date}."
+          fi
+
       - name: Generate public watchlist report
         if: env.RUN_DAILY_REPORT == 'true'
         env:

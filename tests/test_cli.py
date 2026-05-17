@@ -3,6 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 import investmentagent.cli as cli
@@ -13,11 +14,24 @@ from investmentagent.models import SourceCheck
 runner = CliRunner()
 
 
+def _python_subprocesses_available() -> bool:
+    result = subprocess.run(
+        [sys.executable, "-c", "print('ok')"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.returncode == 0 and result.stdout.strip() == "ok"
+
+
 def test_console_script_target_exposes_app():
     assert app is not None
 
 
 def test_module_invocation_renders_help():
+    if not _python_subprocesses_available():
+        pytest.skip("Python subprocesses are not available in this local environment")
+
     result = subprocess.run(
         [sys.executable, "-m", "investmentagent.cli", "--help"],
         check=False,
@@ -36,6 +50,7 @@ def test_root_command_without_args_shows_help():
     assert "watchlist" in result.output
     assert "deep-dive" in result.output
     assert "sources" in result.output
+    assert "markets" in result.output
 
 
 def test_watchlist_command_outputs_ranked_text():
@@ -44,6 +59,45 @@ def test_watchlist_command_outputs_ranked_text():
     assert result.exit_code == 0
     assert "#1" in result.output
     assert "Not financial advice" in result.output
+
+
+def test_markets_open_command_exits_zero_when_all_markets_are_open():
+    result = runner.invoke(
+        app,
+        [
+            "markets",
+            "open",
+            "--date",
+            "2026-05-15",
+            "--market",
+            "stockholm",
+            "--market",
+            "helsinki",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert "All requested markets are open on 2026-05-15." in result.output
+
+
+def test_markets_open_command_exits_one_when_a_market_is_closed():
+    result = runner.invoke(
+        app,
+        [
+            "markets",
+            "open",
+            "--date",
+            "2026-05-14",
+            "--market",
+            "stockholm",
+            "--market",
+            "helsinki",
+        ],
+    )
+
+    assert result.exit_code == 1
+    assert "stockholm: closed (Ascension Day)" in result.output
+    assert "helsinki: closed (Ascension Day)" in result.output
 
 
 def test_watchlist_command_outputs_json():
