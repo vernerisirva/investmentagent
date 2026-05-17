@@ -2,8 +2,8 @@ name: Daily public watchlist
 
 on:
   schedule:
-    # Poll through the Helsinki morning because GitHub scheduled runs can drift.
-    - cron: "7,17,27,37,47,57 4-7 * * 1-5"
+    # Poll from the early Nordic morning because GitHub scheduled runs can drift.
+    - cron: "7,17,27,37,47,57 0-7 * * 1-5"
   workflow_dispatch:
 
 permissions:
