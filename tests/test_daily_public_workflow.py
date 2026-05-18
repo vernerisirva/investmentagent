@@ -24,6 +24,13 @@ def test_scheduled_report_decision_allows_delayed_runs_after_checkout():
     assert '--market helsinki' in workflow
 
 
+def test_report_commit_keeps_scheduler_branch_in_sync():
+    workflow = WORKFLOW.read_text()
+
+    assert "git push origin HEAD:main" in workflow
+    assert "git push origin HEAD:codex/investmentagent-live-data" in workflow
+
+
 def test_pages_deploy_workflow_uses_node24_compatible_actions():
     workflow = PAGES_WORKFLOW.read_text()
 
