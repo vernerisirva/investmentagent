@@ -1,6 +1,8 @@
-# InvestmentAgent Watchlist
+# InvestmentAgent Long-Term Investment Ideas
 
 > Research triage only. Not financial advice.
+
+_Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
 - generated_at: 2026-05-19T07:33:03.643257+00:00

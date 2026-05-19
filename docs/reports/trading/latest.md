@@ -1,6 +1,8 @@
-# InvestmentAgent Watchlist
+# InvestmentAgent Trading Ideas
 
 > Research triage only. Not financial advice.
+
+_Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ## Metadata
 - generated_at: 2026-05-19T07:32:32.746184+00:00
