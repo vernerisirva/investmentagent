@@ -13,11 +13,17 @@ def test_scheduled_report_decision_allows_delayed_runs_after_checkout():
     install_index = workflow.index("- name: Install InvestmentAgent")
     market_index = workflow.index("- name: Skip closed Nordic market days")
     generate_index = workflow.index("- name: Generate public watchlist report")
+    wait_index = workflow.index('sleep "$wait_seconds"')
+    duplicate_check_index = workflow.index('[ -f "$REPORT_ROOT/trading/${report_date}.md" ]')
 
     assert checkout_index < decision_index
     assert install_index < market_index < generate_index
+    assert wait_index < duplicate_check_index
+    assert "timeout-minutes: 390" in workflow
     assert 'cron: "7,17,27,37,47,57 0-7 * * 1-5"' in workflow
     assert 'if [ "$helsinki_hour" -lt 8 ]; then' in workflow
+    assert 'helsinki_minute="$(TZ=Europe/Helsinki date +%M)"' in workflow
+    assert "wait_seconds=$(( (8 - 10#$helsinki_hour) * 3600 - 10#$helsinki_minute * 60 ))" in workflow
     assert '[ -f "$REPORT_ROOT/trading/${report_date}.md" ]' in workflow
     assert "investmentagent markets open" in workflow
     assert '--market stockholm \\' in workflow
