@@ -1114,6 +1114,35 @@ def test_render_watchlist_report_markdown_formats_company_sections():
     assert "Research triage only. Not financial advice.\n\nWatchlist" not in output
 
 
+def test_render_watchlist_report_markdown_names_trading_strategy_page():
+    output = render_watchlist_report_markdown(
+        [],
+        metadata={"strategy": "trading", "limit": 10},
+        source_checks=[],
+    )
+
+    assert output.startswith("# InvestmentAgent Trading Ideas")
+    assert (
+        "Short-term setup candidates based on momentum, liquidity, and catalysts."
+        in output
+    )
+
+
+def test_render_watchlist_report_markdown_names_long_term_strategy_page():
+    output = render_watchlist_report_markdown(
+        [],
+        metadata={"strategy": "long-term", "limit": 10},
+        source_checks=[],
+    )
+
+    assert output.startswith("# InvestmentAgent Long-Term Investment Ideas")
+    assert (
+        "Longer-horizon candidates based on business quality, valuation, growth, "
+        "balance sheet, and risk."
+        in output
+    )
+
+
 def test_render_long_term_report_markdown_includes_conviction_layer():
     company = Company(
         name="Quality Compounder AB",

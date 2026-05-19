@@ -86,11 +86,13 @@ def render_watchlist_report_markdown(
     items: list[WatchlistItem], metadata: dict[str, Any], source_checks
 ) -> str:
     strategy = str(metadata.get("strategy") or "").strip().lower()
+    subtitle = _watchlist_report_subtitle(strategy)
     lines = [
-        "# InvestmentAgent Watchlist",
+        f"# {_watchlist_report_title(strategy)}",
         "",
         f"> {DISCLAIMER}",
         "",
+        *(["_" + subtitle + "_", ""] if subtitle else []),
         "## Metadata",
         *_metadata_lines(metadata),
         "",
@@ -105,6 +107,25 @@ def render_watchlist_report_markdown(
         *_watchlist_markdown_sections(items, strategy),
     ]
     return "\n".join(lines)
+
+
+def _watchlist_report_title(strategy: str) -> str:
+    if strategy == "trading":
+        return "InvestmentAgent Trading Ideas"
+    if strategy == "long-term":
+        return "InvestmentAgent Long-Term Investment Ideas"
+    return "InvestmentAgent Watchlist"
+
+
+def _watchlist_report_subtitle(strategy: str) -> str:
+    if strategy == "trading":
+        return "Short-term setup candidates based on momentum, liquidity, and catalysts."
+    if strategy == "long-term":
+        return (
+            "Longer-horizon candidates based on business quality, valuation, growth, "
+            "balance sheet, and risk."
+        )
+    return ""
 
 
 def render_deep_dive_json(report: DeepDiveReport) -> str:
