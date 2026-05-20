@@ -226,6 +226,17 @@ def test_live_provider_parses_nasdaq_nordic_screener_payload():
     assert companies[2].segment == ListingSegment.FIRST_NORTH
 
 
+def test_live_provider_skips_nasdaq_screener_segments_with_null_rows():
+    payload = json.loads(LIVE_NASDAQ_SCREENER_RESPONSE)
+    payload["responses"][0]["payload"]["data"]["instrumentListing"]["rows"] = None
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: json.dumps(payload))
+
+    companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
+
+    assert [company.ticker for company in companies] == ["AALLON"]
+    assert provider.source_checks()[0].status == "ok"
+
+
 def test_live_provider_fetches_nasdaq_nordic_screener_segments():
     fetched_urls: list[str] = []
 

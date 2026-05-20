@@ -351,7 +351,7 @@ def _parse_nasdaq_nordic_screener_responses(
             payload.get("data", {})
             .get("instrumentListing", {})
             .get("rows", [])
-        )
+        ) or []
         for row in rows:
             company = _company_from_nasdaq_screener_row(row, country, exchange, segment)
             if company is None:
