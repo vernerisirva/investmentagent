@@ -2,13 +2,13 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-05-21 08:01 EEST
+Generated: 2026-05-22 08:00 EEST
 
 ## Market Context
 
-- Latest snapshot: 2026-05-21
+- Latest snapshot: 2026-05-22
 - Market tone: Mixed / quiet
-- Companies tracked: 793
+- Companies tracked: 28
 - Large positive movers: 0
 - Sharp selloffs: 0
 - Active turnover signals: 0
