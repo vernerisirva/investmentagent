@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
+from investmentagent.long_term_quality import assess_long_term_quality
 from investmentagent.models import (
     Company,
     DataQuality,
@@ -342,11 +343,10 @@ def _long_term_conviction(item: WatchlistItem) -> _LongTermConviction:
         _risk_component(item),
         _data_confidence_component(item),
     )
-    scores = {component.name: component.score for component in components}
-    bucket = _long_term_bucket(item, scores)
+    quality = assess_long_term_quality(item.research)
     return _LongTermConviction(
-        bucket=bucket,
-        thesis=_long_term_thesis(item, bucket),
+        bucket=quality.bucket.value,
+        thesis=quality.thesis,
         components=components,
     )
 
@@ -554,116 +554,6 @@ def _data_confidence_component(item: WatchlistItem) -> _ConvictionComponent:
     return _ConvictionComponent(
         "Data confidence", 1, "Only limited fundamentals are available today."
     )
-
-
-def _long_term_bucket(item: WatchlistItem, scores: dict[str, int]) -> str:
-    if _has_trading_signal(item) and scores["Data confidence"] <= 1:
-        return "Trading-only mover"
-    if scores["Data confidence"] == 0:
-        return "Excluded due to weak data"
-    if (
-        scores["Business quality"] >= 4
-        and scores["Valuation"] >= 4
-        and scores["Growth"] >= 3
-    ):
-        if (
-            scores["Balance sheet"] >= 3
-            and scores["Risk"] >= 3
-            and scores["Data confidence"] >= 3
-        ):
-            return "High conviction candidate"
-    if (
-        scores["Business quality"] <= 1
-        or scores["Growth"] <= 1
-        or scores["Risk"] <= 2
-        or scores["Data confidence"] <= 1
-    ):
-        return "Speculative / needs more proof"
-    return "Fundamental watchlist candidate"
-
-
-def _long_term_thesis(item: WatchlistItem, bucket: str) -> str:
-    company = item.research.company
-    financials = item.research.financials
-    sector = (company.sector or "business").lower()
-    if bucket == "High conviction candidate":
-        margin = _metric_or_unknown("operating margin", financials.operating_margin_pct)
-        return (
-            f"{company.name} has a profitable {sector} profile "
-            f"({margin}) "
-            f"with {_growth_fragment(financials)} and {_balance_fragment(financials)}; "
-            f"{_valuation_fragment(financials)}."
-        )
-    if bucket == "Trading-only mover":
-        return (
-            f"{company.name} is mainly showing market activity today; without enough "
-            "fundamental support, treat it as a trading idea rather than a long-term "
-            "candidate."
-        )
-    if bucket == "Excluded due to weak data":
-        return (
-            f"{company.name} lacks enough business and fundamental data for a long-term "
-            "thesis today; wait for profile, report, or valuation evidence."
-        )
-    if bucket == "Speculative / needs more proof":
-        return (
-            f"{company.name} is worth monitoring, but the long-term case needs more "
-            f"proof because {_weakest_long_term_issue(item)}."
-        )
-    return (
-        f"{company.name} has enough fundamental evidence for the research queue, "
-        "but valuation, growth, and risks should be checked manually before it "
-        "moves into a conviction list."
-    )
-
-
-def _growth_fragment(financials: FinancialSnapshot) -> str:
-    if financials.revenue_growth_pct is None:
-        return "revenue growth still needs verification"
-    return f"revenue growth of {financials.revenue_growth_pct:.1f}%"
-
-
-def _balance_fragment(financials: FinancialSnapshot) -> str:
-    if financials.net_cash_eur_m is not None and financials.net_cash_eur_m > 0:
-        return "a net cash balance sheet"
-    if financials.debt_to_equity is not None and financials.debt_to_equity <= 0.5:
-        return "conservative debt/equity"
-    return "a balance sheet that still needs review"
-
-
-def _valuation_fragment(financials: FinancialSnapshot) -> str:
-    if (
-        _positive_at_most(financials.pe_ratio, 12)
-        or _positive_at_most(financials.price_to_book, 1.2)
-        or _positive_at_most(financials.ev_to_ebit, 10)
-    ):
-        return "Valuation looks attractive on the available multiples"
-    if (
-        _positive_at_most(financials.pe_ratio, 20)
-        or _positive_at_most(financials.price_to_book, 2.5)
-        or _positive_at_most(financials.ev_to_ebit, 16)
-    ):
-        return "Valuation looks reasonable on the available multiples"
-    return "Valuation needs manual comparison with Nordic peers"
-
-
-def _weakest_long_term_issue(item: WatchlistItem) -> str:
-    financials = item.research.financials
-    if financials.operating_margin_pct is not None and financials.operating_margin_pct < 0:
-        return "profitability is not yet proven"
-    if not item.research.company.business_description:
-        return "the business profile is still limited"
-    if financials.revenue_growth_pct is None:
-        return "revenue growth is not available"
-    if financials.revenue_growth_pct < 0:
-        return "revenue is declining"
-    return "the evidence is not strong enough yet"
-
-
-def _metric_or_unknown(label: str, value: float | None) -> str:
-    if value is None:
-        return f"{label} unavailable"
-    return f"{label} {value:.1f}%"
 
 
 def _positive_at_most(value: float | None, threshold: float) -> bool:

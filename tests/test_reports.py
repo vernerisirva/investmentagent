@@ -1181,6 +1181,7 @@ def test_render_watchlist_report_json_includes_long_term_conviction_payload():
                 debt_to_equity=0.2,
                 revenue_growth_pct=12.0,
                 operating_margin_pct=18.0,
+                average_daily_value_eur=250000,
                 data_quality=DataQuality.PARTIAL,
             ),
             data_quality=DataQuality.PARTIAL,
@@ -1204,12 +1205,59 @@ def test_render_watchlist_report_json_includes_long_term_conviction_payload():
     )
 
     conviction = payload["items"][0]["long_term_conviction"]
-    assert conviction["bucket"] == "High conviction candidate"
-    assert "profitable software profile" in conviction["thesis"]
+    assert conviction["bucket"] == "Quality small-cap candidate"
+    assert "multiple long-term quality signals" in conviction["thesis"]
     assert conviction["components"]["Business quality"]["score"] == 5
     assert conviction["components"]["Valuation"]["view"].startswith(
         "Attractive valuation"
     )
+
+
+def test_render_watchlist_report_json_uses_new_long_term_bucket_names():
+    company = Company(
+        name="Monitor AB",
+        ticker="MON",
+        country="SE",
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
+        sector="Technology",
+        market_cap_eur_m=80,
+        currency="SEK",
+        business_description="Monitor AB has an understandable business.",
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(
+                debt_to_equity=0.4,
+                revenue_growth_pct=4.0,
+                average_daily_value_eur=120000,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=0.0,
+            discovery=5.0,
+            catalyst=0.0,
+            risk_penalty=0.0,
+            data_quality_penalty=4.0,
+            total=1.0,
+        ),
+    )
+
+    payload = json.loads(
+        render_watchlist_report_json(
+            [item],
+            metadata={"strategy": "long-term"},
+            source_checks=[],
+        )
+    )
+
+    conviction = payload["items"][0]["long_term_conviction"]
+    assert conviction["bucket"] == "Speculative small-cap monitor"
+    assert "needs more proof" in conviction["thesis"]
 
 
 def test_render_watchlist_report_markdown_formats_company_sections():
@@ -1300,13 +1348,13 @@ def test_render_watchlist_report_markdown_names_long_term_strategy_page():
     )
 
 
-def test_render_long_term_report_markdown_includes_conviction_layer():
+def test_render_long_term_report_markdown_includes_quality_small_cap_bucket():
     company = Company(
         name="Quality Compounder AB",
         ticker="QUAL",
         country="SE",
-        exchange="Nasdaq Stockholm",
-        segment=ListingSegment.MAIN_MARKET,
+        exchange="Nasdaq First North Growth Market Sweden",
+        segment=ListingSegment.FIRST_NORTH,
         sector="Software",
         market_cap_eur_m=240,
         business_description=(
@@ -1325,7 +1373,7 @@ def test_render_long_term_report_markdown_includes_conviction_layer():
                 debt_to_equity=0.2,
                 revenue_growth_pct=12.0,
                 operating_margin_pct=18.0,
-                one_year_return_pct=-8.0,
+                average_daily_value_eur=250000,
                 data_quality=DataQuality.PARTIAL,
             ),
             risks=(),
@@ -1354,8 +1402,8 @@ def test_render_long_term_report_markdown_includes_conviction_layer():
     )
 
     assert "### Long-Term Conviction" in output
-    assert "**Bucket:** High conviction candidate" in output
-    assert "**Thesis:** Quality Compounder AB has a profitable software profile" in output
+    assert "**Bucket:** Quality small-cap candidate" in output
+    assert "multiple long-term quality signals" in output
     assert "| Component | Score | View |" in output
     assert "| Business quality | 5/5 | Strong - profitable business with a clear profile. |" in output
     assert "| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |" in output
@@ -1399,8 +1447,8 @@ def test_render_long_term_report_markdown_flags_trading_only_movers():
         source_checks=[],
     )
 
-    assert "**Bucket:** Trading-only mover" in output
-    assert "treat it as a trading idea rather than a long-term candidate" in output
+    assert "**Bucket:** Insufficient evidence" in output
+    assert "lacks enough durable evidence" in output
     assert "| Business quality | 0/5 | Insufficient business and margin data. |" in output
     assert "| Data confidence | 0/5 | No useful fundamentals or profile text are available today. |" in output
     assert "Sparse live-source data" not in output
@@ -1439,8 +1487,8 @@ def test_render_long_term_report_markdown_flags_weak_data_without_trading_signal
         source_checks=[],
     )
 
-    assert "**Bucket:** Excluded due to weak data" in output
-    assert "wait for profile, report, or valuation evidence" in output
+    assert "**Bucket:** Insufficient evidence" in output
+    assert "lacks enough durable evidence" in output
 
 
 def test_render_trading_report_markdown_omits_long_term_conviction_layer():
