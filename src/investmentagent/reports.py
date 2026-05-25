@@ -12,6 +12,7 @@ from investmentagent.models import (
     ScoreBreakdown,
     WatchlistItem,
 )
+from investmentagent.long_term_quality import assess_long_term_quality
 from investmentagent.providers import ResearchProvider
 from investmentagent.scoring import score_research
 
@@ -289,7 +290,7 @@ def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakd
 
 
 def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreBreakdown:
-    financials = research.financials
+    quality = assess_long_term_quality(research)
     reasons = tuple(
         reason for reason in score.reasons if not _is_trading_only_signal(reason)
     )
@@ -306,23 +307,6 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
         2,
     )
 
-    quality_adjustment = 0.0
-    quality_reasons: list[str] = []
-    if financials.operating_margin_pct is not None and financials.operating_margin_pct > 0:
-        quality_adjustment += 8.0
-        quality_reasons.append(
-            f"Positive operating margin ({financials.operating_margin_pct:.1f}%)"
-        )
-    if financials.revenue_growth_pct is not None and financials.revenue_growth_pct > 0:
-        quality_adjustment += 6.0
-        quality_reasons.append(f"Revenue growth ({financials.revenue_growth_pct:.1f}%)")
-    if financials.debt_to_equity is not None and financials.debt_to_equity <= 0.5:
-        quality_adjustment += 4.0
-        quality_reasons.append("Conservative debt/equity")
-    if research.company.business_description:
-        quality_adjustment += 3.0
-        quality_reasons.append("Business description available from profile data")
-
     trading_penalty = 0.0
     has_intraday_signal = any(
         _is_intraday_signal(signal)
@@ -337,22 +321,27 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
         trading_penalty += 18.0
     missing_anchor_penalty = (
         12.0
-        if has_intraday_signal and not _has_long_term_fundamental_anchor(financials)
+        if has_intraday_signal
+        and not _has_long_term_fundamental_anchor(research.financials)
         else 0.0
     )
 
     risk_penalty = round(
-        score.risk_penalty + trading_penalty + missing_anchor_penalty, 2
+        score.risk_penalty
+        + trading_penalty
+        + missing_anchor_penalty
+        + quality.proof_penalty,
+        2,
     )
     total = (
         score.value
         + discovery
         + catalyst
-        + quality_adjustment
+        + quality.quality_adjustment
         - risk_penalty
         - score.data_quality_penalty
     )
-    warnings = score.warnings
+    warnings = (*score.warnings, *quality.proof_gaps)
     if trading_penalty:
         warnings = (*warnings, "long-term strategy penalty applied")
     if missing_anchor_penalty:
@@ -361,11 +350,11 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
     return ScoreBreakdown(
         value=score.value,
         discovery=discovery,
-        catalyst=round(catalyst + quality_adjustment, 2),
+        catalyst=round(catalyst + quality.quality_adjustment, 2),
         risk_penalty=risk_penalty,
         data_quality_penalty=score.data_quality_penalty,
         total=round(total, 2),
-        reasons=(*reasons, *quality_reasons),
+        reasons=(*reasons, quality.bucket.value, *quality.reasons),
         warnings=warnings,
     )
 

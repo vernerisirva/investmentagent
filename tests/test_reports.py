@@ -458,9 +458,9 @@ def test_long_term_strategy_prioritizes_fundamental_quality_over_momentum():
     assert items[0].research.company.ticker == "QUALITY"
     assert "Strong intraday momentum (+14.16%)" not in items[0].score.reasons
     assert "High live turnover" not in items[0].score.reasons
-    assert "Positive operating margin (18.0%)" in items[0].score.reasons
-    assert "Revenue growth (12.0%)" in items[0].score.reasons
-    assert "Business description available from profile data" in items[0].score.reasons
+    assert "Positive operating margin" in items[0].score.reasons
+    assert "Revenue growth" in items[0].score.reasons
+    assert "Business description available" in items[0].score.reasons
 
 
 def test_long_term_strategy_penalizes_intraday_mover_without_fundamental_anchor():
@@ -522,6 +522,27 @@ def test_watchlist_fundamentals_budget_uses_preliminary_ranking_not_listing_orde
         catalysts=("High live turnover",),
         risks=("Sparse live-source data",),
         data_quality=DataQuality.THIN,
+    )
+    value = CompanyResearch(
+        company=Company(
+            name=value.company.name,
+            ticker=value.company.ticker,
+            country=value.company.country,
+            exchange=value.company.exchange,
+            segment=value.company.segment,
+            sector=value.company.sector,
+            market_cap_eur_m=value.company.market_cap_eur_m,
+            currency=value.company.currency,
+            business_description="Value AB has a defined business for long-term review.",
+        ),
+        financials=FinancialSnapshot(
+            debt_to_equity=0.2,
+            average_daily_value_eur=200000,
+            data_quality=DataQuality.THIN,
+        ),
+        catalysts=value.catalysts,
+        risks=value.risks,
+        data_quality=value.data_quality,
     )
 
     class StaticFundamentalsProvider:
@@ -780,6 +801,100 @@ def test_long_term_strategy_downweights_discovery_without_fundamentals():
     )
 
     assert items[0].research.company.ticker == "QUALITY"
+
+
+def test_long_term_strategy_keeps_first_north_but_requires_quality_evidence():
+    quality_first_north = CompanyResearch(
+        company=Company(
+            name="Quality First North AB",
+            ticker="QFN",
+            country="SE",
+            exchange="Nasdaq First North Growth Market Sweden",
+            segment=ListingSegment.FIRST_NORTH,
+            sector="Software",
+            market_cap_eur_m=180,
+            currency="SEK",
+            business_description="Quality First North sells profitable workflow software.",
+        ),
+        financials=FinancialSnapshot(
+            pe_ratio=13.0,
+            price_to_book=1.4,
+            net_cash_eur_m=15.0,
+            debt_to_equity=0.2,
+            revenue_growth_pct=11.0,
+            operating_margin_pct=16.0,
+            average_daily_value_eur=250000,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+    speculative_first_north = CompanyResearch(
+        company=Company(
+            name="Speculative First North AB",
+            ticker="SFN",
+            country="SE",
+            exchange="Nasdaq First North Growth Market Sweden",
+            segment=ListingSegment.FIRST_NORTH,
+            sector="Technology",
+            market_cap_eur_m=80,
+            currency="SEK",
+        ),
+        financials=FinancialSnapshot(
+            average_daily_value_eur=35000,
+            data_quality=DataQuality.THIN,
+        ),
+        catalysts=("Strong intraday momentum (+18.0%)", "High live turnover"),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((speculative_first_north, quality_first_north)),
+        countries=("SE",),
+        limit=2,
+        include_first_north=True,
+        strategy="long-term",
+    )
+
+    assert [item.research.company.ticker for item in items] == ["QFN", "SFN"]
+    assert "Quality small-cap candidate" in items[0].score.reasons
+    assert "Missing valuation data" in items[1].score.warnings
+    assert "Only live-market support" in items[1].score.warnings
+
+
+def test_long_term_strategy_penalizes_missing_valuation_profitability_and_growth():
+    weak = CompanyResearch(
+        company=Company(
+            name="Weak Evidence AB",
+            ticker="WEAK",
+            country="SE",
+            exchange="Nasdaq First North Growth Market Sweden",
+            segment=ListingSegment.FIRST_NORTH,
+            sector="Technology",
+            market_cap_eur_m=90,
+            currency="SEK",
+            business_description="Weak Evidence has an understandable business.",
+        ),
+        financials=FinancialSnapshot(
+            debt_to_equity=0.3,
+            average_daily_value_eur=160000,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((weak,)),
+        countries=("SE",),
+        limit=1,
+        include_first_north=True,
+        strategy="long-term",
+    )
+
+    assert items[0].score.total < 0
+    assert "Missing valuation data" in items[0].score.warnings
+    assert "No profitability signal" in items[0].score.warnings
+    assert "No growth signal" in items[0].score.warnings
 
 
 def test_discovery_strategy_boosts_first_north_and_penalizes_spikes():
