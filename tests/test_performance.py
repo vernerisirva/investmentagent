@@ -579,6 +579,49 @@ def test_long_term_performance_review_includes_quality_bucket_signals():
     assert "Proof gap: No profitability signal" in rendered
 
 
+def test_long_term_performance_review_uses_report_warnings_without_duplicate_signals():
+    payload = report_payload(strategy="long-term")
+    payload["items"][0]["company"]["ticker"] = "QUAL"
+    payload["items"][0]["company"]["name"] = "Quality AB"
+    payload["items"][0]["financials"]["price"] = 10.0
+    payload["items"][0]["score"]["reasons"] = [
+        "Net cash balance sheet",
+        "Conservative balance sheet",
+    ]
+    payload["items"][0]["score"]["warnings"] = [
+        "Missing valuation data",
+        "No profitability signal",
+    ]
+    payload["items"][0]["long_term_conviction"] = {
+        "bucket": "Quality small-cap candidate"
+    }
+    ledger = add_report_picks(
+        empty_ledger(),
+        payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/long-term/2026-05-11.html",
+    )
+
+    assert ledger["picks"][0]["risks"] == ["Speculative low-price share"]
+    assert ledger["picks"][0]["warnings"] == [
+        "Missing valuation data",
+        "No profitability signal",
+    ]
+
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={("QUAL", "SE"): {"price": 11.0, "currency": "SEK"}},
+    )
+
+    rendered = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
+
+    assert rendered.count("| Bucket: Quality small-cap candidate |") == 1
+    assert "Proof gap: Missing valuation data" in rendered
+    assert "Proof gap: No profitability signal" in rendered
+    assert "| Quality: Conservative balance sheet | 1 | +10% | 100% |" in rendered
+
+
 def test_render_scorecard_deduplicates_company_names_in_pick_highlights():
     payload = report_payload(strategy="trading")
     payload["items"].append(deepcopy(payload["items"][0]))

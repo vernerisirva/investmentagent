@@ -109,6 +109,7 @@ def _pick_from_report_item(
         "entry_timestamp": generated_at,
         "score_total": score.get("total"),
         "reasons": list(score.get("reasons") or ()),
+        "warnings": list(score.get("warnings") or ()),
         "risks": list(item.get("risks") or ()),
         "data_quality": item.get("data_quality"),
         "outcomes": _empty_outcomes(),
@@ -595,11 +596,15 @@ def _signal_summaries(
         if strategy is None:
             signals.append(f"strategy:{pick.get('strategy')}")
         signals.extend(f"reason:{reason}" for reason in pick.get("reasons", []))
+        quality_signals = _long_term_quality_signals(pick)
         conviction = pick.get("long_term_conviction")
-        if conviction:
+        has_quality_bucket = any(
+            signal.startswith("quality_bucket:") for signal in quality_signals
+        )
+        if conviction and not has_quality_bucket:
             signals.append(f"bucket:{conviction.get('bucket')}")
-        signals.extend(_long_term_quality_signals(pick))
-        for signal in signals:
+        signals.extend(quality_signals)
+        for signal in dict.fromkeys(signals):
             buckets.setdefault(signal, []).append(return_pct)
     summaries = []
     for signal, returns in buckets.items():
@@ -639,7 +644,7 @@ def _long_term_quality_signals(pick: dict[str, Any]) -> list[str]:
             signals.append("quality:attractive valuation")
         elif normalized == "Business description available":
             signals.append("quality:business description available")
-    for risk in pick.get("risks", []):
+    for risk in [*pick.get("warnings", []), *pick.get("risks", [])]:
         normalized = str(risk)
         if normalized in {
             "Missing valuation data",
