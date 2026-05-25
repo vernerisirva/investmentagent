@@ -897,6 +897,48 @@ def test_long_term_strategy_penalizes_missing_valuation_profitability_and_growth
     assert "No growth signal" in items[0].score.warnings
 
 
+def test_long_term_strategy_dedupes_overlapping_quality_signals():
+    duplicate_signals = CompanyResearch(
+        company=Company(
+            name="Duplicate Signals AB",
+            ticker="DUP",
+            country="SE",
+            exchange="Nasdaq Stockholm",
+            segment=ListingSegment.MAIN_MARKET,
+            sector="Software",
+            market_cap_eur_m=240,
+            currency="SEK",
+            business_description="Duplicate Signals sells subscription workflow tools.",
+        ),
+        financials=FinancialSnapshot(
+            pe_ratio=11.0,
+            price_to_book=1.1,
+            net_cash_eur_m=12.0,
+            debt_to_equity=0.2,
+            revenue_growth_pct=9.0,
+            operating_margin_pct=14.0,
+            average_daily_value_eur=45000,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((duplicate_signals,)),
+        countries=("SE",),
+        limit=1,
+        include_first_north=True,
+        strategy="long-term",
+    )
+
+    normalized_reasons = [reason.strip().lower() for reason in items[0].score.reasons]
+    normalized_warnings = [
+        warning.strip().lower() for warning in items[0].score.warnings
+    ]
+    assert normalized_reasons.count("net cash balance sheet") == 1
+    assert normalized_warnings.count("thin liquidity") == 1
+
+
 def test_discovery_strategy_boosts_first_north_and_penalizes_spikes():
     provider = FakeResearchProvider(
         (

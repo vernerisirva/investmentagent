@@ -354,9 +354,21 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
         risk_penalty=risk_penalty,
         data_quality_penalty=score.data_quality_penalty,
         total=round(total, 2),
-        reasons=(*reasons, quality.bucket.value, *quality.reasons),
-        warnings=warnings,
+        reasons=_dedupe_signal_text((*reasons, quality.bucket.value, *quality.reasons)),
+        warnings=_dedupe_signal_text(warnings),
     )
+
+
+def _dedupe_signal_text(signals: tuple[str, ...]) -> tuple[str, ...]:
+    seen: set[str] = set()
+    deduped: list[str] = []
+    for signal in signals:
+        key = signal.strip().lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(signal)
+    return tuple(deduped)
 
 
 def _trading_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreBreakdown:
