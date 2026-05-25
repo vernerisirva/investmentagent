@@ -598,6 +598,7 @@ def _signal_summaries(
         conviction = pick.get("long_term_conviction")
         if conviction:
             signals.append(f"bucket:{conviction.get('bucket')}")
+        signals.extend(_long_term_quality_signals(pick))
         for signal in signals:
             buckets.setdefault(signal, []).append(return_pct)
     summaries = []
@@ -613,6 +614,45 @@ def _signal_summaries(
             }
         )
     return sorted(summaries, key=lambda item: (-item["observations"], item["signal"]))
+
+
+def _long_term_quality_signals(pick: dict[str, Any]) -> list[str]:
+    if pick.get("strategy") != "long-term":
+        return []
+    signals: list[str] = []
+    conviction = pick.get("long_term_conviction")
+    if conviction and conviction.get("bucket"):
+        signals.append(f"quality_bucket:{conviction['bucket']}")
+    for reason in pick.get("reasons", []):
+        normalized = str(reason)
+        if normalized.startswith("Positive operating margin"):
+            signals.append("quality:positive operating margin")
+        elif normalized.startswith("Revenue growth"):
+            signals.append("quality:revenue growth")
+        elif normalized in {
+            "Conservative balance sheet",
+            "Conservative debt/equity",
+            "Net cash balance sheet",
+        }:
+            signals.append("quality:conservative balance sheet")
+        elif normalized == "Attractive valuation support":
+            signals.append("quality:attractive valuation")
+        elif normalized == "Business description available":
+            signals.append("quality:business description available")
+    for risk in pick.get("risks", []):
+        normalized = str(risk)
+        if normalized in {
+            "Missing valuation data",
+            "No profitability signal",
+            "No growth signal",
+            "Negative operating margin",
+            "High debt/equity",
+            "Thin liquidity",
+            "Only live-market support",
+            "Thin data quality",
+        }:
+            signals.append(f"proof_gap:{normalized.lower()}")
+    return signals
 
 
 def _latest_completed_return_pct(pick: dict[str, Any]) -> float | None:
@@ -809,6 +849,12 @@ def _normalize_company_name(name: str) -> str:
 
 def _humanize_signal(signal: str) -> str:
     prefix, _, value = signal.partition(":")
+    if prefix == "quality_bucket":
+        return f"Bucket: {value}"
+    if prefix == "quality":
+        return f"Quality: {_sentence_case_signal_value(value)}"
+    if prefix == "proof_gap":
+        return f"Proof gap: {_sentence_case_signal_value(value)}"
     labels = {
         "bucket": "Bucket",
         "country": "Country",
@@ -820,3 +866,10 @@ def _humanize_signal(signal: str) -> str:
     if readable_value:
         readable_value = readable_value[0].upper() + readable_value[1:]
     return f"{labels.get(prefix, prefix.title())}: {readable_value}"
+
+
+def _sentence_case_signal_value(value: str) -> str:
+    readable_value = value.replace("_", " ")
+    if readable_value:
+        readable_value = readable_value[0].upper() + readable_value[1:]
+    return readable_value

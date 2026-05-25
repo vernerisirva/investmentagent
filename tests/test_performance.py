@@ -515,6 +515,70 @@ def test_render_scorecard_markdown_keeps_strategy_details_separate():
     assert "Reason: High live turnover" in output
 
 
+def test_long_term_performance_review_includes_quality_bucket_signals():
+    ledger = {
+        "schema_version": 1,
+        "picks": [
+            {
+                "pick_id": "long-term:2026-05-01:QUAL:SE",
+                "strategy": "long-term",
+                "report_date": "2026-05-01",
+                "ticker": "QUAL",
+                "name": "Quality AB",
+                "country": "SE",
+                "segment": "first_north",
+                "score": 25.0,
+                "entry": {"price": 10.0, "currency": "SEK"},
+                "reasons": [
+                    "Quality small-cap candidate",
+                    "Positive operating margin (16.0%)",
+                ],
+                "risks": [],
+                "data_quality": "partial",
+                "long_term_conviction": {"bucket": "Quality small-cap candidate"},
+                "report_url": "../reports/long-term/2026-05-01.html",
+                "outcomes": {
+                    "1d": {"status": "priced", "return_pct": 4.0},
+                    "5d": {"status": "not_due", "return_pct": None},
+                    "20d": {"status": "not_due", "return_pct": None},
+                    "60d": {"status": "not_due", "return_pct": None},
+                },
+            },
+            {
+                "pick_id": "long-term:2026-05-01:SPEC:SE",
+                "strategy": "long-term",
+                "report_date": "2026-05-01",
+                "ticker": "SPEC",
+                "name": "Speculative AB",
+                "country": "SE",
+                "segment": "first_north",
+                "score": -5.0,
+                "entry": {"price": 5.0, "currency": "SEK"},
+                "reasons": ["Speculative small-cap monitor"],
+                "risks": ["Missing valuation data", "No profitability signal"],
+                "data_quality": "thin",
+                "long_term_conviction": {"bucket": "Speculative small-cap monitor"},
+                "report_url": "../reports/long-term/2026-05-01.html",
+                "outcomes": {
+                    "1d": {"status": "priced", "return_pct": -3.0},
+                    "5d": {"status": "not_due", "return_pct": None},
+                    "20d": {"status": "not_due", "return_pct": None},
+                    "60d": {"status": "not_due", "return_pct": None},
+                },
+            },
+        ],
+        "market_snapshots": {},
+    }
+
+    rendered = render_scorecard_markdown(ledger, generated_at="2026-05-02 08:00 EEST")
+
+    assert "Bucket: Quality small-cap candidate" in rendered
+    assert "Bucket: Speculative small-cap monitor" in rendered
+    assert "Quality: Positive operating margin" in rendered
+    assert "Proof gap: Missing valuation data" in rendered
+    assert "Proof gap: No profitability signal" in rendered
+
+
 def test_render_scorecard_deduplicates_company_names_in_pick_highlights():
     payload = report_payload(strategy="trading")
     payload["items"].append(deepcopy(payload["items"][0]))
