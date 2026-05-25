@@ -21,6 +21,18 @@ STRATEGY_LABELS = {
     "trading": "Trading",
     "long-term": "Long-Term",
 }
+LONG_TERM_PROOF_GAPS = {
+    "high debt/equity": "high debt/equity",
+    "missing business description": "missing business description",
+    "missing liquidity data": "missing liquidity data",
+    "missing valuation data": "missing valuation data",
+    "negative operating margin": "negative operating margin",
+    "no growth signal": "no growth signal",
+    "no profitability signal": "no profitability signal",
+    "only live-market support": "only live-market support",
+    "thin data quality": "thin data quality",
+    "thin liquidity": "thin liquidity",
+}
 
 
 def empty_ledger() -> dict[str, Any]:
@@ -595,14 +607,20 @@ def _signal_summaries(
         ]
         if strategy is None:
             signals.append(f"strategy:{pick.get('strategy')}")
-        signals.extend(f"reason:{reason}" for reason in pick.get("reasons", []))
         quality_signals = _long_term_quality_signals(pick)
         conviction = pick.get("long_term_conviction")
         has_quality_bucket = any(
             signal.startswith("quality_bucket:") for signal in quality_signals
         )
+        bucket = conviction.get("bucket") if conviction else None
+        for reason in pick.get("reasons", []):
+            if has_quality_bucket and _normalized_signal_key(
+                reason
+            ) == _normalized_signal_key(bucket):
+                continue
+            signals.append(f"reason:{reason}")
         if conviction and not has_quality_bucket:
-            signals.append(f"bucket:{conviction.get('bucket')}")
+            signals.append(f"bucket:{bucket}")
         signals.extend(quality_signals)
         for signal in dict.fromkeys(signals):
             buckets.setdefault(signal, []).append(return_pct)
@@ -645,19 +663,15 @@ def _long_term_quality_signals(pick: dict[str, Any]) -> list[str]:
         elif normalized == "Business description available":
             signals.append("quality:business description available")
     for risk in [*pick.get("warnings", []), *pick.get("risks", [])]:
-        normalized = str(risk)
-        if normalized in {
-            "Missing valuation data",
-            "No profitability signal",
-            "No growth signal",
-            "Negative operating margin",
-            "High debt/equity",
-            "Thin liquidity",
-            "Only live-market support",
-            "Thin data quality",
-        }:
-            signals.append(f"proof_gap:{normalized.lower()}")
+        normalized = _normalized_signal_key(risk)
+        proof_gap = LONG_TERM_PROOF_GAPS.get(normalized)
+        if proof_gap:
+            signals.append(f"proof_gap:{proof_gap}")
     return signals
+
+
+def _normalized_signal_key(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "").strip().lower())
 
 
 def _latest_completed_return_pct(pick: dict[str, Any]) -> float | None:

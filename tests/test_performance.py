@@ -622,6 +622,69 @@ def test_long_term_performance_review_uses_report_warnings_without_duplicate_sig
     assert "| Quality: Conservative balance sheet | 1 | +10% | 100% |" in rendered
 
 
+def test_long_term_performance_review_normalizes_lowercase_proof_gap_warnings():
+    payload = report_payload(strategy="long-term")
+    payload["items"][0]["company"]["ticker"] = "GAPS"
+    payload["items"][0]["company"]["name"] = "Gap Signals AB"
+    payload["items"][0]["financials"]["price"] = 10.0
+    payload["items"][0]["score"]["warnings"] = [
+        "  thin   liquidity  ",
+        "negative operating margin",
+        "high debt/equity",
+        "Missing liquidity data",
+        "Missing business description",
+    ]
+    payload["items"][0]["long_term_conviction"] = {
+        "bucket": "Speculative small-cap monitor"
+    }
+    ledger = add_report_picks(
+        empty_ledger(),
+        payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/long-term/2026-05-11.html",
+    )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={("GAPS", "SE"): {"price": 11.0, "currency": "SEK"}},
+    )
+
+    rendered = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
+
+    assert "Proof gap: Thin liquidity" in rendered
+    assert "Proof gap: Negative operating margin" in rendered
+    assert "Proof gap: High debt/equity" in rendered
+    assert "Proof gap: Missing liquidity data" in rendered
+    assert "Proof gap: Missing business description" in rendered
+
+
+def test_long_term_performance_review_omits_bucket_reason_duplicate():
+    payload = report_payload(strategy="long-term")
+    payload["items"][0]["company"]["ticker"] = "SPEC"
+    payload["items"][0]["company"]["name"] = "Speculative AB"
+    payload["items"][0]["financials"]["price"] = 10.0
+    payload["items"][0]["score"]["reasons"] = ["Speculative small-cap monitor"]
+    payload["items"][0]["long_term_conviction"] = {
+        "bucket": "Speculative small-cap monitor"
+    }
+    ledger = add_report_picks(
+        empty_ledger(),
+        payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/long-term/2026-05-11.html",
+    )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={("SPEC", "SE"): {"price": 11.0, "currency": "SEK"}},
+    )
+
+    rendered = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
+
+    assert "| Bucket: Speculative small-cap monitor | 1 | +10% | 100% |" in rendered
+    assert "Reason: Speculative small-cap monitor" not in rendered
+
+
 def test_render_scorecard_deduplicates_company_names_in_pick_highlights():
     payload = report_payload(strategy="trading")
     payload["items"].append(deepcopy(payload["items"][0]))
