@@ -114,3 +114,34 @@ def test_quality_assessment_labels_speculative_monitor_when_some_proof_exists():
     assert "Missing valuation data" in profile.proof_gaps
     assert "No profitability signal" in profile.proof_gaps
     assert profile.quality_adjustment > 0
+
+
+def test_quality_assessment_flags_live_only_support_despite_unrelated_risk():
+    profile = assess_long_term_quality(
+        make_research(
+            ticker="LIVE",
+            business_description=None,
+            pe_ratio=None,
+            price_to_book=None,
+            net_cash_eur_m=None,
+            debt_to_equity=None,
+            revenue_growth_pct=None,
+            operating_margin_pct=None,
+            average_daily_value_eur=40_000,
+            catalysts=("Strong intraday momentum (+18.0%)",),
+            risks=("Low liquidity",),
+            data_quality=DataQuality.THIN,
+        )
+    )
+
+    assert "Only live-market support" in profile.proof_gaps
+
+
+def test_quality_assessment_flags_missing_liquidity_data_for_strong_company():
+    profile = assess_long_term_quality(
+        make_research(average_daily_value_eur=None)
+    )
+
+    assert "Missing liquidity data" in profile.proof_gaps
+    assert profile.proof_penalty > 0
+    assert profile.bucket != LongTermQualityBucket.QUALITY_SMALL_CAP

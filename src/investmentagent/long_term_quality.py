@@ -94,6 +94,9 @@ def assess_long_term_quality(research: CompanyResearch) -> LongTermQualityProfil
         else:
             proof_penalty += 7.0
             proof_gaps.append("Thin liquidity")
+    else:
+        proof_penalty += 6.0
+        proof_gaps.append("Missing liquidity data")
 
     if _has_live_only_support(research) and not _has_durable_support(research):
         proof_penalty += 12.0
@@ -143,14 +146,14 @@ def _has_durable_support(research: CompanyResearch) -> bool:
 
 
 def _has_live_only_support(research: CompanyResearch) -> bool:
-    signals = tuple(item.lower() for item in (*research.catalysts, *research.risks))
+    signals = tuple(item.lower() for item in research.catalysts)
     live_terms = (
         "live price available",
         "live turnover",
         "intraday momentum",
         "sparse live-source data",
     )
-    return bool(signals) and all(
+    return any(
         any(term in signal for term in live_terms) for signal in signals
     )
 
