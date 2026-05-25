@@ -2,13 +2,13 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-05-22 08:00 EEST
+Generated: 2026-05-25 08:00 EEST
 
 ## Market Context
 
-- Latest snapshot: 2026-05-22
+- Latest snapshot: 2026-05-25
 - Market tone: Mixed / quiet
-- Companies tracked: 28
+- Companies tracked: 934
 - Large positive movers: 0
 - Sharp selloffs: 0
 - Active turnover signals: 0
@@ -20,7 +20,7 @@ Generated: 2026-05-22 08:00 EEST
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
 | 1d | 80 | 60% | +0.87% | +0.46% |
-| 5d | 40 | 62.5% | +4.49% | +1.68% |
+| 5d | 50 | 64% | +4.72% | +2.09% |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
@@ -29,7 +29,7 @@ Generated: 2026-05-22 08:00 EEST
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1d | -15.56% | 33.8% | 1 | 4.38% | +3.56% | -3.35% | 35% |
-| 5d | -21.11% | 37.5% | 2 | 11.56% | - | - | - |
+| 5d | -21.11% | 36% | 2 | 10.74% | +20.17% | -14.56% | 10% |
 | 20d | - | - | 0 | - | - | - | - |
 | 60d | - | - | 0 | - | - | - | - |
 
@@ -53,25 +53,25 @@ Generated: 2026-05-22 08:00 EEST
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Country: SE | 59 | +2.78% | 64.4% |
-| Reason: Trading strategy adjustment applied | 59 | +1.66% | 62.7% |
-| Reason: High live turnover | 51 | +1.28% | 64.7% |
-| Segment: First north | 48 | +3.58% | 62.5% |
+| Country: SE | 59 | +3.46% | 62.7% |
+| Reason: Trading strategy adjustment applied | 59 | +2.31% | 59.3% |
+| Reason: High live turnover | 51 | +2.03% | 60.8% |
+| Segment: First north | 48 | +4.38% | 60.4% |
 | Reason: Live price available from Nasdaq Nordic | 40 | +4.49% | 62.5% |
 | Reason: Small market cap | 36 | +4.92% | 63.9% |
 | Reason: First North listing | 33 | +5.08% | 63.6% |
-| Segment: Main market | 32 | +0.51% | 65.6% |
-| Country: FI | 21 | +1.15% | 61.9% |
+| Segment: Main market | 32 | +0.52% | 62.5% |
+| Country: FI | 21 | +1.06% | 57.1% |
 | Reason: Moderate live turnover | 7 | +0.73% | 42.9% |
-| Reason: Positive intraday momentum (+5.3%) | 1 | +3.31% | 100% |
+| Reason: Positive intraday momentum (+5.3%) | 1 | +15.68% | 100% |
 | Reason: Positive intraday momentum (+5.39%) | 1 | -8.77% | 0% |
 
 ### Trading Learning Suggestions
 
-- Country: SE has produced a positive average return of +2.78% across 59 completed observations. Review whether its scoring weight should change.
-- Reason: Trading strategy adjustment applied has produced a positive average return of +1.66% across 59 completed observations. Review whether its scoring weight should change.
-- Reason: High live turnover has produced a positive average return of +1.28% across 51 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a positive average return of +3.58% across 48 completed observations. Review whether its scoring weight should change.
+- Country: SE has produced a positive average return of +3.46% across 59 completed observations. Review whether its scoring weight should change.
+- Reason: Trading strategy adjustment applied has produced a positive average return of +2.31% across 59 completed observations. Review whether its scoring weight should change.
+- Reason: High live turnover has produced a positive average return of +2.03% across 51 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a positive average return of +4.38% across 48 completed observations. Review whether its scoring weight should change.
 - Reason: Live price available from Nasdaq Nordic has produced a positive average return of +4.49% across 40 completed observations. Review whether its scoring weight should change.
 
 ## Long-Term Investment Ideas
@@ -80,8 +80,8 @@ Generated: 2026-05-22 08:00 EEST
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 80 | 47.5% | +0.58% | 0% |
-| 5d | 40 | 62.5% | +3.24% | +1.83% |
+| 1d | 90 | 45.6% | +0.35% | 0% |
+| 5d | 50 | 64% | +3.08% | +1.61% |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
@@ -89,8 +89,8 @@ Generated: 2026-05-22 08:00 EEST
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -8.25% | 46.2% | 0 | 3.6% | +2.49% | -2.16% | 35% |
-| 5d | -11.18% | 35% | 1 | 8.1% | - | - | - |
+| 1d | -12.96% | 43.3% | 1 | 3.74% | +2.21% | -2.25% | 30% |
+| 5d | -11.18% | 32% | 1 | 7.49% | +20.17% | -17.73% | 0% |
 | 20d | - | - | 0 | - | - | - | - |
 | 60d | - | - | 0 | - | - | - | - |
 
@@ -99,38 +99,38 @@ Generated: 2026-05-22 08:00 EEST
 - **AcouSort (ACOU)** - 5d return **+28.42%** ([report](../reports/long-term/2026-05-12.html))
 - **AAC Clyde Space (AAC)** - 5d return **+20.24%** ([report](../reports/long-term/2026-05-14.html))
 - **Svenska Aerogel Holding (AERO)** - 5d return **+13.59%** ([report](../reports/long-term/2026-05-13.html))
+- **4C Group (4C)** - 5d return **+12.2%** ([report](../reports/long-term/2026-05-18.html))
 - **Agtira B (AGTIRA B)** - 1d return **+12.08%** ([report](../reports/long-term/2026-05-13.html))
-- **Acuvi (ACUVI)** - 5d return **+7.89%** ([report](../reports/long-term/2026-05-14.html))
 
 ### Worst Long-Term Picks
 
+- **Heliospectra (HELIO)** - 1d return **-12.96%** ([report](../reports/long-term/2026-05-22.html))
 - **Acconeer (ACCON)** - 5d return **-11.18%** ([report](../reports/long-term/2026-05-11.html))
 - **Avtech Sweden B (AVT B)** - 1d return **-8.22%** ([report](../reports/long-term/2026-05-18.html))
 - **BeammWave B (BEAMMW B)** - 1d return **-6.04%** ([report](../reports/long-term/2026-05-19.html))
-- **Canatu Oyj A (CANATU)** - 5d return **-5%** ([report](../reports/long-term/2026-05-11.html))
-- **Advenica AB (ADVE)** - 1d return **-3.85%** ([report](../reports/long-term/2026-05-18.html))
+- **NanoCap Group B (NANOC B)** - 1d return **-5.41%** ([report](../reports/long-term/2026-05-22.html))
 
 ### Long-Term Signal Review
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: Business description available from profile data | 80 | +1.78% | 53.8% |
-| Reason: First North listing | 80 | +1.78% | 53.8% |
-| Segment: First north | 80 | +1.78% | 53.8% |
-| Reason: Conservative debt/equity | 78 | +1.86% | 55.1% |
-| Reason: Small market cap | 78 | +1.76% | 53.8% |
-| Bucket: Speculative / needs more proof | 61 | +2.29% | 59% |
-| Country: SE | 56 | +2.31% | 53.6% |
-| Country: FI | 24 | +0.56% | 54.2% |
-| Bucket: Fundamental watchlist candidate | 18 | +0.31% | 38.9% |
-| Reason: Positive operating margin (14.1%) | 8 | +1.75% | 62.5% |
-| Reason: Revenue growth (8.7%) | 8 | +1.75% | 62.5% |
-| Reason: Positive operating margin (5.8%) | 7 | +0.36% | 57.1% |
+| Reason: First North listing | 90 | +1.68% | 53.3% |
+| Segment: First north | 90 | +1.68% | 53.3% |
+| Reason: Business description available from profile data | 89 | +1.85% | 53.9% |
+| Reason: Small market cap | 87 | +1.82% | 54% |
+| Reason: Conservative debt/equity | 84 | +1.98% | 57.1% |
+| Bucket: Speculative / needs more proof | 68 | +2.3% | 58.8% |
+| Country: SE | 65 | +2.11% | 52.3% |
+| Country: FI | 25 | +0.57% | 56% |
+| Bucket: Fundamental watchlist candidate | 18 | +0.56% | 44.4% |
+| Reason: Positive operating margin (14.1%) | 8 | +1.37% | 62.5% |
+| Reason: Revenue growth (8.7%) | 8 | +1.37% | 62.5% |
+| Reason: Positive operating margin (5.8%) | 7 | +0.55% | 57.1% |
 
 ### Long-Term Learning Suggestions
 
-- Reason: Business description available from profile data has produced a positive average return of +1.78% across 80 completed observations. Review whether its scoring weight should change.
-- Reason: First North listing has produced a positive average return of +1.78% across 80 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a positive average return of +1.78% across 80 completed observations. Review whether its scoring weight should change.
-- Reason: Conservative debt/equity has produced a positive average return of +1.86% across 78 completed observations. Review whether its scoring weight should change.
-- Reason: Small market cap has produced a positive average return of +1.76% across 78 completed observations. Review whether its scoring weight should change.
+- Reason: First North listing has produced a positive average return of +1.68% across 90 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a positive average return of +1.68% across 90 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available from profile data has produced a positive average return of +1.85% across 89 completed observations. Review whether its scoring weight should change.
+- Reason: Small market cap has produced a positive average return of +1.82% across 87 completed observations. Review whether its scoring weight should change.
+- Reason: Conservative debt/equity has produced a positive average return of +1.98% across 84 completed observations. Review whether its scoring weight should change.
