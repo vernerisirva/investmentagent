@@ -2,13 +2,13 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-05-25 08:00 EEST
+Generated: 2026-05-26 08:00 EEST
 
 ## Market Context
 
-- Latest snapshot: 2026-05-25
+- Latest snapshot: 2026-05-26
 - Market tone: Mixed / quiet
-- Companies tracked: 934
+- Companies tracked: 422
 - Large positive movers: 0
 - Sharp selloffs: 0
 - Active turnover signals: 0
@@ -20,7 +20,7 @@ Generated: 2026-05-25 08:00 EEST
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
 | 1d | 80 | 60% | +0.87% | +0.46% |
-| 5d | 50 | 64% | +4.72% | +2.09% |
+| 5d | 53 | 64.2% | +4.46% | +2.02% |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
@@ -29,7 +29,7 @@ Generated: 2026-05-25 08:00 EEST
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1d | -15.56% | 33.8% | 1 | 4.38% | +3.56% | -3.35% | 35% |
-| 5d | -21.11% | 36% | 2 | 10.74% | +20.17% | -14.56% | 10% |
+| 5d | -21.11% | 35.8% | 2 | 10.52% | +25.15% | -20.79% | 7.7% |
 | 20d | - | - | 0 | - | - | - | - |
 | 60d | - | - | 0 | - | - | - | - |
 
@@ -53,14 +53,14 @@ Generated: 2026-05-25 08:00 EEST
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Country: SE | 59 | +3.46% | 62.7% |
-| Reason: Trading strategy adjustment applied | 59 | +2.31% | 59.3% |
-| Reason: High live turnover | 51 | +2.03% | 60.8% |
+| Country: SE | 59 | +3.55% | 64.4% |
+| Reason: Trading strategy adjustment applied | 59 | +2.4% | 61% |
+| Reason: High live turnover | 51 | +2.14% | 62.7% |
 | Segment: First north | 48 | +4.38% | 60.4% |
 | Reason: Live price available from Nasdaq Nordic | 40 | +4.49% | 62.5% |
 | Reason: Small market cap | 36 | +4.92% | 63.9% |
 | Reason: First North listing | 33 | +5.08% | 63.6% |
-| Segment: Main market | 32 | +0.52% | 62.5% |
+| Segment: Main market | 32 | +0.68% | 65.6% |
 | Country: FI | 21 | +1.06% | 57.1% |
 | Reason: Moderate live turnover | 7 | +0.73% | 42.9% |
 | Reason: Positive intraday momentum (+5.3%) | 1 | +15.68% | 100% |
@@ -68,9 +68,9 @@ Generated: 2026-05-25 08:00 EEST
 
 ### Trading Learning Suggestions
 
-- Country: SE has produced a positive average return of +3.46% across 59 completed observations. Review whether its scoring weight should change.
-- Reason: Trading strategy adjustment applied has produced a positive average return of +2.31% across 59 completed observations. Review whether its scoring weight should change.
-- Reason: High live turnover has produced a positive average return of +2.03% across 51 completed observations. Review whether its scoring weight should change.
+- Country: SE has produced a positive average return of +3.55% across 59 completed observations. Review whether its scoring weight should change.
+- Reason: Trading strategy adjustment applied has produced a positive average return of +2.4% across 59 completed observations. Review whether its scoring weight should change.
+- Reason: High live turnover has produced a positive average return of +2.14% across 51 completed observations. Review whether its scoring weight should change.
 - Segment: First north has produced a positive average return of +4.38% across 48 completed observations. Review whether its scoring weight should change.
 - Reason: Live price available from Nasdaq Nordic has produced a positive average return of +4.49% across 40 completed observations. Review whether its scoring weight should change.
 
