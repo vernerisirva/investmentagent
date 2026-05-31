@@ -1,6 +1,9 @@
 from investmentagent.long_term_quality import (
+    LongTermGateTier,
     LongTermQualityBucket,
+    assess_long_term_gate,
     assess_long_term_quality,
+    assess_valuation_support,
 )
 from investmentagent.models import (
     Company,
@@ -145,3 +148,94 @@ def test_quality_assessment_flags_missing_liquidity_data_for_strong_company():
     assert "Missing liquidity data" in profile.proof_gaps
     assert profile.proof_penalty > 0
     assert profile.bucket != LongTermQualityBucket.QUALITY_SMALL_CAP
+
+
+def test_valuation_support_uses_market_cap_to_sales_proxy():
+    research = make_research(
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+    )
+    research = CompanyResearch(
+        company=Company(
+            name=research.company.name,
+            ticker=research.company.ticker,
+            country=research.company.country,
+            exchange=research.company.exchange,
+            segment=research.company.segment,
+            sector=research.company.sector,
+            market_cap_eur_m=180.0,
+            currency=research.company.currency,
+            business_description=research.company.business_description,
+        ),
+        financials=FinancialSnapshot(
+            revenue_eur_m=120.0,
+            debt_to_equity=0.2,
+            revenue_growth_pct=10.0,
+            operating_margin_pct=14.0,
+            average_daily_value_eur=250_000,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+
+    support = assess_valuation_support(research)
+
+    assert support.has_support is True
+    assert support.is_attractive is True
+    assert support.primary_kind == "market_cap_to_sales"
+    assert support.primary_value == 1.5
+    assert "Market cap/sales is 1.5x" in support.summary
+
+
+def test_high_quality_company_with_proxy_passes_high_conviction_gate():
+    research = make_research(
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=12.0,
+    )
+    research = CompanyResearch(
+        company=Company(
+            name=research.company.name,
+            ticker=research.company.ticker,
+            country=research.company.country,
+            exchange=research.company.exchange,
+            segment=research.company.segment,
+            sector=research.company.sector,
+            market_cap_eur_m=180.0,
+            currency=research.company.currency,
+            business_description=research.company.business_description,
+        ),
+        financials=FinancialSnapshot(
+            revenue_eur_m=120.0,
+            net_cash_eur_m=12.0,
+            debt_to_equity=0.2,
+            revenue_growth_pct=10.0,
+            operating_margin_pct=14.0,
+            average_daily_value_eur=250_000,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+
+    decision = assess_long_term_gate(research)
+
+    assert decision.tier == LongTermGateTier.HIGH_CONVICTION
+    assert decision.durable_anchor_count >= 4
+    assert decision.severe_proof_gap_count == 0
+    assert "valuation support available" in decision.reasons
+
+
+def test_negative_margin_company_is_demoted_by_gate():
+    decision = assess_long_term_gate(
+        make_research(
+            operating_margin_pct=-8.0,
+            revenue_growth_pct=20.0,
+            pe_ratio=8.0,
+            price_to_book=1.0,
+            average_daily_value_eur=250_000,
+        )
+    )
+
+    assert decision.tier != LongTermGateTier.HIGH_CONVICTION
+    assert "negative operating margin" in decision.blockers

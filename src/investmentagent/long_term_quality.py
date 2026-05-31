@@ -13,6 +13,13 @@ class LongTermQualityBucket(str, Enum):
     INSUFFICIENT_EVIDENCE = "Insufficient evidence"
 
 
+class LongTermGateTier(str, Enum):
+    HIGH_CONVICTION = "High-conviction candidate"
+    FUNDAMENTAL_WATCHLIST = "Fundamental watchlist"
+    SPECULATIVE_MONITOR = "Speculative monitor"
+    INSUFFICIENT_EVIDENCE = "Insufficient evidence"
+
+
 @dataclass(frozen=True)
 class LongTermQualityProfile:
     quality_adjustment: float
@@ -21,6 +28,35 @@ class LongTermQualityProfile:
     reasons: tuple[str, ...]
     proof_gaps: tuple[str, ...]
     thesis: str
+
+
+@dataclass(frozen=True)
+class ValuationSupport:
+    has_support: bool
+    is_attractive: bool
+    primary_kind: str | None
+    primary_value: float | None
+    summary: str
+
+
+@dataclass(frozen=True)
+class LongTermGateDecision:
+    tier: LongTermGateTier
+    reasons: tuple[str, ...]
+    blockers: tuple[str, ...]
+    durable_anchor_count: int
+    severe_proof_gap_count: int
+    valuation: ValuationSupport
+
+
+SEVERE_PROOF_GAPS = {
+    "No profitability signal",
+    "Negative operating margin",
+    "High debt/equity",
+    "Thin data quality",
+    "Missing business description",
+    "Missing liquidity data",
+}
 
 
 def assess_long_term_quality(research: CompanyResearch) -> LongTermQualityProfile:
@@ -62,18 +98,11 @@ def assess_long_term_quality(research: CompanyResearch) -> LongTermQualityProfil
         proof_penalty += 10.0
         proof_gaps.append("High debt/equity")
 
-    has_valuation = any(
-        metric is not None
-        for metric in (
-            financials.pe_ratio,
-            financials.price_to_book,
-            financials.ev_to_ebit,
-        )
-    )
-    if _has_attractive_valuation(research):
+    valuation = assess_valuation_support(research)
+    if valuation.is_attractive:
         quality_adjustment += 8.0
         reasons.append("Attractive valuation support")
-    elif has_valuation:
+    elif valuation.has_support:
         quality_adjustment += 2.0
         reasons.append("Valuation data available")
     else:
@@ -119,15 +148,159 @@ def assess_long_term_quality(research: CompanyResearch) -> LongTermQualityProfil
     )
 
 
-def _has_attractive_valuation(research: CompanyResearch) -> bool:
+def assess_valuation_support(research: CompanyResearch) -> ValuationSupport:
     financials = research.financials
-    return any(
-        (
-            financials.pe_ratio is not None and 0 < financials.pe_ratio <= 14,
-            financials.price_to_book is not None and 0 < financials.price_to_book <= 1.5,
-            financials.ev_to_ebit is not None and 0 < financials.ev_to_ebit <= 12,
-        )
+    direct_metrics = (
+        ("pe_ratio", financials.pe_ratio, 14.0, "P/E"),
+        ("price_to_book", financials.price_to_book, 1.5, "Price/book"),
+        ("ev_to_ebit", financials.ev_to_ebit, 12.0, "EV/EBIT"),
     )
+    for kind, value, threshold, label in direct_metrics:
+        if value is None or value <= 0:
+            continue
+        return ValuationSupport(
+            has_support=True,
+            is_attractive=value <= threshold,
+            primary_kind=kind,
+            primary_value=round(value, 2),
+            summary=f"{label} is {value:g}.",
+        )
+
+    proxy = _valuation_proxy(research)
+    if proxy is not None:
+        return proxy
+
+    return ValuationSupport(
+        has_support=False,
+        is_attractive=False,
+        primary_kind=None,
+        primary_value=None,
+        summary="No valuation metric or proxy is available.",
+    )
+
+
+def assess_long_term_gate(research: CompanyResearch) -> LongTermGateDecision:
+    quality = assess_long_term_quality(research)
+    valuation = assess_valuation_support(research)
+    durable_anchors = _durable_anchors(research, valuation)
+    severe_gaps = tuple(gap for gap in quality.proof_gaps if gap in SEVERE_PROOF_GAPS)
+    blockers = [_signal_key(gap) for gap in severe_gaps]
+    reasons = list(durable_anchors)
+
+    if valuation.has_support:
+        reasons.append("valuation support available")
+    else:
+        blockers.append("missing valuation support")
+
+    if quality.bucket == LongTermQualityBucket.QUALITY_SMALL_CAP:
+        tier = LongTermGateTier.HIGH_CONVICTION
+    elif (
+        quality.bucket == LongTermQualityBucket.FUNDAMENTAL_WATCHLIST
+        and len(durable_anchors) >= 3
+    ):
+        tier = LongTermGateTier.HIGH_CONVICTION
+    elif quality.bucket == LongTermQualityBucket.FUNDAMENTAL_WATCHLIST:
+        tier = LongTermGateTier.FUNDAMENTAL_WATCHLIST
+    elif quality.bucket == LongTermQualityBucket.SPECULATIVE_MONITOR:
+        tier = LongTermGateTier.SPECULATIVE_MONITOR
+    else:
+        tier = LongTermGateTier.INSUFFICIENT_EVIDENCE
+
+    if tier == LongTermGateTier.HIGH_CONVICTION and (
+        blockers or len(durable_anchors) < 2 or not valuation.has_support
+    ):
+        tier = LongTermGateTier.FUNDAMENTAL_WATCHLIST
+
+    return LongTermGateDecision(
+        tier=tier,
+        reasons=tuple(dict.fromkeys(reasons)),
+        blockers=tuple(dict.fromkeys(blockers)),
+        durable_anchor_count=len(durable_anchors),
+        severe_proof_gap_count=len(severe_gaps),
+        valuation=valuation,
+    )
+
+
+def _has_attractive_valuation(research: CompanyResearch) -> bool:
+    return assess_valuation_support(research).is_attractive
+
+
+def _valuation_proxy(research: CompanyResearch) -> ValuationSupport | None:
+    company = research.company
+    financials = research.financials
+    market_cap = company.market_cap_eur_m
+    if market_cap is None or market_cap <= 0:
+        return None
+
+    if financials.revenue_eur_m is not None and financials.revenue_eur_m > 0:
+        value = round(market_cap / financials.revenue_eur_m, 2)
+        return ValuationSupport(
+            has_support=True,
+            is_attractive=value <= 2.0,
+            primary_kind="market_cap_to_sales",
+            primary_value=value,
+            summary=f"Market cap/sales is {value:g}x.",
+        )
+    if financials.book_value_eur_m is not None and financials.book_value_eur_m > 0:
+        value = round(market_cap / financials.book_value_eur_m, 2)
+        return ValuationSupport(
+            has_support=True,
+            is_attractive=value <= 1.5,
+            primary_kind="market_cap_to_book",
+            primary_value=value,
+            summary=f"Market cap/book value is {value:g}x.",
+        )
+    if financials.net_cash_eur_m is not None and financials.net_cash_eur_m > 0:
+        value = round((financials.net_cash_eur_m / market_cap) * 100, 2)
+        return ValuationSupport(
+            has_support=True,
+            is_attractive=value >= 20.0,
+            primary_kind="net_cash_to_market_cap",
+            primary_value=value,
+            summary=f"Net cash equals {value:g}% of market cap.",
+        )
+    if financials.net_income_eur_m is not None and financials.net_income_eur_m > 0:
+        pe_ratio = round(market_cap / financials.net_income_eur_m, 2)
+        return ValuationSupport(
+            has_support=True,
+            is_attractive=pe_ratio <= 14.0,
+            primary_kind="earnings_yield_pe",
+            primary_value=pe_ratio,
+            summary=f"Implied P/E is {pe_ratio:g}.",
+        )
+    return None
+
+
+def _durable_anchors(
+    research: CompanyResearch, valuation: ValuationSupport
+) -> tuple[str, ...]:
+    financials = research.financials
+    anchors: list[str] = []
+    if (
+        financials.operating_margin_pct is not None
+        and financials.operating_margin_pct > 0
+    ):
+        anchors.append("positive operating margin")
+    if financials.revenue_growth_pct is not None and financials.revenue_growth_pct > 0:
+        anchors.append("revenue growth")
+    if financials.net_cash_eur_m is not None and financials.net_cash_eur_m > 0:
+        anchors.append("net cash balance sheet")
+    if financials.debt_to_equity is not None and financials.debt_to_equity <= 0.5:
+        anchors.append("conservative balance sheet")
+    if (
+        financials.average_daily_value_eur is not None
+        and financials.average_daily_value_eur >= 100_000
+    ):
+        anchors.append("adequate liquidity")
+    if valuation.is_attractive:
+        anchors.append("attractive valuation support")
+    elif valuation.has_support:
+        anchors.append("valuation data available")
+    return tuple(dict.fromkeys(anchors))
+
+
+def _signal_key(value: str) -> str:
+    return value.strip().lower()
 
 
 def _has_durable_support(research: CompanyResearch) -> bool:
