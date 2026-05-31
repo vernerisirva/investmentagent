@@ -579,6 +579,79 @@ def test_long_term_performance_review_includes_quality_bucket_signals():
     assert "Proof gap: No profitability signal" in rendered
 
 
+def test_performance_ledger_preserves_long_term_gate_payload():
+    payload = report_payload(strategy="long-term")
+    payload["items"][0]["company"]["ticker"] = "GATE"
+    payload["items"][0]["company"]["name"] = "Gate Result AB"
+    payload["items"][0]["long_term_gate"] = {
+        "tier": "High-conviction candidate",
+        "reasons": ["positive operating margin", "valuation support available"],
+        "blockers": [],
+        "durable_anchor_count": 4,
+        "severe_proof_gap_count": 0,
+        "valuation": {
+            "has_support": True,
+            "is_attractive": True,
+            "primary_kind": "market_cap_to_sales",
+            "primary_value": 1.5,
+            "summary": "Market cap/sales is 1.5x.",
+        },
+    }
+
+    ledger = add_report_picks(
+        empty_ledger(),
+        payload,
+        report_date=date(2026, 5, 11),
+        report_url="reports/long-term/2026-05-11.html",
+    )
+
+    assert ledger["picks"][0]["long_term_gate"]["tier"] == "High-conviction candidate"
+    assert ledger["picks"][0]["long_term_gate"]["durable_anchor_count"] == 4
+
+
+def test_performance_review_includes_long_term_gate_signals():
+    ledger = {
+        "schema_version": 1,
+        "picks": [
+            {
+                "pick_id": "long-term:2026-05-01:GATE:SE",
+                "strategy": "long-term",
+                "report_date": "2026-05-01",
+                "ticker": "GATE",
+                "name": "Gate Result AB",
+                "country": "SE",
+                "segment": "first_north",
+                "reasons": [],
+                "warnings": [],
+                "risks": [],
+                "data_quality": "partial",
+                "long_term_conviction": {"bucket": "Quality small-cap candidate"},
+                "long_term_gate": {
+                    "tier": "High-conviction candidate",
+                    "durable_anchor_count": 4,
+                    "severe_proof_gap_count": 0,
+                    "valuation": {"primary_kind": "market_cap_to_sales"},
+                },
+                "report_url": "../reports/long-term/2026-05-01.html",
+                "outcomes": {
+                    "1d": {"status": "priced", "return_pct": 5.0},
+                    "5d": {"status": "not_due", "return_pct": None},
+                    "20d": {"status": "not_due", "return_pct": None},
+                    "60d": {"status": "not_due", "return_pct": None},
+                },
+            }
+        ],
+        "market_snapshots": {},
+    }
+
+    rendered = render_scorecard_markdown(ledger, generated_at="2026-05-02 08:00 EEST")
+
+    assert "Gate: High-conviction candidate" in rendered
+    assert "Gate durable anchors: 4" in rendered
+    assert "Gate severe proof gaps: 0" in rendered
+    assert "Valuation proxy: Market cap to sales" in rendered
+
+
 def test_long_term_performance_review_uses_report_warnings_without_duplicate_signals():
     payload = report_payload(strategy="long-term")
     payload["items"][0]["company"]["ticker"] = "QUAL"

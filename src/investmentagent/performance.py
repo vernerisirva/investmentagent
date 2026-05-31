@@ -129,6 +129,9 @@ def _pick_from_report_item(
     conviction = item.get("long_term_conviction")
     if conviction:
         pick["long_term_conviction"] = conviction
+    gate = item.get("long_term_gate")
+    if gate:
+        pick["long_term_gate"] = gate
     return pick
 
 
@@ -643,6 +646,16 @@ def _long_term_quality_signals(pick: dict[str, Any]) -> list[str]:
     if pick.get("strategy") != "long-term":
         return []
     signals: list[str] = []
+    gate = pick.get("long_term_gate") or {}
+    if gate.get("tier"):
+        signals.append(f"gate:{gate['tier']}")
+    if gate.get("durable_anchor_count") is not None:
+        signals.append(f"gate_durable_anchors:{gate['durable_anchor_count']}")
+    if gate.get("severe_proof_gap_count") is not None:
+        signals.append(f"gate_severe_proof_gaps:{gate['severe_proof_gap_count']}")
+    valuation = gate.get("valuation") or {}
+    if valuation.get("primary_kind"):
+        signals.append(f"valuation_proxy:{valuation['primary_kind']}")
     conviction = pick.get("long_term_conviction")
     if conviction and conviction.get("bucket"):
         signals.append(f"quality_bucket:{conviction['bucket']}")
@@ -868,6 +881,14 @@ def _normalize_company_name(name: str) -> str:
 
 def _humanize_signal(signal: str) -> str:
     prefix, _, value = signal.partition(":")
+    if prefix == "gate":
+        return f"Gate: {value}"
+    if prefix == "gate_durable_anchors":
+        return f"Gate durable anchors: {value}"
+    if prefix == "gate_severe_proof_gaps":
+        return f"Gate severe proof gaps: {value}"
+    if prefix == "valuation_proxy":
+        return f"Valuation proxy: {_sentence_case_signal_value(value)}"
     if prefix == "quality_bucket":
         return f"Bucket: {value}"
     if prefix == "quality":
