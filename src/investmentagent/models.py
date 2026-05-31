@@ -50,6 +50,9 @@ class FinancialSnapshot:
     pe_ratio: float | None = None
     price_to_book: float | None = None
     ev_to_ebit: float | None = None
+    revenue_eur_m: float | None = None
+    book_value_eur_m: float | None = None
+    net_income_eur_m: float | None = None
     net_cash_eur_m: float | None = None
     debt_to_equity: float | None = None
     revenue_growth_pct: float | None = None

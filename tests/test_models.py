@@ -55,6 +55,18 @@ def test_financial_snapshot_defaults_to_thin_quality():
     assert snapshot.data_quality == DataQuality.THIN
 
 
+def test_financial_snapshot_accepts_valuation_proxy_inputs():
+    snapshot = FinancialSnapshot(
+        revenue_eur_m=120.0,
+        book_value_eur_m=80.0,
+        net_income_eur_m=12.0,
+    )
+
+    assert snapshot.revenue_eur_m == 120.0
+    assert snapshot.book_value_eur_m == 80.0
+    assert snapshot.net_income_eur_m == 12.0
+
+
 def test_evidence_requires_label_and_url():
     evidence = Evidence(label="IR page", url="https://example.com/ir")
 

@@ -617,6 +617,26 @@ def test_enriched_provider_merges_fundamentals_into_research():
     assert research.evidence[-1].source == "yahoo"
 
 
+def test_enriched_provider_merges_valuation_proxy_inputs():
+    base = BaseProvider()
+    snapshot = FundamentalsSnapshot(
+        symbol="KAR.ST",
+        financials=FinancialSnapshot(
+            revenue_eur_m=120.0,
+            book_value_eur_m=80.0,
+            net_income_eur_m=12.0,
+            data_quality=DataQuality.PARTIAL,
+        ),
+    )
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(snapshot))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.financials.revenue_eur_m == 120.0
+    assert research.financials.book_value_eur_m == 80.0
+    assert research.financials.net_income_eur_m == 12.0
+
+
 def test_enriched_provider_preserves_curated_fundamentals():
     class CuratedBaseProvider(BaseProvider):
         def __init__(self) -> None:
