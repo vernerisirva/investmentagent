@@ -6,7 +6,12 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from investmentagent.long_term_quality import assess_long_term_quality
+from investmentagent.long_term_quality import (
+    LongTermGateTier,
+    assess_long_term_gate,
+    assess_long_term_quality,
+    assess_valuation_support,
+)
 from investmentagent.models import (
     Company,
     DataQuality,
@@ -20,6 +25,12 @@ from investmentagent.models import (
 
 
 DISCLAIMER = "Research triage only. Not financial advice."
+LONG_TERM_TIER_HEADINGS = {
+    LongTermGateTier.HIGH_CONVICTION: "High-Conviction Candidates",
+    LongTermGateTier.FUNDAMENTAL_WATCHLIST: "Fundamental Watchlist",
+    LongTermGateTier.SPECULATIVE_MONITOR: "Speculative Monitors",
+    LongTermGateTier.INSUFFICIENT_EVIDENCE: "Insufficient Evidence",
+}
 
 
 @dataclass(frozen=True)
@@ -224,6 +235,7 @@ def _watchlist_items_payload(
         }
         if strategy == "long-term":
             payload["long_term_conviction"] = _long_term_conviction_payload(item)
+            payload["long_term_gate"] = _long_term_gate_payload(item)
         payloads.append(payload)
     return payloads
 
@@ -235,6 +247,9 @@ def _financials_payload(financials: FinancialSnapshot) -> dict[str, Any]:
         "pe_ratio": financials.pe_ratio,
         "price_to_book": financials.price_to_book,
         "ev_to_ebit": financials.ev_to_ebit,
+        "revenue_eur_m": financials.revenue_eur_m,
+        "book_value_eur_m": financials.book_value_eur_m,
+        "net_income_eur_m": financials.net_income_eur_m,
         "net_cash_eur_m": financials.net_cash_eur_m,
         "debt_to_equity": financials.debt_to_equity,
         "revenue_growth_pct": financials.revenue_growth_pct,
@@ -275,6 +290,14 @@ def _source_check_payload(check) -> dict[str, str]:
 def _watchlist_markdown_sections(
     items: list[WatchlistItem], strategy: str = ""
 ) -> list[str]:
+    if strategy == "long-term":
+        return _long_term_markdown_sections(items)
+    return _watchlist_item_markdown_sections(items, strategy)
+
+
+def _watchlist_item_markdown_sections(
+    items: list[WatchlistItem], strategy: str = ""
+) -> list[str]:
     lines: list[str] = []
     for item in items:
         company = item.research.company
@@ -309,6 +332,34 @@ def _watchlist_markdown_sections(
                 "",
             ]
         )
+    if lines and lines[-1] == "":
+        lines.pop()
+    return lines
+
+
+def _long_term_markdown_sections(items: list[WatchlistItem]) -> list[str]:
+    lines: list[str] = []
+    if not any(
+        assess_long_term_gate(item.research).tier == LongTermGateTier.HIGH_CONVICTION
+        for item in items
+    ):
+        lines.extend(
+            [
+                "_No high-conviction long-term ideas passed the gate today._",
+                "",
+            ]
+        )
+
+    for tier, heading in LONG_TERM_TIER_HEADINGS.items():
+        tier_items = [
+            item for item in items if assess_long_term_gate(item.research).tier == tier
+        ]
+        if not tier_items:
+            continue
+        lines.extend([f"## {heading}", ""])
+        lines.extend(_watchlist_item_markdown_sections(tier_items, "long-term"))
+        lines.append("")
+
     if lines and lines[-1] == "":
         lines.pop()
     return lines
@@ -366,6 +417,24 @@ def _long_term_conviction_payload(item: WatchlistItem) -> dict[str, Any]:
     }
 
 
+def _long_term_gate_payload(item: WatchlistItem) -> dict[str, Any]:
+    decision = assess_long_term_gate(item.research)
+    return {
+        "tier": decision.tier.value,
+        "reasons": list(decision.reasons),
+        "blockers": list(decision.blockers),
+        "durable_anchor_count": decision.durable_anchor_count,
+        "severe_proof_gap_count": decision.severe_proof_gap_count,
+        "valuation": {
+            "has_support": decision.valuation.has_support,
+            "is_attractive": decision.valuation.is_attractive,
+            "primary_kind": decision.valuation.primary_kind,
+            "primary_value": decision.valuation.primary_value,
+            "summary": decision.valuation.summary,
+        },
+    }
+
+
 def _business_quality_component(item: WatchlistItem) -> _ConvictionComponent:
     margin = item.research.financials.operating_margin_pct
     has_profile = bool(item.research.company.business_description)
@@ -396,6 +465,7 @@ def _business_quality_component(item: WatchlistItem) -> _ConvictionComponent:
 
 def _valuation_component(item: WatchlistItem) -> _ConvictionComponent:
     financials = item.research.financials
+    valuation = assess_valuation_support(item.research)
     attractive = (
         _positive_at_most(financials.pe_ratio, 12)
         or _positive_at_most(financials.price_to_book, 1.2)
@@ -411,13 +481,22 @@ def _valuation_component(item: WatchlistItem) -> _ConvictionComponent:
         or _positive_above(financials.price_to_book, 5)
         or _positive_above(financials.ev_to_ebit, 25)
     )
+    direct_metric = valuation.primary_kind in {"pe_ratio", "price_to_book", "ev_to_ebit"}
     if attractive:
         return _ConvictionComponent(
             "Valuation", 5, "Attractive valuation on available P/E or P/B metrics."
         )
+    if valuation.is_attractive:
+        return _ConvictionComponent(
+            "Valuation", 5, f"Attractive valuation support: {valuation.summary}"
+        )
     if reasonable:
         return _ConvictionComponent(
             "Valuation", 4, "Reasonable valuation on available multiples."
+        )
+    if valuation.has_support and not direct_metric:
+        return _ConvictionComponent(
+            "Valuation", 3, f"Valuation proxy available: {valuation.summary}"
         )
     if expensive:
         return _ConvictionComponent(
@@ -528,6 +607,9 @@ def _data_confidence_component(item: WatchlistItem) -> _ConvictionComponent:
             financials.pe_ratio,
             financials.price_to_book,
             financials.ev_to_ebit,
+            financials.revenue_eur_m,
+            financials.book_value_eur_m,
+            financials.net_income_eur_m,
             financials.net_cash_eur_m,
             financials.debt_to_equity,
             financials.revenue_growth_pct,

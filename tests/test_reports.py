@@ -862,6 +862,60 @@ def test_long_term_strategy_keeps_first_north_but_requires_quality_evidence():
     assert "Only live-market support" in items[1].score.warnings
 
 
+def test_long_term_watchlist_demotes_insufficient_evidence_below_limit():
+    quality = CompanyResearch(
+        company=Company(
+            name="Quality Gate AB",
+            ticker="QGATE",
+            country="SE",
+            exchange="Nasdaq First North Growth Market Sweden",
+            segment=ListingSegment.FIRST_NORTH,
+            sector="Software",
+            market_cap_eur_m=180,
+            currency="SEK",
+            business_description="Quality Gate sells profitable workflow software.",
+        ),
+        financials=FinancialSnapshot(
+            revenue_eur_m=120.0,
+            net_cash_eur_m=12.0,
+            debt_to_equity=0.2,
+            revenue_growth_pct=10.0,
+            operating_margin_pct=14.0,
+            average_daily_value_eur=250000,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+    weak = CompanyResearch(
+        company=Company(
+            name="Weak Gate AB",
+            ticker="WGATE",
+            country="SE",
+            exchange="Nasdaq First North Growth Market Sweden",
+            segment=ListingSegment.FIRST_NORTH,
+            sector="Technology",
+            market_cap_eur_m=80,
+            currency="SEK",
+        ),
+        financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+        catalysts=("Strong intraday momentum (+18.0%)", "High live turnover"),
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+
+    items = build_watchlist(
+        FakeResearchProvider((weak, quality)),
+        countries=("SE",),
+        limit=10,
+        include_first_north=True,
+        strategy="long-term",
+    )
+
+    assert [item.research.company.ticker for item in items] == ["QGATE", "WGATE"]
+    assert "Gate tier: High-conviction candidate" in items[0].score.reasons
+    assert "Gate tier: Insufficient evidence" in items[1].score.warnings
+
+
 def test_long_term_strategy_penalizes_missing_valuation_profitability_and_growth():
     weak = CompanyResearch(
         company=Company(
@@ -1213,6 +1267,56 @@ def test_render_watchlist_report_json_includes_long_term_conviction_payload():
     )
 
 
+def test_render_watchlist_report_json_includes_long_term_gate_payload():
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=Company(
+                name="Gate Payload AB",
+                ticker="GATE",
+                country="SE",
+                exchange="Nasdaq First North Growth Market Sweden",
+                segment=ListingSegment.FIRST_NORTH,
+                sector="Software",
+                market_cap_eur_m=180,
+                business_description="Gate Payload sells profitable workflow software.",
+            ),
+            financials=FinancialSnapshot(
+                revenue_eur_m=120.0,
+                net_cash_eur_m=12.0,
+                debt_to_equity=0.2,
+                revenue_growth_pct=10.0,
+                operating_margin_pct=14.0,
+                average_daily_value_eur=250000,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=10.0,
+            discovery=8.0,
+            catalyst=21.0,
+            risk_penalty=0.0,
+            data_quality_penalty=4.0,
+            total=35.0,
+        ),
+    )
+
+    payload = json.loads(
+        render_watchlist_report_json(
+            [item],
+            metadata={"strategy": "long-term"},
+            source_checks=[],
+        )
+    )
+
+    gate = payload["items"][0]["long_term_gate"]
+    assert gate["tier"] == "High-conviction candidate"
+    assert gate["durable_anchor_count"] >= 4
+    assert gate["severe_proof_gap_count"] == 0
+    assert gate["valuation"]["primary_kind"] == "market_cap_to_sales"
+
+
 def test_render_watchlist_report_json_uses_new_long_term_bucket_names():
     company = Company(
         name="Monitor AB",
@@ -1410,6 +1514,67 @@ def test_render_long_term_report_markdown_includes_quality_small_cap_bucket():
     assert "| Growth | 4/5 | Healthy revenue growth of 12.0%. |" in output
     assert "| Balance sheet | 5/5 | Net cash and conservative debt/equity. |" in output
     assert "| Data confidence | 4/5 | Several fundamentals plus profile text are available. |" in output
+
+
+def test_render_long_term_report_markdown_groups_by_gate_tier():
+    high = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=Company(
+                name="High Conviction AB",
+                ticker="HIGH",
+                country="SE",
+                exchange="Nasdaq First North Growth Market Sweden",
+                segment=ListingSegment.FIRST_NORTH,
+                sector="Software",
+                market_cap_eur_m=180,
+                business_description="High Conviction sells profitable workflow software.",
+            ),
+            financials=FinancialSnapshot(
+                revenue_eur_m=120.0,
+                debt_to_equity=0.2,
+                revenue_growth_pct=10.0,
+                operating_margin_pct=14.0,
+                average_daily_value_eur=250000,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(10, 5, 10, 0, 0, 25),
+    )
+    monitor = WatchlistItem(
+        rank=2,
+        research=CompanyResearch(
+            company=Company(
+                name="Monitor Only AB",
+                ticker="MON",
+                country="SE",
+                exchange="Nasdaq First North Growth Market Sweden",
+                segment=ListingSegment.FIRST_NORTH,
+                sector="Technology",
+                market_cap_eur_m=80,
+                business_description="Monitor Only has a readable profile.",
+            ),
+            financials=FinancialSnapshot(
+                debt_to_equity=0.4,
+                revenue_growth_pct=4.0,
+                average_daily_value_eur=120000,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(0, 5, 0, 0, 4, 1),
+    )
+
+    output = render_watchlist_report_markdown(
+        [high, monitor],
+        metadata={"strategy": "long-term", "limit": 10},
+        source_checks=[],
+    )
+
+    assert "## High-Conviction Candidates" in output
+    assert "## Speculative Monitors" in output
+    assert output.index("High Conviction AB") < output.index("Monitor Only AB")
 
 
 def test_render_long_term_report_markdown_flags_trading_only_movers():

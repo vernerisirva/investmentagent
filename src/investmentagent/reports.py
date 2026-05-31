@@ -12,7 +12,11 @@ from investmentagent.models import (
     ScoreBreakdown,
     WatchlistItem,
 )
-from investmentagent.long_term_quality import assess_long_term_quality
+from investmentagent.long_term_quality import (
+    LongTermGateTier,
+    assess_long_term_gate,
+    assess_long_term_quality,
+)
 from investmentagent.providers import ResearchProvider
 from investmentagent.scoring import score_research
 
@@ -90,11 +94,20 @@ def build_watchlist(
             )
         scored_items = rescored_items
 
-    ranked_candidates = _rank_watchlist_items(_deduplicate_company_ideas(scored_items))
+    rank_key = (
+        _long_term_watchlist_rank_key
+        if strategy == "long-term"
+        else _watchlist_rank_key
+    )
+    ranked_candidates = _rank_watchlist_items(
+        _deduplicate_company_ideas(scored_items),
+        rank_key=rank_key,
+    )
     ranked_items = _apply_min_country_counts(
         ranked_candidates,
         limit=limit,
         min_country_counts=min_country_counts or {},
+        rank_key=rank_key,
     )
 
     return [
@@ -107,7 +120,10 @@ def _apply_min_country_counts(
     ranked_items: list[WatchlistItem],
     limit: int,
     min_country_counts: dict[str, int],
+    rank_key=None,
 ) -> list[WatchlistItem]:
+    if rank_key is None:
+        rank_key = _watchlist_rank_key
     selected = list(ranked_items[:limit])
     selected_keys = {_watchlist_item_key(item) for item in selected}
 
@@ -139,7 +155,7 @@ def _apply_min_country_counts(
             selected.append(replacement)
             selected_keys.add(_watchlist_item_key(replacement))
 
-    return _rank_watchlist_items(selected)
+    return _rank_watchlist_items(selected, rank_key=rank_key)
 
 
 def _lowest_ranked_removable_index(
@@ -205,13 +221,30 @@ def _normalize_company_name(name: str) -> str:
     return " ".join(words)
 
 
-def _rank_watchlist_items(items: list[WatchlistItem]) -> list[WatchlistItem]:
-    return sorted(items, key=_watchlist_rank_key)
+def _rank_watchlist_items(
+    items: list[WatchlistItem],
+    rank_key=None,
+) -> list[WatchlistItem]:
+    if rank_key is None:
+        rank_key = _watchlist_rank_key
+    return sorted(items, key=rank_key)
 
 
 def _watchlist_rank_key(item: WatchlistItem) -> tuple[float, str]:
     company = item.research.company
     return (-item.score.total, company.ticker)
+
+
+def _long_term_watchlist_rank_key(item: WatchlistItem) -> tuple[int, float, str]:
+    company = item.research.company
+    gate = assess_long_term_gate(item.research)
+    gate_order = {
+        LongTermGateTier.HIGH_CONVICTION: 0,
+        LongTermGateTier.FUNDAMENTAL_WATCHLIST: 1,
+        LongTermGateTier.SPECULATIVE_MONITOR: 2,
+        LongTermGateTier.INSUFFICIENT_EVIDENCE: 3,
+    }
+    return (gate_order[gate.tier], -item.score.total, company.ticker)
 
 
 def _get_company_research(provider: ResearchProvider, company: Company) -> CompanyResearch:
@@ -291,6 +324,7 @@ def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakd
 
 def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreBreakdown:
     quality = assess_long_term_quality(research)
+    gate = assess_long_term_gate(research)
     reasons = tuple(
         reason for reason in score.reasons if not _is_trading_only_signal(reason)
     )
@@ -346,6 +380,15 @@ def _long_term_score(research: CompanyResearch, score: ScoreBreakdown) -> ScoreB
         warnings = (*warnings, "long-term strategy penalty applied")
     if missing_anchor_penalty:
         warnings = (*warnings, "missing long-term fundamental support")
+    gate_signal = f"Gate tier: {gate.tier.value}"
+    gate_promoted = {
+        LongTermGateTier.HIGH_CONVICTION,
+        LongTermGateTier.FUNDAMENTAL_WATCHLIST,
+    }
+    if gate.tier in gate_promoted:
+        reasons = (*reasons, gate_signal)
+    else:
+        warnings = (*warnings, gate_signal)
 
     return ScoreBreakdown(
         value=score.value,
