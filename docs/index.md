@@ -1,6 +1,6 @@
 # InvestmentAgent Daily Ideas
 
-Generated: 2026-05-29 08:00 EEST
+Generated: 2026-06-01 08:07 EEST
 
 ## Today's Reports
 
@@ -10,7 +10,7 @@ Generated: 2026-05-29 08:00 EEST
 
 ## Dated Reports
 
-- [Trading Ideas 2026-05-29](reports/trading/2026-05-29.html)
-- [Long-Term Investment Ideas 2026-05-29](reports/long-term/2026-05-29.html)
+- [Trading Ideas 2026-06-01](reports/trading/2026-06-01.html)
+- [Long-Term Investment Ideas 2026-06-01](reports/long-term/2026-06-01.html)
 
 Reports are research triage only. Not financial advice.
