@@ -2,13 +2,13 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-06-01 08:07 EEST
+Generated: 2026-06-02 08:00 EEST
 
 ## Market Context
 
-- Latest snapshot: 2026-06-01
+- Latest snapshot: 2026-06-02
 - Market tone: Mixed / quiet
-- Companies tracked: 935
+- Companies tracked: 934
 - Large positive movers: 0
 - Sharp selloffs: 0
 - Active turnover signals: 0
@@ -80,8 +80,8 @@ Generated: 2026-06-01 08:07 EEST
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 116 | 44.8% | +0.55% | 0% |
-| 5d | 80 | 60% | +3.17% | +1.43% |
+| 1d | 123 | 44.7% | +0.53% | 0% |
+| 5d | 90 | 57.8% | +3.31% | +1.21% |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
@@ -89,47 +89,48 @@ Generated: 2026-06-01 08:07 EEST
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -12.96% | 37.1% | 1 | 3.89% | +1.29% | -0.89% | 44.7% |
-| 5d | -14.13% | 36.2% | 3 | 9.57% | +10.54% | -7.45% | 22.5% |
+| 1d | -12.96% | 38.2% | 1 | 3.89% | +1.1% | -0.72% | 45.8% |
+| 5d | -17.53% | 37.8% | 5 | 10.49% | +8.71% | -5.35% | 30% |
 | 20d | - | - | 0 | - | - | - | - |
 | 60d | - | - | 0 | - | - | - | - |
 
 ### Best Long-Term Picks
 
 - **Acconeer (ACCON)** - 5d return **+45.75%** ([report](../reports/long-term/2026-05-25.html))
-- **Pallas Air Oyj (PALLAS)** - 5d return **+30.95%** ([report](../reports/long-term/2026-05-22.html))
+- **Pallas Air Oyj (PALLAS)** - 5d return **+39.53%** ([report](../reports/long-term/2026-05-26.html))
 - **AcouSort (ACOU)** - 5d return **+28.42%** ([report](../reports/long-term/2026-05-12.html))
 - **AAC Clyde Space (AAC)** - 5d return **+20.24%** ([report](../reports/long-term/2026-05-14.html))
 - **Ortivus A (ORTI A)** - 5d return **+19.39%** ([report](../reports/long-term/2026-05-22.html))
 
 ### Worst Long-Term Picks
 
+- **Aino Health (AINO)** - 5d return **-17.53%** ([report](../reports/long-term/2026-05-26.html))
+- **MTI Investment (MTI)** - 5d return **-14.55%** ([report](../reports/long-term/2026-05-26.html))
 - **White Pearl Technology Group B (WPTG B)** - 5d return **-14.13%** ([report](../reports/long-term/2026-05-20.html))
 - **Heliospectra (HELIO)** - 1d return **-12.96%** ([report](../reports/long-term/2026-05-22.html))
 - **4C Group (4C)** - 5d return **-11.75%** ([report](../reports/long-term/2026-05-25.html))
-- **2cureX (2CUREX)** - 5d return **-9.81%** ([report](../reports/long-term/2026-05-20.html))
 
 ### Long-Term Signal Review
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: First North listing | 126 | +2.19% | 52.4% |
-| Segment: First north | 126 | +2.19% | 52.4% |
-| Reason: Small market cap | 122 | +2.25% | 53.3% |
-| Quality: Conservative balance sheet | 111 | +2.67% | 57.7% |
-| Reason: Business description available from profile data | 108 | +2.49% | 53.7% |
-| Reason: Conservative debt/equity | 99 | +2.84% | 57.6% |
-| Quality: Revenue growth | 96 | +2.5% | 58.3% |
-| Country: SE | 95 | +2.5% | 52.6% |
-| Bucket: Speculative / needs more proof | 84 | +3.28% | 59.5% |
-| Quality: Positive operating margin | 39 | +0.52% | 53.8% |
-| Country: FI | 31 | +1.24% | 51.6% |
-| Bucket: Fundamental watchlist candidate | 19 | +0.24% | 42.1% |
+| Reason: First North listing | 133 | +2.29% | 52.6% |
+| Segment: First north | 133 | +2.29% | 52.6% |
+| Reason: Small market cap | 129 | +2.38% | 53.5% |
+| Quality: Conservative balance sheet | 118 | +3.08% | 58.5% |
+| Reason: Business description available from profile data | 108 | +2.78% | 54.6% |
+| Quality: Revenue growth | 102 | +2.26% | 57.8% |
+| Country: SE | 101 | +2.25% | 52.5% |
+| Reason: Conservative debt/equity | 99 | +3.5% | 59.6% |
+| Bucket: Speculative / needs more proof | 84 | +3.82% | 60.7% |
+| Quality: Positive operating margin | 41 | +0.92% | 53.7% |
+| Country: FI | 32 | +2.42% | 53.1% |
+| Proof gap: Missing valuation data | 23 | +0.69% | 47.8% |
 
 ### Long-Term Learning Suggestions
 
-- Reason: First North listing has produced a positive average return of +2.19% across 126 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a positive average return of +2.19% across 126 completed observations. Review whether its scoring weight should change.
-- Reason: Small market cap has produced a positive average return of +2.25% across 122 completed observations. Review whether its scoring weight should change.
-- Quality: Conservative balance sheet has produced a positive average return of +2.67% across 111 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available from profile data has produced a positive average return of +2.49% across 108 completed observations. Review whether its scoring weight should change.
+- Reason: First North listing has produced a positive average return of +2.29% across 133 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a positive average return of +2.29% across 133 completed observations. Review whether its scoring weight should change.
+- Reason: Small market cap has produced a positive average return of +2.38% across 129 completed observations. Review whether its scoring weight should change.
+- Quality: Conservative balance sheet has produced a positive average return of +3.08% across 118 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available from profile data has produced a positive average return of +2.78% across 108 completed observations. Review whether its scoring weight should change.
