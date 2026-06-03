@@ -2,13 +2,13 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-06-02 08:00 EEST
+Generated: 2026-06-03 08:04 EEST
 
 ## Market Context
 
-- Latest snapshot: 2026-06-02
+- Latest snapshot: 2026-06-03
 - Market tone: Mixed / quiet
-- Companies tracked: 934
+- Companies tracked: 935
 - Large positive movers: 0
 - Sharp selloffs: 0
 - Active turnover signals: 0
@@ -80,8 +80,8 @@ Generated: 2026-06-02 08:00 EEST
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 123 | 44.7% | +0.53% | 0% |
-| 5d | 90 | 57.8% | +3.31% | +1.21% |
+| 1d | 130 | 43.8% | +0.54% | 0% |
+| 5d | 97 | 56.7% | +3.2% | +1.08% |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
@@ -89,8 +89,8 @@ Generated: 2026-06-02 08:00 EEST
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -12.96% | 38.2% | 1 | 3.89% | +1.1% | -0.72% | 45.8% |
-| 5d | -17.53% | 37.8% | 5 | 10.49% | +8.71% | -5.35% | 30% |
+| 1d | -12.96% | 40% | 1 | 4.02% | +1.04% | -0.62% | 43.3% |
+| 5d | -17.53% | 38.1% | 6 | 10.38% | +7.52% | -4.36% | 31.6% |
 | 20d | - | - | 0 | - | - | - | - |
 | 60d | - | - | 0 | - | - | - | - |
 
@@ -108,29 +108,28 @@ Generated: 2026-06-02 08:00 EEST
 - **MTI Investment (MTI)** - 5d return **-14.55%** ([report](../reports/long-term/2026-05-26.html))
 - **White Pearl Technology Group B (WPTG B)** - 5d return **-14.13%** ([report](../reports/long-term/2026-05-20.html))
 - **Heliospectra (HELIO)** - 1d return **-12.96%** ([report](../reports/long-term/2026-05-22.html))
-- **4C Group (4C)** - 5d return **-11.75%** ([report](../reports/long-term/2026-05-25.html))
 
 ### Long-Term Signal Review
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: First North listing | 133 | +2.29% | 52.6% |
-| Segment: First north | 133 | +2.29% | 52.6% |
-| Reason: Small market cap | 129 | +2.38% | 53.5% |
-| Quality: Conservative balance sheet | 118 | +3.08% | 58.5% |
+| Reason: First North listing | 147 | +2.2% | 51% |
+| Segment: First north | 147 | +2.2% | 51% |
+| Reason: Small market cap | 143 | +2.27% | 51.7% |
+| Quality: Conservative balance sheet | 132 | +2.89% | 56.1% |
+| Quality: Revenue growth | 114 | +2.21% | 56.1% |
+| Country: SE | 113 | +2.18% | 51.3% |
 | Reason: Business description available from profile data | 108 | +2.78% | 54.6% |
-| Quality: Revenue growth | 102 | +2.26% | 57.8% |
-| Country: SE | 101 | +2.25% | 52.5% |
 | Reason: Conservative debt/equity | 99 | +3.5% | 59.6% |
 | Bucket: Speculative / needs more proof | 84 | +3.82% | 60.7% |
-| Quality: Positive operating margin | 41 | +0.92% | 53.7% |
-| Country: FI | 32 | +2.42% | 53.1% |
-| Proof gap: Missing valuation data | 23 | +0.69% | 47.8% |
+| Quality: Positive operating margin | 45 | +0.76% | 48.9% |
+| Proof gap: Missing valuation data | 37 | +0.92% | 43.2% |
+| Quality: Business description available | 37 | +0.92% | 43.2% |
 
 ### Long-Term Learning Suggestions
 
-- Reason: First North listing has produced a positive average return of +2.29% across 133 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a positive average return of +2.29% across 133 completed observations. Review whether its scoring weight should change.
-- Reason: Small market cap has produced a positive average return of +2.38% across 129 completed observations. Review whether its scoring weight should change.
-- Quality: Conservative balance sheet has produced a positive average return of +3.08% across 118 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available from profile data has produced a positive average return of +2.78% across 108 completed observations. Review whether its scoring weight should change.
+- Reason: First North listing has produced a positive average return of +2.2% across 147 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a positive average return of +2.2% across 147 completed observations. Review whether its scoring weight should change.
+- Reason: Small market cap has produced a positive average return of +2.27% across 143 completed observations. Review whether its scoring weight should change.
+- Quality: Conservative balance sheet has produced a positive average return of +2.89% across 132 completed observations. Review whether its scoring weight should change.
+- Quality: Revenue growth has produced a positive average return of +2.21% across 114 completed observations. Review whether its scoring weight should change.
