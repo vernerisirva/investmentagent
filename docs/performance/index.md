@@ -2,13 +2,13 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-06-03 08:04 EEST
+Generated: 2026-06-04 08:00 EEST
 
 ## Market Context
 
-- Latest snapshot: 2026-06-03
+- Latest snapshot: 2026-06-04
 - Market tone: Mixed / quiet
-- Companies tracked: 935
+- Companies tracked: 26
 - Large positive movers: 0
 - Sharp selloffs: 0
 - Active turnover signals: 0
@@ -81,7 +81,7 @@ Generated: 2026-06-03 08:04 EEST
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
 | 1d | 130 | 43.8% | +0.54% | 0% |
-| 5d | 97 | 56.7% | +3.2% | +1.08% |
+| 5d | 106 | 53.8% | +2.57% | +0.67% |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
 
@@ -90,7 +90,7 @@ Generated: 2026-06-03 08:04 EEST
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1d | -12.96% | 40% | 1 | 4.02% | +1.04% | -0.62% | 43.3% |
-| 5d | -17.53% | 38.1% | 6 | 10.38% | +7.52% | -4.36% | 31.6% |
+| 5d | -29.58% | 40.6% | 9 | 10.88% | +5.95% | -3.8% | 33.3% |
 | 20d | - | - | 0 | - | - | - | - |
 | 60d | - | - | 0 | - | - | - | - |
 
@@ -104,7 +104,8 @@ Generated: 2026-06-03 08:04 EEST
 
 ### Worst Long-Term Picks
 
-- **Aino Health (AINO)** - 5d return **-17.53%** ([report](../reports/long-term/2026-05-26.html))
+- **Nicoccino Holding (NICO)** - 5d return **-29.58%** ([report](../reports/long-term/2026-05-28.html))
+- **Aino Health (AINO)** - 5d return **-18.42%** ([report](../reports/long-term/2026-05-28.html))
 - **MTI Investment (MTI)** - 5d return **-14.55%** ([report](../reports/long-term/2026-05-26.html))
 - **White Pearl Technology Group B (WPTG B)** - 5d return **-14.13%** ([report](../reports/long-term/2026-05-20.html))
 - **Heliospectra (HELIO)** - 1d return **-12.96%** ([report](../reports/long-term/2026-05-22.html))
@@ -113,23 +114,23 @@ Generated: 2026-06-03 08:04 EEST
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: First North listing | 147 | +2.2% | 51% |
-| Segment: First north | 147 | +2.2% | 51% |
-| Reason: Small market cap | 143 | +2.27% | 51.7% |
-| Quality: Conservative balance sheet | 132 | +2.89% | 56.1% |
-| Quality: Revenue growth | 114 | +2.21% | 56.1% |
-| Country: SE | 113 | +2.18% | 51.3% |
+| Reason: First North listing | 147 | +1.83% | 49.7% |
+| Segment: First north | 147 | +1.83% | 49.7% |
+| Reason: Small market cap | 143 | +1.9% | 50.3% |
+| Quality: Conservative balance sheet | 132 | +2.89% | 55.3% |
+| Quality: Revenue growth | 114 | +1.75% | 54.4% |
+| Country: SE | 113 | +1.6% | 48.7% |
 | Reason: Business description available from profile data | 108 | +2.78% | 54.6% |
 | Reason: Conservative debt/equity | 99 | +3.5% | 59.6% |
 | Bucket: Speculative / needs more proof | 84 | +3.82% | 60.7% |
-| Quality: Positive operating margin | 45 | +0.76% | 48.9% |
-| Proof gap: Missing valuation data | 37 | +0.92% | 43.2% |
-| Quality: Business description available | 37 | +0.92% | 43.2% |
+| Quality: Positive operating margin | 45 | +0.71% | 48.9% |
+| Proof gap: Missing valuation data | 37 | -0.53% | 37.8% |
+| Quality: Business description available | 37 | -0.53% | 37.8% |
 
 ### Long-Term Learning Suggestions
 
-- Reason: First North listing has produced a positive average return of +2.2% across 147 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a positive average return of +2.2% across 147 completed observations. Review whether its scoring weight should change.
-- Reason: Small market cap has produced a positive average return of +2.27% across 143 completed observations. Review whether its scoring weight should change.
+- Reason: First North listing has produced a positive average return of +1.83% across 147 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a positive average return of +1.83% across 147 completed observations. Review whether its scoring weight should change.
+- Reason: Small market cap has produced a positive average return of +1.9% across 143 completed observations. Review whether its scoring weight should change.
 - Quality: Conservative balance sheet has produced a positive average return of +2.89% across 132 completed observations. Review whether its scoring weight should change.
-- Quality: Revenue growth has produced a positive average return of +2.21% across 114 completed observations. Review whether its scoring weight should change.
+- Quality: Revenue growth has produced a positive average return of +1.75% across 114 completed observations. Review whether its scoring weight should change.
