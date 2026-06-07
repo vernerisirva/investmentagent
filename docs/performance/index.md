@@ -2,7 +2,7 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-06-05 08:00 EEST
+Generated: 2026-06-07 00:00 Europe/Stockholm
 
 ## Market Context
 
@@ -74,13 +74,169 @@ Generated: 2026-06-05 08:00 EEST
 - Segment: First north has produced a positive average return of +4.38% across 48 completed observations. Review whether its scoring weight should change.
 - Reason: Live price available from Nasdaq Nordic has produced a positive average return of +4.49% across 40 completed observations. Review whether its scoring weight should change.
 
-## Long-Term Investment Ideas
+## Long-Term Research Candidates
+
+_Only high-conviction and fundamental watchlist names count here._
 
 ### Horizon Scorecard
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 140 | 42.1% | +0.52% | 0% |
+| 1d | 0 | - | - | - |
+| 5d | 0 | - | - | - |
+| 20d | 0 | - | - | - |
+| 60d | 0 | - | - | - |
+
+### Risk And Benchmark
+
+| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1d | - | - | 0 | - | - | - | - |
+| 5d | - | - | 0 | - | - | - | - |
+| 20d | - | - | 0 | - | - | - | - |
+| 60d | - | - | 0 | - | - | - | - |
+
+### Best Long-Term Research Picks
+
+- No completed long-term research picks yet.
+
+### Worst Long-Term Research Picks
+
+- No completed long-term research picks yet.
+
+### Long-Term Research Signal Review
+
+_No completed signal observations yet._
+
+### Long-Term Research Learning Suggestions
+
+- No learning suggestions yet. At least 10 completed observations are needed for a signal.
+
+## Speculative Monitors
+
+_Tracked separately because the gate did not classify these as research candidates._
+
+### Horizon Scorecard
+
+| Horizon | Completed | Hit Rate | Average Return | Median Return |
+| --- | ---: | ---: | ---: | ---: |
+| 1d | 18 | 33.3% | +1.2% | 0% |
+| 5d | 0 | - | - | - |
+| 20d | 0 | - | - | - |
+| 60d | 0 | - | - | - |
+
+### Risk And Benchmark
+
+| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1d | -6.21% | 44.4% | 0 | 5.48% | -0.04% | +1.25% | 33.3% |
+| 5d | - | - | 0 | - | - | - | - |
+| 20d | - | - | 0 | - | - | - | - |
+| 60d | - | - | 0 | - | - | - | - |
+
+### Best Speculative Monitor Picks
+
+- **Acconeer (ACCON)** - 1d return **+14.88%** ([report](../reports/long-term/2026-06-02.html))
+- **NanoCap Group B (NANOC B)** - 1d return **+14.22%** ([report](../reports/long-term/2026-06-04.html))
+- **4C Group (4C)** - 1d return **+6.66%** ([report](../reports/long-term/2026-06-01.html))
+- **AcouSort (ACOU)** - 1d return **+4.22%** ([report](../reports/long-term/2026-06-01.html))
+- **Absolent Air Care Group (ABSO)** - 1d return **+0.49%** ([report](../reports/long-term/2026-06-01.html))
+
+### Worst Speculative Monitor Picks
+
+- **AAC Clyde Space (AAC)** - 1d return **-6.21%** ([report](../reports/long-term/2026-06-01.html))
+- **Modelon (MODEL)** - 1d return **-4.88%** ([report](../reports/long-term/2026-06-04.html))
+- **Aallon Group Oyj (AALLON)** - 1d return **-1.1%** ([report](../reports/long-term/2026-06-02.html))
+
+### Speculative Monitor Signal Review
+
+| Signal | Observations | Average Return | Hit Rate |
+| --- | ---: | ---: | ---: |
+| Gate: Speculative monitor | 18 | +1.2% | 33.3% |
+| Proof gap: Missing valuation data | 18 | +1.2% | 33.3% |
+| Quality: Business description available | 18 | +1.2% | 33.3% |
+| Bucket: Speculative small-cap monitor | 18 | +1.2% | 33.3% |
+| Reason: Business description available | 18 | +1.2% | 33.3% |
+| Reason: First North discovery opportunity | 18 | +1.2% | 33.3% |
+| Reason: First North listing | 18 | +1.2% | 33.3% |
+| Reason: Small market cap | 18 | +1.2% | 33.3% |
+| Segment: First north | 18 | +1.2% | 33.3% |
+| Country: SE | 16 | +1.46% | 37.5% |
+| Quality: Conservative balance sheet | 15 | +1.44% | 40% |
+| Quality: Revenue growth | 15 | +0.49% | 33.3% |
+
+### Speculative Monitor Learning Suggestions
+
+- Gate: Speculative monitor has produced a positive average return of +1.2% across 18 completed observations. Review whether its scoring weight should change.
+- Proof gap: Missing valuation data has produced a positive average return of +1.2% across 18 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a positive average return of +1.2% across 18 completed observations. Review whether its scoring weight should change.
+- Bucket: Speculative small-cap monitor has produced a positive average return of +1.2% across 18 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a positive average return of +1.2% across 18 completed observations. Review whether its scoring weight should change.
+
+## Insufficient Evidence Audit
+
+_Tracked as an audit trail for rows with too many proof gaps._
+
+### Horizon Scorecard
+
+| Horizon | Completed | Hit Rate | Average Return | Median Return |
+| --- | ---: | ---: | ---: | ---: |
+| 1d | 6 | 16.7% | -1.98% | -2.4% |
+| 5d | 0 | - | - | - |
+| 20d | 0 | - | - | - |
+| 60d | 0 | - | - | - |
+
+### Risk And Benchmark
+
+| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1d | -10.58% | 66.7% | 1 | 5.08% | +0.12% | -2.09% | 16.7% |
+| 5d | - | - | 0 | - | - | - | - |
+| 20d | - | - | 0 | - | - | - | - |
+| 60d | - | - | 0 | - | - | - | - |
+
+### Best Insufficient Evidence Picks
+
+- **Bawat Water Technologies (BAWAT)** - 1d return **+6.67%** ([report](../reports/long-term/2026-06-04.html))
+- **Pallas Air Oyj (PALLAS)** - 1d return **0%** ([report](../reports/long-term/2026-06-04.html))
+- **2cureX (2CUREX)** - 1d return **-1.99%** ([report](../reports/long-term/2026-06-02.html))
+- **Heliospectra (HELIO)** - 1d return **-3.16%** ([report](../reports/long-term/2026-06-04.html))
+- **Ortivus A (ORTI A)** - 1d return **-10.58%** ([report](../reports/long-term/2026-06-04.html))
+
+### Worst Insufficient Evidence Picks
+
+- No completed insufficient evidence picks yet.
+
+### Insufficient Evidence Signal Review
+
+| Signal | Observations | Average Return | Hit Rate |
+| --- | ---: | ---: | ---: |
+| Gate: Insufficient evidence | 6 | -1.98% | 16.7% |
+| Gate durable anchors: 1 | 6 | -1.98% | 16.7% |
+| Proof gap: Missing valuation data | 6 | -1.98% | 16.7% |
+| Proof gap: Negative operating margin | 6 | -1.98% | 16.7% |
+| Proof gap: Thin liquidity | 6 | -1.98% | 16.7% |
+| Quality: Business description available | 6 | -1.98% | 16.7% |
+| Bucket: Insufficient evidence | 6 | -1.98% | 16.7% |
+| Reason: Business description available | 6 | -1.98% | 16.7% |
+| Reason: First North discovery opportunity | 6 | -1.98% | 16.7% |
+| Reason: First North listing | 6 | -1.98% | 16.7% |
+| Reason: Small market cap | 6 | -1.98% | 16.7% |
+| Segment: First north | 6 | -1.98% | 16.7% |
+
+### Insufficient Evidence Learning Suggestions
+
+- No learning suggestions yet. At least 10 completed observations are needed for a signal.
+
+## Legacy Long-Term Rows
+
+_Older long-term rows without gate metadata are kept out of the candidate headline._
+
+### Horizon Scorecard
+
+| Horizon | Completed | Hit Rate | Average Return | Median Return |
+| --- | ---: | ---: | ---: | ---: |
+| 1d | 116 | 44.8% | +0.55% | 0% |
 | 5d | 112 | 51.8% | +2.25% | +0.55% |
 | 20d | 0 | - | - | - |
 | 60d | 0 | - | - | - |
@@ -89,12 +245,12 @@ Generated: 2026-06-05 08:00 EEST
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -12.96% | 39.3% | 2 | 4.22% | +0.98% | -0.58% | 41% |
+| 1d | -12.96% | 37.1% | 1 | 3.89% | +1.29% | -0.89% | 44.7% |
 | 5d | -29.58% | 42.9% | 10 | 10.75% | +7.22% | -5.53% | 30.6% |
 | 20d | - | - | 0 | - | - | - | - |
 | 60d | - | - | 0 | - | - | - | - |
 
-### Best Long-Term Picks
+### Best Legacy Long-Term Picks
 
 - **Acconeer (ACCON)** - 5d return **+45.75%** ([report](../reports/long-term/2026-05-25.html))
 - **Pallas Air Oyj (PALLAS)** - 5d return **+39.53%** ([report](../reports/long-term/2026-05-26.html))
@@ -102,34 +258,34 @@ Generated: 2026-06-05 08:00 EEST
 - **AAC Clyde Space (AAC)** - 5d return **+20.24%** ([report](../reports/long-term/2026-05-14.html))
 - **Ortivus A (ORTI A)** - 5d return **+19.39%** ([report](../reports/long-term/2026-05-22.html))
 
-### Worst Long-Term Picks
+### Worst Legacy Long-Term Picks
 
 - **Nicoccino Holding (NICO)** - 5d return **-29.58%** ([report](../reports/long-term/2026-05-28.html))
 - **Aino Health (AINO)** - 5d return **-18.42%** ([report](../reports/long-term/2026-05-28.html))
 - **MTI Investment (MTI)** - 5d return **-14.55%** ([report](../reports/long-term/2026-05-26.html))
 - **White Pearl Technology Group B (WPTG B)** - 5d return **-14.13%** ([report](../reports/long-term/2026-05-20.html))
 
-### Long-Term Signal Review
+### Legacy Long-Term Signal Review
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: First North listing | 157 | +1.61% | 45.9% |
-| Segment: First north | 157 | +1.61% | 45.9% |
-| Reason: Small market cap | 153 | +1.66% | 46.4% |
-| Quality: Conservative balance sheet | 138 | +2.59% | 51.4% |
-| Country: SE | 122 | +1.35% | 45.1% |
-| Quality: Revenue growth | 118 | +1.59% | 51.7% |
+| Reason: First North listing | 133 | +1.82% | 48.9% |
+| Segment: First north | 133 | +1.82% | 48.9% |
+| Reason: Small market cap | 129 | +1.9% | 49.6% |
+| Quality: Conservative balance sheet | 118 | +3% | 55.1% |
 | Reason: Business description available from profile data | 108 | +2.78% | 54.6% |
+| Quality: Revenue growth | 102 | +1.7% | 53.9% |
+| Country: SE | 101 | +1.52% | 47.5% |
 | Reason: Conservative debt/equity | 99 | +3.5% | 59.6% |
 | Bucket: Speculative / needs more proof | 84 | +3.82% | 60.7% |
-| Proof gap: Missing valuation data | 47 | -0.78% | 27.7% |
-| Quality: Business description available | 47 | -0.78% | 27.7% |
-| Reason: Business description available | 47 | -0.78% | 27.7% |
+| Quality: Positive operating margin | 41 | +0.73% | 46.3% |
+| Country: FI | 32 | +2.78% | 53.1% |
+| Proof gap: Missing valuation data | 23 | -2.02% | 26.1% |
 
-### Long-Term Learning Suggestions
+### Legacy Long-Term Learning Suggestions
 
-- Reason: First North listing has produced a positive average return of +1.61% across 157 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a positive average return of +1.61% across 157 completed observations. Review whether its scoring weight should change.
-- Reason: Small market cap has produced a positive average return of +1.66% across 153 completed observations. Review whether its scoring weight should change.
-- Quality: Conservative balance sheet has produced a positive average return of +2.59% across 138 completed observations. Review whether its scoring weight should change.
-- Country: SE has produced a positive average return of +1.35% across 122 completed observations. Review whether its scoring weight should change.
+- Reason: First North listing has produced a positive average return of +1.82% across 133 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a positive average return of +1.82% across 133 completed observations. Review whether its scoring weight should change.
+- Reason: Small market cap has produced a positive average return of +1.9% across 129 completed observations. Review whether its scoring weight should change.
+- Quality: Conservative balance sheet has produced a positive average return of +3% across 118 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available from profile data has produced a positive average return of +2.78% across 108 completed observations. Review whether its scoring weight should change.
