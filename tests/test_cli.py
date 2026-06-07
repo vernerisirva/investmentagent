@@ -1,6 +1,9 @@
 import json
+import os
 import subprocess
 import sys
+import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
@@ -12,6 +15,17 @@ from investmentagent.models import SourceCheck
 
 
 runner = CliRunner()
+
+
+@contextmanager
+def isolated_filesystem():
+    previous = Path.cwd()
+    with tempfile.TemporaryDirectory() as directory:
+        os.chdir(directory)
+        try:
+            yield
+        finally:
+            os.chdir(previous)
 
 
 def _python_subprocesses_available() -> bool:
@@ -119,7 +133,7 @@ def test_watchlist_accepts_fixture_provider_option():
 
 
 def test_watchlist_saves_json_report():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             ["watchlist", "--limit", "1", "--save", "reports/watchlist.json"],
@@ -137,7 +151,7 @@ def test_watchlist_saves_json_report():
 
 
 def test_watchlist_saves_markdown_report():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             ["watchlist", "--limit", "1", "--save", "reports/watchlist.md"],
@@ -153,7 +167,7 @@ def test_watchlist_saves_markdown_report():
 
 
 def test_watchlist_can_save_markdown_and_json_from_one_run():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -198,7 +212,7 @@ def test_watchlist_accepts_fundamentals_option():
 
 
 def test_watchlist_accepts_min_country_option_in_saved_metadata():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -427,7 +441,7 @@ def test_watchlist_rejects_invalid_fundamentals_before_provider_work(monkeypatch
 
 
 def test_watchlist_saves_strategy_metadata():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -448,7 +462,7 @@ def test_watchlist_saves_strategy_metadata():
 
 
 def test_watchlist_saves_fundamentals_metadata():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -471,7 +485,7 @@ def test_watchlist_saves_fundamentals_metadata():
 
 
 def test_watchlist_saves_effective_fixture_fundamentals_metadata_by_default():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -492,7 +506,7 @@ def test_watchlist_saves_effective_fixture_fundamentals_metadata_by_default():
 
 
 def test_watchlist_saves_effective_fixture_fundamentals_metadata_for_explicit_free():
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -542,7 +556,7 @@ def test_watchlist_saves_effective_finnhub_fundamentals_metadata(monkeypatch):
     monkeypatch.setattr(cli, "FinnhubFundamentalsProvider", FinnhubProvider, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
 
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -589,7 +603,7 @@ def test_watchlist_saves_effective_finimpulse_fundamentals_metadata(monkeypatch)
     monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
 
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         result = runner.invoke(
             app,
             [
@@ -687,7 +701,7 @@ def test_performance_update_creates_ledger_and_scorecard():
             }
         ],
     }
-    with runner.isolated_filesystem():
+    with isolated_filesystem():
         Path("reports").mkdir()
         Path("reports/trading.json").write_text(json.dumps(report))
 
