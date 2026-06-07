@@ -115,6 +115,12 @@ def finimpulse_search_payload() -> str:
                         "sector": "Industrials",
                         "industry": "Specialty Business Services",
                         "amount": 7024167424,
+                        "trailing_pe": 13.4,
+                        "price_to_book": 1.2,
+                        "enterprise_value_to_ebit": 9.8,
+                        "total_revenue": 2_400_000_000,
+                        "book_value": 840_000_000,
+                        "net_income": 210_000_000,
                         "revenue_growth": 0.24636247668524147,
                         "net_margin": 0.36760195,
                         "free_cash_flow_margin": 0.19304025,
@@ -319,6 +325,12 @@ def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
     assert isinstance(snapshot, FundamentalsSnapshot)
     assert snapshot.symbol == "KAR.ST"
     assert snapshot.market_cap_eur_m == 702.42
+    assert snapshot.financials.pe_ratio == 13.4
+    assert snapshot.financials.price_to_book == 1.2
+    assert snapshot.financials.ev_to_ebit == 9.8
+    assert snapshot.financials.revenue_eur_m == 240.0
+    assert snapshot.financials.book_value_eur_m == 84.0
+    assert snapshot.financials.net_income_eur_m == 21.0
     assert snapshot.financials.revenue_growth_pct == 24.64
     assert snapshot.financials.operating_margin_pct == 36.76
     assert snapshot.financials.debt_to_equity == 0.29354096
@@ -451,6 +463,23 @@ def test_finimpulse_source_check_warns_without_leaking_token_when_lookups_fail()
     assert "no successful" in check.detail.lower()
     assert "secret-token" not in check.detail
     assert "<redacted>" in check.detail
+
+
+def test_finimpulse_source_check_reports_valuation_coverage():
+    provider = FinimpulseFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url, payload, headers: finimpulse_search_payload(),
+    )
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert check.status == "ok"
+    assert "1/1 Finimpulse lookups parsed" in check.detail
+    assert "valuation support 1/1" in check.detail
+    assert "direct valuation 1/1" in check.detail
+    assert "proxy inputs 1/1" in check.detail
+    assert "missing valuation support 0/1" in check.detail
 
 
 def test_yahoo_provider_leaves_unknown_currency_money_fields_empty():

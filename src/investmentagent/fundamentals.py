@@ -37,6 +37,38 @@ FINIMPULSE_PROFILE_URL = "https://api.finimpulse.com/v1/profile"
 FINIMPULSE_PROFILE_DOC_URL = "https://developers.finimpulse.com/v1/profile/"
 FINIMPULSE_FETCH_TIMEOUT_SECONDS = 3
 _EUR_RATES = {"EUR": 1.0, "SEK": 0.1}
+FINIMPULSE_PE_KEYS = ("pe_ratio", "trailing_pe", "trailingPE", "forward_pe")
+FINIMPULSE_PRICE_TO_BOOK_KEYS = (
+    "price_to_book",
+    "priceToBook",
+    "pb_ratio",
+    "price_book_ratio",
+)
+FINIMPULSE_EV_TO_EBIT_KEYS = (
+    "enterprise_value_to_ebit",
+    "ev_to_ebit",
+    "evEbit",
+    "enterprise_value_ebit",
+)
+FINIMPULSE_REVENUE_KEYS = (
+    "total_revenue",
+    "revenue",
+    "annual_revenue",
+    "revenue_ttm",
+)
+FINIMPULSE_BOOK_VALUE_KEYS = (
+    "book_value",
+    "shareholders_equity",
+    "stockholders_equity",
+    "total_equity",
+)
+FINIMPULSE_NET_INCOME_KEYS = (
+    "net_income",
+    "net_income_common_stockholders",
+    "net_income_ttm",
+)
+DIRECT_VALUATION_FIELDS = ("pe_ratio", "price_to_book", "ev_to_ebit")
+PROXY_VALUATION_FIELDS = ("revenue_eur_m", "book_value_eur_m", "net_income_eur_m")
 
 
 @dataclass(frozen=True)
@@ -178,6 +210,9 @@ class FinimpulseFundamentalsProvider:
         self._fetcher = fetcher or _post_json
         self.attempted_lookups = 0
         self.successful_lookups = 0
+        self.valuation_support_lookups = 0
+        self.direct_valuation_lookups = 0
+        self.proxy_input_lookups = 0
         self.last_error: str | None = None
 
     def get_fundamentals(self, company: Company) -> FundamentalsSnapshot | None:
@@ -203,6 +238,7 @@ class FinimpulseFundamentalsProvider:
                 continue
             if snapshot is not None:
                 snapshot = self._with_profile(snapshot, headers)
+                self._record_valuation_coverage(snapshot)
                 self.successful_lookups += 1
                 self.last_error = None
                 return snapshot
@@ -242,7 +278,9 @@ class FinimpulseFundamentalsProvider:
         )
         if self.successful_lookups == self.attempted_lookups:
             return SourceCheck(
-                name="finimpulse fundamentals", status="ok", detail=ratio
+                name="finimpulse fundamentals",
+                status="ok",
+                detail=self._source_detail(ratio),
             )
 
         if self.successful_lookups == 0:
@@ -256,7 +294,29 @@ class FinimpulseFundamentalsProvider:
             )
 
         return SourceCheck(
-            name="finimpulse fundamentals", status="warning", detail=ratio
+            name="finimpulse fundamentals",
+            status="warning",
+            detail=self._source_detail(ratio),
+        )
+
+    def _record_valuation_coverage(self, snapshot: FundamentalsSnapshot) -> None:
+        financials = snapshot.financials
+        if _has_valuation_support(financials):
+            self.valuation_support_lookups += 1
+        if _has_any_financial_field(financials, DIRECT_VALUATION_FIELDS):
+            self.direct_valuation_lookups += 1
+        if _has_any_financial_field(financials, PROXY_VALUATION_FIELDS):
+            self.proxy_input_lookups += 1
+
+    def _source_detail(self, ratio: str) -> str:
+        return (
+            f"{ratio}; valuation support {self.valuation_support_lookups}/"
+            f"{self.successful_lookups}; direct valuation "
+            f"{self.direct_valuation_lookups}/{self.successful_lookups}; "
+            f"proxy inputs {self.proxy_input_lookups}/{self.successful_lookups}; "
+            f"missing valuation support "
+            f"{self.successful_lookups - self.valuation_support_lookups}/"
+            f"{self.successful_lookups}"
         )
 
 
@@ -491,6 +551,16 @@ def _parse_finimpulse_search_payload(
         average_daily_value_eur = round(price * average_daily_volume * fx_rate, 2)
 
     financials = FinancialSnapshot(
+        pe_ratio=_first_number(item, FINIMPULSE_PE_KEYS),
+        price_to_book=_first_number(item, FINIMPULSE_PRICE_TO_BOOK_KEYS),
+        ev_to_ebit=_first_number(item, FINIMPULSE_EV_TO_EBIT_KEYS),
+        revenue_eur_m=_eur_m(_first_number(item, FINIMPULSE_REVENUE_KEYS), fx_rate),
+        book_value_eur_m=_eur_m(
+            _first_number(item, FINIMPULSE_BOOK_VALUE_KEYS), fx_rate
+        ),
+        net_income_eur_m=_eur_m(
+            _first_number(item, FINIMPULSE_NET_INCOME_KEYS), fx_rate
+        ),
         revenue_growth_pct=_ratio_to_percent(_number(item, "revenue_growth")),
         operating_margin_pct=_ratio_to_percent(
             _first_number(item, ("net_margin", "free_cash_flow_margin"))
@@ -709,6 +779,10 @@ def _has_meaningful_fields(
             market_cap_eur_m,
             financials.pe_ratio,
             financials.price_to_book,
+            financials.ev_to_ebit,
+            financials.revenue_eur_m,
+            financials.book_value_eur_m,
+            financials.net_income_eur_m,
             financials.revenue_growth_pct,
             financials.operating_margin_pct,
             financials.debt_to_equity,
@@ -717,6 +791,18 @@ def _has_meaningful_fields(
             financials.one_year_return_pct,
             financials.distance_from_52w_high_pct,
         )
+    )
+
+
+def _has_any_financial_field(
+    financials: FinancialSnapshot, field_names: tuple[str, ...]
+) -> bool:
+    return any(getattr(financials, field_name) is not None for field_name in field_names)
+
+
+def _has_valuation_support(financials: FinancialSnapshot) -> bool:
+    return _has_any_financial_field(
+        financials, DIRECT_VALUATION_FIELDS + PROXY_VALUATION_FIELDS
     )
 
 
