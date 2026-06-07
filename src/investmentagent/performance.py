@@ -21,6 +21,39 @@ STRATEGY_LABELS = {
     "trading": "Trading",
     "long-term": "Long-Term",
 }
+LONG_TERM_RESEARCH_TIERS = {
+    "High-conviction candidate",
+    "Fundamental watchlist",
+}
+LONG_TERM_SEGMENT_ORDER = ("research", "speculative", "insufficient", "legacy")
+LONG_TERM_SEGMENTS = {
+    "research": {
+        "title": "Long-Term Research Candidates",
+        "label": "Long-Term Research",
+        "description": "Only high-conviction and fundamental watchlist names count here.",
+    },
+    "speculative": {
+        "title": "Speculative Monitors",
+        "label": "Speculative Monitor",
+        "description": (
+            "Tracked separately because the gate did not classify these as "
+            "research candidates."
+        ),
+    },
+    "insufficient": {
+        "title": "Insufficient Evidence Audit",
+        "label": "Insufficient Evidence",
+        "description": "Tracked as an audit trail for rows with too many proof gaps.",
+    },
+    "legacy": {
+        "title": "Legacy Long-Term Rows",
+        "label": "Legacy Long-Term",
+        "description": (
+            "Older long-term rows without gate metadata are kept out of the "
+            "candidate headline."
+        ),
+    },
+}
 LONG_TERM_PROOF_GAPS = {
     "high debt/equity": "high debt/equity",
     "missing business description": "missing business description",
@@ -386,6 +419,35 @@ def summarize_ledger(ledger: dict[str, Any]) -> dict[str, Any]:
             strategy: _signal_summaries(ledger, strategy=strategy)
             for strategy in STRATEGIES
         },
+        "long_term_segments": {
+            segment: {
+                horizon: _horizon_summary_for_picks(
+                    ledger,
+                    horizon,
+                    lambda pick, segment=segment: _pick_matches_long_term_segment(
+                        pick, segment
+                    ),
+                )
+                for horizon in HORIZONS
+            }
+            for segment in LONG_TERM_SEGMENT_ORDER
+        },
+        "best_picks_by_long_term_segment": {
+            segment: _ranked_completed_picks(
+                ledger, reverse=True, long_term_segment=segment
+            )
+            for segment in LONG_TERM_SEGMENT_ORDER
+        },
+        "worst_picks_by_long_term_segment": {
+            segment: _ranked_completed_picks(
+                ledger, reverse=False, long_term_segment=segment
+            )
+            for segment in LONG_TERM_SEGMENT_ORDER
+        },
+        "signals_by_long_term_segment": {
+            segment: _signal_summaries(ledger, long_term_segment=segment)
+            for segment in LONG_TERM_SEGMENT_ORDER
+        },
     }
 
 
@@ -414,19 +476,25 @@ def render_scorecard_markdown(ledger: dict[str, Any], *, generated_at: str) -> s
                 "",
             ]
         )
-    for strategy in STRATEGIES:
-        lines.extend(_strategy_performance_section(summary, ledger, strategy))
+    lines.extend(_strategy_performance_section(summary, ledger, "trading"))
+    for segment in LONG_TERM_SEGMENT_ORDER:
+        lines.extend(_long_term_segment_performance_section(summary, ledger, segment))
     while lines and lines[-1] == "":
         lines.pop()
     return "\n".join(lines)
 
 
 def learning_suggestions(
-    ledger: dict[str, Any], *, strategy: str | None = None
+    ledger: dict[str, Any],
+    *,
+    strategy: str | None = None,
+    long_term_segment: str | None = None,
 ) -> list[str]:
     eligible = [
         signal
-        for signal in _signal_summaries(ledger, strategy=strategy)
+        for signal in _signal_summaries(
+            ledger, strategy=strategy, long_term_segment=long_term_segment
+        )
         if signal["observations"] >= 10
     ]
     if not eligible:
@@ -490,10 +558,18 @@ def _market_tone(positive_movers: int, selloffs: int) -> str:
 def _strategy_horizon_summary(
     ledger: dict[str, Any], strategy: str, horizon: str
 ) -> dict[str, Any]:
+    return _horizon_summary_for_picks(
+        ledger, horizon, lambda pick: pick["strategy"] == strategy
+    )
+
+
+def _horizon_summary_for_picks(
+    ledger: dict[str, Any], horizon: str, pick_filter
+) -> dict[str, Any]:
     returns = [
         pick["outcomes"][horizon]["return_pct"]
         for pick in ledger["picks"]
-        if pick["strategy"] == strategy
+        if pick_filter(pick)
         and pick["outcomes"][horizon]["status"] == "priced"
         and pick["outcomes"][horizon]["return_pct"] is not None
     ]
@@ -521,14 +597,14 @@ def _strategy_horizon_summary(
     benchmark_returns = [
         pick["outcomes"][horizon].get("benchmark_return_pct")
         for pick in ledger["picks"]
-        if pick["strategy"] == strategy
+        if pick_filter(pick)
         and pick["outcomes"][horizon]["status"] == "priced"
         and pick["outcomes"][horizon].get("benchmark_return_pct") is not None
     ]
     excess_returns = [
         pick["outcomes"][horizon].get("excess_return_pct")
         for pick in ledger["picks"]
-        if pick["strategy"] == strategy
+        if pick_filter(pick)
         and pick["outcomes"][horizon]["status"] == "priced"
         and pick["outcomes"][horizon].get("excess_return_pct") is not None
     ]
@@ -572,11 +648,19 @@ def _volatility_pct(values: list[float]) -> float:
 
 
 def _ranked_completed_picks(
-    ledger: dict[str, Any], *, reverse: bool, strategy: str | None = None
+    ledger: dict[str, Any],
+    *,
+    reverse: bool,
+    strategy: str | None = None,
+    long_term_segment: str | None = None,
 ) -> list[dict[str, Any]]:
     completed = []
     for pick in ledger["picks"]:
         if strategy is not None and pick["strategy"] != strategy:
+            continue
+        if long_term_segment is not None and not _pick_matches_long_term_segment(
+            pick, long_term_segment
+        ):
             continue
         for horizon, outcome in pick["outcomes"].items():
             if outcome["status"] == "priced" and outcome["return_pct"] is not None:
@@ -595,11 +679,18 @@ def _ranked_completed_picks(
 
 
 def _signal_summaries(
-    ledger: dict[str, Any], *, strategy: str | None = None
+    ledger: dict[str, Any],
+    *,
+    strategy: str | None = None,
+    long_term_segment: str | None = None,
 ) -> list[dict[str, Any]]:
     buckets: dict[str, list[float]] = {}
     for pick in ledger["picks"]:
         if strategy is not None and pick["strategy"] != strategy:
+            continue
+        if long_term_segment is not None and not _pick_matches_long_term_segment(
+            pick, long_term_segment
+        ):
             continue
         return_pct = _latest_completed_return_pct(pick)
         if return_pct is None:
@@ -683,6 +774,23 @@ def _long_term_quality_signals(pick: dict[str, Any]) -> list[str]:
     return signals
 
 
+def _long_term_segment_key(pick: dict[str, Any]) -> str | None:
+    if pick.get("strategy") != "long-term":
+        return None
+    tier = (pick.get("long_term_gate") or {}).get("tier")
+    if tier in LONG_TERM_RESEARCH_TIERS:
+        return "research"
+    if tier == "Speculative monitor":
+        return "speculative"
+    if tier == "Insufficient evidence":
+        return "insufficient"
+    return "legacy"
+
+
+def _pick_matches_long_term_segment(pick: dict[str, Any], segment: str) -> bool:
+    return _long_term_segment_key(pick) == segment
+
+
 def _normalized_signal_key(value: Any) -> str:
     return re.sub(r"\s+", " ", str(value or "").strip().lower())
 
@@ -742,6 +850,58 @@ def _strategy_performance_section(
     ]
 
 
+def _long_term_segment_performance_section(
+    summary: dict[str, Any], ledger: dict[str, Any], segment: str
+) -> list[str]:
+    config = LONG_TERM_SEGMENTS[segment]
+    label = config["label"]
+    best_picks = summary["best_picks_by_long_term_segment"][segment]
+    worst_picks = _exclude_pick_rows(
+        summary["worst_picks_by_long_term_segment"][segment], best_picks
+    )
+    return [
+        f"## {config['title']}",
+        "",
+        f"_{config['description']}_",
+        "",
+        "### Horizon Scorecard",
+        "",
+        *_long_term_segment_table(summary, segment),
+        "",
+        "### Risk And Benchmark",
+        "",
+        *_long_term_segment_risk_benchmark_table(summary, segment),
+        "",
+        f"### Best {label} Picks",
+        "",
+        *_pick_lines(
+            best_picks,
+            empty_label=f"No completed {label.lower()} picks yet.",
+        ),
+        "",
+        f"### Worst {label} Picks",
+        "",
+        *_pick_lines(
+            worst_picks,
+            empty_label=f"No completed {label.lower()} picks yet.",
+        ),
+        "",
+        f"### {label} Signal Review",
+        "",
+        *_signal_table(summary["signals_by_long_term_segment"][segment]),
+        "",
+        f"### {label} Learning Suggestions",
+        "",
+        *[
+            f"- {suggestion}"
+            for suggestion in learning_suggestions(
+                ledger, strategy="long-term", long_term_segment=segment
+            )
+        ],
+        "",
+    ]
+
+
 def _strategy_table(summary: dict[str, Any], strategy: str) -> list[str]:
     lines = [
         "| Horizon | Completed | Hit Rate | Average Return | Median Return |",
@@ -749,6 +909,24 @@ def _strategy_table(summary: dict[str, Any], strategy: str) -> list[str]:
     ]
     for horizon in HORIZONS:
         row = summary["strategies"][strategy][horizon]
+        lines.append(
+            "| "
+            f"{horizon} | "
+            f"{row['completed']} | "
+            f"{_percent_cell(row['hit_rate_pct'])} | "
+            f"{_percent_cell(row['average_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['median_return_pct'], signed=True)} |"
+        )
+    return lines
+
+
+def _long_term_segment_table(summary: dict[str, Any], segment: str) -> list[str]:
+    lines = [
+        "| Horizon | Completed | Hit Rate | Average Return | Median Return |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for horizon in HORIZONS:
+        row = summary["long_term_segments"][segment][horizon]
         lines.append(
             "| "
             f"{horizon} | "
@@ -770,6 +948,32 @@ def _risk_benchmark_table(summary: dict[str, Any], strategy: str) -> list[str]:
     ]
     for horizon in HORIZONS:
         row = summary["strategies"][strategy][horizon]
+        lines.append(
+            "| "
+            f"{horizon} | "
+            f"{_percent_cell(row['worst_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['loss_rate_pct'])} | "
+            f"{row['large_loser_count']} | "
+            f"{_percent_cell(row['volatility_pct'])} | "
+            f"{_percent_cell(row['average_benchmark_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['average_excess_return_pct'], signed=True)} | "
+            f"{_percent_cell(row['excess_hit_rate_pct'])} |"
+        )
+    return lines
+
+
+def _long_term_segment_risk_benchmark_table(
+    summary: dict[str, Any], segment: str
+) -> list[str]:
+    lines = [
+        (
+            "| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | "
+            "Benchmark | Excess Return | Excess Hit Rate |"
+        ),
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for horizon in HORIZONS:
+        row = summary["long_term_segments"][segment][horizon]
         lines.append(
             "| "
             f"{horizon} | "

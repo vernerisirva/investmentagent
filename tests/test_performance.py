@@ -39,6 +39,28 @@ def report_payload(strategy="trading"):
     }
 
 
+def long_term_payload_with_tier(ticker: str, tier: str, price: float = 10.0):
+    payload = report_payload(strategy="long-term")
+    payload["items"][0]["company"]["ticker"] = ticker
+    payload["items"][0]["company"]["name"] = f"{ticker} AB"
+    payload["items"][0]["financials"]["price"] = price
+    payload["items"][0]["long_term_gate"] = {
+        "tier": tier,
+        "reasons": [],
+        "blockers": [],
+        "durable_anchor_count": 0,
+        "severe_proof_gap_count": 0,
+        "valuation": {
+            "has_support": tier != "Insufficient evidence",
+            "is_attractive": False,
+            "primary_kind": None,
+            "primary_value": None,
+            "summary": "",
+        },
+    }
+    return payload
+
+
 def test_add_report_picks_creates_ledger_record_with_outcome_horizons():
     ledger = add_report_picks(
         empty_ledger(),
@@ -394,7 +416,9 @@ def test_render_scorecard_markdown_includes_strategy_sections_and_disclaimer():
     assert "Research triage only. Not financial advice." in output
     assert "## Trading Ideas" in output
     assert "| 5d | 1 | 100% | +20% | +20% |" in output
-    assert "## Long-Term Investment Ideas" in output
+    assert "## Long-Term Research Candidates" in output
+    assert "## Speculative Monitors" in output
+    assert "## Insufficient Evidence Audit" in output
     assert "### Trading Learning Suggestions" in output
 
 
@@ -473,9 +497,21 @@ def test_render_scorecard_markdown_keeps_strategy_details_separate():
     long_term_payload["items"].append(deepcopy(long_term_payload["items"][0]))
     long_term_payload["items"][0]["company"]["ticker"] = "LONGWIN"
     long_term_payload["items"][0]["company"]["name"] = "Long-Term Winner"
+    long_term_payload["items"][0]["long_term_gate"] = {
+        "tier": "High-conviction candidate",
+        "durable_anchor_count": 4,
+        "severe_proof_gap_count": 0,
+        "valuation": {"primary_kind": "market_cap_to_sales"},
+    }
     long_term_payload["items"][1]["rank"] = 2
     long_term_payload["items"][1]["company"]["ticker"] = "LONGLOSS"
     long_term_payload["items"][1]["company"]["name"] = "Long-Term Loser"
+    long_term_payload["items"][1]["long_term_gate"] = {
+        "tier": "Fundamental watchlist",
+        "durable_anchor_count": 3,
+        "severe_proof_gap_count": 0,
+        "valuation": {"primary_kind": "market_cap_to_sales"},
+    }
 
     ledger = add_report_picks(
         ledger,
@@ -501,18 +537,91 @@ def test_render_scorecard_markdown_keeps_strategy_details_separate():
     )
 
     output = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
-    trading_section = output.split("## Long-Term Investment Ideas")[0]
-    long_term_section = output.split("## Long-Term Investment Ideas")[1]
+    trading_section = output.split("## Long-Term Research Candidates")[0]
+    long_term_section = output.split("## Long-Term Research Candidates")[1]
 
     assert "### Horizon Scorecard\n\n| Horizon | Completed" in output
     assert "### Best Trading Picks" in trading_section
     assert "Trading Winner" in trading_section
     assert "Long-Term Winner" not in trading_section
-    assert "### Best Long-Term Picks" in long_term_section
+    assert "### Best Long-Term Research Picks" in long_term_section
     assert "Long-Term Winner" in long_term_section
     assert "Trading Winner" not in long_term_section
     assert "| Signal | Observations | Average Return | Hit Rate |" in output
     assert "Reason: High live turnover" in output
+
+
+def test_render_scorecard_splits_long_term_gate_tiers():
+    ledger = empty_ledger()
+    cases = [
+        ("QUAL", "High-conviction candidate", 12.0),
+        ("WATCH", "Fundamental watchlist", 11.0),
+        ("SPEC", "Speculative monitor", 8.0),
+        ("AUDIT", "Insufficient evidence", 7.0),
+    ]
+    for ticker, tier, _exit_price in cases:
+        ledger = add_report_picks(
+            ledger,
+            long_term_payload_with_tier(ticker, tier),
+            report_date=date(2026, 5, 11),
+            report_url="reports/long-term/2026-05-11.html",
+        )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={
+            (ticker, "SE"): {"price": exit_price, "currency": "SEK"}
+            for ticker, _tier, exit_price in cases
+        },
+    )
+
+    summary = summarize_ledger(ledger)
+    output = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
+
+    assert summary["long_term_segments"]["research"]["1d"]["completed"] == 2
+    assert summary["long_term_segments"]["research"]["1d"]["average_return_pct"] == 15.0
+    assert summary["long_term_segments"]["speculative"]["1d"]["average_return_pct"] == -20.0
+    assert (
+        summary["long_term_segments"]["insufficient"]["1d"]["average_return_pct"]
+        == -30.0
+    )
+    assert "## Long-Term Research Candidates" in output
+    assert "## Speculative Monitors" in output
+    assert "## Insufficient Evidence Audit" in output
+    research_section = output.split("## Long-Term Research Candidates")[1].split(
+        "## Speculative Monitors"
+    )[0]
+    assert "QUAL AB" in research_section
+    assert "WATCH AB" in research_section
+    assert "SPEC AB" not in research_section
+    monitor_section = output.split("## Speculative Monitors")[1].split(
+        "## Insufficient Evidence Audit"
+    )[0]
+    assert "SPEC AB" in monitor_section
+    assert "QUAL AB" not in monitor_section
+
+
+def test_render_scorecard_keeps_legacy_long_term_rows_separate():
+    ledger = add_report_picks(
+        empty_ledger(),
+        report_payload(strategy="long-term"),
+        report_date=date(2026, 5, 11),
+        report_url="reports/long-term/2026-05-11.html",
+    )
+    ledger = update_due_outcomes(
+        ledger,
+        as_of_date=date(2026, 5, 12),
+        price_lookup={("STABL", "SE"): {"price": 1.02, "currency": "SEK"}},
+    )
+
+    output = render_scorecard_markdown(ledger, generated_at="2026-05-12 09:03 EEST")
+
+    assert "## Legacy Long-Term Rows" in output
+    assert "## Long-Term Research Candidates" in output
+    research_section = output.split("## Long-Term Research Candidates")[1].split(
+        "## Speculative Monitors"
+    )[0]
+    assert "Stayble Therapeutics" not in research_section
 
 
 def test_long_term_performance_review_includes_quality_bucket_signals():
