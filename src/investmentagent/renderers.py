@@ -339,13 +339,21 @@ def _watchlist_item_markdown_sections(
 
 def _long_term_markdown_sections(items: list[WatchlistItem]) -> list[str]:
     lines: list[str] = []
+    research_tiers = {
+        LongTermGateTier.HIGH_CONVICTION,
+        LongTermGateTier.FUNDAMENTAL_WATCHLIST,
+    }
     if not any(
-        assess_long_term_gate(item.research).tier == LongTermGateTier.HIGH_CONVICTION
+        assess_long_term_gate(item.research).tier in research_tiers
         for item in items
     ):
         lines.extend(
             [
-                "_No high-conviction long-term ideas passed the gate today._",
+                (
+                    "_No long-term research candidates passed the gate today. "
+                    "Rows below are speculative monitors or evidence-audit rows, "
+                    "not long-term candidate recommendations._"
+                ),
                 "",
             ]
         )

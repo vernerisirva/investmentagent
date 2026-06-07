@@ -1577,6 +1577,35 @@ def test_render_long_term_report_markdown_groups_by_gate_tier():
     assert output.index("High Conviction AB") < output.index("Monitor Only AB")
 
 
+def test_render_long_term_report_markdown_flags_no_research_candidates():
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=Company(
+                name="Audit Only AB",
+                ticker="AUDIT",
+                country="SE",
+                exchange="Nasdaq First North Growth Market Sweden",
+                segment=ListingSegment.FIRST_NORTH,
+                sector="Technology",
+            ),
+            financials=FinancialSnapshot(data_quality=DataQuality.THIN),
+            data_quality=DataQuality.THIN,
+        ),
+        score=ScoreBreakdown(0, 0, 0, 0, 0, 0),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "long-term", "limit": 10},
+        source_checks=[],
+    )
+
+    assert "No long-term research candidates passed the gate today." in output
+    assert "not long-term candidate recommendations" in output
+    assert "## Insufficient Evidence" in output
+
+
 def test_render_long_term_report_markdown_flags_trading_only_movers():
     company = Company(
         name="Momentum Only AB",
