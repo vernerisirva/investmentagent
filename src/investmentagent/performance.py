@@ -445,7 +445,9 @@ def summarize_ledger(ledger: dict[str, Any]) -> dict[str, Any]:
             for segment in LONG_TERM_SEGMENT_ORDER
         },
         "signals_by_long_term_segment": {
-            segment: _signal_summaries(ledger, long_term_segment=segment)
+            segment: _signal_summaries(
+                ledger, strategy="long-term", long_term_segment=segment
+            )
             for segment in LONG_TERM_SEGMENT_ORDER
         },
     }
