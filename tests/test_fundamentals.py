@@ -159,6 +159,37 @@ def finimpulse_profile_payload() -> str:
     )
 
 
+def finimpulse_global_search_payload() -> str:
+    return json.dumps(
+        {
+            "status_code": 20000,
+            "status_message": "OK",
+            "data": {"symbols": ["NVDA"], "quote_types": ["stock"], "limit": 1},
+            "result": {
+                "total_count": 1,
+                "items_count": 1,
+                "items": [
+                    {
+                        "symbol": "NVDA",
+                        "short_name": "NVIDIA Corporation",
+                        "long_name": "NVIDIA Corporation",
+                        "quote_type": "stock",
+                        "currency": "USD",
+                        "regular_market_price": 142.0,
+                        "average_daily_volume_10_day": 180_000_000,
+                        "amount": 3_500_000_000_000,
+                        "trailing_pe": 31.2,
+                        "total_revenue": 130_000_000_000,
+                        "revenue_growth": 0.65,
+                        "net_margin": 0.54,
+                        "debt_to_equity": 0.2,
+                    }
+                ],
+            },
+        }
+    )
+
+
 def test_yahoo_symbol_candidates_for_sweden_and_finland():
     assert yahoo_symbol_candidates(make_company("KAR", "SE")) == ("KAR.ST",)
     assert yahoo_symbol_candidates(make_company("GOFORE", "FI")) == ("GOFORE.HE",)
@@ -346,6 +377,26 @@ def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
     assert "secret-token" in requested[0][2]["Authorization"]
 
 
+def test_finimpulse_provider_fetches_explicit_symbol():
+    requested_payloads: list[dict[str, object]] = []
+
+    def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
+        requested_payloads.append(json.loads(payload))
+        return finimpulse_global_search_payload()
+
+    provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
+
+    snapshot = provider.get_fundamentals_for_symbol("NVDA", fallback_currency="USD")
+
+    assert snapshot is not None
+    assert snapshot.symbol == "NVDA"
+    assert snapshot.financials.pe_ratio == 31.2
+    assert snapshot.financials.revenue_eur_m is not None
+    assert provider.source_check().status == "ok"
+    assert "Finimpulse lookups parsed" in provider.source_check().detail
+    assert requested_payloads[0]["symbols"] == ["NVDA"]
+
+
 def test_finimpulse_provider_fetches_profile_business_description():
     requested: list[str] = []
 
@@ -490,7 +541,7 @@ def test_yahoo_provider_leaves_unknown_currency_money_fields_empty():
                     "result": [
                         {
                             "price": {
-                                "currency": "USD",
+                                "currency": "GBP",
                                 "marketCap": {"raw": 1_000_000_000},
                             },
                             "summaryDetail": {

@@ -1,0 +1,134 @@
+[
+  {
+    "name": "NVIDIA",
+    "ticker": "NVDA",
+    "provider_symbol": "NVDA",
+    "country": "US",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Semiconductors",
+    "ai_category": "AI compute semiconductors",
+    "ai_thesis": "Dominant accelerator platform for model training, inference, networking, and AI software ecosystems."
+  },
+  {
+    "name": "Taiwan Semiconductor Manufacturing",
+    "ticker": "TSM",
+    "provider_symbol": "TSM",
+    "country": "TW",
+    "exchange": "NYSE",
+    "currency": "USD",
+    "sector": "Semiconductors",
+    "ai_category": "AI compute manufacturing",
+    "ai_thesis": "Leading advanced-node foundry behind many high-end AI chips and accelerators."
+  },
+  {
+    "name": "ASML Holding",
+    "ticker": "ASML",
+    "provider_symbol": "ASML",
+    "country": "NL",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Semiconductor Equipment",
+    "ai_category": "Semiconductor equipment",
+    "ai_thesis": "Critical lithography supplier for advanced chips used in AI accelerators and high-performance computing."
+  },
+  {
+    "name": "Microsoft",
+    "ticker": "MSFT",
+    "provider_symbol": "MSFT",
+    "country": "US",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Cloud Software",
+    "ai_category": "Cloud AI platform",
+    "ai_thesis": "Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths."
+  },
+  {
+    "name": "Alphabet",
+    "ticker": "GOOGL",
+    "provider_symbol": "GOOGL",
+    "country": "US",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Internet Platforms",
+    "ai_category": "Model/application platform",
+    "ai_thesis": "Owns frontier model research, search distribution, cloud AI infrastructure, and TPU compute capacity."
+  },
+  {
+    "name": "Amazon",
+    "ticker": "AMZN",
+    "provider_symbol": "AMZN",
+    "country": "US",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Cloud and Commerce",
+    "ai_category": "Cloud AI platform",
+    "ai_thesis": "AWS infrastructure, Trainium/Inferentia chips, and AI services provide platform-level AI exposure."
+  },
+  {
+    "name": "Meta Platforms",
+    "ticker": "META",
+    "provider_symbol": "META",
+    "country": "US",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Internet Platforms",
+    "ai_category": "Model/application platform",
+    "ai_thesis": "Large-scale AI infrastructure, recommendation systems, open model strategy, and advertising optimization."
+  },
+  {
+    "name": "Broadcom",
+    "ticker": "AVGO",
+    "provider_symbol": "AVGO",
+    "country": "US",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Semiconductors",
+    "ai_category": "AI infrastructure hardware",
+    "ai_thesis": "Custom accelerators, networking chips, and infrastructure software tied to hyperscale AI demand."
+  },
+  {
+    "name": "Oracle",
+    "ticker": "ORCL",
+    "provider_symbol": "ORCL",
+    "country": "US",
+    "exchange": "NYSE",
+    "currency": "USD",
+    "sector": "Cloud Software",
+    "ai_category": "Cloud AI platform",
+    "ai_thesis": "Cloud infrastructure expansion and database footprint create enterprise AI infrastructure exposure."
+  },
+  {
+    "name": "Palantir Technologies",
+    "ticker": "PLTR",
+    "provider_symbol": "PLTR",
+    "country": "US",
+    "exchange": "NYSE",
+    "currency": "USD",
+    "sector": "Data and Analytics",
+    "ai_category": "Data and analytics platform",
+    "ai_thesis": "AI platform and ontology layer target operational AI use cases across government and enterprises."
+  },
+  {
+    "name": "Snowflake",
+    "ticker": "SNOW",
+    "provider_symbol": "SNOW",
+    "country": "US",
+    "exchange": "NYSE",
+    "currency": "USD",
+    "sector": "Data Infrastructure",
+    "ai_category": "Data and analytics platform",
+    "ai_thesis": "Cloud data platform can benefit from AI workloads that require governed enterprise data."
+  },
+  {
+    "name": "Adobe",
+    "ticker": "ADBE",
+    "provider_symbol": "ADBE",
+    "country": "US",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Creative Software",
+    "ai_category": "Enterprise AI software",
+    "ai_thesis": "Creative Cloud and Document Cloud integrate generative AI into established professional workflows."
+  }
+]

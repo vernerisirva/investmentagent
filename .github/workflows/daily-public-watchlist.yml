@@ -109,6 +109,14 @@ jobs:
           generate_report "trading" "trading"
           generate_report "long-term" "long-term"
 
+          mkdir -p "$REPORT_ROOT/global-ai"
+          investmentagent global-ai top-5 \
+            --limit 5 \
+            --generated-at "$generated_at" \
+            --save "$REPORT_ROOT/global-ai/${report_date}.md" \
+            > "$RUNNER_TEMP/global-ai-output.txt"
+          cp "$REPORT_ROOT/global-ai/${report_date}.md" "$REPORT_ROOT/global-ai/latest.md"
+
           mkdir -p docs/performance docs/data/performance
           investmentagent performance update \
             --report-json "$RUNNER_TEMP/trading-${report_date}.json" \
@@ -129,12 +137,14 @@ jobs:
             echo
             echo "- [Top 10 Trading Ideas](reports/trading/latest.html)"
             echo "- [Top 10 Long-Term Investment Ideas](reports/long-term/latest.html)"
+            echo "- [Top 5 Global AI Candidates](reports/global-ai/latest.html)"
             echo "- [Performance Scorecard](performance/index.html)"
             echo
             echo "## Dated Reports"
             echo
             echo "- [Trading Ideas ${report_date}](reports/trading/${report_date}.html)"
             echo "- [Long-Term Investment Ideas ${report_date}](reports/long-term/${report_date}.html)"
+            echo "- [Global AI Top 5 ${report_date}](reports/global-ai/${report_date}.html)"
             echo
             echo "Reports are research triage only. Not financial advice."
           } > docs/index.md

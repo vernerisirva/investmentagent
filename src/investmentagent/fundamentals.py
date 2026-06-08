@@ -36,7 +36,7 @@ FINIMPULSE_SEARCH_DOC_URL = "https://developers.finimpulse.com/v1/search/"
 FINIMPULSE_PROFILE_URL = "https://api.finimpulse.com/v1/profile"
 FINIMPULSE_PROFILE_DOC_URL = "https://developers.finimpulse.com/v1/profile/"
 FINIMPULSE_FETCH_TIMEOUT_SECONDS = 3
-_EUR_RATES = {"EUR": 1.0, "SEK": 0.1}
+_EUR_RATES = {"EUR": 1.0, "SEK": 0.1, "USD": 0.92}
 FINIMPULSE_PE_KEYS = ("pe_ratio", "trailing_pe", "trailingPE", "forward_pe")
 FINIMPULSE_PRICE_TO_BOOK_KEYS = (
     "price_to_book",
@@ -217,32 +217,52 @@ class FinimpulseFundamentalsProvider:
 
     def get_fundamentals(self, company: Company) -> FundamentalsSnapshot | None:
         for symbol in finimpulse_symbol_candidates(company):
-            self.attempted_lookups += 1
-            payload = json.dumps(
-                {"symbols": [symbol], "quote_types": ["stock"], "limit": 1}
+            snapshot = self._get_fundamentals_for_symbol(
+                symbol, fallback_currency=company.currency
             )
-            headers = {
-                "Accept": "application/json,text/plain,*/*",
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json",
-                "User-Agent": "Mozilla/5.0",
-            }
-            try:
-                snapshot = _parse_finimpulse_search_payload(
-                    payload=self._fetcher(FINIMPULSE_SEARCH_URL, payload, headers),
-                    symbol=symbol,
-                    fallback_currency=company.currency,
-                )
-            except Exception as exc:
-                self.last_error = _token_safe_error(exc, self.api_key)
-                continue
             if snapshot is not None:
-                snapshot = self._with_profile(snapshot, headers)
-                self._record_valuation_coverage(snapshot)
-                self.successful_lookups += 1
-                self.last_error = None
                 return snapshot
         return None
+
+    def get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None = None
+    ) -> FundamentalsSnapshot | None:
+        normalized_symbol = symbol.strip().upper()
+        if not normalized_symbol:
+            raise ValueError("symbol is required")
+        return self._get_fundamentals_for_symbol(
+            normalized_symbol, fallback_currency=fallback_currency
+        )
+
+    def _get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None
+    ) -> FundamentalsSnapshot | None:
+        self.attempted_lookups += 1
+        payload = json.dumps(
+            {"symbols": [symbol], "quote_types": ["stock"], "limit": 1}
+        )
+        headers = {
+            "Accept": "application/json,text/plain,*/*",
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0",
+        }
+        try:
+            snapshot = _parse_finimpulse_search_payload(
+                payload=self._fetcher(FINIMPULSE_SEARCH_URL, payload, headers),
+                symbol=symbol,
+                fallback_currency=fallback_currency,
+            )
+        except Exception as exc:
+            self.last_error = _token_safe_error(exc, self.api_key)
+            return None
+        if snapshot is None:
+            return None
+        snapshot = self._with_profile(snapshot, headers)
+        self._record_valuation_coverage(snapshot)
+        self.successful_lookups += 1
+        self.last_error = None
+        return snapshot
 
     def _with_profile(
         self, snapshot: FundamentalsSnapshot, headers: dict[str, str]

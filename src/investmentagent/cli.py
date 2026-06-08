@@ -12,6 +12,7 @@ from investmentagent.fundamentals import (
     FinnhubFundamentalsProvider,
     YahooFundamentalsProvider,
 )
+from investmentagent.global_ai import build_global_ai_top5
 from investmentagent.market_calendar import market_day_status
 from investmentagent.providers import create_provider
 from investmentagent.performance import (
@@ -27,6 +28,8 @@ from investmentagent.performance import (
 from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
+    render_global_ai_report_json,
+    render_global_ai_report_markdown,
     render_watchlist_json,
     render_watchlist_report_json,
     render_watchlist_report_markdown,
@@ -39,9 +42,11 @@ app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args
 sources_app = typer.Typer(help="Inspect and validate research sources.")
 performance_app = typer.Typer(help="Track and publish watchlist performance.")
 markets_app = typer.Typer(help="Inspect Nordic stock-market calendars.")
+global_ai_app = typer.Typer(help="Generate global AI investment candidate reports.")
 app.add_typer(sources_app, name="sources")
 app.add_typer(performance_app, name="performance")
 app.add_typer(markets_app, name="markets")
+app.add_typer(global_ai_app, name="global-ai")
 
 
 @app.callback(invoke_without_command=True)
@@ -99,6 +104,13 @@ def _normalize_output_option(output: str) -> str:
     return normalized
 
 
+def _normalize_global_ai_output_option(output: str) -> str:
+    normalized = output.strip().lower()
+    if normalized not in {"markdown", "json"}:
+        raise typer.BadParameter("output must be 'markdown' or 'json'")
+    return normalized
+
+
 def _normalize_fundamentals_option(value: str) -> str:
     normalized = value.strip().lower()
     if normalized not in {"auto", "off", "free", "finnhub", "finimpulse"}:
@@ -152,6 +164,19 @@ def _save_watchlist_report(path: str, items, metadata: dict, source_checks) -> N
     report_path.write_text(content + "\n", encoding="utf-8")
 
 
+def _save_global_ai_report(path: str, report) -> None:
+    report_path = Path(path)
+    suffix = report_path.suffix.lower()
+    if suffix == ".json":
+        content = render_global_ai_report_json(report)
+    elif suffix in {".md", ".markdown"}:
+        content = render_global_ai_report_markdown(report)
+    else:
+        raise typer.BadParameter("save path must end in .json, .md, or .markdown")
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(content + "\n", encoding="utf-8")
+
+
 @markets_app.command("open")
 def markets_open(
     target_date: str | None = typer.Option(
@@ -183,6 +208,43 @@ def markets_open(
         raise typer.Exit(1)
 
     typer.echo(f"All requested markets are open on {day.isoformat()}.")
+
+
+@global_ai_app.command("top-5")
+def global_ai_top5(
+    limit: int = typer.Option(5, "--limit", min=1, max=20),
+    output: str = typer.Option(
+        "markdown", "--output", help="Output format: markdown or json."
+    ),
+    save_paths: list[str] | None = typer.Option(
+        None,
+        "--save",
+        help="Save report to .json, .md, or .markdown. Can be repeated.",
+    ),
+    generated_at: str | None = typer.Option(
+        None,
+        "--generated-at",
+        help="Display timestamp for the report.",
+    ),
+) -> None:
+    normalized_output = _normalize_global_ai_output_option(output)
+    finimpulse_api_key = _api_key_from_environment("FINIMPULSE_API_KEY")
+    if finimpulse_api_key is None:
+        raise typer.BadParameter("FINIMPULSE_API_KEY is required for global-ai top-5")
+
+    provider = FinimpulseFundamentalsProvider(finimpulse_api_key)
+    report = build_global_ai_top5(
+        provider,
+        limit=limit,
+        generated_at=generated_at,
+    )
+    for save_path in save_paths or ():
+        _save_global_ai_report(save_path, report)
+
+    if normalized_output == "json":
+        typer.echo(render_global_ai_report_json(report))
+        return
+    typer.echo(render_global_ai_report_markdown(report))
 
 
 @app.command()

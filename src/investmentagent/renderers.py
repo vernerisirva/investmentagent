@@ -121,6 +121,51 @@ def render_watchlist_report_markdown(
     return "\n".join(lines)
 
 
+def render_global_ai_report_markdown(report) -> str:
+    lines = [
+        "# InvestmentAgent Global AI Top 5",
+        "",
+        f"> {DISCLAIMER}",
+        "",
+        (
+            "_Long-term AI candidates ranked by valuation discipline, quality, "
+            "growth, AI relevance, and risk._"
+        ),
+        "",
+        "## Metadata",
+        *_metadata_lines(report.metadata),
+        "",
+        "## Source Checks",
+        *[
+            f"- {check.name}: {check.status} - {check.detail}"
+            for check in report.source_checks
+        ],
+        "",
+        "## Top 5 Global AI Candidates",
+        "",
+    ]
+    if not report.items:
+        lines.append(
+            "_No global AI candidates could be ranked with the current data source._"
+        )
+        return "\n".join(lines)
+
+    lines.extend(_global_ai_item_markdown_sections(report.items))
+    return "\n".join(lines)
+
+
+def render_global_ai_report_json(report) -> str:
+    payload = {
+        "disclaimer": DISCLAIMER,
+        "metadata": report.metadata,
+        "source_checks": [
+            _source_check_payload(check) for check in report.source_checks
+        ],
+        "items": [_global_ai_item_payload(item) for item in report.items],
+    }
+    return json.dumps(_normalize_json_value(payload), allow_nan=False, indent=2, sort_keys=True)
+
+
 def _watchlist_report_title(strategy: str) -> str:
     if strategy == "trading":
         return "InvestmentAgent Trading Ideas"
@@ -285,6 +330,71 @@ def _evidence_payload(evidence: Evidence) -> dict[str, str | None]:
 
 def _source_check_payload(check) -> dict[str, str]:
     return {"name": check.name, "status": check.status, "detail": check.detail}
+
+
+def _global_ai_item_payload(item) -> dict[str, Any]:
+    return {
+        "rank": item.rank,
+        "company": _company_payload(item.research.company),
+        "ai_category": item.entry.ai_category,
+        "ai_thesis": item.entry.ai_thesis,
+        "financials": _financials_payload(item.research.financials),
+        "score": _global_ai_score_payload(item.score),
+        "valuation_summary": item.valuation_summary,
+        "quality_summary": item.quality_summary,
+        "growth_summary": item.growth_summary,
+        "risk_flags": list(item.risk_flags),
+        "evidence": [
+            _evidence_payload(evidence) for evidence in item.research.evidence
+        ],
+        "data_quality": _stringify(item.research.data_quality),
+    }
+
+
+def _global_ai_score_payload(score) -> dict[str, Any]:
+    return {
+        "valuation": score.valuation,
+        "quality": score.quality,
+        "growth": score.growth,
+        "ai_relevance": score.ai_relevance,
+        "risk_penalty": score.risk_penalty,
+        "data_quality_penalty": score.data_quality_penalty,
+        "total": score.total,
+        "reasons": list(score.reasons),
+        "warnings": list(score.warnings),
+    }
+
+
+def _global_ai_item_markdown_sections(items) -> list[str]:
+    lines: list[str] = []
+    for item in items:
+        company = item.research.company
+        lines.extend(
+            [
+                f"### #{item.rank} {company.name} ({company.ticker})",
+                f"`{company.country}` | {company.exchange} | `{item.entry.ai_category}`",
+                "",
+                f"**AI thesis:** {item.entry.ai_thesis}",
+                f"**Score:** {item.score.total:g}",
+                f"**Valuation:** {item.valuation_summary}",
+                f"**Quality:** {item.quality_summary}",
+                f"**Growth:** {item.growth_summary}",
+                f"**Data quality:** {_stringify(item.research.data_quality)}",
+                "",
+                "#### Reasons",
+                *_bullet_lines(item.score.reasons),
+                "",
+                "#### Risks",
+                *_bullet_lines(item.risk_flags),
+                "",
+                "#### Evidence",
+                *_markdown_evidence_lines(item.research.evidence),
+                "",
+            ]
+        )
+    if lines and lines[-1] == "":
+        lines.pop()
+    return lines
 
 
 def _watchlist_markdown_sections(

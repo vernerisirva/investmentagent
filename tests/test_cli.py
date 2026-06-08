@@ -11,7 +11,8 @@ from typer.testing import CliRunner
 
 import investmentagent.cli as cli
 from investmentagent.cli import app
-from investmentagent.models import SourceCheck
+from investmentagent.fundamentals import FundamentalsSnapshot
+from investmentagent.models import DataQuality, Evidence, FinancialSnapshot, SourceCheck
 
 
 runner = CliRunner()
@@ -36,6 +37,31 @@ def _python_subprocesses_available() -> bool:
         text=True,
     )
     return result.returncode == 0 and result.stdout.strip() == "ok"
+
+
+def snapshot_for(
+    *,
+    symbol: str,
+    pe_ratio: float | None = None,
+    operating_margin_pct: float | None = None,
+) -> FundamentalsSnapshot:
+    return FundamentalsSnapshot(
+        symbol=symbol,
+        market_cap_eur_m=10_000,
+        business_description=f"{symbol} is an AI-exposed public company.",
+        financials=FinancialSnapshot(
+            pe_ratio=pe_ratio,
+            revenue_growth_pct=18,
+            operating_margin_pct=operating_margin_pct,
+            debt_to_equity=0.3,
+            data_quality=DataQuality.PARTIAL,
+        ),
+        evidence=Evidence(
+            label=f"Finimpulse fundamentals lookup ({symbol})",
+            url="https://developers.finimpulse.com/v1/search/",
+            source="finimpulse",
+        ),
+    )
 
 
 def test_console_script_target_exposes_app():
@@ -65,6 +91,13 @@ def test_root_command_without_args_shows_help():
     assert "deep-dive" in result.output
     assert "sources" in result.output
     assert "markets" in result.output
+
+
+def test_root_command_lists_global_ai_subcommand():
+    result = runner.invoke(app, [])
+
+    assert result.exit_code == 0
+    assert "global-ai" in result.output
 
 
 def test_watchlist_command_outputs_ranked_text():
@@ -380,6 +413,63 @@ def test_watchlist_explicit_finimpulse_requires_api_key(monkeypatch):
 
     assert result.exit_code != 0
     assert "FINIMPULSE_API_KEY is required" in result.output
+
+
+def test_global_ai_top5_requires_finimpulse_key(monkeypatch):
+    monkeypatch.delenv("FINIMPULSE_API_KEY", raising=False)
+
+    result = runner.invoke(app, ["global-ai", "top-5"])
+
+    assert result.exit_code != 0
+    assert "FINIMPULSE_API_KEY is required" in result.output
+
+
+def test_global_ai_top5_saves_markdown_and_json(monkeypatch):
+    class Provider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+        def get_fundamentals_for_symbol(self, symbol, fallback_currency=None):
+            return snapshot_for(
+                symbol=symbol,
+                pe_ratio=22,
+                operating_margin_pct=30,
+            )
+
+        def source_check(self):
+            return SourceCheck(
+                "finimpulse fundamentals",
+                "ok",
+                "1/1 Finimpulse lookups parsed",
+            )
+
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "secret-token")
+    monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", Provider)
+
+    with isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "global-ai",
+                "top-5",
+                "--limit",
+                "2",
+                "--save",
+                "reports/global-ai.md",
+                "--save",
+                "reports/global-ai.json",
+                "--generated-at",
+                "2026-06-08 08:00 EEST",
+            ],
+        )
+        markdown = Path("reports/global-ai.md").read_text()
+        payload = json.loads(Path("reports/global-ai.json").read_text())
+
+    assert result.exit_code == 0
+    assert "# InvestmentAgent Global AI Top 5" in result.output
+    assert "# InvestmentAgent Global AI Top 5" in markdown
+    assert payload["metadata"]["report_type"] == "global-ai"
+    assert len(payload["items"]) == 2
 
 
 def test_watchlist_explicit_finimpulse_rejects_blank_api_key(monkeypatch):

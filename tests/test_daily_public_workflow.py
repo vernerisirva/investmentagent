@@ -37,6 +37,30 @@ def test_report_commit_keeps_scheduler_branch_in_sync():
     assert "git push origin HEAD:codex/investmentagent-live-data" in workflow
 
 
+def test_daily_workflow_publishes_global_ai_report_and_links_index():
+    workflow = WORKFLOW.read_text()
+
+    assert 'investmentagent global-ai top-5 \\' in workflow
+    assert '--save "$REPORT_ROOT/global-ai/${report_date}.md" \\' in workflow
+    assert (
+        'cp "$REPORT_ROOT/global-ai/${report_date}.md" '
+        '"$REPORT_ROOT/global-ai/latest.md"'
+    ) in workflow
+    assert "Top 5 Global AI Candidates" in workflow
+    assert "reports/global-ai/latest.html" in workflow
+    assert "reports/global-ai/${report_date}.html" in workflow
+
+
+def test_daily_workflow_keeps_global_ai_out_of_performance_update():
+    workflow = WORKFLOW.read_text()
+    performance_block = workflow[
+        workflow.index("investmentagent performance update"):
+        workflow.index('          {')
+    ]
+
+    assert "global-ai" not in performance_block
+
+
 def test_pages_deploy_workflow_uses_node24_compatible_actions():
     workflow = PAGES_WORKFLOW.read_text()
 
