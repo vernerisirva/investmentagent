@@ -1,0 +1,126 @@
+# InvestmentAgent Global AI Top 5
+
+> Research triage only. Not financial advice.
+
+_Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
+
+## Metadata
+- generated_at: 2026-06-09 13:20 EEST
+- report_type: global-ai
+- limit: 5
+- universe_size: 12
+- fundamentals: finimpulse
+
+## Source Checks
+- global ai universe: ok - 12 curated global AI companies loaded
+- finimpulse fundamentals: ok - 12/12 Finimpulse lookups parsed; valuation support 0/12; direct valuation 0/12; proxy inputs 0/12; missing valuation support 12/12
+
+## Top 5 Global AI Candidates
+
+### #1 NVIDIA (NVDA)
+`US` | NASDAQ | `AI compute semiconductors`
+
+**AI thesis:** Dominant accelerator platform for model training, inference, networking, and AI software ecosystems.
+**Score:** 48
+**Valuation:** No direct valuation multiple available
+**Quality:** Operating margin 55.6%; debt/equity 0.0533841
+**Growth:** Revenue growth 51.7%
+**Data quality:** partial
+
+#### Reasons
+- profitable AI-exposed business
+- conservative balance sheet
+- strong revenue growth
+- direct AI infrastructure exposure
+
+#### Risks
+- missing valuation support
+
+#### Evidence
+- [Finimpulse fundamentals lookup (NVDA)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+### #2 Broadcom (AVGO)
+`US` | NASDAQ | `AI infrastructure hardware`
+
+**AI thesis:** Custom accelerators, networking chips, and infrastructure software tied to hyperscale AI demand.
+**Score:** 42
+**Valuation:** No direct valuation multiple available
+**Quality:** Operating margin 36.2%; debt/equity 0.380707
+**Growth:** Revenue growth 18.4%
+**Data quality:** partial
+
+#### Reasons
+- profitable AI-exposed business
+- conservative balance sheet
+- strong revenue growth
+- strong AI platform exposure
+
+#### Risks
+- missing valuation support
+
+#### Evidence
+- [Finimpulse fundamentals lookup (AVGO)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+### #3 Palantir Technologies (PLTR)
+`US` | NYSE | `Data and analytics platform`
+
+**AI thesis:** AI platform and ontology layer target operational AI use cases across government and enterprises.
+**Score:** 42
+**Valuation:** No direct valuation multiple available
+**Quality:** Operating margin 36.3%; debt/equity 0.0257672
+**Growth:** Revenue growth 23.8%
+**Data quality:** partial
+
+#### Reasons
+- profitable AI-exposed business
+- conservative balance sheet
+- strong revenue growth
+- strong AI platform exposure
+
+#### Risks
+- missing valuation support
+
+#### Evidence
+- [Finimpulse fundamentals lookup (PLTR)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+### #4 Microsoft (MSFT)
+`US` | NASDAQ | `Cloud AI platform`
+
+**AI thesis:** Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths.
+**Score:** 38
+**Valuation:** No direct valuation multiple available
+**Quality:** Operating margin 36.1%; debt/equity 0.09788
+**Growth:** Revenue growth 9.2%
+**Data quality:** partial
+
+#### Reasons
+- profitable AI-exposed business
+- conservative balance sheet
+- direct AI infrastructure exposure
+
+#### Risks
+- missing valuation support
+
+#### Evidence
+- [Finimpulse fundamentals lookup (MSFT)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+### #5 Alphabet (GOOGL)
+`US` | NASDAQ | `Model/application platform`
+
+**AI thesis:** Owns frontier model research, search distribution, cloud AI infrastructure, and TPU compute capacity.
+**Score:** 36
+**Valuation:** No direct valuation multiple available
+**Quality:** Operating margin 32.8%; debt/equity 0.0996017
+**Growth:** Revenue growth 9.3%
+**Data quality:** partial
+
+#### Reasons
+- profitable AI-exposed business
+- conservative balance sheet
+- strong AI platform exposure
+
+#### Risks
+- missing valuation support
+
+#### Evidence
+- [Finimpulse fundamentals lookup (GOOGL)](https://developers.finimpulse.com/v1/search/) (finimpulse)
