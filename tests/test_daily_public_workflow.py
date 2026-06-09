@@ -30,6 +30,18 @@ def test_scheduled_report_decision_allows_delayed_runs_after_checkout():
     assert '--market helsinki' in workflow
 
 
+def test_scheduled_report_decision_requires_all_daily_report_types_before_skipping():
+    workflow = WORKFLOW.read_text()
+    decision_block = workflow[
+        workflow.index("- name: Decide scheduled run"):
+        workflow.index("- name: Set up Python")
+    ]
+
+    assert '[ -f "$REPORT_ROOT/trading/${report_date}.md" ]' in decision_block
+    assert '[ -f "$REPORT_ROOT/long-term/${report_date}.md" ]' in decision_block
+    assert '[ -f "$REPORT_ROOT/global-ai/${report_date}.md" ]' in decision_block
+
+
 def test_report_commit_keeps_scheduler_branch_in_sync():
     workflow = WORKFLOW.read_text()
 
@@ -46,9 +58,21 @@ def test_daily_workflow_publishes_global_ai_report_and_links_index():
         'cp "$REPORT_ROOT/global-ai/${report_date}.md" '
         '"$REPORT_ROOT/global-ai/latest.md"'
     ) in workflow
+    assert "## Global AI" in workflow
+    assert "global-ai.html" in workflow
     assert "Top 5 Global AI Candidates" in workflow
     assert "reports/global-ai/latest.html" in workflow
     assert "reports/global-ai/${report_date}.html" in workflow
+
+
+def test_daily_workflow_writes_global_ai_landing_page():
+    workflow = WORKFLOW.read_text()
+
+    assert "# InvestmentAgent Global AI" in workflow
+    assert "> docs/global-ai.md" in workflow
+    assert "reports/global-ai/latest.html" in workflow
+    assert "reports/global-ai/${report_date}.html" in workflow
+    assert "git add docs/index.md docs/global-ai.md" in workflow
 
 
 def test_daily_workflow_keeps_global_ai_out_of_performance_update():

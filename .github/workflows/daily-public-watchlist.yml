@@ -41,9 +41,11 @@ jobs:
             sleep "$wait_seconds"
           fi
 
-          if [ -f "$REPORT_ROOT/trading/${report_date}.md" ]; then
+          if [ -f "$REPORT_ROOT/trading/${report_date}.md" ] \
+            && [ -f "$REPORT_ROOT/long-term/${report_date}.md" ] \
+            && [ -f "$REPORT_ROOT/global-ai/${report_date}.md" ]; then
             echo "RUN_DAILY_REPORT=false" >> "$GITHUB_ENV"
-            echo "Skipping because ${report_date} report already exists."
+            echo "Skipping because all ${report_date} reports already exist."
           fi
 
       - name: Set up Python
@@ -133,11 +135,18 @@ jobs:
             echo
             echo "Generated: ${generated_at}"
             echo
-            echo "## Today's Reports"
+            echo "## Nordic Ideas"
             echo
             echo "- [Top 10 Trading Ideas](reports/trading/latest.html)"
             echo "- [Top 10 Long-Term Investment Ideas](reports/long-term/latest.html)"
+            echo
+            echo "## Global AI"
+            echo
+            echo "- [Global AI Overview](global-ai.html)"
             echo "- [Top 5 Global AI Candidates](reports/global-ai/latest.html)"
+            echo
+            echo "## Performance"
+            echo
             echo "- [Performance Scorecard](performance/index.html)"
             echo
             echo "## Dated Reports"
@@ -149,12 +158,28 @@ jobs:
             echo "Reports are research triage only. Not financial advice."
           } > docs/index.md
 
+          {
+            echo "# InvestmentAgent Global AI"
+            echo
+            echo "Generated: ${generated_at}"
+            echo
+            echo "## Latest Report"
+            echo
+            echo "- [Top 5 Global AI Candidates](reports/global-ai/latest.html)"
+            echo
+            echo "## Dated Reports"
+            echo
+            echo "- [Global AI Top 5 ${report_date}](reports/global-ai/${report_date}.html)"
+            echo
+            echo "Reports are research triage only. Not financial advice."
+          } > docs/global-ai.md
+
       - name: Commit public report
         if: env.RUN_DAILY_REPORT == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/index.md "$REPORT_ROOT" docs/performance docs/data/performance
+          git add docs/index.md docs/global-ai.md "$REPORT_ROOT" docs/performance docs/data/performance
           if git diff --cached --quiet; then
             echo "No report changes to commit."
             exit 0
