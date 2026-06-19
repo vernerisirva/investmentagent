@@ -488,9 +488,9 @@ def _strategy_adjustments(research: CompanyResearch, strategy: str) -> tuple[flo
             positive_adjustment += 4.0
     elif strategy == "trading":
         if _has_signal(catalysts, "High live turnover"):
-            positive_adjustment += 6.0
-        if _has_signal(catalysts, "Moderate live turnover"):
             positive_adjustment += 3.0
+        if _has_signal(catalysts, "Moderate live turnover"):
+            positive_adjustment += 2.0
         if _has_signal(catalysts, "Strong intraday momentum"):
             positive_adjustment += 5.0
         if _has_signal(all_signals, "Extreme intraday spike"):

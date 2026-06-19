@@ -8,6 +8,7 @@ import typer
 
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
+    FallbackFundamentalsProvider,
     FinimpulseFundamentalsProvider,
     FinnhubFundamentalsProvider,
     YahooFundamentalsProvider,
@@ -232,7 +233,10 @@ def global_ai_top5(
     if finimpulse_api_key is None:
         raise typer.BadParameter("FINIMPULSE_API_KEY is required for global-ai top-5")
 
-    provider = FinimpulseFundamentalsProvider(finimpulse_api_key)
+    provider = FallbackFundamentalsProvider(
+        FinimpulseFundamentalsProvider(finimpulse_api_key),
+        YahooFundamentalsProvider(),
+    )
     report = build_global_ai_top5(
         provider,
         limit=limit,
@@ -314,7 +318,10 @@ def watchlist(
         if effective_fundamentals == "free":
             fundamentals_provider = YahooFundamentalsProvider()
         elif effective_fundamentals == "finimpulse":
-            fundamentals_provider = FinimpulseFundamentalsProvider(finimpulse_api_key)
+            fundamentals_provider = FallbackFundamentalsProvider(
+                FinimpulseFundamentalsProvider(finimpulse_api_key),
+                YahooFundamentalsProvider(),
+            )
         elif effective_fundamentals == "finnhub":
             fundamentals_provider = FinnhubFundamentalsProvider(finnhub_api_key)
         if fundamentals_provider is not None:

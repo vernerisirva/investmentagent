@@ -210,6 +210,25 @@ def assess_long_term_gate(research: CompanyResearch) -> LongTermGateDecision:
         blockers or len(durable_anchors) < 2 or not valuation.has_support
     ):
         tier = LongTermGateTier.FUNDAMENTAL_WATCHLIST
+    missing_valuation = not valuation.has_support
+    exceptional_without_valuation = (
+        missing_valuation
+        and len(durable_anchors) >= 5
+        and quality.bucket
+        in {
+            LongTermQualityBucket.QUALITY_SMALL_CAP,
+            LongTermQualityBucket.FUNDAMENTAL_WATCHLIST,
+        }
+        and research.data_quality == DataQuality.GOOD
+    )
+    if missing_valuation and tier == LongTermGateTier.HIGH_CONVICTION:
+        tier = LongTermGateTier.FUNDAMENTAL_WATCHLIST
+    if (
+        missing_valuation
+        and tier == LongTermGateTier.FUNDAMENTAL_WATCHLIST
+        and not exceptional_without_valuation
+    ):
+        tier = LongTermGateTier.SPECULATIVE_MONITOR
 
     return LongTermGateDecision(
         tier=tier,
@@ -292,6 +311,8 @@ def _durable_anchors(
         and financials.average_daily_value_eur >= 100_000
     ):
         anchors.append("adequate liquidity")
+    if research.company.business_description:
+        anchors.append("business description available")
     if valuation.is_attractive:
         anchors.append("attractive valuation support")
     elif valuation.has_support:

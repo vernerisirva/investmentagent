@@ -2,6 +2,7 @@ import json
 
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
+    FallbackFundamentalsProvider,
     FinimpulseFundamentalsProvider,
     FinnhubFundamentalsProvider,
     FundamentalsSnapshot,
@@ -17,6 +18,7 @@ from investmentagent.models import (
     Evidence,
     FinancialSnapshot,
     ListingSegment,
+    SourceCheck,
 )
 
 
@@ -227,6 +229,28 @@ def test_yahoo_provider_parses_fundamentals_with_evidence():
     assert snapshot.evidence.source == "yahoo"
     assert "KAR.ST" in snapshot.evidence.label
     assert requested_urls
+
+
+def test_yahoo_provider_fetches_explicit_global_symbol():
+    requested_urls: list[str] = []
+
+    def fetcher(url: str) -> str:
+        requested_urls.append(url)
+        return yahoo_payload()
+
+    provider = YahooFundamentalsProvider(fetcher=fetcher)
+
+    snapshot = provider.get_fundamentals_for_symbol("msft", fallback_currency="USD")
+
+    assert isinstance(snapshot, FundamentalsSnapshot)
+    assert snapshot.symbol == "MSFT"
+    assert requested_urls == [
+        "https://query1.finance.yahoo.com/v10/finance/quoteSummary/MSFT"
+        "?modules=price,summaryDetail,financialData"
+    ]
+    assert snapshot.financials.pe_ratio == 11.2
+    assert provider.source_check().status == "ok"
+    assert "valuation support 1/1" in provider.source_check().detail
 
 
 def test_finnhub_symbol_candidates_for_sweden_and_finland():
@@ -612,6 +636,19 @@ def test_yahoo_source_check_ok_when_all_attempted_lookups_succeed():
     assert "1/1 Yahoo-style lookups parsed" in check.detail
 
 
+def test_yahoo_source_check_reports_valuation_coverage():
+    provider = YahooFundamentalsProvider(fetcher=lambda url: yahoo_payload())
+    provider.get_fundamentals(make_company())
+
+    check = provider.source_check()
+
+    assert check.status == "ok"
+    assert "1/1 Yahoo-style lookups parsed" in check.detail
+    assert "valuation support 1/1" in check.detail
+    assert "direct valuation 1/1" in check.detail
+    assert "missing valuation support 0/1" in check.detail
+
+
 def test_yahoo_source_check_warns_when_lookup_success_is_mixed():
     provider = YahooFundamentalsProvider(fetcher=lambda url: yahoo_payload())
     provider.attempted_lookups = 2
@@ -663,6 +700,113 @@ class StaticFundamentalsProvider:
         from investmentagent.models import SourceCheck
 
         return SourceCheck("free fundamentals", "ok", "fixture fundamentals available")
+
+
+class SymbolFundamentalsProvider:
+    def __init__(self, snapshot):
+        self.snapshot = snapshot
+        self.company_requests: list[Company] = []
+        self.symbol_requests: list[tuple[str, str | None]] = []
+
+    def get_fundamentals(self, company: Company):
+        self.company_requests.append(company)
+        return self.snapshot
+
+    def get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None = None
+    ):
+        self.symbol_requests.append((symbol, fallback_currency))
+        return self.snapshot
+
+    def source_check(self):
+        return SourceCheck("symbol provider", "ok", "fixture provider")
+
+
+def test_fallback_provider_merges_valuation_without_overwriting_profile():
+    primary = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="NVDA",
+            market_cap_eur_m=3_000_000,
+            business_description="FinImpulse profile text",
+            ir_url="https://investor.nvidia.com/",
+            financials=FinancialSnapshot(
+                revenue_growth_pct=51.7,
+                operating_margin_pct=55.6,
+                debt_to_equity=0.05,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            evidence=Evidence(
+                "FinImpulse lookup", "https://finimpulse.example", "finimpulse"
+            ),
+        )
+    )
+    fallback = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="NVDA",
+            market_cap_eur_m=3_100_000,
+            financials=FinancialSnapshot(
+                pe_ratio=31.2,
+                price_to_book=19.0,
+                average_daily_value_eur=9_000_000_000,
+                data_quality=DataQuality.PARTIAL,
+            ),
+            evidence=Evidence("Yahoo valuation lookup", "https://yahoo.example", "yahoo"),
+        )
+    )
+    provider = FallbackFundamentalsProvider(primary, fallback)
+
+    snapshot = provider.get_fundamentals_for_symbol("NVDA", fallback_currency="USD")
+
+    assert snapshot is not None
+    assert snapshot.business_description == "FinImpulse profile text"
+    assert snapshot.ir_url == "https://investor.nvidia.com/"
+    assert snapshot.market_cap_eur_m == 3_000_000
+    assert snapshot.financials.pe_ratio == 31.2
+    assert snapshot.financials.revenue_growth_pct == 51.7
+    assert snapshot.evidence.source == "finimpulse"
+    assert fallback.symbol_requests == [("NVDA", "USD")]
+
+
+def test_fallback_provider_skips_fallback_when_primary_has_valuation():
+    primary = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="KAR.ST",
+            financials=FinancialSnapshot(
+                pe_ratio=12.0, data_quality=DataQuality.PARTIAL
+            ),
+        )
+    )
+    fallback = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="KAR.ST",
+            financials=FinancialSnapshot(
+                pe_ratio=9.0, data_quality=DataQuality.PARTIAL
+            ),
+        )
+    )
+    provider = FallbackFundamentalsProvider(primary, fallback)
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert snapshot is not None
+    assert snapshot.financials.pe_ratio == 12.0
+    assert fallback.company_requests == []
+
+
+def test_fallback_provider_source_checks_include_both_providers():
+    primary = SymbolFundamentalsProvider(None)
+    fallback = SymbolFundamentalsProvider(None)
+    provider = FallbackFundamentalsProvider(primary, fallback)
+
+    checks = provider.source_checks()
+
+    assert [check.name for check in checks] == [
+        "symbol provider",
+        "symbol provider",
+        "valuation fallback",
+    ]
+    assert checks[-1].status == "warning"
+    assert "0 fallback valuation enrichments" in checks[-1].detail
 
 
 def test_enriched_provider_merges_fundamentals_into_research():

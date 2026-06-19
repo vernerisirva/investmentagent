@@ -377,6 +377,14 @@ def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch
         def __init__(self, api_key):
             self.api_key = api_key
 
+    class YahooProvider:
+        pass
+
+    class FallbackProvider:
+        def __init__(self, primary_provider, fallback_provider):
+            wrapped["primary_provider"] = primary_provider
+            wrapped["fallback_provider"] = fallback_provider
+
     class EnrichedProvider:
         def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
             wrapped["fundamentals_provider"] = fundamentals_provider
@@ -394,14 +402,66 @@ def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch
     monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
     monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider, raising=False)
     monkeypatch.setattr(cli, "FinnhubFundamentalsProvider", FinnhubProvider, raising=False)
+    monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider, raising=False)
+    monkeypatch.setattr(cli, "FallbackFundamentalsProvider", FallbackProvider, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
 
     result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "7"])
 
     assert result.exit_code == 0
-    assert isinstance(wrapped["fundamentals_provider"], FinimpulseProvider)
-    assert wrapped["fundamentals_provider"].api_key == "finimpulse-token"
+    assert isinstance(wrapped["fundamentals_provider"], FallbackProvider)
+    assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
+    assert wrapped["primary_provider"].api_key == "finimpulse-token"
+    assert isinstance(wrapped["fallback_provider"], YahooProvider)
     assert wrapped["max_enrichments"] == 7
+
+
+def test_watchlist_finimpulse_wraps_yahoo_valuation_fallback(monkeypatch):
+    wrapped = {}
+
+    class LiveProvider:
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return [SourceCheck("nasdaq nordic live data", "ok", "live data available")]
+
+    class FinimpulseProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class YahooProvider:
+        pass
+
+    class FallbackProvider:
+        def __init__(self, primary_provider, fallback_provider):
+            wrapped["primary_provider"] = primary_provider
+            wrapped["fallback_provider"] = fallback_provider
+
+    class EnrichedProvider:
+        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+            wrapped["fundamentals_provider"] = fundamentals_provider
+            self.base_provider = base_provider
+
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return self.base_provider.source_checks()
+
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
+    monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider)
+    monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider)
+    monkeypatch.setattr(cli, "FallbackFundamentalsProvider", FallbackProvider)
+    monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider)
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "3"])
+
+    assert result.exit_code == 0
+    assert isinstance(wrapped["fundamentals_provider"], FallbackProvider)
+    assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
+    assert isinstance(wrapped["fallback_provider"], YahooProvider)
 
 
 def test_watchlist_explicit_finimpulse_requires_api_key(monkeypatch):
@@ -470,6 +530,47 @@ def test_global_ai_top5_saves_markdown_and_json(monkeypatch):
     assert "# InvestmentAgent Global AI Top 5" in markdown
     assert payload["metadata"]["report_type"] == "global-ai"
     assert len(payload["items"]) == 2
+
+
+def test_global_ai_top5_uses_yahoo_valuation_fallback(monkeypatch):
+    wrapped = {}
+
+    class FinimpulseProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class YahooProvider:
+        pass
+
+    class FallbackProvider:
+        def __init__(self, primary_provider, fallback_provider):
+            wrapped["primary_provider"] = primary_provider
+            wrapped["fallback_provider"] = fallback_provider
+
+        def get_fundamentals_for_symbol(self, symbol, fallback_currency=None):
+            return snapshot_for(
+                symbol=symbol,
+                pe_ratio=22,
+                operating_margin_pct=30,
+            )
+
+        def source_check(self):
+            return SourceCheck(
+                "valuation fallback",
+                "ok",
+                "fixture valuation fallback",
+            )
+
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider)
+    monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider)
+    monkeypatch.setattr(cli, "FallbackFundamentalsProvider", FallbackProvider)
+
+    result = runner.invoke(app, ["global-ai", "top-5", "--limit", "1"])
+
+    assert result.exit_code == 0
+    assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
+    assert isinstance(wrapped["fallback_provider"], YahooProvider)
 
 
 def test_watchlist_explicit_finimpulse_rejects_blank_api_key(monkeypatch):

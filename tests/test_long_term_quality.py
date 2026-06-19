@@ -226,6 +226,42 @@ def test_high_quality_company_with_proxy_passes_high_conviction_gate():
     assert "valuation support available" in decision.reasons
 
 
+def test_missing_valuation_requires_exceptional_durable_anchors_for_research_candidate():
+    decision = assess_long_term_gate(
+        make_research(
+            pe_ratio=None,
+            price_to_book=None,
+            net_cash_eur_m=None,
+            revenue_growth_pct=12.0,
+            operating_margin_pct=15.0,
+            debt_to_equity=0.2,
+            average_daily_value_eur=250_000,
+            data_quality=DataQuality.PARTIAL,
+        )
+    )
+
+    assert decision.tier == LongTermGateTier.SPECULATIVE_MONITOR
+    assert "missing valuation support" in decision.blockers
+
+
+def test_missing_valuation_can_remain_watchlist_only_with_exceptional_quality():
+    decision = assess_long_term_gate(
+        make_research(
+            pe_ratio=None,
+            price_to_book=None,
+            net_cash_eur_m=None,
+            revenue_growth_pct=30.0,
+            operating_margin_pct=25.0,
+            debt_to_equity=0.1,
+            average_daily_value_eur=600_000,
+            data_quality=DataQuality.GOOD,
+        )
+    )
+
+    assert decision.tier == LongTermGateTier.FUNDAMENTAL_WATCHLIST
+    assert "missing valuation support" in decision.blockers
+
+
 def test_negative_margin_company_is_demoted_by_gate():
     decision = assess_long_term_gate(
         make_research(

@@ -229,7 +229,7 @@ def build_global_ai_top5(
             "report_type": "global-ai",
             "limit": limit,
             "universe_size": len(universe),
-            "fundamentals": "finimpulse",
+            "fundamentals": "finimpulse+yahoo-fallback",
         },
         source_checks=tuple(source_checks),
     )

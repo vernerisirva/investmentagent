@@ -13,8 +13,8 @@ CATALYST_SCORE_CAP = 24.0
 DEFAULT_CATALYST_SCORE = 8.0
 LIVE_CATALYST_SCORES = {
     "Live price available from Nasdaq Nordic": 2.0,
-    "High live turnover": 8.0,
-    "Moderate live turnover": 4.0,
+    "High live turnover": 3.0,
+    "Moderate live turnover": 2.0,
 }
 
 

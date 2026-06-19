@@ -49,7 +49,7 @@ def test_score_names_catalysts_in_reasons():
     assert "New contract announced" in score.reasons
 
 
-def test_score_weights_intraday_momentum_below_turnover():
+def test_score_weights_turnover_below_strong_intraday_momentum():
     positive_momentum = score_research(
         make_research_with_signals(("Positive intraday momentum (+5.9%)",))
     )
@@ -60,7 +60,13 @@ def test_score_weights_intraday_momentum_below_turnover():
 
     assert positive_momentum.catalyst == 3.0
     assert strong_momentum.catalyst == 7.0
-    assert turnover.catalyst == 8.0
+    assert turnover.catalyst == 3.0
+
+
+def test_high_live_turnover_is_low_confidence_catalyst():
+    score = score_research(make_research_with_signals(("High live turnover",)))
+
+    assert score.catalyst == 3.0
 
 
 def make_research_with_signals(catalysts: tuple[str, ...]) -> CompanyResearch:

@@ -22,7 +22,7 @@ from investmentagent.renderers import (
     render_watchlist_report_markdown,
     render_watchlist_text,
 )
-from investmentagent.reports import build_deep_dive, build_watchlist
+from investmentagent.reports import _score_for_strategy, build_deep_dive, build_watchlist
 
 
 class FakeResearchProvider:
@@ -661,9 +661,21 @@ def test_trading_strategy_boosts_strong_momentum_and_turnover():
     )
 
     assert items[0].research.company.ticker == "FAST"
-    assert items[0].score.catalyst == 26.0
-    assert items[0].score.total == 12.75
+    assert items[0].score.catalyst == 18.0
+    assert items[0].score.total == 4.75
     assert "trading strategy adjustment applied" in items[0].score.reasons
+
+
+def test_trading_strategy_adjustment_is_smaller_than_discovery_support():
+    research = make_research(
+        "TURN",
+        catalysts=("High live turnover",),
+    )
+
+    score = _score_for_strategy(research, "trading")
+
+    assert score.catalyst <= 8.0
+    assert "trading strategy adjustment applied" in score.reasons
 
 
 def test_trading_strategy_requires_short_term_setup():
@@ -1020,8 +1032,8 @@ def test_discovery_strategy_boosts_first_north_and_penalizes_spikes():
     )
 
     assert [item.research.company.ticker for item in items] == ["FIRST", "MAIN", "SPIKE"]
-    assert items[0].score.catalyst == 8.0
-    assert items[0].score.total == 78.0
+    assert items[0].score.catalyst == 6.0
+    assert items[0].score.total == 76.0
     assert "discovery strategy adjustment applied" in items[0].score.reasons
     assert items[2].score.risk_penalty == 46.0
     assert "discovery strategy adjustment applied" in items[2].score.warnings
@@ -1602,8 +1614,38 @@ def test_render_long_term_report_markdown_flags_no_research_candidates():
     )
 
     assert "No long-term research candidates passed the gate today." in output
-    assert "not long-term candidate recommendations" in output
+    assert "not primary long-term investment ideas" in output
     assert "## Insufficient Evidence" in output
+
+
+def test_long_term_report_marks_speculative_monitors_as_not_primary_ideas():
+    item = WatchlistItem(
+        rank=1,
+        research=make_research(
+            "SPEC",
+            pe_ratio=None,
+            price_to_book=None,
+            net_cash_eur_m=None,
+            catalysts=("High live turnover",),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(
+            value=0,
+            discovery=10,
+            catalyst=0,
+            risk_penalty=0,
+            data_quality_penalty=7,
+            total=3,
+        ),
+    )
+
+    output = render_watchlist_report_markdown(
+        [item],
+        metadata={"strategy": "long-term"},
+        source_checks=[],
+    )
+
+    assert "not primary long-term investment ideas" in output
 
 
 def test_render_long_term_report_markdown_flags_trading_only_movers():

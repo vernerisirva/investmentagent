@@ -246,6 +246,36 @@ def test_build_global_ai_top5_orders_candidates_by_total_score():
     assert report.source_checks[0].name == "global ai universe"
 
 
+def test_build_global_ai_top5_includes_fallback_valuation():
+    entry = valid_universe_entry(
+        name="Fallback AI",
+        ticker="FALL",
+        provider_symbol="FALL",
+    )
+    provider = StaticFundamentalsProvider(
+        {
+            "FALL": snapshot_for(
+                symbol="FALL",
+                pe_ratio=24,
+                price_to_book=5,
+                operating_margin_pct=30,
+                revenue_growth_pct=18,
+            )
+        }
+    )
+
+    report = build_global_ai_top5(
+        provider,
+        entries=(entry,),
+        limit=1,
+        generated_at="2026-06-19 08:00 EEST",
+    )
+
+    assert report.metadata["fundamentals"] == "finimpulse+yahoo-fallback"
+    assert report.items[0].valuation_summary == "P/E 24; P/B 5"
+    assert "missing valuation support" not in report.items[0].risk_flags
+
+
 def sample_global_ai_report() -> GlobalAIReport:
     entry = valid_universe_entry()
     research = make_research(

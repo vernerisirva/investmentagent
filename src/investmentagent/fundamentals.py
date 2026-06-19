@@ -88,27 +88,51 @@ class YahooFundamentalsProvider:
         self._fetcher = fetcher or _fetch_url
         self.attempted_lookups = 0
         self.successful_lookups = 0
+        self.valuation_support_lookups = 0
+        self.direct_valuation_lookups = 0
+        self.proxy_input_lookups = 0
         self.last_error: str | None = None
 
     def get_fundamentals(self, company: Company) -> FundamentalsSnapshot | None:
         for symbol in yahoo_symbol_candidates(company):
-            self.attempted_lookups += 1
-            url = _yahoo_quote_summary_url(symbol)
-            try:
-                snapshot = _parse_fundamentals_payload(
-                    payload=self._fetcher(url),
-                    symbol=symbol,
-                    url=url,
-                    fallback_currency=company.currency,
-                )
-            except Exception as exc:
-                self.last_error = str(exc)
-                continue
+            snapshot = self._get_fundamentals_for_symbol(
+                symbol, fallback_currency=company.currency
+            )
             if snapshot is not None:
-                self.successful_lookups += 1
-                self.last_error = None
                 return snapshot
         return None
+
+    def get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None = None
+    ) -> FundamentalsSnapshot | None:
+        normalized_symbol = symbol.strip().upper()
+        if not normalized_symbol:
+            raise ValueError("symbol is required")
+        return self._get_fundamentals_for_symbol(
+            normalized_symbol, fallback_currency=fallback_currency
+        )
+
+    def _get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None
+    ) -> FundamentalsSnapshot | None:
+        self.attempted_lookups += 1
+        url = _yahoo_quote_summary_url(symbol)
+        try:
+            snapshot = _parse_fundamentals_payload(
+                payload=self._fetcher(url),
+                symbol=symbol,
+                url=url,
+                fallback_currency=fallback_currency,
+            )
+        except Exception as exc:
+            self.last_error = str(exc)
+            return None
+        if snapshot is None:
+            return None
+        self._record_valuation_coverage(snapshot)
+        self.successful_lookups += 1
+        self.last_error = None
+        return snapshot
 
     def source_check(self) -> SourceCheck:
         if self.attempted_lookups == 0:
@@ -123,7 +147,11 @@ class YahooFundamentalsProvider:
             "Yahoo-style lookups parsed"
         )
         if self.successful_lookups == self.attempted_lookups:
-            return SourceCheck(name="free fundamentals", status="ok", detail=ratio)
+            return SourceCheck(
+                name="free fundamentals",
+                status="ok",
+                detail=self._source_detail(ratio),
+            )
 
         if self.successful_lookups == 0:
             detail = f"No successful Yahoo-style fundamentals lookups ({ratio})"
@@ -135,7 +163,31 @@ class YahooFundamentalsProvider:
                 detail=detail,
             )
 
-        return SourceCheck(name="free fundamentals", status="warning", detail=ratio)
+        return SourceCheck(
+            name="free fundamentals",
+            status="warning",
+            detail=self._source_detail(ratio),
+        )
+
+    def _record_valuation_coverage(self, snapshot: FundamentalsSnapshot) -> None:
+        financials = snapshot.financials
+        if has_valuation_support(financials):
+            self.valuation_support_lookups += 1
+        if has_any_financial_field(financials, DIRECT_VALUATION_FIELDS):
+            self.direct_valuation_lookups += 1
+        if has_any_financial_field(financials, PROXY_VALUATION_FIELDS):
+            self.proxy_input_lookups += 1
+
+    def _source_detail(self, ratio: str) -> str:
+        return (
+            f"{ratio}; valuation support {self.valuation_support_lookups}/"
+            f"{self.successful_lookups}; direct valuation "
+            f"{self.direct_valuation_lookups}/{self.successful_lookups}; "
+            f"proxy inputs {self.proxy_input_lookups}/{self.successful_lookups}; "
+            f"missing valuation support "
+            f"{self.successful_lookups - self.valuation_support_lookups}/"
+            f"{self.successful_lookups}"
+        )
 
 
 class FinnhubFundamentalsProvider:
@@ -321,11 +373,11 @@ class FinimpulseFundamentalsProvider:
 
     def _record_valuation_coverage(self, snapshot: FundamentalsSnapshot) -> None:
         financials = snapshot.financials
-        if _has_valuation_support(financials):
+        if has_valuation_support(financials):
             self.valuation_support_lookups += 1
-        if _has_any_financial_field(financials, DIRECT_VALUATION_FIELDS):
+        if has_any_financial_field(financials, DIRECT_VALUATION_FIELDS):
             self.direct_valuation_lookups += 1
-        if _has_any_financial_field(financials, PROXY_VALUATION_FIELDS):
+        if has_any_financial_field(financials, PROXY_VALUATION_FIELDS):
             self.proxy_input_lookups += 1
 
     def _source_detail(self, ratio: str) -> str:
@@ -337,6 +389,83 @@ class FinimpulseFundamentalsProvider:
             f"missing valuation support "
             f"{self.successful_lookups - self.valuation_support_lookups}/"
             f"{self.successful_lookups}"
+        )
+
+
+class FallbackFundamentalsProvider:
+    def __init__(self, primary_provider, fallback_provider) -> None:
+        self.primary_provider = primary_provider
+        self.fallback_provider = fallback_provider
+        self.fallback_attempts = 0
+        self.fallback_successes = 0
+        self.fallback_valuation_successes = 0
+
+    def get_fundamentals(self, company: Company) -> FundamentalsSnapshot | None:
+        primary = self.primary_provider.get_fundamentals(company)
+        if primary is not None and has_valuation_support(primary.financials):
+            return primary
+        self.fallback_attempts += 1
+        fallback = self.fallback_provider.get_fundamentals(company)
+        return self._merge(primary, fallback)
+
+    def get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None = None
+    ) -> FundamentalsSnapshot | None:
+        primary_lookup = getattr(self.primary_provider, "get_fundamentals_for_symbol")
+        primary = primary_lookup(symbol, fallback_currency=fallback_currency)
+        if primary is not None and has_valuation_support(primary.financials):
+            return primary
+        self.fallback_attempts += 1
+        fallback_lookup = getattr(self.fallback_provider, "get_fundamentals_for_symbol")
+        fallback = fallback_lookup(symbol, fallback_currency=fallback_currency)
+        return self._merge(primary, fallback)
+
+    def source_check(self) -> SourceCheck:
+        if self.fallback_attempts == 0:
+            return SourceCheck(
+                "valuation fallback",
+                "warning",
+                "0 fallback valuation enrichments; no fallback lookups attempted",
+            )
+        status = "ok" if self.fallback_valuation_successes else "warning"
+        return SourceCheck(
+            "valuation fallback",
+            status,
+            (
+                f"{self.fallback_successes}/{self.fallback_attempts} fallback "
+                f"lookups parsed; {self.fallback_valuation_successes} fallback "
+                "valuation enrichments"
+            ),
+        )
+
+    def source_checks(self):
+        checks = []
+        for provider in (self.primary_provider, self.fallback_provider):
+            source_checks = getattr(provider, "source_checks", None)
+            if callable(source_checks):
+                checks.extend(source_checks())
+                continue
+            source_check = getattr(provider, "source_check", None)
+            if callable(source_check):
+                checks.append(source_check())
+        checks.append(self.source_check())
+        return checks
+
+    def _merge(
+        self,
+        primary: FundamentalsSnapshot | None,
+        fallback: FundamentalsSnapshot | None,
+    ) -> FundamentalsSnapshot | None:
+        if fallback is None:
+            return primary
+        self.fallback_successes += 1
+        if has_valuation_support(fallback.financials):
+            self.fallback_valuation_successes += 1
+        if primary is None:
+            return fallback
+        return replace(
+            primary,
+            financials=_merge_financials(primary.financials, fallback.financials),
         )
 
 
@@ -814,14 +943,14 @@ def _has_meaningful_fields(
     )
 
 
-def _has_any_financial_field(
+def has_any_financial_field(
     financials: FinancialSnapshot, field_names: tuple[str, ...]
 ) -> bool:
     return any(getattr(financials, field_name) is not None for field_name in field_names)
 
 
-def _has_valuation_support(financials: FinancialSnapshot) -> bool:
-    return _has_any_financial_field(
+def has_valuation_support(financials: FinancialSnapshot) -> bool:
+    return has_any_financial_field(
         financials, DIRECT_VALUATION_FIELDS + PROXY_VALUATION_FIELDS
     )
 
