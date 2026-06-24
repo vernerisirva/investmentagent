@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import json
 import re
+import ssl
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from typing import Any
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+
+import certifi
 
 from investmentagent.models import (
     Company,
@@ -428,14 +431,22 @@ class FallbackFundamentalsProvider:
                 "0 fallback valuation enrichments; no fallback lookups attempted",
             )
         status = "ok" if self.fallback_valuation_successes else "warning"
+        detail = (
+            f"{self.fallback_successes}/{self.fallback_attempts} fallback "
+            f"lookups parsed; {self.fallback_valuation_successes} fallback "
+            "valuation enrichments"
+        )
+        fallback_check = self._provider_source_check(self.fallback_provider)
+        if (
+            fallback_check is not None
+            and fallback_check.status != "ok"
+            and fallback_check.detail
+        ):
+            detail = f"{detail}; fallback source: {fallback_check.detail}"
         return SourceCheck(
             "valuation fallback",
             status,
-            (
-                f"{self.fallback_successes}/{self.fallback_attempts} fallback "
-                f"lookups parsed; {self.fallback_valuation_successes} fallback "
-                "valuation enrichments"
-            ),
+            detail,
         )
 
     def source_checks(self):
@@ -450,6 +461,12 @@ class FallbackFundamentalsProvider:
                 checks.append(source_check())
         checks.append(self.source_check())
         return checks
+
+    def _provider_source_check(self, provider) -> SourceCheck | None:
+        source_check = getattr(provider, "source_check", None)
+        if callable(source_check):
+            return source_check()
+        return None
 
     def _merge(
         self,
@@ -504,6 +521,10 @@ class EnrichedResearchProvider:
 
     def source_checks(self):
         checks = list(self.base_provider.source_checks())
+        source_checks = getattr(self.fundamentals_provider, "source_checks", None)
+        if callable(source_checks):
+            checks.extend(source_checks())
+            return checks
         source_check = getattr(self.fundamentals_provider, "source_check", None)
         if callable(source_check):
             checks.append(source_check())
@@ -981,7 +1002,10 @@ def _fetch_url(url: str) -> str:
             "User-Agent": "Mozilla/5.0",
         },
     )
-    with urlopen(request, timeout=YAHOO_FETCH_TIMEOUT_SECONDS) as response:
+    context = ssl.create_default_context(cafile=certifi.where())
+    with urlopen(
+        request, timeout=YAHOO_FETCH_TIMEOUT_SECONDS, context=context
+    ) as response:
         return response.read().decode("utf-8")
 
 

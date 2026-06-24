@@ -9,6 +9,7 @@ description = "CLI-first Nordic small/mid-cap investing research agent"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+  "certifi>=2024.2.2",
   "typer>=0.12",
 ]
 

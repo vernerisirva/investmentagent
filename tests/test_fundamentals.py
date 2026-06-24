@@ -1,5 +1,6 @@
 import json
 
+import investmentagent.fundamentals as fundamentals
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
     FallbackFundamentalsProvider,
@@ -703,8 +704,15 @@ class StaticFundamentalsProvider:
 
 
 class SymbolFundamentalsProvider:
-    def __init__(self, snapshot):
+    def __init__(
+        self,
+        snapshot,
+        source_status: str = "ok",
+        source_detail: str = "fixture provider",
+    ):
         self.snapshot = snapshot
+        self.source_status = source_status
+        self.source_detail = source_detail
         self.company_requests: list[Company] = []
         self.symbol_requests: list[tuple[str, str | None]] = []
 
@@ -719,7 +727,7 @@ class SymbolFundamentalsProvider:
         return self.snapshot
 
     def source_check(self):
-        return SourceCheck("symbol provider", "ok", "fixture provider")
+        return SourceCheck("symbol provider", self.source_status, self.source_detail)
 
 
 def test_fallback_provider_merges_valuation_without_overwriting_profile():
@@ -807,6 +815,72 @@ def test_fallback_provider_source_checks_include_both_providers():
     ]
     assert checks[-1].status == "warning"
     assert "0 fallback valuation enrichments" in checks[-1].detail
+
+
+def test_fallback_provider_source_check_includes_fallback_failure_detail():
+    primary = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="MSFT",
+            financials=FinancialSnapshot(data_quality=DataQuality.PARTIAL),
+        )
+    )
+    fallback = SymbolFundamentalsProvider(
+        None,
+        source_status="warning",
+        source_detail=(
+            "No successful Yahoo-style fundamentals lookups "
+            "(0/1 Yahoo-style lookups parsed): certificate verify failed"
+        ),
+    )
+    provider = FallbackFundamentalsProvider(primary, fallback)
+
+    provider.get_fundamentals_for_symbol("MSFT", fallback_currency="USD")
+
+    check = provider.source_check()
+
+    assert check.status == "warning"
+    assert "certificate verify failed" in check.detail
+
+
+def test_enriched_provider_includes_composite_fundamentals_source_checks():
+    base = BaseProvider()
+    primary = SymbolFundamentalsProvider(None, source_detail="primary detail")
+    fallback = SymbolFundamentalsProvider(None, source_detail="fallback detail")
+    provider = EnrichedResearchProvider(
+        base,
+        FallbackFundamentalsProvider(primary, fallback),
+    )
+
+    checks = provider.source_checks()
+
+    assert [check.detail for check in checks] == [
+        "primary detail",
+        "fallback detail",
+        "0 fallback valuation enrichments; no fallback lookups attempted",
+    ]
+
+
+def test_yahoo_fetch_uses_certifi_certificate_context(monkeypatch):
+    captured = {}
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return None
+
+        def read(self):
+            return b"{}"
+
+    def fake_urlopen(request, **kwargs):
+        captured.update(kwargs)
+        return Response()
+
+    monkeypatch.setattr(fundamentals, "urlopen", fake_urlopen)
+
+    assert fundamentals._fetch_url("https://query1.finance.yahoo.com/test") == "{}"
+    assert "context" in captured
 
 
 def test_enriched_provider_merges_fundamentals_into_research():

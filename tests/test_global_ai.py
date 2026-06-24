@@ -141,6 +141,15 @@ class StaticFundamentalsProvider:
         return SourceCheck("finimpulse fundamentals", "ok", "fixture lookups parsed")
 
 
+class CompositeStaticFundamentalsProvider(StaticFundamentalsProvider):
+    def source_checks(self):
+        return [
+            SourceCheck("finimpulse fundamentals", "ok", "primary detail"),
+            SourceCheck("free fundamentals", "warning", "fallback detail"),
+            SourceCheck("valuation fallback", "warning", "wrapper detail"),
+        ]
+
+
 def test_load_global_ai_universe_reads_packaged_entries():
     entries = load_global_ai_universe()
 
@@ -274,6 +283,35 @@ def test_build_global_ai_top5_includes_fallback_valuation():
     assert report.metadata["fundamentals"] == "finimpulse+yahoo-fallback"
     assert report.items[0].valuation_summary == "P/E 24; P/B 5"
     assert "missing valuation support" not in report.items[0].risk_flags
+
+
+def test_build_global_ai_top5_includes_composite_source_checks():
+    entry = valid_universe_entry(ticker="FALL", provider_symbol="FALL")
+    provider = CompositeStaticFundamentalsProvider(
+        {
+            "FALL": snapshot_for(
+                symbol="FALL",
+                pe_ratio=24,
+                operating_margin_pct=30,
+                revenue_growth_pct=18,
+            )
+        }
+    )
+
+    report = build_global_ai_top5(
+        provider,
+        entries=(entry,),
+        limit=1,
+        generated_at="2026-06-24 08:00 EEST",
+    )
+
+    assert [check.name for check in report.source_checks] == [
+        "global ai universe",
+        "finimpulse fundamentals",
+        "free fundamentals",
+        "valuation fallback",
+    ]
+    assert report.source_checks[2].detail == "fallback detail"
 
 
 def sample_global_ai_report() -> GlobalAIReport:

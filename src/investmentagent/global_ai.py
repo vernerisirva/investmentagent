@@ -218,9 +218,13 @@ def build_global_ai_top5(
             f"{len(universe)} curated global AI companies loaded",
         )
     ]
-    source_check = getattr(fundamentals_provider, "source_check", None)
-    if callable(source_check):
-        source_checks.append(source_check())
+    provider_source_checks = getattr(fundamentals_provider, "source_checks", None)
+    if callable(provider_source_checks):
+        source_checks.extend(provider_source_checks())
+    else:
+        source_check = getattr(fundamentals_provider, "source_check", None)
+        if callable(source_check):
+            source_checks.append(source_check())
 
     return GlobalAIReport(
         items=tuple(ranked_items),
