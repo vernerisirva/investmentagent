@@ -380,10 +380,15 @@ def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch
     class YahooProvider:
         pass
 
-    class FallbackProvider:
-        def __init__(self, primary_provider, fallback_provider):
-            wrapped["primary_provider"] = primary_provider
-            wrapped["fallback_provider"] = fallback_provider
+    class EodhdProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    def compose(primary_provider, eodhd_provider, yahoo_provider):
+        wrapped["primary_provider"] = primary_provider
+        wrapped["eodhd_provider"] = eodhd_provider
+        wrapped["yahoo_provider"] = yahoo_provider
+        return "composed-provider"
 
     class EnrichedProvider:
         def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
@@ -399,20 +404,24 @@ def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch
 
     monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
     monkeypatch.setenv("FINNHUB_API_KEY", "finnhub-token")
+    monkeypatch.delenv("EODHD_API_KEY", raising=False)
     monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
     monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider, raising=False)
     monkeypatch.setattr(cli, "FinnhubFundamentalsProvider", FinnhubProvider, raising=False)
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider, raising=False)
-    monkeypatch.setattr(cli, "FallbackFundamentalsProvider", FallbackProvider, raising=False)
+    monkeypatch.setattr(cli, "EodhdFundamentalsProvider", EodhdProvider, raising=False)
+    monkeypatch.setattr(cli, "compose_valuation_fallback_provider", compose, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
 
     result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "7"])
 
     assert result.exit_code == 0
-    assert isinstance(wrapped["fundamentals_provider"], FallbackProvider)
+    assert wrapped["fundamentals_provider"] == "composed-provider"
     assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
     assert wrapped["primary_provider"].api_key == "finimpulse-token"
-    assert isinstance(wrapped["fallback_provider"], YahooProvider)
+    assert isinstance(wrapped["eodhd_provider"], EodhdProvider)
+    assert wrapped["eodhd_provider"].api_key is None
+    assert isinstance(wrapped["yahoo_provider"], YahooProvider)
     assert wrapped["max_enrichments"] == 7
 
 
@@ -433,10 +442,15 @@ def test_watchlist_finimpulse_wraps_yahoo_valuation_fallback(monkeypatch):
     class YahooProvider:
         pass
 
-    class FallbackProvider:
-        def __init__(self, primary_provider, fallback_provider):
-            wrapped["primary_provider"] = primary_provider
-            wrapped["fallback_provider"] = fallback_provider
+    class EodhdProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    def compose(primary_provider, eodhd_provider, yahoo_provider):
+        wrapped["primary_provider"] = primary_provider
+        wrapped["eodhd_provider"] = eodhd_provider
+        wrapped["yahoo_provider"] = yahoo_provider
+        return "composed-provider"
 
     class EnrichedProvider:
         def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
@@ -450,18 +464,79 @@ def test_watchlist_finimpulse_wraps_yahoo_valuation_fallback(monkeypatch):
             return self.base_provider.source_checks()
 
     monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.delenv("EODHD_API_KEY", raising=False)
     monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
     monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider)
+    monkeypatch.setattr(cli, "EodhdFundamentalsProvider", EodhdProvider)
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider)
-    monkeypatch.setattr(cli, "FallbackFundamentalsProvider", FallbackProvider)
+    monkeypatch.setattr(cli, "compose_valuation_fallback_provider", compose)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider)
 
     result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "3"])
 
     assert result.exit_code == 0
-    assert isinstance(wrapped["fundamentals_provider"], FallbackProvider)
+    assert wrapped["fundamentals_provider"] == "composed-provider"
     assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
-    assert isinstance(wrapped["fallback_provider"], YahooProvider)
+    assert isinstance(wrapped["eodhd_provider"], EodhdProvider)
+    assert wrapped["eodhd_provider"].api_key is None
+    assert isinstance(wrapped["yahoo_provider"], YahooProvider)
+
+
+def test_watchlist_finimpulse_wraps_eodhd_before_yahoo_when_key_present(monkeypatch):
+    wrapped = {}
+
+    class LiveProvider:
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return [SourceCheck("nasdaq nordic live data", "ok", "live data available")]
+
+    class FinimpulseProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class EodhdProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class YahooProvider:
+        pass
+
+    class EnrichedProvider:
+        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+            wrapped["fundamentals_provider"] = fundamentals_provider
+            self.base_provider = base_provider
+
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return self.base_provider.source_checks()
+
+    def compose(primary_provider, eodhd_provider, yahoo_provider):
+        wrapped["primary_provider"] = primary_provider
+        wrapped["eodhd_provider"] = eodhd_provider
+        wrapped["yahoo_provider"] = yahoo_provider
+        return "composed-provider"
+
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.setenv("EODHD_API_KEY", "eodhd-token")
+    monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
+    monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider)
+    monkeypatch.setattr(cli, "EodhdFundamentalsProvider", EodhdProvider)
+    monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider)
+    monkeypatch.setattr(cli, "compose_valuation_fallback_provider", compose)
+    monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider)
+
+    result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "3"])
+
+    assert result.exit_code == 0
+    assert wrapped["fundamentals_provider"] == "composed-provider"
+    assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
+    assert isinstance(wrapped["eodhd_provider"], EodhdProvider)
+    assert wrapped["eodhd_provider"].api_key == "eodhd-token"
+    assert isinstance(wrapped["yahoo_provider"], YahooProvider)
 
 
 def test_watchlist_explicit_finimpulse_requires_api_key(monkeypatch):
@@ -542,6 +617,10 @@ def test_global_ai_top5_uses_yahoo_valuation_fallback(monkeypatch):
     class YahooProvider:
         pass
 
+    class EodhdProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
     class FallbackProvider:
         def __init__(self, primary_provider, fallback_provider):
             wrapped["primary_provider"] = primary_provider
@@ -559,18 +638,75 @@ def test_global_ai_top5_uses_yahoo_valuation_fallback(monkeypatch):
                 "valuation fallback",
                 "ok",
                 "fixture valuation fallback",
-            )
+                )
+
+    def compose(primary_provider, eodhd_provider, yahoo_provider):
+        wrapped["primary_provider"] = primary_provider
+        wrapped["eodhd_provider"] = eodhd_provider
+        wrapped["yahoo_provider"] = yahoo_provider
+        return FallbackProvider(primary_provider, yahoo_provider)
 
     monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.delenv("EODHD_API_KEY", raising=False)
     monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider)
+    monkeypatch.setattr(cli, "EodhdFundamentalsProvider", EodhdProvider)
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider)
-    monkeypatch.setattr(cli, "FallbackFundamentalsProvider", FallbackProvider)
+    monkeypatch.setattr(cli, "compose_valuation_fallback_provider", compose)
 
     result = runner.invoke(app, ["global-ai", "top-5", "--limit", "1"])
 
     assert result.exit_code == 0
     assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
-    assert isinstance(wrapped["fallback_provider"], YahooProvider)
+    assert isinstance(wrapped["eodhd_provider"], EodhdProvider)
+    assert wrapped["eodhd_provider"].api_key is None
+    assert isinstance(wrapped["yahoo_provider"], YahooProvider)
+
+
+def test_global_ai_top5_uses_eodhd_before_yahoo_when_key_present(monkeypatch):
+    wrapped = {}
+
+    class FinimpulseProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class EodhdProvider:
+        def __init__(self, api_key):
+            self.api_key = api_key
+
+    class YahooProvider:
+        pass
+
+    class ComposedProvider:
+        def get_fundamentals_for_symbol(self, symbol, fallback_currency=None):
+            return snapshot_for(
+                symbol=symbol,
+                pe_ratio=22,
+                operating_margin_pct=30,
+            )
+
+        def source_check(self):
+            return SourceCheck("valuation fallback", "ok", "fixture valuation fallback")
+
+    def compose(primary_provider, eodhd_provider, yahoo_provider):
+        wrapped["primary_provider"] = primary_provider
+        wrapped["eodhd_provider"] = eodhd_provider
+        wrapped["yahoo_provider"] = yahoo_provider
+        return ComposedProvider()
+
+    monkeypatch.setenv("FINIMPULSE_API_KEY", "finimpulse-token")
+    monkeypatch.setenv("EODHD_API_KEY", "eodhd-token")
+    monkeypatch.setattr(cli, "FinimpulseFundamentalsProvider", FinimpulseProvider)
+    monkeypatch.setattr(cli, "EodhdFundamentalsProvider", EodhdProvider)
+    monkeypatch.setattr(cli, "YahooFundamentalsProvider", YahooProvider)
+    monkeypatch.setattr(cli, "compose_valuation_fallback_provider", compose)
+
+    result = runner.invoke(app, ["global-ai", "top-5", "--limit", "1"])
+
+    assert result.exit_code == 0
+    assert isinstance(wrapped["primary_provider"], FinimpulseProvider)
+    assert isinstance(wrapped["eodhd_provider"], EodhdProvider)
+    assert wrapped["eodhd_provider"].api_key == "eodhd-token"
+    assert isinstance(wrapped["yahoo_provider"], YahooProvider)
 
 
 def test_watchlist_explicit_finimpulse_rejects_blank_api_key(monkeypatch):

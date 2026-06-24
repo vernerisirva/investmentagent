@@ -3,11 +3,14 @@ import json
 import investmentagent.fundamentals as fundamentals
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
+    EodhdFundamentalsProvider,
     FallbackFundamentalsProvider,
     FinimpulseFundamentalsProvider,
     FinnhubFundamentalsProvider,
     FundamentalsSnapshot,
     YahooFundamentalsProvider,
+    compose_valuation_fallback_provider,
+    eodhd_symbol_candidates,
     finimpulse_symbol_candidates,
     finnhub_symbol_candidates,
     yahoo_symbol_candidates,
@@ -191,6 +194,107 @@ def finimpulse_global_search_payload() -> str:
             },
         }
     )
+
+
+def eodhd_payload() -> str:
+    return json.dumps(
+        {
+            "General": {
+                "Code": "MSFT",
+                "Name": "Microsoft Corporation",
+                "CurrencyCode": "USD",
+                "Description": "Microsoft develops software and cloud services.",
+                "WebURL": "https://www.microsoft.com/en-us/investor",
+            },
+            "Highlights": {
+                "MarketCapitalization": 2_900_000_000_000,
+                "PERatio": 28.4,
+                "RevenueTTM": 245_000_000_000,
+                "QuarterlyRevenueGrowthYOY": 0.13,
+                "OperatingMarginTTM": 0.43,
+                "ProfitMargin": 0.36,
+            },
+            "Valuation": {
+                "TrailingPE": 29.1,
+                "PriceBookMRQ": 9.8,
+            },
+        }
+    )
+
+
+def test_eodhd_symbol_candidates_for_sweden_finland_and_global_symbols():
+    assert eodhd_symbol_candidates(make_company("KAR", "SE")) == ("KAR.ST",)
+    assert eodhd_symbol_candidates(make_company("GOFORE", "FI")) == ("GOFORE.HE",)
+    assert eodhd_symbol_candidates(make_company("BEAMMW B", "SE")) == (
+        "BEAMMW-B.ST",
+        "BEAMMWB.ST",
+    )
+
+
+def test_eodhd_provider_fetches_explicit_symbol_with_valuation():
+    requested_urls: list[str] = []
+
+    def fetcher(url: str) -> str:
+        requested_urls.append(url)
+        return eodhd_payload()
+
+    provider = EodhdFundamentalsProvider(api_key="eod-token", fetcher=fetcher)
+
+    snapshot = provider.get_fundamentals_for_symbol("msft", fallback_currency="USD")
+
+    assert isinstance(snapshot, FundamentalsSnapshot)
+    assert snapshot.symbol == "MSFT"
+    assert requested_urls == [
+        "https://eodhd.com/api/v1.1/fundamentals/MSFT"
+        "?api_token=eod-token&fmt=json"
+    ]
+    assert snapshot.market_cap_eur_m == 2_668_000.0
+    assert snapshot.business_description == "Microsoft develops software and cloud services."
+    assert snapshot.ir_url == "https://www.microsoft.com/en-us/investor"
+    assert snapshot.financials.pe_ratio == 28.4
+    assert snapshot.financials.price_to_book == 9.8
+    assert snapshot.financials.revenue_eur_m == 225_400.0
+    assert snapshot.financials.revenue_growth_pct == 13.0
+    assert snapshot.financials.operating_margin_pct == 43.0
+    assert snapshot.evidence.source == "eodhd"
+    assert provider.source_check().status == "ok"
+    assert "valuation support 1/1" in provider.source_check().detail
+
+
+def test_eodhd_provider_source_check_reports_not_configured():
+    provider = EodhdFundamentalsProvider(api_key=None, fetcher=lambda url: eodhd_payload())
+
+    assert provider.get_fundamentals_for_symbol("MSFT") is None
+
+    check = provider.source_check()
+
+    assert check.name == "eodhd fundamentals"
+    assert check.status == "warning"
+    assert "EODHD_API_KEY is not configured" in check.detail
+
+
+def test_compose_valuation_fallback_provider_inserts_eodhd_before_yahoo():
+    primary = SymbolFundamentalsProvider(None, source_detail="finimpulse")
+    eodhd = SymbolFundamentalsProvider(None, source_detail="eodhd")
+    yahoo = SymbolFundamentalsProvider(
+        None, source_status="warning", source_detail="yahoo"
+    )
+
+    provider = compose_valuation_fallback_provider(primary, eodhd, yahoo)
+
+    provider.get_fundamentals_for_symbol("MSFT", fallback_currency="USD")
+    checks = provider.source_checks()
+
+    assert [check.detail for check in checks] == [
+        "finimpulse",
+        "eodhd",
+        "0/1 fallback lookups parsed; 0 fallback valuation enrichments",
+        "yahoo",
+        (
+            "0/1 fallback lookups parsed; 0 fallback valuation enrichments; "
+            "fallback source: yahoo"
+        ),
+    ]
 
 
 def test_yahoo_symbol_candidates_for_sweden_and_finland():

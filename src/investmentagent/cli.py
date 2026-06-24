@@ -8,10 +8,12 @@ import typer
 
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
+    EodhdFundamentalsProvider,
     FallbackFundamentalsProvider,
     FinimpulseFundamentalsProvider,
     FinnhubFundamentalsProvider,
     YahooFundamentalsProvider,
+    compose_valuation_fallback_provider,
 )
 from investmentagent.global_ai import build_global_ai_top5
 from investmentagent.market_calendar import market_day_status
@@ -146,6 +148,16 @@ def _api_key_from_environment(name: str) -> str | None:
     return stripped or None
 
 
+def _finimpulse_valuation_fallback_provider(
+    finimpulse_api_key: str, eodhd_api_key: str | None
+):
+    return compose_valuation_fallback_provider(
+        FinimpulseFundamentalsProvider(finimpulse_api_key),
+        EodhdFundamentalsProvider(eodhd_api_key),
+        YahooFundamentalsProvider(),
+    )
+
+
 def _raise_for_source_errors(provider) -> None:
     for check in provider.source_checks():
         if check.status == "error":
@@ -230,12 +242,13 @@ def global_ai_top5(
 ) -> None:
     normalized_output = _normalize_global_ai_output_option(output)
     finimpulse_api_key = _api_key_from_environment("FINIMPULSE_API_KEY")
+    eodhd_api_key = _api_key_from_environment("EODHD_API_KEY")
     if finimpulse_api_key is None:
         raise typer.BadParameter("FINIMPULSE_API_KEY is required for global-ai top-5")
 
-    provider = FallbackFundamentalsProvider(
-        FinimpulseFundamentalsProvider(finimpulse_api_key),
-        YahooFundamentalsProvider(),
+    provider = _finimpulse_valuation_fallback_provider(
+        finimpulse_api_key,
+        eodhd_api_key,
     )
     report = build_global_ai_top5(
         provider,
@@ -297,6 +310,7 @@ def watchlist(
     min_country_counts = _parse_min_country_options(tuple(min_country or ()))
     normalized_provider_name = provider_name.strip().lower()
     finimpulse_api_key = _api_key_from_environment("FINIMPULSE_API_KEY")
+    eodhd_api_key = _api_key_from_environment("EODHD_API_KEY")
     finnhub_api_key = _api_key_from_environment("FINNHUB_API_KEY")
     effective_fundamentals = _effective_fundamentals_mode(
         normalized_fundamentals,
@@ -318,9 +332,9 @@ def watchlist(
         if effective_fundamentals == "free":
             fundamentals_provider = YahooFundamentalsProvider()
         elif effective_fundamentals == "finimpulse":
-            fundamentals_provider = FallbackFundamentalsProvider(
-                FinimpulseFundamentalsProvider(finimpulse_api_key),
-                YahooFundamentalsProvider(),
+            fundamentals_provider = _finimpulse_valuation_fallback_provider(
+                finimpulse_api_key,
+                eodhd_api_key,
             )
         elif effective_fundamentals == "finnhub":
             fundamentals_provider = FinnhubFundamentalsProvider(finnhub_api_key)

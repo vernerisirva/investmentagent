@@ -6,7 +6,7 @@ import ssl
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from typing import Any
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
 import certifi
@@ -39,6 +39,11 @@ FINIMPULSE_SEARCH_DOC_URL = "https://developers.finimpulse.com/v1/search/"
 FINIMPULSE_PROFILE_URL = "https://api.finimpulse.com/v1/profile"
 FINIMPULSE_PROFILE_DOC_URL = "https://developers.finimpulse.com/v1/profile/"
 FINIMPULSE_FETCH_TIMEOUT_SECONDS = 3
+EODHD_FUNDAMENTALS_URL = "https://eodhd.com/api/v1.1/fundamentals/{symbol}"
+EODHD_FUNDAMENTALS_DOC_URL = (
+    "https://eodhd.com/financial-apis/stock-etfs-fundamental-data-feeds"
+)
+EODHD_FETCH_TIMEOUT_SECONDS = 3
 _EUR_RATES = {"EUR": 1.0, "SEK": 0.1, "USD": 0.92}
 FINIMPULSE_PE_KEYS = ("pe_ratio", "trailing_pe", "trailingPE", "forward_pe")
 FINIMPULSE_PRICE_TO_BOOK_KEYS = (
@@ -253,6 +258,122 @@ class FinnhubFundamentalsProvider:
             )
 
         return SourceCheck(name="finnhub fundamentals", status="warning", detail=ratio)
+
+
+class EodhdFundamentalsProvider:
+    def __init__(
+        self, api_key: str | None, fetcher: Callable[[str], str] | None = None
+    ) -> None:
+        self.api_key = api_key.strip() if api_key is not None else None
+        self._fetcher = fetcher or _fetch_eodhd_url
+        self.attempted_lookups = 0
+        self.successful_lookups = 0
+        self.valuation_support_lookups = 0
+        self.direct_valuation_lookups = 0
+        self.proxy_input_lookups = 0
+        self.last_error: str | None = None
+
+    def get_fundamentals(self, company: Company) -> FundamentalsSnapshot | None:
+        for symbol in eodhd_symbol_candidates(company):
+            snapshot = self._get_fundamentals_for_symbol(
+                symbol, fallback_currency=company.currency
+            )
+            if snapshot is not None:
+                return snapshot
+        return None
+
+    def get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None = None
+    ) -> FundamentalsSnapshot | None:
+        normalized_symbol = symbol.strip().upper()
+        if not normalized_symbol:
+            raise ValueError("symbol is required")
+        return self._get_fundamentals_for_symbol(
+            normalized_symbol, fallback_currency=fallback_currency
+        )
+
+    def _get_fundamentals_for_symbol(
+        self, symbol: str, fallback_currency: str | None
+    ) -> FundamentalsSnapshot | None:
+        if not self.api_key:
+            self.last_error = "EODHD_API_KEY is not configured"
+            return None
+        self.attempted_lookups += 1
+        url = _eodhd_fundamentals_url(symbol, self.api_key)
+        try:
+            snapshot = _parse_eodhd_fundamentals_payload(
+                payload=self._fetcher(url),
+                symbol=symbol,
+                fallback_currency=fallback_currency,
+            )
+        except Exception as exc:
+            self.last_error = _token_safe_error(exc, self.api_key)
+            return None
+        if snapshot is None:
+            return None
+        self._record_valuation_coverage(snapshot)
+        self.successful_lookups += 1
+        self.last_error = None
+        return snapshot
+
+    def source_check(self) -> SourceCheck:
+        if not self.api_key:
+            return SourceCheck(
+                name="eodhd fundamentals",
+                status="warning",
+                detail="EODHD_API_KEY is not configured",
+            )
+        if self.attempted_lookups == 0:
+            return SourceCheck(
+                name="eodhd fundamentals",
+                status="warning",
+                detail="No lookups attempted for EODHD fundamentals",
+            )
+
+        ratio = (
+            f"{self.successful_lookups}/{self.attempted_lookups} "
+            "EODHD lookups parsed"
+        )
+        if self.successful_lookups == self.attempted_lookups:
+            return SourceCheck(
+                name="eodhd fundamentals",
+                status="ok",
+                detail=self._source_detail(ratio),
+            )
+        if self.successful_lookups == 0:
+            detail = f"No successful EODHD fundamentals lookups ({ratio})"
+            if self.last_error:
+                detail = f"{detail}: {self.last_error}"
+            return SourceCheck(
+                name="eodhd fundamentals",
+                status="warning",
+                detail=detail,
+            )
+        return SourceCheck(
+            name="eodhd fundamentals",
+            status="warning",
+            detail=self._source_detail(ratio),
+        )
+
+    def _record_valuation_coverage(self, snapshot: FundamentalsSnapshot) -> None:
+        financials = snapshot.financials
+        if has_valuation_support(financials):
+            self.valuation_support_lookups += 1
+        if has_any_financial_field(financials, DIRECT_VALUATION_FIELDS):
+            self.direct_valuation_lookups += 1
+        if has_any_financial_field(financials, PROXY_VALUATION_FIELDS):
+            self.proxy_input_lookups += 1
+
+    def _source_detail(self, ratio: str) -> str:
+        return (
+            f"{ratio}; valuation support {self.valuation_support_lookups}/"
+            f"{self.successful_lookups}; direct valuation "
+            f"{self.direct_valuation_lookups}/{self.successful_lookups}; "
+            f"proxy inputs {self.proxy_input_lookups}/{self.successful_lookups}; "
+            f"missing valuation support "
+            f"{self.successful_lookups - self.valuation_support_lookups}/"
+            f"{self.successful_lookups}"
+        )
 
 
 class FinimpulseFundamentalsProvider:
@@ -486,6 +607,17 @@ class FallbackFundamentalsProvider:
         )
 
 
+def compose_valuation_fallback_provider(
+    primary_provider,
+    eodhd_provider,
+    yahoo_provider,
+):
+    provider = primary_provider
+    if eodhd_provider is not None:
+        provider = FallbackFundamentalsProvider(provider, eodhd_provider)
+    return FallbackFundamentalsProvider(provider, yahoo_provider)
+
+
 class EnrichedResearchProvider:
     def __init__(
         self, base_provider, fundamentals_provider, max_enrichments: int | None = None
@@ -624,6 +756,10 @@ def finnhub_symbol_candidates(company: Company) -> tuple[str, ...]:
 
 
 def finimpulse_symbol_candidates(company: Company) -> tuple[str, ...]:
+    return _symbol_candidates(company)
+
+
+def eodhd_symbol_candidates(company: Company) -> tuple[str, ...]:
     return _symbol_candidates(company)
 
 
@@ -784,6 +920,48 @@ def _parse_finimpulse_profile_payload(
     if business_description is None and ir_url is None:
         return None
     return {"business_description": business_description, "ir_url": ir_url}
+
+
+def _parse_eodhd_fundamentals_payload(
+    payload: str, symbol: str, fallback_currency: str | None
+) -> FundamentalsSnapshot | None:
+    data = json.loads(payload)
+    general = _dict_value(data, "General")
+    highlights = _dict_value(data, "Highlights")
+    valuation = _dict_value(data, "Valuation")
+    currency = str(general.get("CurrencyCode") or fallback_currency or "").upper()
+    fx_rate = _EUR_RATES.get(currency)
+
+    market_cap_eur_m = _eur_m(_number(highlights, "MarketCapitalization"), fx_rate)
+    financials = FinancialSnapshot(
+        pe_ratio=_first_number(highlights, ("PERatio",))
+        or _first_number(valuation, ("TrailingPE", "ForwardPE")),
+        price_to_book=_first_number(valuation, ("PriceBookMRQ",)),
+        revenue_eur_m=_eur_m(_number(highlights, "RevenueTTM"), fx_rate),
+        revenue_growth_pct=_ratio_to_percent(
+            _number(highlights, "QuarterlyRevenueGrowthYOY")
+        ),
+        operating_margin_pct=_ratio_to_percent(
+            _number(highlights, "OperatingMarginTTM")
+        ),
+        data_quality=DataQuality.PARTIAL,
+    )
+    if not _has_meaningful_fields(market_cap_eur_m, financials):
+        return None
+
+    parsed_symbol = str(general.get("Code") or symbol).upper()
+    return FundamentalsSnapshot(
+        symbol=parsed_symbol,
+        market_cap_eur_m=market_cap_eur_m,
+        business_description=_clean_text(general.get("Description")),
+        ir_url=_clean_text(general.get("WebURL")),
+        financials=financials,
+        evidence=Evidence(
+            label=f"EODHD fundamentals lookup ({parsed_symbol})",
+            url=EODHD_FUNDAMENTALS_DOC_URL,
+            source="eodhd",
+        ),
+    )
 
 
 def _parse_fundamentals_payload(
@@ -994,6 +1172,11 @@ def _finnhub_metric_url(symbol: str, token: str) -> str:
     )
 
 
+def _eodhd_fundamentals_url(symbol: str, token: str) -> str:
+    query = urlencode({"api_token": token, "fmt": "json"})
+    return f"{EODHD_FUNDAMENTALS_URL.format(symbol=quote(symbol, safe=''))}?{query}"
+
+
 def _fetch_url(url: str) -> str:
     request = Request(
         url,
@@ -1018,6 +1201,18 @@ def _fetch_finnhub_url(url: str) -> str:
         },
     )
     with urlopen(request, timeout=FINNHUB_FETCH_TIMEOUT_SECONDS) as response:
+        return response.read().decode("utf-8")
+
+
+def _fetch_eodhd_url(url: str) -> str:
+    request = Request(
+        url,
+        headers={
+            "Accept": "application/json,text/plain,*/*",
+            "User-Agent": "Mozilla/5.0",
+        },
+    )
+    with urlopen(request, timeout=EODHD_FETCH_TIMEOUT_SECONDS) as response:
         return response.read().decode("utf-8")
 
 
