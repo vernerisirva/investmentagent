@@ -2,11 +2,11 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-07-13 08:00 EEST
+Generated: 2026-07-14 08:00 EEST
 
 ## Market Context
 
-- Latest snapshot: 2026-07-13
+- Latest snapshot: 2026-07-14
 - Market tone: Mixed / quiet
 - Companies tracked: 26
 - Large positive movers: 0
@@ -133,7 +133,7 @@ _Tracked separately because the gate did not classify these as research candidat
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 119 | 33.6% | +0.39% | 0% |
+| 1d | 125 | 33.6% | +0.54% | 0% |
 | 5d | 106 | 36.8% | +0.99% | -0.52% |
 | 20d | 33 | 27.3% | -3.31% | -6.74% |
 | 60d | 0 | - | - | - |
@@ -142,7 +142,7 @@ _Tracked separately because the gate did not classify these as research candidat
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -30.88% | 31.9% | 4 | 7.94% | +0.95% | -0.56% | 47.9% |
+| 1d | -30.88% | 30.4% | 4 | 7.94% | +1.24% | -0.7% | 46.4% |
 | 5d | -28.57% | 53.8% | 10 | 13.82% | +6.9% | -5.91% | 34.9% |
 | 20d | -40.69% | 72.7% | 12 | 21.92% | +6.08% | -9.39% | 18.2% |
 | 60d | - | - | 0 | - | - | - | - |
@@ -152,13 +152,13 @@ _Tracked separately because the gate did not classify these as research candidat
 - **Aino Health (AINO)** - 5d return **+63.03%** ([report](../reports/long-term/2026-06-24.html))
 - **4C Group (4C)** - 20d return **+30.56%** ([report](../reports/long-term/2026-06-05.html))
 - **Modelon (MODEL)** - 5d return **+30.32%** ([report](../reports/long-term/2026-06-18.html))
+- **Nicoccino Holding (NICO)** - 1d return **+20%** ([report](../reports/long-term/2026-07-13.html))
 - **Athanase Innovation (ATIN)** - 5d return **+19.21%** ([report](../reports/long-term/2026-06-24.html))
-- **Acconeer (ACCON)** - 5d return **+15.81%** ([report](../reports/long-term/2026-06-02.html))
 
 ### Worst Speculative Monitor Picks
 
 - **MTI Investment (MTI)** - 20d return **-40.69%** ([report](../reports/long-term/2026-06-12.html))
-- **Nicoccino Holding (NICO)** - 5d return **-28.57%** ([report](../reports/long-term/2026-07-06.html))
+- **Acconeer (ACCON)** - 20d return **-30.62%** ([report](../reports/long-term/2026-06-09.html))
 - **AAC Clyde Space (AAC)** - 20d return **-24.15%** ([report](../reports/long-term/2026-06-01.html))
 - **AcouSort (ACOU)** - 20d return **-18.3%** ([report](../reports/long-term/2026-06-05.html))
 
@@ -166,26 +166,26 @@ _Tracked separately because the gate did not classify these as research candidat
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate: Speculative monitor | 137 | -0.18% | 29.9% |
-| Proof gap: Missing valuation data | 137 | -0.18% | 29.9% |
-| Quality: Business description available | 137 | -0.18% | 29.9% |
-| Bucket: Speculative small-cap monitor | 137 | -0.18% | 29.9% |
-| Reason: Business description available | 137 | -0.18% | 29.9% |
-| Reason: First North discovery opportunity | 137 | -0.18% | 29.9% |
-| Reason: First North listing | 137 | -0.18% | 29.9% |
-| Reason: Small market cap | 137 | -0.18% | 29.9% |
-| Segment: First north | 137 | -0.18% | 29.9% |
-| Country: SE | 126 | +0.09% | 31.7% |
-| Proof gap: Thin liquidity | 113 | +1.78% | 33.6% |
-| Quality: Revenue growth | 105 | +0.26% | 24.8% |
+| Gate: Speculative monitor | 143 | -0.03% | 30.1% |
+| Proof gap: Missing valuation data | 143 | -0.03% | 30.1% |
+| Quality: Business description available | 143 | -0.03% | 30.1% |
+| Bucket: Speculative small-cap monitor | 143 | -0.03% | 30.1% |
+| Reason: Business description available | 143 | -0.03% | 30.1% |
+| Reason: First North discovery opportunity | 143 | -0.03% | 30.1% |
+| Reason: First North listing | 143 | -0.03% | 30.1% |
+| Reason: Small market cap | 143 | -0.03% | 30.1% |
+| Segment: First north | 143 | -0.03% | 30.1% |
+| Country: SE | 132 | +0.24% | 31.8% |
+| Proof gap: Thin liquidity | 119 | +1.87% | 33.6% |
+| Quality: Revenue growth | 109 | +0.44% | 25.7% |
 
 ### Speculative Monitor Learning Suggestions
 
-- Gate: Speculative monitor has produced a negative average return of -0.18% across 137 completed observations. Review whether its scoring weight should change.
-- Proof gap: Missing valuation data has produced a negative average return of -0.18% across 137 completed observations. Review whether its scoring weight should change.
-- Quality: Business description available has produced a negative average return of -0.18% across 137 completed observations. Review whether its scoring weight should change.
-- Bucket: Speculative small-cap monitor has produced a negative average return of -0.18% across 137 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available has produced a negative average return of -0.18% across 137 completed observations. Review whether its scoring weight should change.
+- Gate: Speculative monitor has produced a negative average return of -0.03% across 143 completed observations. Review whether its scoring weight should change.
+- Proof gap: Missing valuation data has produced a negative average return of -0.03% across 143 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a negative average return of -0.03% across 143 completed observations. Review whether its scoring weight should change.
+- Bucket: Speculative small-cap monitor has produced a negative average return of -0.03% across 143 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a negative average return of -0.03% across 143 completed observations. Review whether its scoring weight should change.
 
 ## Insufficient Evidence Audit
 
@@ -195,7 +195,7 @@ _Tracked as an audit trail for rows with too many proof gaps._
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 68 | 27.9% | -1.5% | 0% |
+| 1d | 72 | 27.8% | -1.32% | 0% |
 | 5d | 52 | 36.5% | -7.91% | -2.24% |
 | 20d | 11 | 54.5% | +2.76% | +2.86% |
 | 60d | 0 | - | - | - |
@@ -204,7 +204,7 @@ _Tracked as an audit trail for rows with too many proof gaps._
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -58.33% | 39.7% | 9 | 14.82% | +0.77% | -2.27% | 33.8% |
+| 1d | -58.33% | 37.5% | 9 | 14.44% | +1.01% | -2.33% | 31.9% |
 | 5d | -67.48% | 57.7% | 14 | 20.8% | +4.6% | -12.51% | 19.2% |
 | 20d | -17.83% | 45.5% | 2 | 13.06% | +5.87% | -3.12% | 27.3% |
 | 60d | - | - | 0 | - | - | - | - |
@@ -225,26 +225,26 @@ _Tracked as an audit trail for rows with too many proof gaps._
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate: Insufficient evidence | 75 | -5.36% | 37.3% |
-| Proof gap: Missing valuation data | 75 | -5.36% | 37.3% |
-| Bucket: Insufficient evidence | 75 | -5.36% | 37.3% |
-| Reason: First North discovery opportunity | 75 | -5.36% | 37.3% |
-| Reason: First North listing | 75 | -5.36% | 37.3% |
-| Segment: First north | 75 | -5.36% | 37.3% |
-| Proof gap: Negative operating margin | 63 | -6.05% | 39.7% |
-| Proof gap: Thin liquidity | 63 | -6.05% | 39.7% |
-| Quality: Business description available | 63 | -6.05% | 39.7% |
-| Reason: Business description available | 63 | -6.05% | 39.7% |
-| Reason: Small market cap | 63 | -6.05% | 39.7% |
-| Proof gap: No growth signal | 62 | -6.22% | 37.1% |
+| Gate: Insufficient evidence | 79 | -5% | 36.7% |
+| Proof gap: Missing valuation data | 79 | -5% | 36.7% |
+| Bucket: Insufficient evidence | 79 | -5% | 36.7% |
+| Reason: First North discovery opportunity | 79 | -5% | 36.7% |
+| Reason: First North listing | 79 | -5% | 36.7% |
+| Segment: First north | 79 | -5% | 36.7% |
+| Proof gap: Negative operating margin | 67 | -5.58% | 38.8% |
+| Proof gap: Thin liquidity | 67 | -5.58% | 38.8% |
+| Quality: Business description available | 67 | -5.58% | 38.8% |
+| Reason: Business description available | 67 | -5.58% | 38.8% |
+| Reason: Small market cap | 67 | -5.58% | 38.8% |
+| Proof gap: No growth signal | 65 | -5.83% | 36.9% |
 
 ### Insufficient Evidence Learning Suggestions
 
-- Gate: Insufficient evidence has produced a negative average return of -5.36% across 75 completed observations. Review whether its scoring weight should change.
-- Proof gap: Missing valuation data has produced a negative average return of -5.36% across 75 completed observations. Review whether its scoring weight should change.
-- Bucket: Insufficient evidence has produced a negative average return of -5.36% across 75 completed observations. Review whether its scoring weight should change.
-- Reason: First North discovery opportunity has produced a negative average return of -5.36% across 75 completed observations. Review whether its scoring weight should change.
-- Reason: First North listing has produced a negative average return of -5.36% across 75 completed observations. Review whether its scoring weight should change.
+- Gate: Insufficient evidence has produced a negative average return of -5% across 79 completed observations. Review whether its scoring weight should change.
+- Proof gap: Missing valuation data has produced a negative average return of -5% across 79 completed observations. Review whether its scoring weight should change.
+- Bucket: Insufficient evidence has produced a negative average return of -5% across 79 completed observations. Review whether its scoring weight should change.
+- Reason: First North discovery opportunity has produced a negative average return of -5% across 79 completed observations. Review whether its scoring weight should change.
+- Reason: First North listing has produced a negative average return of -5% across 79 completed observations. Review whether its scoring weight should change.
 
 ## Legacy Long-Term Rows
 
