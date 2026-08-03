@@ -464404,6 +464404,413 @@
         "segment": "main_market",
         "ticker": "VPLAY A"
       }
+    },
+    "2026-08-03": {
+      "FI|PALLAS": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "FI",
+        "currency": "EUR",
+        "name": "Pallas Air Oyj",
+        "price": 0.55,
+        "risks": [
+          "Sparse live-source data",
+          "Speculative low-price share",
+          "Missing live turnover"
+        ],
+        "sector": "Industrials",
+        "segment": "first_north",
+        "ticker": "PALLAS"
+      },
+      "SE|ACRI A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Acrinova A",
+        "price": 9.0,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Real Estate",
+        "segment": "main_market",
+        "ticker": "ACRI A"
+      },
+      "SE|AINO": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Aino Health",
+        "price": 0.199,
+        "risks": [
+          "Sparse live-source data",
+          "Speculative low-price share",
+          "Missing live turnover"
+        ],
+        "sector": "Health Care",
+        "segment": "first_north",
+        "ticker": "AINO"
+      },
+      "SE|ATIN": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Athanase Innovation",
+        "price": 20.6,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Real Estate",
+        "segment": "first_north",
+        "ticker": "ATIN"
+      },
+      "SE|BAWAT": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Bawat Water Technologies",
+        "price": 1.18,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Industrials",
+        "segment": "first_north",
+        "ticker": "BAWAT"
+      },
+      "SE|BINERO": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Binero Group",
+        "price": 1.72,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Technology",
+        "segment": "first_north",
+        "ticker": "BINERO"
+      },
+      "SE|BONAV A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Bonava A",
+        "price": 9.85,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Consumer Discretionary",
+        "segment": "main_market",
+        "ticker": "BONAV A"
+      },
+      "SE|CAT A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Catella A",
+        "price": 20.0,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Financials",
+        "segment": "main_market",
+        "ticker": "CAT A"
+      },
+      "SE|CORE A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Corem Property Group A",
+        "price": 3.55,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Real Estate",
+        "segment": "main_market",
+        "ticker": "CORE A"
+      },
+      "SE|ELUX A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Electrolux A",
+        "price": 28.6,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Consumer Discretionary",
+        "segment": "main_market",
+        "ticker": "ELUX A"
+      },
+      "SE|HAKI A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "HAKI Safety A",
+        "price": 22.8,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Industrials",
+        "segment": "main_market",
+        "ticker": "HAKI A"
+      },
+      "SE|MODEL": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Modelon",
+        "price": 10.3,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Technology",
+        "segment": "first_north",
+        "ticker": "MODEL"
+      },
+      "SE|MSON A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Midsona A",
+        "price": 15.9,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Consumer Staples",
+        "segment": "main_market",
+        "ticker": "MSON A"
+      },
+      "SE|MTG A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Modern Times Group A",
+        "price": 131.0,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Consumer Discretionary",
+        "segment": "main_market",
+        "ticker": "MTG A"
+      },
+      "SE|MTI": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "MTI Investment",
+        "price": 0.55,
+        "risks": [
+          "Sparse live-source data",
+          "Speculative low-price share",
+          "Missing live turnover"
+        ],
+        "sector": "Financials",
+        "segment": "first_north",
+        "ticker": "MTI"
+      },
+      "SE|NANOC B": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "NanoCap Group B",
+        "price": 4.72,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Consumer Discretionary",
+        "segment": "first_north",
+        "ticker": "NANOC B"
+      },
+      "SE|NICO": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Nicoccino Holding",
+        "price": 1.1,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Consumer Staples",
+        "segment": "first_north",
+        "ticker": "NICO"
+      },
+      "SE|ORTI A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Ortivus A",
+        "price": 2.3,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Health Care",
+        "segment": "first_north",
+        "ticker": "ORTI A"
+      },
+      "SE|RATO A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Ratos A",
+        "price": 36.1,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Financials",
+        "segment": "main_market",
+        "ticker": "RATO A"
+      },
+      "SE|RPLAN": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Ranplan Group",
+        "price": 0.61,
+        "risks": [
+          "Sparse live-source data",
+          "Speculative low-price share",
+          "Missing live turnover"
+        ],
+        "sector": "Technology",
+        "segment": "first_north",
+        "ticker": "RPLAN"
+      },
+      "SE|STAR A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Starbreeze A",
+        "price": 0.1245,
+        "risks": [
+          "Sparse live-source data",
+          "Speculative low-price share",
+          "Missing live turnover"
+        ],
+        "sector": "Consumer Discretionary",
+        "segment": "main_market",
+        "ticker": "STAR A"
+      },
+      "SE|STE A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Stora Enso A",
+        "price": 111.0,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Industrials",
+        "segment": "main_market",
+        "ticker": "STE A"
+      },
+      "SE|SVOL A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Svolder A",
+        "price": 93.5,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Financials",
+        "segment": "main_market",
+        "ticker": "SVOL A"
+      },
+      "SE|TEL2 A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Tele2 A",
+        "price": 166.0,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Telecommunications",
+        "segment": "main_market",
+        "ticker": "TEL2 A"
+      },
+      "SE|VPLAY A": {
+        "catalysts": [
+          "Live price available from Nasdaq Nordic"
+        ],
+        "country": "SE",
+        "currency": "SEK",
+        "name": "Viaplay Group A",
+        "price": 2.62,
+        "risks": [
+          "Sparse live-source data",
+          "Missing live turnover"
+        ],
+        "sector": "Telecommunications",
+        "segment": "main_market",
+        "ticker": "VPLAY A"
+      }
     }
   },
   "picks": [
@@ -464472,11 +464879,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|FI|ADMCM",
@@ -464565,11 +464972,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|FI|CANATU",
@@ -464656,11 +465063,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|FI|DETEC",
@@ -464749,11 +465156,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|SE|4C",
@@ -464841,11 +465248,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|SE|AAC",
@@ -464933,11 +465340,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|SE|ABSO",
@@ -465026,11 +465433,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|SE|ACCON",
@@ -465118,11 +465525,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|SE|ACUVI",
@@ -465210,11 +465617,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|SE|ADTR",
@@ -465302,11 +465709,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|long-term|SE|ADVE",
@@ -465361,11 +465768,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|FI|AIFORIA",
@@ -465418,11 +465825,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|FI|ELISA",
@@ -465474,11 +465881,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|FI|NANOFH",
@@ -465533,11 +465940,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|SE|2CUREX",
@@ -465592,11 +465999,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|SE|AEC",
@@ -465651,11 +466058,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|SE|GAPW B",
@@ -465710,11 +466117,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|SE|GRANGX",
@@ -465769,11 +466176,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|SE|IVACC",
@@ -465828,11 +466235,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|SE|NANOFS",
@@ -465887,11 +466294,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         }
       },
       "pick_id": "2026-05-11|trading|SE|SALT B",
@@ -515948,11 +516355,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -25.68,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 0.55,
+          "return_pct": -25.68,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516078,11 +516488,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": 3.78,
+          "price": 0.199,
+          "return_pct": 4.19,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516206,11 +516619,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": 12.16,
+          "price": 20.6,
+          "return_pct": 12.57,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516335,11 +516751,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": 8.85,
+          "price": 1.18,
+          "return_pct": 9.26,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516465,11 +516884,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": -2.68,
+          "price": 1.72,
+          "return_pct": -2.27,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516595,11 +517017,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": 8.01,
+          "price": 10.3,
+          "return_pct": 8.42,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516724,11 +517149,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": 4.95,
+          "price": 4.72,
+          "return_pct": 5.36,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516853,11 +517281,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": -21.84,
+          "price": 1.1,
+          "return_pct": -21.43,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -516981,11 +517412,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": 20.01,
+          "price": 2.3,
+          "return_pct": 20.42,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -517109,11 +517543,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.41,
+          "currency": "SEK",
+          "excess_return_pct": -49.58,
+          "price": 0.61,
+          "return_pct": -49.17,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-07-13",
@@ -535098,11 +535535,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.85,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 0.55,
+          "return_pct": 1.85,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -535225,11 +535665,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": -1.07,
+          "price": 0.199,
+          "return_pct": 3.11,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -535350,11 +535793,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": -4.18,
+          "price": 20.6,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -535476,11 +535922,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": 4.08,
+          "price": 1.18,
+          "return_pct": 8.26,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -535603,11 +536052,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": -5.89,
+          "price": 1.72,
+          "return_pct": -1.71,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -535729,11 +536181,11 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "60d": {
           "as_of_date": null,
@@ -535857,11 +536309,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": -4.18,
+          "price": 10.3,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -535983,11 +536438,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": -5.02,
+          "price": 4.72,
+          "return_pct": -0.84,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -536109,11 +536567,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": -10.16,
+          "price": 1.1,
+          "return_pct": -5.98,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -536234,11 +536695,14 @@
           "status": "not_due"
         },
         "5d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 4.18,
+          "currency": "SEK",
+          "excess_return_pct": 18.16,
+          "price": 2.3,
+          "return_pct": 22.34,
+          "status": "priced"
         },
         "60d": {
           "as_of_date": null,
@@ -540093,11 +540557,11 @@
       "name": "Aallon Group Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -540217,11 +540681,11 @@
       "name": "Admicom Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -540341,11 +540805,11 @@
       "name": "Administer Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -540466,11 +540930,11 @@
       "name": "Aiforia Technologies Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -540590,11 +541054,11 @@
       "name": "Alexandria Group Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -540713,11 +541177,11 @@
       "name": "Arvo Sijoitusosuuskunta",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -540835,11 +541299,11 @@
       "name": "Asuntosalkku Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -540958,11 +541422,11 @@
       "name": "Nokian Panimo Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -541081,11 +541545,11 @@
       "name": "Betolar Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
+          "as_of_date": "2026-08-03",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missing_price"
         },
         "20d": {
           "as_of_date": null,
@@ -541202,11 +541666,14 @@
       "name": "Athanase Innovation",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-08-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.17,
+          "currency": "SEK",
+          "excess_return_pct": 0.17,
+          "price": 20.6,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -541258,6 +541725,1236 @@
         "No growth signal",
         "Missing valuation data",
         "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 0.55,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Insufficient evidence",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue declined 17.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 1,
+            "view": "Speculative market signal; position sizing would matter."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Pallas Air Oyj lacks enough durable evidence for a strong long-term thesis today; wait for clearer fundamentals, valuation, liquidity, or business evidence."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 2,
+        "reasons": [
+          "conservative balance sheet",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Insufficient evidence",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Pallas Air Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|FI|PALLAS",
+      "rank": 8,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Insufficient evidence",
+        "First North discovery opportunity",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "score_total": -51.25,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "PALLAS",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "3 stated risk(s)",
+        "partial data quality",
+        "No growth signal",
+        "Missing valuation data",
+        "Gate tier: Insufficient evidence"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "thin",
+      "entry_currency": "SEK",
+      "entry_price": 0.199,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Insufficient evidence",
+        "components": {
+          "Balance sheet": {
+            "score": 1,
+            "view": "Balance sheet data is not available."
+          },
+          "Business quality": {
+            "score": 0,
+            "view": "Insufficient business and margin data."
+          },
+          "Data confidence": {
+            "score": 0,
+            "view": "No useful fundamentals or profile text are available today."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue growth is not available."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 1,
+            "view": "Speculative market signal; position sizing would matter."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Aino Health lacks enough durable evidence for a strong long-term thesis today; wait for clearer fundamentals, valuation, liquidity, or business evidence."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing business description",
+          "missing liquidity data",
+          "thin data quality",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 0,
+        "reasons": [],
+        "severe_proof_gap_count": 4,
+        "tier": "Insufficient evidence",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Aino Health",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|AINO",
+      "rank": 10,
+      "reasons": [
+        "First North listing",
+        "Insufficient evidence",
+        "First North discovery opportunity"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "score_total": -69.5,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "AINO",
+      "warnings": [
+        "3 stated risk(s)",
+        "thin data quality",
+        "No profitability signal",
+        "No growth signal",
+        "Missing valuation data",
+        "Missing business description",
+        "Missing liquidity data",
+        "Only live-market support",
+        "Gate tier: Insufficient evidence"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 20.6,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 1,
+            "view": "Balance sheet data is not available."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 1,
+            "view": "Only limited fundamentals are available today."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue growth is not available."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Athanase Innovation is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 1,
+        "reasons": [
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Athanase Innovation",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|ATIN",
+      "rank": 4,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -37.25,
+      "sector": "Real Estate",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ATIN",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "No growth signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 1.18,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Insufficient evidence",
+        "components": {
+          "Balance sheet": {
+            "score": 1,
+            "view": "Leverage or net debt needs close review."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 14.8%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Bawat Water Technologies lacks enough durable evidence for a strong long-term thesis today; wait for clearer fundamentals, valuation, liquidity, or business evidence."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "high debt/equity",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 2,
+        "reasons": [
+          "revenue growth",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 2,
+        "tier": "Insufficient evidence",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Bawat Water Technologies",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|BAWAT",
+      "rank": 9,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Insufficient evidence",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -56.25,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "BAWAT",
+      "warnings": [
+        "thin liquidity",
+        "high debt/equity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Insufficient evidence"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 1.72,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 55.7%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Binero Group is an interesting small-cap monitor, but the long-term case needs more proof because negative operating margin."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Binero Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|BINERO",
+      "rank": 2,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -33.25,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "BINERO",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 10.3,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 0.8%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Modelon is an interesting small-cap monitor, but the long-term case needs more proof because negative operating margin."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Modelon",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|MODEL",
+      "rank": 3,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -33.25,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "MODEL",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 0.55,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 1,
+            "view": "Balance sheet data is not available."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 1,
+            "view": "Only limited fundamentals are available today."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue growth is not available."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 1,
+            "view": "Speculative market signal; position sizing would matter."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "MTI Investment is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 1,
+        "reasons": [
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "MTI Investment",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|MTI",
+      "rank": 6,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "score_total": -40.25,
+      "sector": "Financials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "MTI",
+      "warnings": [
+        "thin liquidity",
+        "3 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "No growth signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 4.72,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue declined nan%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "NanoCap Group B is an interesting small-cap monitor, but the long-term case needs more proof because no growth signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "positive operating margin",
+          "conservative balance sheet",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "NanoCap Group B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|NANOC B",
+      "rank": 1,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -14.25,
+      "sector": "Consumer Discretionary",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "NANOC B",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality",
+        "No growth signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 1.1,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 3,
+            "view": "Debt/equity looks manageable on available data."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 73.8%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Nicoccino Holding is an interesting small-cap monitor, but the long-term case needs more proof because negative operating margin."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 2,
+        "reasons": [
+          "revenue growth",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Nicoccino Holding",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|NICO",
+      "rank": 5,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -38.25,
+      "sector": "Consumer Staples",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "NICO",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 2.3,
+      "entry_timestamp": "2026-08-03T05:01:15.540758+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Insufficient evidence",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue declined 4.9%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Ortivus A lacks enough durable evidence for a strong long-term thesis today; wait for clearer fundamentals, valuation, liquidity, or business evidence."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 2,
+        "reasons": [
+          "conservative balance sheet",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Insufficient evidence",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Ortivus A",
+      "outcomes": {
+        "1d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "20d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "5d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-03|long-term|SE|ORTI A",
+      "rank": 7,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Insufficient evidence",
+        "First North discovery opportunity",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-08-03",
+      "report_url": "../reports/long-term/2026-08-03.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -48.25,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ORTI A",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "No growth signal",
+        "Missing valuation data",
+        "Gate tier: Insufficient evidence"
       ]
     }
   ],
