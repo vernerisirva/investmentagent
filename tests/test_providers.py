@@ -6,6 +6,7 @@ from investmentagent.models import DataQuality, ListingSegment
 from investmentagent.providers import (
     FixtureResearchProvider,
     LiveNasdaqNordicProvider,
+    NASDAQ_NORDIC_SCREENER_REQUESTS,
     _fetch_nasdaq_nordic_screener_payload,
     create_provider,
 )
@@ -144,6 +145,51 @@ LIVE_DUPLICATE_TICKER_SCREENER_RESPONSE = """{
 }"""
 
 
+HEALTHY_NASDAQ_COUNTS = {
+    ("SE", "main_market"): 400,
+    ("FI", "main_market"): 140,
+    ("SE", "first_north"): 300,
+    ("FI", "first_north"): 45,
+}
+
+
+def _nasdaq_coverage_payload(
+    counts: dict[tuple[str, str], int] | None = None,
+    *,
+    omitted: set[tuple[str, str]] | None = None,
+    row_overrides: dict[tuple[str, str], list | None] | None = None,
+) -> str:
+    counts = counts or HEALTHY_NASDAQ_COUNTS
+    omitted = omitted or set()
+    row_overrides = row_overrides or {}
+    responses = []
+    for request in NASDAQ_NORDIC_SCREENER_REQUESTS:
+        key = (request["country"], request["listing_segment"])
+        if key in omitted:
+            continue
+        segment_code = "M" if key[1] == "main_market" else "F"
+        rows = [
+            {
+                "fullName": f"{key[0]} {segment_code} Company {index}",
+                "symbol": f"{key[0]}{segment_code}{index:04d}",
+                "currency": "SEK" if key[0] == "SE" else "EUR",
+                "isin": f"{key[0]}{index:010d}",
+            }
+            for index in range(counts.get(key, 0))
+        ]
+        if key in row_overrides:
+            rows = row_overrides[key]
+        responses.append(
+            {
+                "country": request["country"],
+                "exchange": request["exchange"],
+                "segment": request["listing_segment"],
+                "payload": {"data": {"instrumentListing": {"rows": rows}}},
+            }
+        )
+    return json.dumps({"source": "nasdaq_nordic_screener", "responses": responses})
+
+
 def test_fixture_provider_filters_country_and_first_north():
     provider = FixtureResearchProvider()
 
@@ -234,7 +280,104 @@ def test_live_provider_skips_nasdaq_screener_segments_with_null_rows():
     companies = provider.list_companies(countries=("SE", "FI"), include_first_north=True)
 
     assert [company.ticker for company in companies] == ["AALLON"]
+    assert provider.source_checks()[0].status == "error"
+
+
+def test_live_provider_reports_healthy_complete_nasdaq_universe():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: _nasdaq_coverage_payload())
+
+    check = provider.source_checks()[0]
+
+    assert check.status == "ok"
+    assert len(provider.list_companies()) == 885
+
+
+def test_live_provider_rejects_severely_truncated_nasdaq_universe():
+    counts = {
+        ("SE", "main_market"): 14,
+        ("FI", "main_market"): 1,
+        ("SE", "first_north"): 10,
+        ("FI", "first_north"): 1,
+    }
+    provider = LiveNasdaqNordicProvider(
+        fetcher=lambda url: _nasdaq_coverage_payload(counts)
+    )
+
+    check = provider.source_checks()[0]
+
+    assert check.status == "error"
+    assert "total 26 is below 700" in check.detail
+
+
+def test_live_provider_rejects_nasdaq_universe_without_sweden():
+    provider = LiveNasdaqNordicProvider(
+        fetcher=lambda url: _nasdaq_coverage_payload(
+            omitted={("SE", "main_market"), ("SE", "first_north")}
+        )
+    )
+
+    check = provider.source_checks()[0]
+
+    assert check.status == "error"
+    assert "SE=0" in check.detail
+    assert "STO/main_market response is missing" in check.detail
+
+
+def test_live_provider_rejects_nasdaq_universe_without_finland():
+    provider = LiveNasdaqNordicProvider(
+        fetcher=lambda url: _nasdaq_coverage_payload(
+            omitted={("FI", "main_market"), ("FI", "first_north")}
+        )
+    )
+
+    check = provider.source_checks()[0]
+
+    assert check.status == "error"
+    assert "FI=0" in check.detail
+    assert "HEL/main_market response is missing" in check.detail
+
+
+@pytest.mark.parametrize("rows", [None, []])
+def test_live_provider_rejects_null_or_empty_expected_segment(rows):
+    provider = LiveNasdaqNordicProvider(
+        fetcher=lambda url: _nasdaq_coverage_payload(
+            row_overrides={("FI", "first_north"): rows}
+        )
+    )
+
+    check = provider.source_checks()[0]
+
+    assert check.status == "error"
+    assert "HEL/first_north" in check.detail
+    assert "rows are null" in check.detail or "returned no rows" in check.detail
+
+
+def test_live_provider_allows_normal_nasdaq_listing_fluctuations():
+    counts = {
+        ("SE", "main_market"): 380,
+        ("FI", "main_market"): 130,
+        ("SE", "first_north"): 280,
+        ("FI", "first_north"): 35,
+    }
+    provider = LiveNasdaqNordicProvider(
+        fetcher=lambda url: _nasdaq_coverage_payload(counts)
+    )
+
     assert provider.source_checks()[0].status == "ok"
+
+
+def test_live_provider_source_diagnostics_include_universe_coverage():
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: _nasdaq_coverage_payload())
+
+    detail = provider.source_checks()[0].detail
+
+    assert "total=885" in detail
+    assert "SE=700" in detail
+    assert "FI=185" in detail
+    assert "STO/main_market=400" in detail
+    assert "HEL/main_market=140" in detail
+    assert "STO/first_north=300" in detail
+    assert "HEL/first_north=45" in detail
 
 
 def test_live_provider_fetches_nasdaq_nordic_screener_segments():

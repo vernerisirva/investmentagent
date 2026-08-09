@@ -13,6 +13,7 @@ import investmentagent.cli as cli
 from investmentagent.cli import app
 from investmentagent.fundamentals import FundamentalsSnapshot
 from investmentagent.models import DataQuality, Evidence, FinancialSnapshot, SourceCheck
+from investmentagent.providers import LiveNasdaqNordicProvider
 
 
 runner = CliRunner()
@@ -1113,6 +1114,46 @@ def test_watchlist_reports_live_source_errors(monkeypatch):
 
     assert result.exit_code != 0
     assert "nasdaq nordic live data: error - network unavailable" in result.output
+
+
+def test_watchlist_rejects_incomplete_live_nasdaq_universe(monkeypatch, tmp_path):
+    payload = json.dumps(
+        {
+            "source": "nasdaq_nordic_screener",
+            "responses": [
+                {
+                    "country": "SE",
+                    "exchange": "Nasdaq Stockholm",
+                    "segment": "main_market",
+                    "payload": {
+                        "data": {
+                            "instrumentListing": {
+                                "rows": [
+                                    {
+                                        "fullName": "Truncated Company",
+                                        "symbol": "TRUNC",
+                                        "isin": "SE0000000001",
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                }
+            ],
+        }
+    )
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: payload)
+    output_path = tmp_path / "unsafe-watchlist.md"
+    monkeypatch.setattr(cli, "create_provider", lambda name: provider)
+
+    result = runner.invoke(
+        app,
+        ["watchlist", "--provider", "live", "--save", str(output_path)],
+    )
+
+    assert result.exit_code != 0
+    assert "incomplete universe" in result.output
+    assert not output_path.exists()
 
 
 def test_deep_dive_reports_live_source_errors(monkeypatch):

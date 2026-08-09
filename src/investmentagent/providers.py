@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import json
 from collections.abc import Callable
+from dataclasses import dataclass
 from importlib.resources import files
 from io import StringIO
 from typing import Protocol
@@ -52,6 +53,27 @@ NASDAQ_NORDIC_SCREENER_REQUESTS = (
         "listing_segment": ListingSegment.FIRST_NORTH.value,
     },
 )
+
+# Healthy repository snapshots have been stable near 933-941 companies: roughly
+# 407-415 STO Main, 333-339 STO First North, 142-145 HEL Main, and 47-48 HEL
+# First North. These floors leave 25-55% headroom for listing changes while still
+# rejecting partial API pages and missing request segments.
+NASDAQ_NORDIC_MIN_TOTAL_COMPANIES = 700
+NASDAQ_NORDIC_MIN_COUNTRY_COUNTS = {"SE": 500, "FI": 120}
+NASDAQ_NORDIC_MIN_REQUEST_COUNTS = {
+    ("SE", ListingSegment.MAIN_MARKET.value): 300,
+    ("FI", ListingSegment.MAIN_MARKET.value): 100,
+    ("SE", ListingSegment.FIRST_NORTH.value): 200,
+    ("FI", ListingSegment.FIRST_NORTH.value): 20,
+}
+
+
+@dataclass(frozen=True)
+class NasdaqUniverseCoverage:
+    total: int
+    country_counts: dict[str, int]
+    request_counts: dict[tuple[str, str], int]
+    response_issues: tuple[str, ...]
 
 
 class ResearchProvider(Protocol):
@@ -138,6 +160,7 @@ class LiveNasdaqNordicProvider:
         self._fetcher = fetcher or _default_fetcher
         self._companies: list[Company] | None = None
         self._market_rows: dict[tuple[str, str], dict] = {}
+        self._universe_coverage: NasdaqUniverseCoverage | None = None
         self._last_error: str | None = None
 
     def list_companies(
@@ -195,11 +218,29 @@ class LiveNasdaqNordicProvider:
                     detail=self._last_error,
                 )
             ]
+        if self._universe_coverage is not None:
+            coverage_detail = _format_nasdaq_universe_coverage(self._universe_coverage)
+            violations = _nasdaq_universe_health_violations(self._universe_coverage)
+            if violations:
+                return [
+                    SourceCheck(
+                        name="nasdaq nordic live data",
+                        status="error",
+                        detail=(
+                            f"incomplete universe ({coverage_detail}); "
+                            f"health checks failed: {'; '.join(violations)}; "
+                            f"source={self.source_url}"
+                        ),
+                    )
+                ]
+            detail = f"universe coverage: {coverage_detail}; source={self.source_url}"
+        else:
+            detail = f"{len(companies)} companies parsed from {self.source_url}"
         return [
             SourceCheck(
                 name="nasdaq nordic live data",
                 status="ok",
-                detail=f"{len(companies)} companies parsed from {self.source_url}",
+                detail=detail,
             )
         ]
 
@@ -207,13 +248,16 @@ class LiveNasdaqNordicProvider:
         if self._companies is not None:
             return self._companies
         try:
-            self._companies, self._market_rows = _parse_live_company_payload(
-                self._fetcher(self.source_url)
-            )
+            (
+                self._companies,
+                self._market_rows,
+                self._universe_coverage,
+            ) = _parse_live_company_payload(self._fetcher(self.source_url))
             self._last_error = None
         except Exception as exc:
             self._companies = []
             self._market_rows = {}
+            self._universe_coverage = None
             self._last_error = str(exc)
         return self._companies
 
@@ -276,7 +320,11 @@ def _build_nasdaq_nordic_screener_url(base_url: str, request: dict[str, str]) ->
 
 def _parse_live_company_payload(
     payload: str,
-) -> tuple[list[Company], dict[tuple[str, str], dict]]:
+) -> tuple[
+    list[Company],
+    dict[tuple[str, str], dict],
+    NasdaqUniverseCoverage | None,
+]:
     stripped = payload.strip()
     if stripped.startswith("{"):
         return _parse_live_company_json(stripped)
@@ -313,15 +361,21 @@ def _parse_live_company_payload(
         )
     if not companies:
         raise ValueError("live payload contained no SE/FI listings")
-    return companies, {}
+    return companies, {}, None
 
 
 def _parse_live_company_json(
     payload: str,
-) -> tuple[list[Company], dict[tuple[str, str], dict]]:
+) -> tuple[
+    list[Company],
+    dict[tuple[str, str], dict],
+    NasdaqUniverseCoverage | None,
+]:
     data = json.loads(payload)
     if data.get("source") == NASDAQ_NORDIC_SCREENER_SOURCE:
-        return _parse_nasdaq_nordic_screener_responses(data.get("responses", []))
+        return _parse_nasdaq_nordic_screener_responses(
+            data.get("responses", []), collect_coverage=True
+        )
     if "data" in data:
         return _parse_nasdaq_nordic_screener_responses(
             (
@@ -331,40 +385,152 @@ def _parse_live_company_json(
                     "segment": ListingSegment.OTHER_PUBLIC.value,
                     "payload": data,
                 },
-            )
+            ),
+            collect_coverage=False,
         )
     raise ValueError("live JSON payload is missing supported listing data")
 
 
 def _parse_nasdaq_nordic_screener_responses(
-    responses,
-) -> tuple[list[Company], dict[tuple[str, str], dict]]:
+    responses, *, collect_coverage: bool
+) -> tuple[
+    list[Company],
+    dict[tuple[str, str], dict],
+    NasdaqUniverseCoverage | None,
+]:
     companies: list[Company] = []
     market_rows: dict[tuple[str, str], dict] = {}
     seen: set[tuple[str, str]] = set()
+    expected_keys = set(NASDAQ_NORDIC_MIN_REQUEST_COUNTS)
+    request_counts = {key: 0 for key in expected_keys}
+    response_keys: set[tuple[str, str]] = set()
+    response_issues: list[str] = []
+    if not isinstance(responses, (list, tuple)):
+        if collect_coverage:
+            response_issues.append("responses collection is malformed")
+        responses = ()
     for response in responses:
+        if not isinstance(response, dict):
+            if collect_coverage:
+                response_issues.append("response entry is malformed")
+            continue
         country = str(response.get("country") or "").upper()
         exchange = str(response.get("exchange") or "Nasdaq Nordic")
         segment = _parse_listing_segment(str(response.get("segment") or ""))
-        payload = response.get("payload") or {}
-        rows = (
-            payload.get("data", {})
-            .get("instrumentListing", {})
-            .get("rows", [])
-        ) or []
+        request_key = (country, segment.value)
+        if collect_coverage and request_key in expected_keys:
+            if request_key in response_keys:
+                response_issues.append(
+                    f"{_nasdaq_request_label(request_key)} response is duplicated"
+                )
+            response_keys.add(request_key)
+        rows, rows_issue = _nasdaq_screener_rows(response)
+        if collect_coverage and request_key in expected_keys and rows_issue:
+            response_issues.append(
+                f"{_nasdaq_request_label(request_key)} {rows_issue}"
+            )
+        request_seen: set[tuple[str, str]] = set()
         for row in rows:
+            if not isinstance(row, dict):
+                continue
             company = _company_from_nasdaq_screener_row(row, country, exchange, segment)
             if company is None:
                 continue
             key = (company.ticker, company.country)
+            request_seen.add(key)
             if key in seen:
                 continue
             seen.add(key)
             companies.append(company)
             market_rows[key] = _market_row_from_nasdaq_screener_row(row)
-    if not companies:
+        if collect_coverage and request_key in expected_keys:
+            request_counts[request_key] += len(request_seen)
+    if collect_coverage:
+        for request_key in expected_keys - response_keys:
+            response_issues.append(
+                f"{_nasdaq_request_label(request_key)} response is missing"
+            )
+        country_counts = {
+            country: sum(company.country == country for company in companies)
+            for country in NASDAQ_NORDIC_MIN_COUNTRY_COUNTS
+        }
+        coverage = NasdaqUniverseCoverage(
+            total=len(companies),
+            country_counts=country_counts,
+            request_counts=request_counts,
+            response_issues=tuple(response_issues),
+        )
+    else:
+        coverage = None
+    if not companies and coverage is None:
         raise ValueError("live payload contained no SE/FI listings")
-    return companies, market_rows
+    return companies, market_rows, coverage
+
+
+def _nasdaq_screener_rows(response: dict) -> tuple[list, str | None]:
+    payload = response.get("payload")
+    if not isinstance(payload, dict):
+        return [], "payload is missing or malformed"
+    data = payload.get("data")
+    if not isinstance(data, dict):
+        return [], "data is missing or malformed"
+    listing = data.get("instrumentListing")
+    if not isinstance(listing, dict):
+        return [], "instrument listing is missing or malformed"
+    if "rows" not in listing:
+        return [], "rows are missing"
+    rows = listing.get("rows")
+    if rows is None:
+        return [], "rows are null"
+    if not isinstance(rows, list):
+        return [], "rows are malformed"
+    if not rows:
+        return [], "returned no rows"
+    return rows, None
+
+
+def _nasdaq_universe_health_violations(
+    coverage: NasdaqUniverseCoverage,
+) -> list[str]:
+    violations = list(coverage.response_issues)
+    if coverage.total < NASDAQ_NORDIC_MIN_TOTAL_COMPANIES:
+        violations.append(
+            f"total {coverage.total} is below {NASDAQ_NORDIC_MIN_TOTAL_COMPANIES}"
+        )
+    for country, minimum in NASDAQ_NORDIC_MIN_COUNTRY_COUNTS.items():
+        actual = coverage.country_counts.get(country, 0)
+        if actual < minimum:
+            violations.append(f"{country} {actual} is below {minimum}")
+    for request_key, minimum in NASDAQ_NORDIC_MIN_REQUEST_COUNTS.items():
+        actual = coverage.request_counts.get(request_key, 0)
+        if actual < minimum:
+            violations.append(
+                f"{_nasdaq_request_label(request_key)} {actual} is below {minimum}"
+            )
+    return violations
+
+
+def _format_nasdaq_universe_coverage(coverage: NasdaqUniverseCoverage) -> str:
+    country_detail = ", ".join(
+        f"{country}={coverage.country_counts.get(country, 0)}"
+        for country in NASDAQ_NORDIC_MIN_COUNTRY_COUNTS
+    )
+    request_detail = ", ".join(
+        f"{_nasdaq_request_label(key)}={coverage.request_counts.get(key, 0)}"
+        for key in NASDAQ_NORDIC_MIN_REQUEST_COUNTS
+    )
+    return f"total={coverage.total}, {country_detail}; {request_detail}"
+
+
+def _nasdaq_request_label(request_key: tuple[str, str]) -> str:
+    country, segment = request_key
+    for request in NASDAQ_NORDIC_SCREENER_REQUESTS:
+        if (
+            request["country"] == country
+            and request["listing_segment"] == segment
+        ):
+            return f"{request['market']}/{segment}"
+    return f"{country}/{segment}"
 
 
 def _company_from_nasdaq_screener_row(
