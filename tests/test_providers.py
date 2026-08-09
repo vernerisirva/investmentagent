@@ -244,6 +244,7 @@ def test_live_provider_parses_companies_from_sample_payload():
 
     assert [company.ticker for company in companies] == ["NVAL", "FGRO"]
     assert companies[0].country == "SE"
+    assert companies[0].isin == "SE0000000001"
     assert companies[1].segment == ListingSegment.FIRST_NORTH
 
 
@@ -267,6 +268,7 @@ def test_live_provider_parses_nasdaq_nordic_screener_payload():
     assert companies[0].exchange == "Nasdaq Stockholm"
     assert companies[0].segment == ListingSegment.MAIN_MARKET
     assert companies[0].sector == "Technology"
+    assert companies[0].isin == "SE0015960935"
     assert companies[1].country == "SE"
     assert companies[2].country == "FI"
     assert companies[2].segment == ListingSegment.FIRST_NORTH

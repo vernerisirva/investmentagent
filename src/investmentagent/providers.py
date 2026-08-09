@@ -129,6 +129,7 @@ class FixtureResearchProvider:
             country=row["country"],
             exchange=row["exchange"],
             segment=ListingSegment(row["segment"]),
+            isin=row.get("isin"),
             sector=row.get("sector"),
             market_cap_eur_m=row.get("market_cap_eur_m"),
             currency=row.get("currency"),
@@ -355,6 +356,7 @@ def _parse_live_company_payload(
                 segment=_parse_listing_segment(
                     normalized_row.get("segment") or normalized_row.get("market") or ""
                 ),
+                isin=(normalized_row.get("isin") or None),
                 sector=(normalized_row.get("sector") or None),
                 currency=(normalized_row.get("currency") or None),
             )
@@ -547,6 +549,7 @@ def _company_from_nasdaq_screener_row(
         country=inferred_country,
         exchange=exchange,
         segment=segment,
+        isin=str(row.get("isin") or "").strip() or None,
         sector=str(row.get("sector") or "").strip() or None,
         currency=str(row.get("currency") or "").strip() or None,
     )

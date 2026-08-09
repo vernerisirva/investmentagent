@@ -33,18 +33,27 @@ The live provider is an early free-source integration point for Sweden and Finla
 
 ```bash
 investmentagent sources test --provider live
-investmentagent watchlist --provider live --country se,fi --limit 20 --enrichment-limit 30
+investmentagent watchlist --provider live --country se,fi --limit 20 \
+  --refresh-limit 30 \
+  --fundamentals-cache .investmentagent/fundamentals-cache.json
 investmentagent deep-dive FREEM --provider live
 ```
 
 The live provider does not silently fall back to fixture data. If the public source cannot be fetched or parsed, `sources test --provider live` reports the failure and live watchlists or deep dives stop with a clear source error.
 
-`--limit` controls only the final watchlist size. `--enrichment-limit` separately
-bounds how many preliminary candidates may receive fundamentals; it defaults to
-30 companies so a top-10 report can evaluate a 3x broader pool without making
-full-universe requests. Use `--enrichment-limit 0` to make no fundamentals
-requests. Individual data providers may perform more than one endpoint or symbol
-lookup per selected company, and their source diagnostics report those attempts.
+`--limit` controls only the final watchlist size. `--refresh-limit` (also accepted
+as `--enrichment-limit`) bounds external fundamentals refreshes and defaults to
+30. When `--fundamentals-cache` is configured, every eligible company may reuse
+validated cached fundamentals even when it is outside today's refresh selection.
+Missing companies are refreshed first, followed by stale companies from oldest
+to newest. `--cache-max-age-days` controls snapshot freshness and defaults to 45.
+Use `--refresh-limit 0` to make no fundamentals requests.
+
+The cache is a private, configurable runtime file containing normalized accepted
+values rather than vendor payloads or credentials. It is ignored by Git, must not
+be placed under `docs/`, and the scheduled workflow persists it through GitHub
+Actions cache storage. Confirm applicable provider redistribution terms before
+choosing a repository-backed cache deployment.
 
 ## Scoring model
 

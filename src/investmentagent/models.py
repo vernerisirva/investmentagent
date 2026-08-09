@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 
@@ -79,6 +79,7 @@ class Company:
     country: str
     exchange: str
     segment: ListingSegment
+    isin: str | None = None
     sector: str | None = None
     market_cap_eur_m: float | None = None
     currency: str | None = None
@@ -88,6 +89,8 @@ class Company:
     def __post_init__(self) -> None:
         object.__setattr__(self, "ticker", self.ticker.strip().upper())
         object.__setattr__(self, "country", self.country.strip().upper())
+        if self.isin is not None:
+            object.__setattr__(self, "isin", self.isin.strip().upper() or None)
         object.__setattr__(
             self,
             "market_cap_eur_m",
@@ -175,6 +178,24 @@ def _finite_number_or_none(value: float | None) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     return value if math.isfinite(value) else None
+
+
+@dataclass(frozen=True)
+class FundamentalsSnapshot:
+    symbol: str
+    market_cap_eur_m: float | None = None
+    business_description: str | None = None
+    ir_url: str | None = None
+    financials: FinancialSnapshot = field(
+        default_factory=lambda: FinancialSnapshot(data_quality=DataQuality.PARTIAL)
+    )
+    evidence: Evidence | None = None
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "symbol", self.symbol.strip().upper())
+        object.__setattr__(
+            self, "market_cap_eur_m", _finite_number_or_none(self.market_cap_eur_m)
+        )
 
 
 @dataclass(frozen=True)

@@ -253,6 +253,7 @@ def _company_payload(company: Company) -> dict[str, Any]:
         "name": company.name,
         "ticker": company.ticker,
         "country": company.country,
+        "isin": company.isin,
         "exchange": company.exchange,
         "segment": _stringify(company.segment),
         "sector": company.sector,

@@ -334,6 +334,59 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
     assert wrapped["enrichment_limit"] == 24
 
 
+def test_watchlist_passes_cache_and_freshness_to_live_enrichment(monkeypatch):
+    wrapped = {}
+
+    class LiveProvider:
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return [SourceCheck("nasdaq nordic live data", "ok", "live data available")]
+
+    class FundamentalsProvider:
+        pass
+
+    class EnrichedProvider:
+        def __init__(self, base_provider, fundamentals_provider, **options):
+            wrapped.update(options)
+            self.base_provider = base_provider
+
+        def list_companies(self, countries, include_first_north):
+            return []
+
+        def source_checks(self):
+            return self.base_provider.source_checks()
+
+    monkeypatch.delenv("FINIMPULSE_API_KEY", raising=False)
+    monkeypatch.delenv("FINNHUB_API_KEY", raising=False)
+    monkeypatch.setattr(cli, "create_provider", lambda name: LiveProvider())
+    monkeypatch.setattr(cli, "YahooFundamentalsProvider", FundamentalsProvider)
+    monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider)
+
+    with isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--provider",
+                "live",
+                "--refresh-limit",
+                "7",
+                "--fundamentals-cache",
+                ".investmentagent/cache.json",
+                "--cache-max-age-days",
+                "60",
+            ],
+        )
+
+    assert result.exit_code == 0
+    assert wrapped["enrichment_limit"] == 7
+    assert wrapped["cache"].path == Path(".investmentagent/cache.json")
+    assert wrapped["freshness_policy"].max_age_days == 60
+    assert wrapped["known_at"].tzinfo is not None
+
+
 def test_watchlist_auto_fundamentals_prefers_finnhub_when_key_is_present(monkeypatch):
     wrapped = {}
 

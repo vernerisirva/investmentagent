@@ -16,6 +16,11 @@ from investmentagent.fundamentals import (
     YahooFundamentalsProvider,
     compose_valuation_fallback_provider,
 )
+from investmentagent.fundamentals_cache import (
+    DEFAULT_FUNDAMENTALS_MAX_AGE_DAYS,
+    FileFundamentalsCache,
+    FundamentalsFreshnessPolicy,
+)
 from investmentagent.global_ai import build_global_ai_top5
 from investmentagent.market_calendar import market_day_status
 from investmentagent.providers import create_provider
@@ -275,10 +280,23 @@ def watchlist(
     limit: int = typer.Option(20, "--limit", min=1, max=100),
     enrichment_limit: int = typer.Option(
         DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
+        "--refresh-limit",
         "--enrichment-limit",
         min=0,
         max=100,
-        help="Maximum companies eligible for fundamentals enrichment.",
+        help="Maximum external fundamentals refreshes for this run.",
+    ),
+    fundamentals_cache_path: str | None = typer.Option(
+        None,
+        "--fundamentals-cache",
+        help="Path to the private point-in-time fundamentals cache.",
+    ),
+    cache_max_age_days: int = typer.Option(
+        DEFAULT_FUNDAMENTALS_MAX_AGE_DAYS,
+        "--cache-max-age-days",
+        min=0,
+        max=3650,
+        help="Retrieval age after which cached fundamentals are refreshed.",
     ),
     include_first_north: bool = typer.Option(True, "--include-first-north/--exclude-first-north"),
     min_market_cap: float | None = typer.Option(None, "--min-market-cap"),
@@ -308,6 +326,7 @@ def watchlist(
         help="Save report to .json, .md, or .markdown. Can be repeated.",
     ),
 ) -> None:
+    run_timestamp = datetime.now(timezone.utc)
     normalized_output = _normalize_output_option(output)
     normalized_fundamentals = _normalize_fundamentals_option(fundamentals)
     try:
@@ -349,10 +368,29 @@ def watchlist(
             fundamentals_provider = FinnhubFundamentalsProvider(finnhub_api_key)
         if fundamentals_provider is not None:
             effective_enrichment_limit = enrichment_limit
+            fundamentals_cache = None
+            if fundamentals_cache_path is not None:
+                try:
+                    fundamentals_cache = FileFundamentalsCache(
+                        Path(fundamentals_cache_path)
+                    )
+                except ValueError as exc:
+                    raise typer.BadParameter(str(exc)) from exc
+            enrichment_options = {"enrichment_limit": enrichment_limit}
+            if fundamentals_cache is not None:
+                enrichment_options.update(
+                    {
+                        "cache": fundamentals_cache,
+                        "freshness_policy": FundamentalsFreshnessPolicy(
+                            cache_max_age_days
+                        ),
+                        "known_at": run_timestamp,
+                    }
+                )
             provider = EnrichedResearchProvider(
                 provider,
                 fundamentals_provider,
-                enrichment_limit=enrichment_limit,
+                **enrichment_options,
             )
     items = build_watchlist(
         provider,
@@ -371,14 +409,21 @@ def watchlist(
     if callable(enrichment_stats):
         enrichment_metadata = dict(enrichment_stats())
         enrichment_metadata.pop("candidate_keys", None)
+    report_timestamp = datetime.now(timezone.utc)
     metadata = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": report_timestamp.isoformat(),
         "provider": normalized_provider_name,
         "fundamentals": effective_fundamentals,
         "countries": list(countries),
         "limit": limit,
         "enrichment_limit": effective_enrichment_limit,
         "enrichment": enrichment_metadata,
+        "fundamentals_cache": {
+            "enabled": normalized_provider_name == "live"
+            and fundamentals_cache_path is not None
+            and effective_fundamentals != "off",
+            "max_age_days": cache_max_age_days,
+        },
         "include_first_north": include_first_north,
         "min_market_cap": min_market_cap,
         "max_market_cap": max_market_cap,

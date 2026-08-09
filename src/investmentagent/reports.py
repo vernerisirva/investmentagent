@@ -77,8 +77,13 @@ def build_watchlist(
         scored_items,
         min_country_counts=min_country_counts or {},
     )
-    _prepare_watchlist_enrichment(provider, enrichment_selection)
-    enrichment_candidates = enrichment_selection.companies
+    enrichment_candidates = _prepare_watchlist_enrichment(
+        provider,
+        enrichment_selection,
+        eligible_companies=tuple(
+            item.research.company for item in scored_items
+        ),
+    )
     if enrichment_candidates:
         enriched_keys = {
             (company.ticker, company.country) for company in enrichment_candidates
@@ -303,8 +308,21 @@ def _watchlist_enrichment_candidates(
 
 
 def _prepare_watchlist_enrichment(
-    provider: ResearchProvider, selection: WatchlistEnrichmentSelection
-) -> None:
+    provider: ResearchProvider,
+    selection: WatchlistEnrichmentSelection,
+    *,
+    eligible_companies: tuple[Company, ...],
+) -> tuple[Company, ...]:
+    prepare_cached_enrichment = getattr(
+        provider, "prepare_cached_watchlist_enrichment", None
+    )
+    if callable(prepare_cached_enrichment):
+        return prepare_cached_enrichment(
+            eligible_companies,
+            selection.companies,
+            cutoff_tie_count=selection.cutoff_tie_count,
+            cutoff_tie_excluded=selection.cutoff_tie_excluded,
+        )
     prepare_watchlist_enrichment = getattr(provider, "prepare_watchlist_enrichment", None)
     if callable(prepare_watchlist_enrichment):
         prepare_watchlist_enrichment(
@@ -313,6 +331,7 @@ def _prepare_watchlist_enrichment(
             cutoff_tie_count=selection.cutoff_tie_count,
             cutoff_tie_excluded=selection.cutoff_tie_excluded,
         )
+    return selection.companies
 
 
 def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakdown:

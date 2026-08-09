@@ -53,7 +53,17 @@ def test_daily_watchlists_use_explicit_broader_enrichment_budget():
     workflow = WORKFLOW.read_text()
 
     assert "--limit 10" in workflow
-    assert "--enrichment-limit 30" in workflow
+    assert "--refresh-limit 30" in workflow
+
+
+def test_daily_workflow_reuses_a_private_fundamentals_cache():
+    workflow = WORKFLOW.read_text()
+
+    assert "uses: actions/cache@v5" in workflow
+    assert "path: .investmentagent/fundamentals-cache.json" in workflow
+    assert "--fundamentals-cache .investmentagent/fundamentals-cache.json" in workflow
+    assert "--cache-max-age-days 45" in workflow
+    assert "git add .investmentagent" not in workflow
 
 
 def test_daily_workflow_publishes_global_ai_report_and_links_index():

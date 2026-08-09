@@ -38,18 +38,20 @@ def make_score() -> ScoreBreakdown:
     )
 
 
-def test_company_normalizes_ticker_and_country():
+def test_company_normalizes_ticker_country_and_isin():
     company = Company(
         name="Example AB",
         ticker=" exab ",
         country=" se ",
         exchange="Nasdaq Stockholm",
         segment=ListingSegment.FIRST_NORTH,
+        isin=" se0000000001 ",
         sector="Industrials",
     )
 
     assert company.ticker == "EXAB"
     assert company.country == "SE"
+    assert company.isin == "SE0000000001"
 
 
 def test_financial_snapshot_defaults_to_thin_quality():

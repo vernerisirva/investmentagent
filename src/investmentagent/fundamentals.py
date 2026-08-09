@@ -5,14 +5,22 @@ import math
 import re
 import ssl
 from collections.abc import Callable
-from dataclasses import dataclass, field, replace
-from datetime import date
+from dataclasses import replace
+from datetime import date, datetime, timezone
 from typing import Any
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
 import certifi
 
+from investmentagent.fundamentals_cache import (
+    CacheCoverage,
+    CacheFreshness,
+    CachedFundamentalsRecord,
+    FundamentalsCache,
+    FundamentalsFreshnessPolicy,
+    company_cache_identity,
+)
 from investmentagent.models import (
     Company,
     CompanyResearch,
@@ -20,6 +28,7 @@ from investmentagent.models import (
     Evidence,
     FinancialObservation,
     FinancialSnapshot,
+    FundamentalsSnapshot,
     ObservationConfidence,
     ReportingPeriodType,
     SourceCheck,
@@ -95,23 +104,6 @@ DEFAULT_WATCHLIST_ENRICHMENT_LIMIT = 30
 # bound only prevents clearly old observations from upgrading aggregate quality;
 # it does not reject or hide the value.
 MAX_QUALITY_AS_OF_AGE_DAYS = 730
-
-
-@dataclass(frozen=True)
-class FundamentalsSnapshot:
-    symbol: str
-    market_cap_eur_m: float | None = None
-    business_description: str | None = None
-    ir_url: str | None = None
-    financials: FinancialSnapshot = field(
-        default_factory=lambda: FinancialSnapshot(data_quality=DataQuality.PARTIAL)
-    )
-    evidence: Evidence | None = None
-
-    def __post_init__(self) -> None:
-        object.__setattr__(
-            self, "market_cap_eur_m", _finite_number(self.market_cap_eur_m)
-        )
 
 
 class YahooFundamentalsProvider:
@@ -647,12 +639,22 @@ class EnrichedResearchProvider:
         base_provider,
         fundamentals_provider,
         enrichment_limit: int = DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
+        cache: FundamentalsCache | None = None,
+        freshness_policy: FundamentalsFreshnessPolicy | None = None,
+        known_at: datetime | None = None,
+        retrieval_clock: Callable[[], datetime] | None = None,
     ) -> None:
         if enrichment_limit < 0:
             raise ValueError("enrichment_limit must be at least 0")
         self.base_provider = base_provider
         self.fundamentals_provider = fundamentals_provider
         self.enrichment_limit = enrichment_limit
+        self.cache = cache
+        self.freshness_policy = freshness_policy or FundamentalsFreshnessPolicy()
+        self.known_at = (known_at or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        self._retrieval_clock = retrieval_clock or (
+            lambda: datetime.now(timezone.utc)
+        )
         self._enrichment_attempts = 0
         self._successful_enrichments = 0
         self._eligible_enrichment_keys: set[tuple[str, str]] | None = None
@@ -661,17 +663,31 @@ class EnrichedResearchProvider:
         self._cutoff_tie_count = 0
         self._cutoff_tie_excluded = 0
         self._watchlist_enrichment_prepared = False
+        self._cache_records: dict[str, CachedFundamentalsRecord | None] = {}
+        self._cache_hits = 0
+        self._cache_misses = 0
+        self._cache_coverage: CacheCoverage | None = None
+        self._cache_eligible_companies: tuple[Company, ...] = ()
 
     def list_companies(self, countries, include_first_north):
         return self.base_provider.list_companies(countries, include_first_north)
 
     def get_research(self, ticker: str) -> CompanyResearch:
-        return self._enrich(self.base_provider.get_research(ticker))
+        base = self.base_provider.get_research(ticker)
+        cached = self._with_cached_snapshot(base)
+        return self._refresh(base, cached)
 
     def get_company_research(self, company: Company) -> CompanyResearch:
-        return self._enrich(self.get_base_company_research(company))
+        base = self._get_unenriched_company_research(company)
+        cached = self._with_cached_snapshot(base)
+        return self._refresh(base, cached)
 
     def get_base_company_research(self, company: Company) -> CompanyResearch:
+        return self._with_cached_snapshot(
+            self._get_unenriched_company_research(company)
+        )
+
+    def _get_unenriched_company_research(self, company: Company) -> CompanyResearch:
         get_company_research = getattr(
             self.base_provider, "get_company_research", None
         )
@@ -703,10 +719,88 @@ class EnrichedResearchProvider:
         self._cutoff_tie_excluded = cutoff_tie_excluded
         self._watchlist_enrichment_prepared = True
 
+    def prepare_cached_watchlist_enrichment(
+        self,
+        eligible_companies: tuple[Company, ...],
+        important_companies: tuple[Company, ...],
+        *,
+        cutoff_tie_count: int = 0,
+        cutoff_tie_excluded: int = 0,
+    ) -> tuple[Company, ...]:
+        if self.cache is None:
+            self.prepare_watchlist_enrichment(
+                important_companies,
+                eligible_universe_size=len(eligible_companies),
+                cutoff_tie_count=cutoff_tie_count,
+                cutoff_tie_excluded=cutoff_tie_excluded,
+            )
+            return important_companies[: self.enrichment_limit]
+
+        self._enrichment_attempts = 0
+        self._successful_enrichments = 0
+        unique_companies = {
+            company_cache_identity(company): company for company in eligible_companies
+        }
+        self._cache_eligible_companies = tuple(unique_companies.values())
+        important_rank = {
+            company_cache_identity(company): index
+            for index, company in enumerate(important_companies)
+        }
+        refresh_candidates: list[tuple[tuple, Company]] = []
+        for company_id, company in unique_companies.items():
+            record = self._cached_record(company)
+            if record is None:
+                priority = (
+                    0,
+                    important_rank.get(company_id, len(important_rank)),
+                    company_id,
+                )
+            elif (
+                self.freshness_policy.classify(record, known_at=self.known_at)
+                == CacheFreshness.STALE
+            ):
+                priority = (
+                    1,
+                    record.retrieved_at,
+                    important_rank.get(company_id, len(important_rank)),
+                    company_id,
+                )
+            else:
+                continue
+            refresh_candidates.append((priority, company))
+
+        selected = tuple(
+            company
+            for _, company in sorted(refresh_candidates, key=lambda item: item[0])[
+                : self.enrichment_limit
+            ]
+        )
+        self._selected_enrichment_keys = tuple(
+            (company.ticker, company.country) for company in selected
+        )
+        self._eligible_enrichment_keys = set(self._selected_enrichment_keys)
+        self._eligible_universe_size = len(unique_companies)
+        self._cutoff_tie_count = cutoff_tie_count
+        self._cutoff_tie_excluded = cutoff_tie_excluded
+        self._watchlist_enrichment_prepared = True
+        self._cache_coverage = self.cache.coverage(
+            self._cache_eligible_companies,
+            known_at=self.known_at,
+            freshness_policy=self.freshness_policy,
+        )
+        return selected
+
     def enrichment_stats(self) -> dict:
-        return {
+        if self.cache is not None and self._cache_eligible_companies:
+            self._cache_coverage = self.cache.coverage(
+                self._cache_eligible_companies,
+                known_at=self.known_at,
+                freshness_policy=self.freshness_policy,
+            )
+        stats = {
             "eligible_universe_size": self._eligible_universe_size,
             "enrichment_budget": self.enrichment_limit,
+            "refresh_budget": self.enrichment_limit,
             "selected_candidates": len(self._selected_enrichment_keys),
             "candidate_keys": tuple(
                 f"{country}|{ticker}"
@@ -716,7 +810,14 @@ class EnrichedResearchProvider:
             "successful_enrichments": self._successful_enrichments,
             "cutoff_tie_count": self._cutoff_tie_count,
             "cutoff_tie_excluded": self._cutoff_tie_excluded,
+            "cache_enabled": self.cache is not None,
+            "cache_hits": self._cache_hits,
+            "cache_misses": self._cache_misses,
+            "cache_max_age_days": self.freshness_policy.max_age_days,
         }
+        if self._cache_coverage is not None:
+            stats.update(self._cache_coverage.as_dict())
+        return stats
 
     def enrichment_source_check(self) -> SourceCheck:
         if not self._watchlist_enrichment_prepared:
@@ -726,6 +827,15 @@ class EnrichedResearchProvider:
                 f"watchlist enrichment not prepared; budget={self.enrichment_limit}",
             )
         stats = self.enrichment_stats()
+        cache_detail = ""
+        if stats["cache_enabled"]:
+            cache_detail = (
+                f"cache coverage={stats.get('cached_companies', 0)}/"
+                f"{stats['eligible_universe_size']} "
+                f"(fresh={stats.get('fresh_companies', 0)}, "
+                f"stale={stats.get('stale_companies', 0)}, "
+                f"missing={stats.get('missing_companies', 0)}); "
+            )
         return SourceCheck(
             "fundamentals enrichment",
             "ok",
@@ -735,6 +845,9 @@ class EnrichedResearchProvider:
                 f"selected={stats['selected_candidates']}; "
                 f"attempts={stats['attempts']}; "
                 f"successful={stats['successful_enrichments']}; "
+                f"{cache_detail}"
+                f"cache hits={stats['cache_hits']}; "
+                f"cache misses={stats['cache_misses']}; "
                 f"cutoff ties={stats['cutoff_tie_count']} "
                 f"({stats['cutoff_tie_excluded']} excluded)"
             ),
@@ -752,21 +865,65 @@ class EnrichedResearchProvider:
             checks.append(source_check())
         return checks
 
-    def _enrich(self, research: CompanyResearch) -> CompanyResearch:
-        key = (research.company.ticker, research.company.country)
+    def _refresh(
+        self,
+        base_research: CompanyResearch,
+        cached_research: CompanyResearch,
+    ) -> CompanyResearch:
+        key = (base_research.company.ticker, base_research.company.country)
         if (
             self._eligible_enrichment_keys is not None
             and key not in self._eligible_enrichment_keys
         ):
-            return research
+            return cached_research
         if self._enrichment_attempts >= self.enrichment_limit:
-            return research
+            return cached_research
         self._enrichment_attempts += 1
-        snapshot = self.fundamentals_provider.get_fundamentals(research.company)
+        snapshot = self.fundamentals_provider.get_fundamentals(base_research.company)
         if snapshot is None:
-            return research
+            return cached_research
+        if self.cache is not None:
+            retrieved_at = self._retrieval_clock()
+            if not isinstance(retrieved_at, datetime) or retrieved_at.tzinfo is None:
+                raise ValueError("retrieval clock must return a timezone-aware datetime")
+            retrieved_at = retrieved_at.astimezone(timezone.utc)
+            record = self.cache.store(
+                base_research.company,
+                snapshot,
+                retrieved_at=retrieved_at,
+            )
+            self._cache_records[company_cache_identity(base_research.company)] = record
+            self.known_at = max(self.known_at, retrieved_at)
         self._successful_enrichments += 1
+        return self._apply_snapshot(base_research, snapshot)
 
+    def _with_cached_snapshot(self, research: CompanyResearch) -> CompanyResearch:
+        record = self._cached_record(research.company)
+        if record is None:
+            return research
+        return self._apply_snapshot(research, record.snapshot)
+
+    def _cached_record(
+        self, company: Company
+    ) -> CachedFundamentalsRecord | None:
+        if self.cache is None:
+            return None
+        company_id = company_cache_identity(company)
+        if company_id in self._cache_records:
+            return self._cache_records[company_id]
+        record = self.cache.get_latest(company, known_at=self.known_at)
+        self._cache_records[company_id] = record
+        if record is None:
+            self._cache_misses += 1
+        else:
+            self._cache_hits += 1
+        return record
+
+    def _apply_snapshot(
+        self,
+        research: CompanyResearch,
+        snapshot: FundamentalsSnapshot,
+    ) -> CompanyResearch:
         company = research.company
         if company.market_cap_eur_m is None and snapshot.market_cap_eur_m is not None:
             company = replace(company, market_cap_eur_m=snapshot.market_cap_eur_m)
