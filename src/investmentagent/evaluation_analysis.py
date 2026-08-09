@@ -10,6 +10,12 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from investmentagent.analysis_eligibility import (
+    DEFAULT_ANALYSIS_ELIGIBILITY,
+    DEFAULT_COUNTRY_ANALYSIS_ELIGIBILITY,
+    AnalysisEligibilityCriteria,
+    assess_analysis_eligibility,
+)
 from investmentagent.evaluation import EvaluationCompanyRow, EvaluationSnapshot
 from investmentagent.evaluation_outcomes import (
     EvaluationOutcomeSet,
@@ -37,6 +43,10 @@ def analyze_outcome_store(
     strategy: str | None = None,
     run_id: str | None = None,
     report_date: date | None = None,
+    eligibility_criteria: AnalysisEligibilityCriteria = DEFAULT_ANALYSIS_ELIGIBILITY,
+    country_eligibility_criteria: AnalysisEligibilityCriteria = (
+        DEFAULT_COUNTRY_ANALYSIS_ELIGIBILITY
+    ),
 ) -> dict[str, Any]:
     snapshots = discover_evaluation_snapshots(
         evaluation_root,
@@ -64,6 +74,8 @@ def analyze_outcome_store(
         stores,
         generated_at=generated_at,
         experiment_snapshots=experiments,
+        eligibility_criteria=eligibility_criteria,
+        country_eligibility_criteria=country_eligibility_criteria,
     )
 
 
@@ -73,6 +85,10 @@ def build_performance_v2_analysis(
     *,
     generated_at: datetime,
     experiment_snapshots: Iterable[ChallengerExperimentSnapshot] | None = None,
+    eligibility_criteria: AnalysisEligibilityCriteria = DEFAULT_ANALYSIS_ELIGIBILITY,
+    country_eligibility_criteria: AnalysisEligibilityCriteria = (
+        DEFAULT_COUNTRY_ANALYSIS_ELIGIBILITY
+    ),
 ) -> dict[str, Any]:
     if generated_at.tzinfo is None:
         raise ValueError("analysis generated_at must be timezone-aware")
@@ -108,6 +124,8 @@ def build_performance_v2_analysis(
                     horizon_outcomes,
                     definition.label,
                     definition.sessions,
+                    eligibility_criteria=eligibility_criteria,
+                    country_eligibility_criteria=country_eligibility_criteria,
                 )
             )
 
@@ -115,13 +133,29 @@ def build_performance_v2_analysis(
     warnings = [
         (
             "Insufficient history for reliable inference: "
-            f"{group['evaluated_run_count']} completed evaluation dates for "
+            f"{group['evaluated_run_count']} analysis-eligible evaluation dates for "
             f"{group['strategy']} / {group['scoring_model_version']} / "
             f"{group['horizon']['label']}."
         )
         for group in groups
         if group["evaluated_run_count"] < MIN_RELIABLE_EVALUATION_DATES
     ]
+    warnings.extend(
+        (
+            "No sufficiently covered evaluation dates are available yet for "
+            "ranking-quality conclusions: "
+            f"{group['strategy']} / {group['scoring_model_version']} / "
+            f"{group['horizon']['label']}."
+        )
+        for group in groups
+        if group["due_run_count"] > 0 and group["evaluated_run_count"] == 0
+    )
+    if any(group["partial_run_count"] for group in groups):
+        warnings.append(
+            "Partial price coverage may be systematically related to symbol "
+            "resolution, country, segment, or company identity; low-coverage "
+            "run metrics are therefore descriptive only."
+        )
     if not groups:
         warnings.append("No stored market outcomes are available for analysis.")
     analysis = {
@@ -142,10 +176,14 @@ def build_performance_v2_analysis(
                 "Spearman correlation of negative recorded final rank and forward return"
             ),
             "aggregation": (
-                "cross-sectional metrics are computed per evaluation run, then run metrics are aggregated"
+                "cross-sectional metrics are computed for every run; only analysis-eligible runs are aggregated"
             ),
             "buckets": (
                 "rank quantiles; 10 buckets at n>=50, 5 at n>=25, 2 at n>=10, otherwise 1"
+            ),
+            "analysis_eligibility": eligibility_criteria.as_dict(),
+            "country_analysis_eligibility": (
+                country_eligibility_criteria.as_dict()
             ),
             "country_benchmark_minimum": 2,
         },
@@ -157,6 +195,7 @@ def build_performance_v2_analysis(
             "Repeated company observations across evaluation dates are not independent.",
             "Run-level aggregation limits domination by repeated securities but does not use clustered standard errors.",
             "Missing prices and possible delistings are retained as explicit states and are never treated as zero returns.",
+            "Partial price coverage may be non-random across symbol resolution, country, segment, or company identity; ineligible run metrics are descriptive only.",
             "Gross returns do not establish trading profitability because transaction costs are excluded.",
             "Small samples are descriptive and do not establish statistical significance.",
         ],
@@ -168,6 +207,7 @@ def build_performance_v2_analysis(
             ordered_snapshots,
             ordered_stores,
             tuple(experiment_snapshots),
+            eligibility_criteria=eligibility_criteria,
         )
     return analysis
 
@@ -222,19 +262,25 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         [
             "## Run-Level Summary",
             "",
-            "| Strategy | Model | Horizon | Dates | Avg n | Coverage | Mean score IC | Median score IC | Mean final-rank IC | IC hit rate | Top decile - universe |",
-            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+            "| Strategy | Model | Horizon | Evaluations | Due | Eligible | Partial | Avg n | Avg due coverage | Required coverage | Mean score IC | Median score IC | Mean final-rank IC | IC hit rate | Top decile - universe |",
+            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
         ]
     )
     for group in groups:
         lines.append(
-            "| {strategy} | {model} | {horizon} | {dates} | {size} | {coverage} | {mean_ic} | {median_ic} | {rank_ic} | {hit_rate} | {spread} |".format(
+            "| {strategy} | {model} | {horizon} | {runs} | {due} | {eligible} | {partial} | {size} | {coverage} | {required} | {mean_ic} | {median_ic} | {rank_ic} | {hit_rate} | {spread} |".format(
                 strategy=group["strategy"],
                 model=group["scoring_model_version"],
                 horizon=group["horizon"]["label"],
-                dates=group["evaluated_run_count"],
+                runs=group["evaluation_run_count"],
+                due=group["due_run_count"],
+                eligible=group["evaluated_run_count"],
+                partial=group["partial_run_count"],
                 size=_format_number(group["average_valid_universe_size"], 1),
                 coverage=_format_percent(group["average_outcome_coverage_pct"]),
+                required=_format_percent(
+                    group["analysis_eligibility"]["minimum_coverage_pct"]
+                ),
                 mean_ic=_format_number(group["score_ic"]["mean"], 3),
                 median_ic=_format_number(group["score_ic"]["median"], 3),
                 rank_ic=_format_number(group["final_rank_ic"]["mean"], 3),
@@ -253,7 +299,9 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         lines.append(f"### {label}")
         schemes = group["bucket_schemes"]
         if not schemes:
-            lines.append("No bucket analysis is available.")
+            lines.append(
+                "No eligible-run bucket analysis is available; partial-run buckets remain in JSON diagnostics."
+            )
             lines.append("")
             continue
         for scheme in schemes:
@@ -299,8 +347,9 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
                 f"- {country['country']}: "
                 f"{_format_return(country['mean_equal_weight_return_pct'])}; "
                 f"mean score IC {_format_number(country['score_ic']['mean'], 3)}; "
-                f"{country['observations']} observations across "
-                f"{country['evaluation_dates']} dates"
+                f"{country['analysis_eligible_run_count']}/{country['due_evaluation_dates']} "
+                f"eligible dates; {_format_percent(country['average_outcome_coverage_pct'])} "
+                f"average coverage; {country['observations']} eligible observations"
             )
         lines.append("")
     _append_challenger_report(lines, analysis.get("challenger_analysis"))
@@ -311,6 +360,7 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
             "- Metrics are calculated per evaluation run before aggregation.",
             "- Repeated companies are not independent observations.",
             "- Missing outcomes remain visible and may create small-company or delisting bias.",
+            "- Partial price coverage may be non-random across symbol resolution, country, segment, or company identity; ineligible metrics are descriptive only.",
             "- Model versions are analyzed separately and are never pooled by default.",
             "- No scoring weights are changed automatically.",
         ]
@@ -324,6 +374,10 @@ def _append_challenger_report(
     if challenger is None:
         return
     lines.extend(["## Shadow Challenger", ""])
+    lines.append(
+        f"Challenger sidecars recorded: {challenger.get('recorded_sidecar_count', 0)}."
+    )
+    lines.append("")
     for warning in challenger.get("warnings", []):
         lines.append(f"> **Warning:** {warning}")
         lines.append("")
@@ -331,8 +385,8 @@ def _append_challenger_report(
     if groups:
         lines.extend(
             [
-                "| Experiment | Champion | Horizon | Paired dates | Mean score IC delta | Median score IC delta | IC improved | Top-decile spread delta | Top-10 overlap |",
-                "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+                "| Experiment | Champion | Horizon | Recorded | Due | Eligible | Partial | Mean score IC delta | Median score IC delta | IC improved | Top-decile spread delta | Top-10 overlap |",
+                "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
             ]
         )
         for group in groups:
@@ -340,12 +394,15 @@ def _append_challenger_report(
             top_delta = group["paired_deltas"]["top_decile_minus_universe_pct"]
             churn = group["ranking_churn"]
             lines.append(
-                "| {experiment} v{version} | {champion} | {horizon} | {dates} | {mean_delta} | {median_delta} | {improved} | {top_delta} | {overlap} |".format(
+                "| {experiment} v{version} | {champion} | {horizon} | {recorded} | {due} | {eligible} | {partial} | {mean_delta} | {median_delta} | {improved} | {top_delta} | {overlap} |".format(
                     experiment=group["experiment_id"],
                     version=group["experiment_version"],
                     champion=group["champion_scoring_model_version"],
                     horizon=group["horizon"]["label"],
-                    dates=group["paired_completed_date_count"],
+                    recorded=group["recorded_run_count"],
+                    due=group["paired_due_date_count"],
+                    eligible=group["paired_completed_date_count"],
+                    partial=group["paired_partial_date_count"],
                     mean_delta=_format_number(score_delta["mean"], 3),
                     median_delta=_format_number(score_delta["median"], 3),
                     improved=_format_percent(score_delta["positive_date_pct"]),
@@ -371,6 +428,9 @@ def _analyze_run_horizon(
     outcomes: tuple[MarketOutcome, ...],
     horizon_label: str,
     horizon_sessions: int,
+    *,
+    eligibility_criteria: AnalysisEligibilityCriteria,
+    country_eligibility_criteria: AnalysisEligibilityCriteria,
 ) -> dict[str, Any]:
     if len(outcomes) != snapshot.universe_size:
         raise ValueError("outcome horizon does not cover the original evaluation universe")
@@ -439,15 +499,27 @@ def _analyze_run_horizon(
     negative_ranks = [-float(row.rank) for row, _ in priced_pairs]
     bucket_metrics = _run_bucket_metrics(priced_pairs, bucket_count, universe_return)
     top_metrics = _top_metrics(priced_pairs, universe_return)
+    original_country_counts = Counter(row.country for row in snapshot.rows)
     country_metrics = [
-        _country_run_metric(country, pairs)
-        for country in sorted({row.country for row, _ in priced_pairs})
-        if len(
-            pairs := [pair for pair in priced_pairs if pair[0].country == country]
+        _country_run_metric(
+            country,
+            [pair for pair in priced_pairs if pair[0].country == country],
+            original_company_count=original_count,
+            eligibility_criteria=country_eligibility_criteria,
         )
+        for country, original_count in sorted(original_country_counts.items())
     ]
     statuses = Counter(outcome.status for outcome in outcomes)
     is_due = statuses.get("not_due", 0) != len(outcomes)
+    eligibility = assess_analysis_eligibility(
+        len(priced_pairs),
+        snapshot.universe_size,
+        criteria=eligibility_criteria,
+    )
+    analysis_eligible = is_due and eligibility.eligible
+    ineligibility_reasons = (
+        list(eligibility.reasons) if is_due else ["horizon is not due"]
+    )
     return {
         "evaluation_run_id": snapshot.run_id,
         "report_date": snapshot.report_date.isoformat(),
@@ -467,6 +539,12 @@ def _analyze_run_horizon(
             (len(priced_pairs) / snapshot.universe_size) * 100
             if snapshot.universe_size
             else 0.0
+        ),
+        "analysis_eligible": analysis_eligible,
+        "analysis_ineligibility_reasons": ineligibility_reasons,
+        "analysis_eligibility": eligibility.as_dict(),
+        "metric_scope": (
+            "analysis_eligible" if analysis_eligible else "descriptive_partial"
         ),
         "status_counts": dict(sorted(statuses.items())),
         "universe_equal_weight_return_pct": universe_return,
@@ -501,10 +579,12 @@ def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, 
     results: list[dict[str, Any]] = []
     for (strategy, model_version, sessions, label), metrics in sorted(grouped.items()):
         due_metrics = [metric for metric in metrics if metric["is_due"]]
-        evaluated = [
-            metric
-            for metric in due_metrics
-            if metric["valid_company_count"] >= MIN_IC_SAMPLE
+        evaluated = [metric for metric in due_metrics if metric["analysis_eligible"]]
+        partial = [
+            metric for metric in due_metrics if not metric["analysis_eligible"]
+        ]
+        partially_priced = [
+            metric for metric in partial if metric["valid_company_count"] > 0
         ]
         score_ics = [
             metric["score_return_spearman_ic"]
@@ -533,6 +613,9 @@ def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, 
                 "evaluation_run_count": len(metrics),
                 "due_run_count": len(due_metrics),
                 "evaluated_run_count": len(evaluated),
+                "analysis_eligible_run_count": len(evaluated),
+                "partial_run_count": len(partial),
+                "partially_priced_run_count": len(partially_priced),
                 "unique_company_count": len(unique_companies),
                 "average_valid_universe_size": _mean_or_none(
                     [metric["valid_company_count"] for metric in due_metrics]
@@ -540,12 +623,26 @@ def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, 
                 "average_outcome_coverage_pct": _mean_or_none(
                     [metric["outcome_coverage_pct"] for metric in due_metrics]
                 ),
+                "average_eligible_outcome_coverage_pct": _mean_or_none(
+                    [metric["outcome_coverage_pct"] for metric in evaluated]
+                ),
+                "analysis_eligibility": {
+                    "minimum_coverage_pct": metrics[0]["analysis_eligibility"][
+                        "minimum_coverage_pct"
+                    ],
+                    "minimum_valid_companies": metrics[0][
+                        "analysis_eligibility"
+                    ]["minimum_valid_companies"],
+                    "purpose": (
+                        "research-quality aggregation guardrail; not a statistical-significance threshold"
+                    ),
+                },
                 "score_ic": _aggregate_ic(score_ics),
                 "final_rank_ic": _aggregate_ic(rank_ics),
                 "top_vs_universe": _aggregate_top_metrics(evaluated),
                 "bucket_schemes": _aggregate_bucket_schemes(evaluated),
                 "gate_tiers": _aggregate_gate_tiers(evaluated),
-                "countries": _aggregate_country_metrics(evaluated),
+                "countries": _aggregate_country_metrics(due_metrics),
                 "sample_warning": (
                     len(evaluated) < MIN_RELIABLE_EVALUATION_DATES
                 ),
@@ -616,14 +713,34 @@ def _top_metrics(
 def _country_run_metric(
     country: str,
     pairs: list[tuple[EvaluationCompanyRow, MarketOutcome]],
+    *,
+    original_company_count: int,
+    eligibility_criteria: AnalysisEligibilityCriteria,
 ) -> dict[str, Any]:
     scores = [row.score["total"] for row, _ in pairs]
     negative_ranks = [-float(row.rank) for row, _ in pairs]
     returns = [float(outcome.raw_forward_return_pct) for _, outcome in pairs]
+    eligibility = assess_analysis_eligibility(
+        len(pairs),
+        original_company_count,
+        criteria=eligibility_criteria,
+    )
     return {
         "country": country,
+        "original_company_count": original_company_count,
         "valid_company_count": len(pairs),
-        "equal_weight_return_pct": statistics.fmean(returns),
+        "outcome_coverage_pct": eligibility.coverage_pct,
+        "analysis_eligible": eligibility.eligible,
+        "analysis_ineligibility_reasons": list(eligibility.reasons),
+        "analysis_eligibility": eligibility.as_dict(),
+        "metric_scope": (
+            "analysis_eligible"
+            if eligibility.eligible
+            else "descriptive_partial"
+        ),
+        "equal_weight_return_pct": (
+            statistics.fmean(returns) if returns else None
+        ),
         "score_return_spearman_ic": spearman_rank_correlation(scores, returns),
         "final_rank_return_spearman_ic": spearman_rank_correlation(
             negative_ranks, returns
@@ -774,26 +891,50 @@ def _aggregate_country_metrics(metrics: list[dict[str, Any]]) -> list[dict[str, 
     rows_by_country: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for metric in metrics:
         for row in metric["country_metrics"]:
-            rows_by_country[row["country"]].append(row)
+            rows_by_country[row["country"]].append(
+                {**row, "run_analysis_eligible": metric["analysis_eligible"]}
+            )
     results = []
     for country, rows in sorted(rows_by_country.items()):
+        eligible_rows = [
+            row
+            for row in rows
+            if row["run_analysis_eligible"] and row["analysis_eligible"]
+        ]
         score_ics = [
             row["score_return_spearman_ic"]
-            for row in rows
+            for row in eligible_rows
             if row["score_return_spearman_ic"] is not None
         ]
         rank_ics = [
             row["final_rank_return_spearman_ic"]
-            for row in rows
+            for row in eligible_rows
             if row["final_rank_return_spearman_ic"] is not None
         ]
         results.append(
             {
                 "country": country,
-                "evaluation_dates": len(rows),
-                "observations": sum(row["valid_company_count"] for row in rows),
-                "mean_equal_weight_return_pct": statistics.fmean(
-                    row["equal_weight_return_pct"] for row in rows
+                "due_evaluation_dates": len(rows),
+                "evaluation_dates": len(eligible_rows),
+                "analysis_eligible_run_count": len(eligible_rows),
+                "partial_run_count": len(rows) - len(eligible_rows),
+                "average_outcome_coverage_pct": _mean_or_none(
+                    [row["outcome_coverage_pct"] for row in rows]
+                ),
+                "minimum_coverage_pct": rows[0]["analysis_eligibility"][
+                    "minimum_coverage_pct"
+                ],
+                "minimum_valid_companies": rows[0]["analysis_eligibility"][
+                    "minimum_valid_companies"
+                ],
+                "due_observations": sum(
+                    row["valid_company_count"] for row in rows
+                ),
+                "observations": sum(
+                    row["valid_company_count"] for row in eligible_rows
+                ),
+                "mean_equal_weight_return_pct": _mean_present(
+                    row["equal_weight_return_pct"] for row in eligible_rows
                 ),
                 "score_ic": _aggregate_ic(score_ics),
                 "final_rank_ic": _aggregate_ic(rank_ics),

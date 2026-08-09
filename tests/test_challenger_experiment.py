@@ -647,12 +647,60 @@ def test_incremental_relative_value_signal_beats_imperfect_champion():
         experiment_snapshots=(experiment,),
     )
     paired = analysis["challenger_analysis"]["run_metrics"][0]
+    group = analysis["challenger_analysis"]["groups"][0]
 
+    assert paired["analysis_eligible"] is True
+    assert paired["champion_analysis_eligible"] is True
+    assert paired["challenger_analysis_eligible"] is True
+    assert group["paired_due_date_count"] == 1
+    assert group["paired_completed_date_count"] == 1
+    assert group["paired_partial_date_count"] == 0
     assert paired["challenger"]["score_return_ic"] > paired["champion"]["score_return_ic"]
     assert paired["challenger"]["rank_return_ic"] > paired["champion"]["final_rank_return_ic"]
     assert paired["paired_deltas"]["score_ic"] > 0
     assert paired["paired_deltas"]["top_decile_minus_universe_pct"] > 0
     assert [item.research.company.ticker for item in result.selected_items] == public_before
+
+
+def test_two_of_nine_hundred_paired_outcomes_are_descriptive_only():
+    count = 900
+    research = [
+        _research(index, pe_ratio=5.0 + index * 0.01) for index in range(count)
+    ]
+    _, _, snapshot, experiment = _experiment(
+        research, [float(count - index) for index in range(count)]
+    )
+    missing_company_ids = [row.company_id for row in snapshot.rows[2:]]
+    outcomes = _priced_outcomes(
+        snapshot,
+        [float(count - index) for index in range(count)],
+        missing_company_ids=missing_company_ids,
+    )
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,),
+        (outcomes,),
+        generated_at=datetime(2026, 8, 30, tzinfo=UTC),
+        experiment_snapshots=(experiment,),
+    )["challenger_analysis"]
+    paired = analysis["run_metrics"][0]
+    group = analysis["groups"][0]
+
+    assert paired["paired_company_count"] == 2
+    assert paired["paired_outcome_coverage_pct"] == pytest.approx(2 / 900 * 100)
+    assert paired["champion"]["score_return_ic"] == pytest.approx(1.0)
+    assert paired["analysis_eligible"] is False
+    assert paired["champion_analysis_eligible"] is False
+    assert paired["challenger_analysis_eligible"] is False
+    assert paired["metric_scope"] == "descriptive_partial"
+    assert group["paired_due_date_count"] == 1
+    assert group["paired_completed_date_count"] == 0
+    assert group["paired_partial_date_count"] == 1
+    assert group["paired_deltas"]["score_ic"]["mean"] is None
+    assert any(
+        "Insufficient paired outcome coverage" in warning
+        for warning in analysis["warnings"]
+    )
 
 
 def test_misleading_relative_value_signal_loses_to_champion():

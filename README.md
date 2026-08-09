@@ -141,6 +141,14 @@ gate tiers, country splits, and missingness. Returns are gross and exclude sprea
 commissions, and slippage. Small samples are labeled as insufficient for reliable
 inference.
 
+Run-level metrics remain available as descriptive diagnostics whenever outcomes
+are due, but ranking-quality aggregates require both 70% outcome coverage and at
+least 50 valid companies. Country aggregates use the same 70% threshold and at
+least 20 valid companies. These configurable limits are research-quality
+guardrails, not statistical-significance thresholds. Partial runs, their ICs,
+buckets, status counts, and missingness remain in JSON and are explicitly excluded
+from headline aggregates because missing prices may be non-random.
+
 EODHD's free plan has a low daily request allowance and may be insufficient for a
 complete daily Nordic universe. Tests and fixture analysis require no credential,
 but durable live coverage requires an EODHD plan/quota appropriate to the number
@@ -175,7 +183,9 @@ paired champion-versus-challenger diagnostics. Historical evaluations without a
 contemporaneous sidecar are reported as `challenger not recorded`; they are never
 reconstructed from newer fundamentals. Fewer than 20 completed paired dates is
 explicitly treated as insufficient history, and no result promotes a challenger
-automatically.
+automatically. A paired date counts as completed only when its shared
+champion/challenger priced sample passes the same 70% and 50-company eligibility
+guardrail used by normal Performance v2 aggregation.
 
 ## Scoring model
 

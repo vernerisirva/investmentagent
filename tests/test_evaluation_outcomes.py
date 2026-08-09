@@ -7,6 +7,10 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
+from investmentagent.analysis_eligibility import (
+    AnalysisEligibilityCriteria,
+    assess_analysis_eligibility,
+)
 from investmentagent.cli import app
 from investmentagent.evaluation import (
     EVALUATION_SCHEMA_VERSION,
@@ -17,6 +21,7 @@ from investmentagent.evaluation import (
 )
 from investmentagent.evaluation_analysis import (
     build_performance_v2_analysis,
+    render_performance_v2_markdown,
     spearman_rank_correlation,
 )
 from investmentagent.evaluation_outcomes import (
@@ -49,6 +54,7 @@ from investmentagent.market_price_cache import FileHistoricalPriceCache
 UTC = timezone.utc
 RUNNER = CliRunner()
 ONE_SESSION = (HorizonDefinition("1_session", 1),)
+TEST_ANALYSIS_ELIGIBILITY = AnalysisEligibilityCriteria(0.0, 2)
 
 
 def _timestamp(day: int = 10, hour: int = 8) -> datetime:
@@ -187,6 +193,34 @@ def _priced_store(
         FixtureHistoricalPriceProvider(histories),
         retrieved_at=retrieved_at,
         horizons=horizon,
+    )
+
+
+def _partially_priced_store(
+    snapshot: EvaluationSnapshot,
+    priced_rows: list[EvaluationCompanyRow],
+    returns_pct: list[float],
+) -> EvaluationOutcomeSet:
+    retrieved_at = snapshot.decision_at + timedelta(days=20)
+    histories = {}
+    for row, forward_return in zip(priced_rows, returns_pct, strict=True):
+        market = market_for_country(row.country)
+        entry = first_session_closing_after(snapshot.decision_at, market).day
+        exit_day = advance_market_sessions(entry, 1, market).day
+        histories[row.company_id] = (
+            _observation(row, entry, 100.0, retrieved_at=retrieved_at),
+            _observation(
+                row,
+                exit_day,
+                100.0 * (1.0 + forward_return / 100.0),
+                retrieved_at=retrieved_at,
+            ),
+        )
+    return refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(histories),
+        retrieved_at=retrieved_at,
+        horizons=ONE_SESSION,
     )
 
 
@@ -594,7 +628,10 @@ def test_long_term_gate_tier_statistics_keep_sample_sizes():
     store = _priced_store(snapshot, [8, 7, 6, 5, 4, 3, 2, 1])
 
     analysis = build_performance_v2_analysis(
-        (snapshot,), (store,), generated_at=_timestamp(20)
+        (snapshot,),
+        (store,),
+        generated_at=_timestamp(20),
+        eligibility_criteria=TEST_ANALYSIS_ELIGIBILITY,
     )
     tiers = analysis["groups"][0]["gate_tiers"]
 
@@ -639,9 +676,187 @@ def test_repeated_companies_aggregate_ic_by_run_before_summary():
     )
     group = analysis["groups"][0]
 
-    assert group["score_ic"]["mean"] == pytest.approx(0.0)
-    assert group["evaluated_run_count"] == 2
+    assert analysis["run_metrics"][0]["analysis_eligible"] is True
+    assert analysis["run_metrics"][1]["analysis_eligible"] is False
+    assert group["score_ic"]["mean"] == pytest.approx(1.0)
+    assert group["evaluated_run_count"] == 1
+    assert group["due_run_count"] == 2
+    assert group["partial_run_count"] == 1
     assert group["unique_company_count"] == 100
+
+
+@pytest.mark.parametrize(
+    ("valid_count", "original_count", "expected"),
+    [
+        (2, 900, False),
+        (20, 900, False),
+        (600, 900, False),
+        (650, 900, True),
+        (35, 40, False),
+    ],
+)
+def test_default_cross_sectional_analysis_eligibility(
+    valid_count: int, original_count: int, expected: bool
+):
+    result = assess_analysis_eligibility(valid_count, original_count)
+
+    assert result.eligible is expected
+    assert result.coverage_pct == pytest.approx(valid_count / original_count * 100)
+    assert result.minimum_coverage_pct == 70.0
+    assert result.minimum_valid_companies == 50
+
+
+def test_two_of_nine_hundred_run_is_retained_as_descriptive_only():
+    snapshot = _snapshot(900)
+    store = _partially_priced_store(
+        snapshot,
+        list(snapshot.rows[:2]),
+        [2.0, 1.0],
+    )
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,), (store,), generated_at=_timestamp(20)
+    )
+    run = analysis["run_metrics"][0]
+    group = analysis["groups"][0]
+
+    assert run["valid_company_count"] == 2
+    assert run["outcome_coverage_pct"] == pytest.approx(2 / 900 * 100)
+    assert run["score_return_spearman_ic"] == pytest.approx(1.0)
+    assert run["analysis_eligible"] is False
+    assert run["metric_scope"] == "descriptive_partial"
+    assert "outcome coverage 0.2% is below 70%" in run[
+        "analysis_ineligibility_reasons"
+    ]
+    assert run["status_counts"]["symbol_unresolved"] == 898
+    assert group["due_run_count"] == 1
+    assert group["evaluated_run_count"] == 0
+    assert group["partial_run_count"] == 1
+    assert group["score_ic"]["mean"] is None
+    assert group["bucket_schemes"] == []
+
+
+def test_artificial_perfect_partial_ic_is_descriptive_until_coverage_is_sufficient():
+    snapshot = _snapshot(100)
+    partial_rows = list(snapshot.rows[:10])
+    partial_store = _partially_priced_store(
+        snapshot,
+        partial_rows,
+        [float(10 - index) for index in range(10)],
+    )
+
+    partial = build_performance_v2_analysis(
+        (snapshot,), (partial_store,), generated_at=_timestamp(20)
+    )
+    partial_run = partial["run_metrics"][0]
+    partial_group = partial["groups"][0]
+
+    assert [row.ticker for row in partial_rows] == sorted(
+        row.ticker for row in partial_rows
+    )
+    assert partial_run["score_return_spearman_ic"] == pytest.approx(1.0)
+    assert partial_run["analysis_eligible"] is False
+    assert partial_run["metric_scope"] == "descriptive_partial"
+    assert partial_run["buckets"]
+    assert partial_group["score_ic"]["mean"] is None
+    assert partial_group["bucket_schemes"] == []
+    assert partial_group["evaluated_run_count"] == 0
+    assert partial_group["due_run_count"] == 1
+    assert partial_group["partial_run_count"] == 1
+
+    eligible_rows = list(snapshot.rows[:70])
+    eligible_store = _partially_priced_store(
+        snapshot,
+        eligible_rows,
+        [float(70 - index) for index in range(70)],
+    )
+    eligible = build_performance_v2_analysis(
+        (snapshot,), (eligible_store,), generated_at=_timestamp(20)
+    )
+
+    assert eligible["run_metrics"][0]["analysis_eligible"] is True
+    assert eligible["groups"][0]["score_ic"]["mean"] == pytest.approx(1.0)
+    assert eligible["groups"][0]["evaluated_run_count"] == 1
+    assert eligible["groups"][0]["bucket_schemes"]
+
+
+def test_country_partial_ic_requires_country_level_coverage_and_sample():
+    snapshot = _snapshot(100, countries=("SE", "FI"))
+    swedish_rows = [row for row in snapshot.rows if row.country == "SE"]
+    finnish_rows = [row for row in snapshot.rows if row.country == "FI"][:2]
+    priced_rows = sorted(swedish_rows + finnish_rows, key=lambda row: row.rank)
+    store = _partially_priced_store(
+        snapshot,
+        priced_rows,
+        [float(len(priced_rows) - index) for index in range(len(priced_rows))],
+    )
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,),
+        (store,),
+        generated_at=_timestamp(20),
+        eligibility_criteria=AnalysisEligibilityCriteria(50.0, 50),
+    )
+    run_countries = {
+        row["country"]: row for row in analysis["run_metrics"][0]["country_metrics"]
+    }
+    group_countries = {
+        row["country"]: row for row in analysis["groups"][0]["countries"]
+    }
+
+    assert run_countries["FI"]["score_return_spearman_ic"] is not None
+    assert run_countries["FI"]["analysis_eligible"] is False
+    assert run_countries["FI"]["valid_company_count"] == 2
+    assert group_countries["FI"]["analysis_eligible_run_count"] == 0
+    assert group_countries["FI"]["score_ic"]["mean"] is None
+    assert group_countries["SE"]["analysis_eligible_run_count"] == 1
+
+
+def test_sufficiently_covered_sweden_and_finland_contribute_to_country_aggregates():
+    snapshot = _snapshot(100, countries=("SE", "FI"))
+    priced_rows = sorted(
+        [row for row in snapshot.rows if row.country == "SE"][:35]
+        + [row for row in snapshot.rows if row.country == "FI"][:35],
+        key=lambda row: row.rank,
+    )
+    store = _partially_priced_store(
+        snapshot,
+        priced_rows,
+        [float(len(priced_rows) - index) for index in range(len(priced_rows))],
+    )
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,), (store,), generated_at=_timestamp(20)
+    )
+    countries = {row["country"]: row for row in analysis["groups"][0]["countries"]}
+
+    assert analysis["run_metrics"][0]["analysis_eligible"] is True
+    assert set(countries) == {"SE", "FI"}
+    assert all(row["analysis_eligible_run_count"] == 1 for row in countries.values())
+    assert all(row["score_ic"]["mean"] is not None for row in countries.values())
+    assert all(row["observations"] == 35 for row in countries.values())
+
+
+def test_markdown_makes_partial_coverage_and_absent_headline_ic_explicit():
+    snapshot = _snapshot(100)
+    store = _partially_priced_store(
+        snapshot,
+        list(snapshot.rows[:10]),
+        [float(10 - index) for index in range(10)],
+    )
+    analysis = build_performance_v2_analysis(
+        (snapshot,), (store,), generated_at=_timestamp(20)
+    )
+
+    markdown = render_performance_v2_markdown(analysis)
+
+    assert "| Evaluations | Due | Eligible | Partial |" in markdown
+    assert "No sufficiently covered evaluation dates are available yet" in markdown
+    assert "No eligible-run bucket analysis is available" in markdown
+    assert "| 1 | 1 | 0 | 1 |" in markdown
+    assert "| n/a | n/a | n/a | n/a | n/a |" in markdown
+    assert "Required coverage" in markdown
+    assert "systematically related to symbol resolution" in markdown
 
 
 def test_missing_outcome_diagnostics_cover_country_segment_and_rank_bucket():

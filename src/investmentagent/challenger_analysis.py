@@ -6,6 +6,11 @@ import statistics
 from collections import defaultdict
 from typing import Any, Iterable
 
+from investmentagent.analysis_eligibility import (
+    DEFAULT_ANALYSIS_ELIGIBILITY,
+    AnalysisEligibilityCriteria,
+    assess_analysis_eligibility,
+)
 from investmentagent.evaluation import EvaluationSnapshot
 from investmentagent.evaluation_analysis import spearman_rank_correlation
 from investmentagent.evaluation_outcomes import EvaluationOutcomeSet, MarketOutcome
@@ -19,6 +24,8 @@ def build_challenger_analysis(
     evaluations: Iterable[EvaluationSnapshot],
     outcome_sets: Iterable[EvaluationOutcomeSet],
     experiments: Iterable[ChallengerExperimentSnapshot],
+    *,
+    eligibility_criteria: AnalysisEligibilityCriteria = DEFAULT_ANALYSIS_ELIGIBILITY,
 ) -> dict[str, Any]:
     snapshots = tuple(evaluations)
     stores_by_run = {store.evaluation_run_id: store for store in outcome_sets}
@@ -99,6 +106,7 @@ def build_challenger_analysis(
                         outcomes,
                         horizon.label,
                         horizon.sessions,
+                        eligibility_criteria=eligibility_criteria,
                     )
                 )
 
@@ -113,6 +121,16 @@ def build_challenger_analysis(
         for group in groups
         if group["paired_completed_date_count"] < MIN_RELIABLE_PAIRED_DATES
     ]
+    warnings.extend(
+        (
+            "Insufficient paired outcome coverage: "
+            f"{group['paired_partial_date_count']} due paired date(s) are "
+            f"descriptive only for {group['experiment_id']} "
+            f"v{group['experiment_version']} / {group['horizon']['label']}."
+        )
+        for group in groups
+        if group["paired_partial_date_count"] > 0
+    )
     if experiment_rows and not groups:
         warnings.append("Insufficient paired history to judge challenger performance.")
     return {
@@ -122,6 +140,7 @@ def build_challenger_analysis(
                 "the original evaluation run"
             ),
             "aggregation": "paired deltas are calculated per run before aggregation",
+            "analysis_eligibility": eligibility_criteria.as_dict(),
             "automatic_promotion": False,
         },
         "reporting_criteria": [
@@ -132,6 +151,7 @@ def build_challenger_analysis(
             "ranking churn remains reasonable for a bounded factor experiment",
         ],
         "warnings": warnings,
+        "recorded_sidecar_count": len(experiment_rows),
         "run_statuses": run_statuses,
         "run_metrics": run_metrics,
         "groups": groups,
@@ -144,6 +164,8 @@ def _analyze_paired_run(
     outcomes: tuple[MarketOutcome, ...],
     horizon_label: str,
     horizon_sessions: int,
+    *,
+    eligibility_criteria: AnalysisEligibilityCriteria,
 ) -> dict[str, Any]:
     evaluation_by_company = {row.company_id: row for row in evaluation.rows}
     experiment_by_company = {row.company_id: row for row in experiment.rows}
@@ -200,6 +222,12 @@ def _analyze_paired_run(
     )
     statuses = {outcome.status for outcome in outcomes}
     is_due = statuses != {"not_due"}
+    eligibility = assess_analysis_eligibility(
+        len(paired_company_ids),
+        evaluation.universe_size,
+        criteria=eligibility_criteria,
+    )
+    analysis_eligible = is_due and eligibility.eligible
     churn = _ranking_churn(experiment)
     return {
         "evaluation_run_id": evaluation.run_id,
@@ -221,6 +249,16 @@ def _analyze_paired_run(
             len(paired_company_ids) / evaluation.universe_size * 100
             if evaluation.universe_size
             else 0.0
+        ),
+        "analysis_eligible": analysis_eligible,
+        "champion_analysis_eligible": analysis_eligible,
+        "challenger_analysis_eligible": analysis_eligible,
+        "analysis_ineligibility_reasons": (
+            list(eligibility.reasons) if is_due else ["horizon is not due"]
+        ),
+        "analysis_eligibility": eligibility.as_dict(),
+        "metric_scope": (
+            "analysis_eligible" if analysis_eligible else "descriptive_partial"
         ),
         "paired_company_ids": paired_company_ids,
         "paired_sample_sha256": _sample_hash(paired_company_ids),
@@ -279,11 +317,9 @@ def _aggregate_paired_runs(
     groups = []
     for key, metrics in sorted(grouped.items()):
         experiment_id, version, strategy, champion_model, sessions, label = key
-        completed = [
-            metric
-            for metric in metrics
-            if metric["is_due"] and metric["paired_company_count"] >= 2
-        ]
+        due = [metric for metric in metrics if metric["is_due"]]
+        completed = [metric for metric in due if metric["analysis_eligible"]]
+        partial = [metric for metric in due if not metric["analysis_eligible"]]
         groups.append(
             {
                 "experiment_id": experiment_id,
@@ -296,13 +332,30 @@ def _aggregate_paired_runs(
                     "unit": "market_sessions",
                 },
                 "recorded_run_count": len(metrics),
+                "paired_due_date_count": len(due),
                 "paired_completed_date_count": len(completed),
+                "paired_analysis_eligible_date_count": len(completed),
+                "paired_partial_date_count": len(partial),
                 "average_paired_company_count": _mean(
                     metric["paired_company_count"] for metric in completed
                 ),
                 "average_paired_outcome_coverage_pct": _mean(
                     metric["paired_outcome_coverage_pct"] for metric in completed
                 ),
+                "average_due_paired_outcome_coverage_pct": _mean(
+                    metric["paired_outcome_coverage_pct"] for metric in due
+                ),
+                "analysis_eligibility": {
+                    "minimum_coverage_pct": metrics[0]["analysis_eligibility"][
+                        "minimum_coverage_pct"
+                    ],
+                    "minimum_valid_companies": metrics[0][
+                        "analysis_eligibility"
+                    ]["minimum_valid_companies"],
+                    "purpose": (
+                        "research-quality aggregation guardrail; not a statistical-significance threshold"
+                    ),
+                },
                 "champion": {
                     "score_ic": _aggregate_values(
                         metric["champion"]["score_return_ic"] for metric in completed
