@@ -17,6 +17,7 @@ from investmentagent.models import (
     DataQuality,
     DeepDiveReport,
     Evidence,
+    FinancialObservation,
     FinancialSnapshot,
     ListingSegment,
     ScoreBreakdown,
@@ -303,6 +304,29 @@ def _financials_payload(financials: FinancialSnapshot) -> dict[str, Any]:
         "distance_from_52w_high_pct": financials.distance_from_52w_high_pct,
         "average_daily_value_eur": financials.average_daily_value_eur,
         "data_quality": _stringify(financials.data_quality),
+        "observations": [
+            _financial_observation_payload(observation)
+            for observation in financials.observations
+        ],
+    }
+
+
+def _financial_observation_payload(
+    observation: FinancialObservation,
+) -> dict[str, Any]:
+    return {
+        "canonical_field": observation.canonical_field,
+        "normalized_value": observation.normalized_value,
+        "provider": observation.provider,
+        "source_metric": observation.source_metric,
+        "as_of": observation.as_of,
+        "reporting_period": observation.reporting_period,
+        "period_type": observation.period_type,
+        "original_currency": observation.original_currency,
+        "normalized_currency": observation.normalized_currency,
+        "is_derived": observation.is_derived,
+        "derivation": observation.derivation,
+        "confidence": observation.confidence,
     }
 
 

@@ -21,8 +21,11 @@ from investmentagent.models import (
     CompanyResearch,
     DataQuality,
     Evidence,
+    FinancialObservation,
     FinancialSnapshot,
     ListingSegment,
+    ObservationConfidence,
+    ReportingPeriodType,
     SourceCheck,
 )
 
@@ -252,7 +255,7 @@ def test_eodhd_provider_fetches_explicit_symbol_with_valuation():
     assert snapshot.market_cap_eur_m == 2_668_000.0
     assert snapshot.business_description == "Microsoft develops software and cloud services."
     assert snapshot.ir_url == "https://www.microsoft.com/en-us/investor"
-    assert snapshot.financials.pe_ratio == 28.4
+    assert snapshot.financials.pe_ratio == 29.1
     assert snapshot.financials.price_to_book == 9.8
     assert snapshot.financials.revenue_eur_m == 225_400.0
     assert snapshot.financials.revenue_growth_pct == 13.0
@@ -260,6 +263,49 @@ def test_eodhd_provider_fetches_explicit_symbol_with_valuation():
     assert snapshot.evidence.source == "eodhd"
     assert provider.source_check().status == "ok"
     assert "valuation support 1/1" in provider.source_check().detail
+
+
+def test_eodhd_observations_explain_source_period_and_static_fx():
+    provider = EodhdFundamentalsProvider(
+        api_key="eod-token", fetcher=lambda url: eodhd_payload()
+    )
+
+    snapshot = provider.get_fundamentals_for_symbol("MSFT", fallback_currency="USD")
+
+    assert snapshot is not None
+    pe = snapshot.financials.observation_for("pe_ratio")
+    revenue = snapshot.financials.observation_for("revenue_eur_m")
+    assert pe is not None
+    assert pe.provider == "eodhd"
+    assert pe.source_metric == "Valuation.TrailingPE"
+    assert pe.period_type == ReportingPeriodType.TTM
+    assert pe.as_of is None
+    assert revenue is not None
+    assert revenue.original_currency == "USD"
+    assert revenue.normalized_currency == "EUR"
+    assert revenue.is_derived is True
+    assert "static FX assumption: 1 USD = 0.92 EUR" in revenue.derivation
+    assert revenue.confidence == ObservationConfidence.LOW
+
+
+def test_eodhd_pe_precedence_falls_back_from_ttm_to_forward_with_metadata():
+    payload = json.loads(eodhd_payload())
+    payload["Highlights"].pop("PERatio")
+    payload["Valuation"].pop("TrailingPE")
+    payload["Valuation"]["ForwardPE"] = 24.2
+    provider = EodhdFundamentalsProvider(
+        api_key="eod-token", fetcher=lambda url: json.dumps(payload)
+    )
+
+    snapshot = provider.get_fundamentals_for_symbol("MSFT", fallback_currency="USD")
+
+    assert snapshot is not None
+    assert snapshot.financials.pe_ratio == 24.2
+    observation = snapshot.financials.observation_for("pe_ratio")
+    assert observation is not None
+    assert observation.source_metric == "Valuation.ForwardPE"
+    assert observation.period_type == ReportingPeriodType.FORWARD
+    assert observation.confidence == ObservationConfidence.LOW
 
 
 def test_eodhd_provider_source_check_reports_not_configured():
@@ -337,6 +383,21 @@ def test_yahoo_provider_parses_fundamentals_with_evidence():
     assert requested_urls
 
 
+def test_yahoo_unknown_observation_metadata_remains_unknown():
+    provider = YahooFundamentalsProvider(fetcher=lambda url: yahoo_payload())
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert snapshot is not None
+    observation = snapshot.financials.observation_for("price_to_book")
+    assert observation is not None
+    assert observation.provider == "yahoo"
+    assert observation.source_metric == "summaryDetail.priceToBook"
+    assert observation.as_of is None
+    assert observation.reporting_period is None
+    assert observation.period_type is None
+
+
 def test_yahoo_provider_fetches_explicit_global_symbol():
     requested_urls: list[str] = []
 
@@ -400,6 +461,34 @@ def test_finnhub_provider_parses_profile_and_metrics_with_token_safe_evidence():
     assert "token=" not in snapshot.evidence.url
     assert requested_urls
     assert any("secret-token" in url for url in requested_urls)
+
+
+def test_finnhub_metric_precedence_prefers_ttm_and_quarterly_values():
+    payload = json.loads(finnhub_payload())
+    payload["metrics"]["metric"].update(
+        {
+            "peNormalizedAnnual": 19.0,
+            "pbAnnual": 2.0,
+            "revenueGrowthQuarterlyYoy": 3.0,
+            "operatingMarginAnnual": 9.0,
+            "totalDebt/totalEquityAnnual": 80.0,
+        }
+    )
+
+    snapshot = fundamentals._parse_finnhub_payload(
+        payload, symbol="KAR.ST", fallback_currency="SEK"
+    )
+
+    assert snapshot is not None
+    assert snapshot.financials.pe_ratio == 11.2
+    assert snapshot.financials.price_to_book == 1.1
+    assert snapshot.financials.operating_margin_pct == 14.0
+    assert snapshot.financials.observation_for("pe_ratio").period_type == (
+        ReportingPeriodType.TTM
+    )
+    assert snapshot.financials.observation_for("price_to_book").period_type == (
+        ReportingPeriodType.QUARTERLY
+    )
 
 
 def test_finnhub_provider_returns_none_for_malformed_or_missing_data():
@@ -490,10 +579,10 @@ def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
     assert snapshot.financials.price_to_book == 1.2
     assert snapshot.financials.ev_to_ebit == 9.8
     assert snapshot.financials.revenue_eur_m == 240.0
-    assert snapshot.financials.book_value_eur_m == 84.0
+    assert snapshot.financials.book_value_eur_m is None
     assert snapshot.financials.net_income_eur_m == 21.0
     assert snapshot.financials.revenue_growth_pct == 24.64
-    assert snapshot.financials.operating_margin_pct == 36.76
+    assert snapshot.financials.operating_margin_pct is None
     assert snapshot.financials.debt_to_equity == 0.29354096
     assert snapshot.financials.one_year_return_pct == -16.473
     assert snapshot.financials.distance_from_52w_high_pct == -44.272444
@@ -505,6 +594,89 @@ def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
     assert requested
     assert requested[0][0] == "https://api.finimpulse.com/v1/search"
     assert "secret-token" in requested[0][2]["Authorization"]
+
+
+@pytest.mark.parametrize("margin_key", ["net_margin", "free_cash_flow_margin"])
+def test_finimpulse_does_not_substitute_other_margins_for_operating_margin(
+    margin_key: str,
+):
+    payload = json.loads(finimpulse_search_payload())
+    item = payload["result"]["items"][0]
+    item.pop("net_margin", None)
+    item.pop("free_cash_flow_margin", None)
+    item[margin_key] = 0.41
+    provider = FinimpulseFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url, request, headers: json.dumps(payload),
+    )
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert snapshot is not None
+    assert snapshot.financials.operating_margin_pct is None
+    assert snapshot.financials.observation_for("operating_margin_pct") is None
+
+
+def test_finimpulse_retains_genuine_operating_margin_when_supplied():
+    payload = json.loads(finimpulse_search_payload())
+    payload["result"]["items"][0]["operating_margin"] = 0.21
+    provider = FinimpulseFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url, request, headers: json.dumps(payload),
+    )
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert snapshot is not None
+    assert snapshot.financials.operating_margin_pct == 21.0
+    observation = snapshot.financials.observation_for("operating_margin_pct")
+    assert observation is not None
+    assert observation.source_metric == "operating_margin"
+    assert observation.provider == "finimpulse"
+
+
+@pytest.mark.parametrize(
+    ("source_metric", "invalid_value", "canonical_field"),
+    [
+        ("trailing_pe", "NaN", "pe_ratio"),
+        ("price_to_book", "Infinity", "price_to_book"),
+        ("debt_to_equity", "-Infinity", "debt_to_equity"),
+    ],
+)
+def test_finimpulse_rejects_non_finite_provider_values(
+    source_metric: str,
+    invalid_value: str,
+    canonical_field: str,
+):
+    payload = json.loads(finimpulse_search_payload())
+    payload["result"]["items"][0][source_metric] = invalid_value
+    provider = FinimpulseFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url, request, headers: json.dumps(payload),
+    )
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert snapshot is not None
+    assert getattr(snapshot.financials, canonical_field) is None
+    assert snapshot.financials.observation_for(canonical_field) is None
+
+
+def test_finimpulse_as_of_metadata_is_preserved_without_inference():
+    payload = json.loads(finimpulse_search_payload())
+    payload["result"]["items"][0]["update_time"] = "2026-08-08T05:30:00Z"
+    provider = FinimpulseFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url, request, headers: json.dumps(payload),
+    )
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert snapshot is not None
+    observation = snapshot.financials.observation_for("pe_ratio")
+    assert observation is not None
+    assert observation.as_of == "2026-08-08T05:30:00Z"
+    assert observation.reporting_period is None
 
 
 def test_finimpulse_provider_fetches_explicit_symbol():
@@ -847,6 +1019,15 @@ def test_fallback_provider_merges_valuation_without_overwriting_profile():
                 operating_margin_pct=55.6,
                 debt_to_equity=0.05,
                 data_quality=DataQuality.PARTIAL,
+                observations=(
+                    FinancialObservation(
+                        canonical_field="revenue_growth_pct",
+                        normalized_value=51.7,
+                        provider="finimpulse",
+                        source_metric="revenue_growth",
+                        confidence=ObservationConfidence.MEDIUM,
+                    ),
+                ),
             ),
             evidence=Evidence(
                 "FinImpulse lookup", "https://finimpulse.example", "finimpulse"
@@ -862,6 +1043,16 @@ def test_fallback_provider_merges_valuation_without_overwriting_profile():
                 price_to_book=19.0,
                 average_daily_value_eur=9_000_000_000,
                 data_quality=DataQuality.PARTIAL,
+                observations=(
+                    FinancialObservation(
+                        canonical_field="pe_ratio",
+                        normalized_value=31.2,
+                        provider="yahoo",
+                        source_metric="summaryDetail.trailingPE",
+                        period_type=ReportingPeriodType.TTM,
+                        confidence=ObservationConfidence.MEDIUM,
+                    ),
+                ),
             ),
             evidence=Evidence("Yahoo valuation lookup", "https://yahoo.example", "yahoo"),
         )
@@ -876,8 +1067,91 @@ def test_fallback_provider_merges_valuation_without_overwriting_profile():
     assert snapshot.market_cap_eur_m == 3_000_000
     assert snapshot.financials.pe_ratio == 31.2
     assert snapshot.financials.revenue_growth_pct == 51.7
+    assert snapshot.financials.observation_for("pe_ratio").provider == "yahoo"
+    assert (
+        snapshot.financials.observation_for("revenue_growth_pct").provider
+        == "finimpulse"
+    )
     assert snapshot.evidence.source == "finimpulse"
     assert fallback.symbol_requests == [("NVDA", "USD")]
+
+
+def test_nested_fallbacks_preserve_distinct_field_provenance():
+    primary = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="NVDA",
+            financials=FinancialSnapshot(
+                revenue_growth_pct=51.7,
+                data_quality=DataQuality.PARTIAL,
+                observations=(
+                    FinancialObservation(
+                        "revenue_growth_pct",
+                        51.7,
+                        "finimpulse",
+                        "revenue_growth",
+                        confidence=ObservationConfidence.MEDIUM,
+                    ),
+                ),
+            ),
+        )
+    )
+    first_fallback = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="NVDA",
+            financials=FinancialSnapshot(
+                operating_margin_pct=55.6,
+                data_quality=DataQuality.PARTIAL,
+                observations=(
+                    FinancialObservation(
+                        "operating_margin_pct",
+                        55.6,
+                        "eodhd",
+                        "Highlights.OperatingMarginTTM",
+                        period_type=ReportingPeriodType.TTM,
+                        confidence=ObservationConfidence.MEDIUM,
+                    ),
+                ),
+            ),
+        )
+    )
+    second_fallback = SymbolFundamentalsProvider(
+        FundamentalsSnapshot(
+            symbol="NVDA",
+            financials=FinancialSnapshot(
+                pe_ratio=31.2,
+                data_quality=DataQuality.PARTIAL,
+                observations=(
+                    FinancialObservation(
+                        "pe_ratio",
+                        31.2,
+                        "yahoo",
+                        "summaryDetail.trailingPE",
+                        period_type=ReportingPeriodType.TTM,
+                        confidence=ObservationConfidence.MEDIUM,
+                    ),
+                ),
+            ),
+        )
+    )
+    provider = FallbackFundamentalsProvider(
+        FallbackFundamentalsProvider(primary, first_fallback),
+        second_fallback,
+    )
+
+    snapshot = provider.get_fundamentals_for_symbol("NVDA", fallback_currency="USD")
+
+    assert snapshot is not None
+    assert snapshot.financials.revenue_growth_pct == 51.7
+    assert snapshot.financials.operating_margin_pct == 55.6
+    assert snapshot.financials.pe_ratio == 31.2
+    assert {
+        observation.canonical_field: observation.provider
+        for observation in snapshot.financials.observations
+    } == {
+        "revenue_growth_pct": "finimpulse",
+        "operating_margin_pct": "eodhd",
+        "pe_ratio": "yahoo",
+    }
 
 
 def test_fallback_provider_skips_fallback_when_primary_has_valuation():
@@ -999,6 +1273,16 @@ def test_enriched_provider_merges_fundamentals_into_research():
             price_to_book=1.1,
             operating_margin_pct=14.0,
             data_quality=DataQuality.PARTIAL,
+            observations=(
+                FinancialObservation(
+                    canonical_field="pe_ratio",
+                    normalized_value=11.2,
+                    provider="yahoo",
+                    source_metric="summaryDetail.trailingPE",
+                    period_type=ReportingPeriodType.TTM,
+                    confidence=ObservationConfidence.MEDIUM,
+                ),
+            ),
         ),
         evidence=Evidence(
             "Yahoo-style fundamentals lookup (KAR.ST)",
@@ -1019,6 +1303,102 @@ def test_enriched_provider_merges_fundamentals_into_research():
     assert research.financials.data_quality == DataQuality.PARTIAL
     assert research.data_quality == DataQuality.PARTIAL
     assert research.evidence[-1].source == "yahoo"
+
+
+def test_enriched_provider_does_not_upgrade_quality_from_low_confidence_field():
+    base = BaseProvider()
+    snapshot = FundamentalsSnapshot(
+        symbol="KAR.ST",
+        financials=FinancialSnapshot(
+            revenue_eur_m=550.0,
+            data_quality=DataQuality.PARTIAL,
+            observations=(
+                FinancialObservation(
+                    canonical_field="revenue_eur_m",
+                    normalized_value=550.0,
+                    provider="finimpulse",
+                    source_metric="total_revenue",
+                    original_currency="SEK",
+                    normalized_currency="EUR",
+                    is_derived=True,
+                    derivation="static FX assumption: 1 SEK = 0.1 EUR",
+                    confidence=ObservationConfidence.LOW,
+                ),
+            ),
+        ),
+    )
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(snapshot))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.financials.revenue_eur_m == 550.0
+    assert research.financials.data_quality == DataQuality.THIN
+    assert research.data_quality == DataQuality.THIN
+
+
+def test_enriched_provider_does_not_upgrade_quality_from_stale_observation():
+    base = BaseProvider()
+    snapshot = FundamentalsSnapshot(
+        symbol="KAR.ST",
+        financials=FinancialSnapshot(
+            pe_ratio=11.2,
+            data_quality=DataQuality.PARTIAL,
+            observations=(
+                FinancialObservation(
+                    canonical_field="pe_ratio",
+                    normalized_value=11.2,
+                    provider="eodhd",
+                    source_metric="Valuation.TrailingPE",
+                    as_of="2000-01-01",
+                    period_type=ReportingPeriodType.TTM,
+                    confidence=ObservationConfidence.MEDIUM,
+                ),
+            ),
+        ),
+    )
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(snapshot))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.financials.pe_ratio == 11.2
+    assert research.financials.data_quality == DataQuality.THIN
+
+
+def test_enriched_provider_does_not_upgrade_quality_for_mixed_forward_history():
+    base = BaseProvider()
+    snapshot = FundamentalsSnapshot(
+        symbol="KAR.ST",
+        financials=FinancialSnapshot(
+            pe_ratio=10.0,
+            operating_margin_pct=14.0,
+            data_quality=DataQuality.PARTIAL,
+            observations=(
+                FinancialObservation(
+                    canonical_field="pe_ratio",
+                    normalized_value=10.0,
+                    provider="eodhd",
+                    source_metric="Valuation.ForwardPE",
+                    period_type=ReportingPeriodType.FORWARD,
+                    confidence=ObservationConfidence.LOW,
+                ),
+                FinancialObservation(
+                    canonical_field="operating_margin_pct",
+                    normalized_value=14.0,
+                    provider="eodhd",
+                    source_metric="Highlights.OperatingMarginTTM",
+                    period_type=ReportingPeriodType.TTM,
+                    confidence=ObservationConfidence.MEDIUM,
+                ),
+            ),
+        ),
+    )
+    provider = EnrichedResearchProvider(base, StaticFundamentalsProvider(snapshot))
+
+    research = provider.get_company_research(base.company)
+
+    assert research.financials.pe_ratio == 10.0
+    assert research.financials.operating_margin_pct == 14.0
+    assert research.financials.data_quality == DataQuality.THIN
 
 
 def test_enriched_provider_merges_valuation_proxy_inputs():
@@ -1101,7 +1481,7 @@ def test_enriched_provider_preserves_curated_fundamentals():
     assert research.evidence[-1].source == "yahoo"
 
 
-def test_enriched_provider_upgrades_quality_when_only_market_cap_is_filled():
+def test_enriched_provider_does_not_upgrade_quality_for_unproven_market_cap():
     base = BaseProvider()
     snapshot = FundamentalsSnapshot(
         symbol="KAR.ST",
@@ -1118,8 +1498,8 @@ def test_enriched_provider_upgrades_quality_when_only_market_cap_is_filled():
     research = provider.get_company_research(base.company)
 
     assert research.company.market_cap_eur_m == 550.0
-    assert research.financials.data_quality == DataQuality.PARTIAL
-    assert research.data_quality == DataQuality.PARTIAL
+    assert research.financials.data_quality == DataQuality.THIN
+    assert research.data_quality == DataQuality.THIN
     assert research.evidence[-1].source == "yahoo"
 
 

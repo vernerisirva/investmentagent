@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 import ssl
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
+from datetime import date
 from typing import Any
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
@@ -16,7 +18,10 @@ from investmentagent.models import (
     CompanyResearch,
     DataQuality,
     Evidence,
+    FinancialObservation,
     FinancialSnapshot,
+    ObservationConfidence,
+    ReportingPeriodType,
     SourceCheck,
 )
 
@@ -44,7 +49,7 @@ EODHD_FUNDAMENTALS_DOC_URL = (
     "https://eodhd.com/financial-apis/stock-etfs-fundamental-data-feeds"
 )
 EODHD_FETCH_TIMEOUT_SECONDS = 3
-_EUR_RATES = {"EUR": 1.0, "SEK": 0.1, "USD": 0.92}
+_STATIC_EUR_RATES = {"EUR": 1.0, "SEK": 0.1, "USD": 0.92}
 FINIMPULSE_PE_KEYS = ("pe_ratio", "trailing_pe", "trailingPE", "forward_pe")
 FINIMPULSE_PRICE_TO_BOOK_KEYS = (
     "price_to_book",
@@ -65,7 +70,6 @@ FINIMPULSE_REVENUE_KEYS = (
     "revenue_ttm",
 )
 FINIMPULSE_BOOK_VALUE_KEYS = (
-    "book_value",
     "shareholders_equity",
     "stockholders_equity",
     "total_equity",
@@ -75,12 +79,22 @@ FINIMPULSE_NET_INCOME_KEYS = (
     "net_income_common_stockholders",
     "net_income_ttm",
 )
+FINIMPULSE_OPERATING_MARGIN_KEYS = (
+    "operating_margin",
+    "operating_margins",
+    "operating_margin_ttm",
+)
 DIRECT_VALUATION_FIELDS = ("pe_ratio", "price_to_book", "ev_to_ebit")
 PROXY_VALUATION_FIELDS = ("revenue_eur_m", "book_value_eur_m", "net_income_eur_m")
 
 # The public top-10 reports evaluate a 3x preliminary pool. Thirty companies is
 # materially broader than the output while keeping daily provider work bounded.
 DEFAULT_WATCHLIST_ENRICHMENT_LIMIT = 30
+
+# Fundamentals can legitimately be annual and reported with delay. This broad
+# bound only prevents clearly old observations from upgrading aggregate quality;
+# it does not reject or hide the value.
+MAX_QUALITY_AS_OF_AGE_DAYS = 730
 
 
 @dataclass(frozen=True)
@@ -93,6 +107,11 @@ class FundamentalsSnapshot:
         default_factory=lambda: FinancialSnapshot(data_quality=DataQuality.PARTIAL)
     )
     evidence: Evidence | None = None
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self, "market_cap_eur_m", _finite_number(self.market_cap_eur_m)
+        )
 
 
 class YahooFundamentalsProvider:
@@ -749,10 +768,8 @@ class EnrichedResearchProvider:
         self._successful_enrichments += 1
 
         company = research.company
-        market_cap_enriched = False
         if company.market_cap_eur_m is None and snapshot.market_cap_eur_m is not None:
             company = replace(company, market_cap_eur_m=snapshot.market_cap_eur_m)
-            market_cap_enriched = True
         if (
             company.business_description is None
             and snapshot.business_description is not None
@@ -766,7 +783,6 @@ class EnrichedResearchProvider:
         financials = _merge_financials(
             research.financials,
             snapshot.financials,
-            market_cap_enriched=market_cap_enriched,
         )
         evidence = research.evidence
         if snapshot.evidence is not None:
@@ -784,16 +800,16 @@ class EnrichedResearchProvider:
 def _merge_financials(
     base: FinancialSnapshot,
     enrichment: FinancialSnapshot,
-    market_cap_enriched: bool = False,
 ) -> FinancialSnapshot:
     preserved_fields = {
         "price",
         "currency",
         "one_year_return_pct",
         "distance_from_52w_high_pct",
+        "observations",
     }
     merged_values = {}
-    enrichment_applied = False
+    accepted_observations: list[FinancialObservation] = []
 
     for field_name in FinancialSnapshot.__dataclass_fields__:
         if field_name in preserved_fields or field_name == "data_quality":
@@ -805,15 +821,51 @@ def _merge_financials(
         enrichment_value = getattr(enrichment, field_name)
         if enrichment_value is not None:
             merged_values[field_name] = enrichment_value
-            enrichment_applied = True
+            observation = enrichment.observation_for(field_name)
+            if observation is not None:
+                accepted_observations.append(observation)
+
+    if accepted_observations:
+        merged_values["observations"] = (
+            *base.observations,
+            *accepted_observations,
+        )
 
     if (
-        (enrichment_applied or market_cap_enriched)
+        _observations_support_quality_upgrade(accepted_observations)
         and base.data_quality == DataQuality.THIN
     ):
         merged_values["data_quality"] = DataQuality.PARTIAL
 
     return replace(base, **merged_values)
+
+
+def _observations_support_quality_upgrade(
+    observations: list[FinancialObservation],
+) -> bool:
+    period_types = {
+        observation.period_type
+        for observation in observations
+        if observation.period_type is not None
+    }
+    if ReportingPeriodType.FORWARD in period_types and len(period_types) > 1:
+        return False
+    return any(
+        observation.confidence
+        in {ObservationConfidence.HIGH, ObservationConfidence.MEDIUM}
+        and not _is_explicitly_stale(observation.as_of)
+        for observation in observations
+    )
+
+
+def _is_explicitly_stale(as_of: str | None) -> bool:
+    if as_of is None:
+        return False
+    try:
+        as_of_date = date.fromisoformat(as_of[:10])
+    except ValueError:
+        return False
+    return (date.today() - as_of_date).days > MAX_QUALITY_AS_OF_AGE_DAYS
 
 
 def yahoo_symbol_candidates(company: Company) -> tuple[str, ...]:
@@ -855,30 +907,112 @@ def _parse_finnhub_payload(
     metrics = _dict_value(payload, "metrics")
     metric = _dict_value(metrics, "metric")
     currency = str(profile.get("currency") or fallback_currency or "").upper()
-    fx_rate = _EUR_RATES.get(currency)
+    fx_rate = _STATIC_EUR_RATES.get(currency)
 
     market_cap_eur_m = _currency_m_to_eur_m(
         _number(profile, "marketCapitalization"), fx_rate
     )
+    pe_ratio, pe_key = _first_number_with_key(
+        metric, ("peBasicExclExtraTTM", "peNormalizedAnnual")
+    )
+    price_to_book, pb_key = _first_number_with_key(
+        metric, ("pbQuarterly", "pbAnnual")
+    )
+    revenue_growth_pct, growth_key = _first_number_with_key(
+        metric, ("revenueGrowthTTMYoy", "revenueGrowthQuarterlyYoy")
+    )
+    operating_margin_pct, margin_key = _first_number_with_key(
+        metric, ("operatingMarginTTM", "operatingMarginAnnual")
+    )
+    debt_to_equity_source, debt_key = _first_number_with_key(
+        metric,
+        (
+            "totalDebt/totalEquityQuarterly",
+            "totalDebt/totalEquityAnnual",
+        ),
+    )
+    debt_to_equity = _debt_to_equity_ratio(debt_to_equity_source)
+    observations: list[FinancialObservation] = []
+    _add_observation(
+        observations,
+        "pe_ratio",
+        pe_ratio,
+        "finnhub",
+        pe_key,
+        period_type=_period_type_for_key(
+            pe_key,
+            {
+                "peBasicExclExtraTTM": ReportingPeriodType.TTM,
+                "peNormalizedAnnual": ReportingPeriodType.ANNUAL,
+            },
+        ),
+    )
+    _add_observation(
+        observations,
+        "price_to_book",
+        price_to_book,
+        "finnhub",
+        pb_key,
+        period_type=_period_type_for_key(
+            pb_key,
+            {
+                "pbQuarterly": ReportingPeriodType.QUARTERLY,
+                "pbAnnual": ReportingPeriodType.ANNUAL,
+            },
+        ),
+    )
+    _add_observation(
+        observations,
+        "revenue_growth_pct",
+        revenue_growth_pct,
+        "finnhub",
+        growth_key,
+        period_type=_period_type_for_key(
+            growth_key,
+            {
+                "revenueGrowthTTMYoy": ReportingPeriodType.TTM,
+                "revenueGrowthQuarterlyYoy": ReportingPeriodType.QUARTERLY,
+            },
+        ),
+    )
+    _add_observation(
+        observations,
+        "operating_margin_pct",
+        operating_margin_pct,
+        "finnhub",
+        margin_key,
+        period_type=_period_type_for_key(
+            margin_key,
+            {
+                "operatingMarginTTM": ReportingPeriodType.TTM,
+                "operatingMarginAnnual": ReportingPeriodType.ANNUAL,
+            },
+        ),
+    )
+    _add_observation(
+        observations,
+        "debt_to_equity",
+        debt_to_equity,
+        "finnhub",
+        debt_key,
+        period_type=_period_type_for_key(
+            debt_key,
+            {
+                "totalDebt/totalEquityQuarterly": ReportingPeriodType.QUARTERLY,
+                "totalDebt/totalEquityAnnual": ReportingPeriodType.ANNUAL,
+            },
+        ),
+        is_derived=True,
+        derivation="provider percentage divided by 100 to normalize as a ratio",
+    )
     financials = FinancialSnapshot(
-        pe_ratio=_first_number(metric, ("peBasicExclExtraTTM", "peNormalizedAnnual")),
-        price_to_book=_first_number(metric, ("pbQuarterly", "pbAnnual")),
-        revenue_growth_pct=_first_number(
-            metric, ("revenueGrowthTTMYoy", "revenueGrowthQuarterlyYoy")
-        ),
-        operating_margin_pct=_first_number(
-            metric, ("operatingMarginTTM", "operatingMarginAnnual")
-        ),
-        debt_to_equity=_debt_to_equity_ratio(
-            _first_number(
-                metric,
-                (
-                    "totalDebt/totalEquityQuarterly",
-                    "totalDebt/totalEquityAnnual",
-                ),
-            )
-        ),
+        pe_ratio=pe_ratio,
+        price_to_book=price_to_book,
+        revenue_growth_pct=revenue_growth_pct,
+        operating_margin_pct=operating_margin_pct,
+        debt_to_equity=debt_to_equity,
         data_quality=DataQuality.PARTIAL,
+        observations=tuple(observations),
     )
     if not _has_meaningful_fields(market_cap_eur_m, financials):
         return None
@@ -916,37 +1050,213 @@ def _parse_finimpulse_search_payload(
         return None
 
     currency = str(item.get("currency") or fallback_currency or "").upper()
-    fx_rate = _EUR_RATES.get(currency)
+    fx_rate = _STATIC_EUR_RATES.get(currency)
+    as_of = _clean_text(item.get("update_time"))
     market_cap_eur_m = _eur_m(_number(item, "amount"), fx_rate)
 
     average_daily_value_eur = None
     price = _number(item, "regular_market_price")
     average_daily_volume = _number(item, "average_daily_volume_10_day")
     if fx_rate is not None and price is not None and average_daily_volume is not None:
-        average_daily_value_eur = round(price * average_daily_volume * fx_rate, 2)
+        average_daily_value_eur = _finite_number(
+            round(price * average_daily_volume * fx_rate, 2)
+        )
+
+    pe_ratio, pe_key = _first_number_with_key(item, FINIMPULSE_PE_KEYS)
+    price_to_book, pb_key = _first_number_with_key(
+        item, FINIMPULSE_PRICE_TO_BOOK_KEYS
+    )
+    ev_to_ebit, ev_key = _first_number_with_key(item, FINIMPULSE_EV_TO_EBIT_KEYS)
+    revenue_source, revenue_key = _first_number_with_key(
+        item, FINIMPULSE_REVENUE_KEYS
+    )
+    revenue_eur_m = _eur_m(revenue_source, fx_rate)
+    book_value_source, book_value_key = _first_number_with_key(
+        item, FINIMPULSE_BOOK_VALUE_KEYS
+    )
+    book_value_eur_m = _eur_m(book_value_source, fx_rate)
+    net_income_source, net_income_key = _first_number_with_key(
+        item, FINIMPULSE_NET_INCOME_KEYS
+    )
+    net_income_eur_m = _eur_m(net_income_source, fx_rate)
+    revenue_growth_source = _number(item, "revenue_growth")
+    revenue_growth_pct = _ratio_to_percent(revenue_growth_source)
+    operating_margin_source, operating_margin_key = _first_number_with_key(
+        item, FINIMPULSE_OPERATING_MARGIN_KEYS
+    )
+    operating_margin_pct = _ratio_to_percent(operating_margin_source)
+    debt_to_equity = _number(item, "debt_to_equity")
+    one_year_return_pct = _number(item, "one_year_return")
+    distance_from_52w_high_pct = _number(
+        item, "fifty_two_week_high_change_percent"
+    )
+
+    observations: list[FinancialObservation] = []
+    _add_observation(
+        observations,
+        "pe_ratio",
+        pe_ratio,
+        "finimpulse",
+        pe_key,
+        as_of=as_of,
+        period_type=_period_type_for_key(
+            pe_key,
+            {
+                "trailing_pe": ReportingPeriodType.TTM,
+                "trailingPE": ReportingPeriodType.TTM,
+                "forward_pe": ReportingPeriodType.FORWARD,
+            },
+        ),
+        confidence=(
+            ObservationConfidence.LOW
+            if pe_key == "forward_pe"
+            else ObservationConfidence.MEDIUM
+        ),
+    )
+    _add_observation(
+        observations,
+        "price_to_book",
+        price_to_book,
+        "finimpulse",
+        pb_key,
+        as_of=as_of,
+    )
+    _add_observation(
+        observations,
+        "ev_to_ebit",
+        ev_to_ebit,
+        "finimpulse",
+        ev_key,
+        as_of=as_of,
+    )
+    _add_fx_observation(
+        observations,
+        "revenue_eur_m",
+        revenue_eur_m,
+        "finimpulse",
+        revenue_key,
+        currency,
+        fx_rate,
+        as_of=as_of,
+        period_type=_period_type_for_key(
+            revenue_key,
+            {
+                "annual_revenue": ReportingPeriodType.ANNUAL,
+                "revenue_ttm": ReportingPeriodType.TTM,
+            },
+        ),
+    )
+    _add_fx_observation(
+        observations,
+        "book_value_eur_m",
+        book_value_eur_m,
+        "finimpulse",
+        book_value_key,
+        currency,
+        fx_rate,
+        as_of=as_of,
+    )
+    _add_fx_observation(
+        observations,
+        "net_income_eur_m",
+        net_income_eur_m,
+        "finimpulse",
+        net_income_key,
+        currency,
+        fx_rate,
+        as_of=as_of,
+        period_type=(
+            ReportingPeriodType.TTM if net_income_key == "net_income_ttm" else None
+        ),
+    )
+    _add_observation(
+        observations,
+        "revenue_growth_pct",
+        revenue_growth_pct,
+        "finimpulse",
+        "revenue_growth" if revenue_growth_source is not None else None,
+        as_of=as_of,
+        is_derived=True,
+        derivation="ratio converted to percentage points",
+    )
+    _add_observation(
+        observations,
+        "operating_margin_pct",
+        operating_margin_pct,
+        "finimpulse",
+        operating_margin_key,
+        as_of=as_of,
+        period_type=(
+            ReportingPeriodType.TTM
+            if operating_margin_key == "operating_margin_ttm"
+            else None
+        ),
+        is_derived=True,
+        derivation="ratio converted to percentage points",
+    )
+    _add_observation(
+        observations,
+        "debt_to_equity",
+        debt_to_equity,
+        "finimpulse",
+        "debt_to_equity" if debt_to_equity is not None else None,
+        as_of=as_of,
+    )
+    _add_observation(
+        observations,
+        "one_year_return_pct",
+        one_year_return_pct,
+        "finimpulse",
+        "one_year_return" if one_year_return_pct is not None else None,
+        as_of=as_of,
+        reporting_period="trailing_1_year",
+    )
+    _add_observation(
+        observations,
+        "distance_from_52w_high_pct",
+        distance_from_52w_high_pct,
+        "finimpulse",
+        (
+            "fifty_two_week_high_change_percent"
+            if distance_from_52w_high_pct is not None
+            else None
+        ),
+        as_of=as_of,
+        reporting_period="trailing_52_weeks",
+    )
+    _add_fx_observation(
+        observations,
+        "average_daily_value_eur",
+        average_daily_value_eur,
+        "finimpulse",
+        (
+            "regular_market_price * average_daily_volume_10_day"
+            if average_daily_value_eur is not None
+            else None
+        ),
+        currency,
+        fx_rate,
+        as_of=_clean_text(item.get("regular_market_time")),
+        reporting_period="10_trading_days",
+        normalize_to_millions=False,
+        extra_derivation="price multiplied by 10-day average volume",
+    )
 
     financials = FinancialSnapshot(
-        pe_ratio=_first_number(item, FINIMPULSE_PE_KEYS),
-        price_to_book=_first_number(item, FINIMPULSE_PRICE_TO_BOOK_KEYS),
-        ev_to_ebit=_first_number(item, FINIMPULSE_EV_TO_EBIT_KEYS),
-        revenue_eur_m=_eur_m(_first_number(item, FINIMPULSE_REVENUE_KEYS), fx_rate),
-        book_value_eur_m=_eur_m(
-            _first_number(item, FINIMPULSE_BOOK_VALUE_KEYS), fx_rate
-        ),
-        net_income_eur_m=_eur_m(
-            _first_number(item, FINIMPULSE_NET_INCOME_KEYS), fx_rate
-        ),
-        revenue_growth_pct=_ratio_to_percent(_number(item, "revenue_growth")),
-        operating_margin_pct=_ratio_to_percent(
-            _first_number(item, ("net_margin", "free_cash_flow_margin"))
-        ),
-        debt_to_equity=_number(item, "debt_to_equity"),
-        one_year_return_pct=_number(item, "one_year_return"),
-        distance_from_52w_high_pct=_number(
-            item, "fifty_two_week_high_change_percent"
-        ),
+        pe_ratio=pe_ratio,
+        price_to_book=price_to_book,
+        ev_to_ebit=ev_to_ebit,
+        revenue_eur_m=revenue_eur_m,
+        book_value_eur_m=book_value_eur_m,
+        net_income_eur_m=net_income_eur_m,
+        revenue_growth_pct=revenue_growth_pct,
+        operating_margin_pct=operating_margin_pct,
+        debt_to_equity=debt_to_equity,
+        one_year_return_pct=one_year_return_pct,
+        distance_from_52w_high_pct=distance_from_52w_high_pct,
         average_daily_value_eur=average_daily_value_eur,
         data_quality=DataQuality.PARTIAL,
+        observations=tuple(observations),
     )
     if not _has_meaningful_fields(market_cap_eur_m, financials):
         return None
@@ -999,21 +1309,100 @@ def _parse_eodhd_fundamentals_payload(
     highlights = _dict_value(data, "Highlights")
     valuation = _dict_value(data, "Valuation")
     currency = str(general.get("CurrencyCode") or fallback_currency or "").upper()
-    fx_rate = _EUR_RATES.get(currency)
+    fx_rate = _STATIC_EUR_RATES.get(currency)
+    as_of = _clean_text(general.get("UpdatedAt"))
 
     market_cap_eur_m = _eur_m(_number(highlights, "MarketCapitalization"), fx_rate)
+    pe_ratio, pe_key = _first_number_with_key(valuation, ("TrailingPE",))
+    pe_source_section = "Valuation"
+    if pe_ratio is None:
+        pe_ratio, pe_key = _first_number_with_key(highlights, ("PERatio",))
+        pe_source_section = "Highlights"
+    if pe_ratio is None:
+        pe_ratio, pe_key = _first_number_with_key(valuation, ("ForwardPE",))
+        pe_source_section = "Valuation"
+    price_to_book = _number(valuation, "PriceBookMRQ")
+    revenue_eur_m = _eur_m(_number(highlights, "RevenueTTM"), fx_rate)
+    revenue_growth_source = _number(highlights, "QuarterlyRevenueGrowthYOY")
+    revenue_growth_pct = _ratio_to_percent(revenue_growth_source)
+    operating_margin_source = _number(highlights, "OperatingMarginTTM")
+    operating_margin_pct = _ratio_to_percent(operating_margin_source)
+    observations: list[FinancialObservation] = []
+    _add_observation(
+        observations,
+        "pe_ratio",
+        pe_ratio,
+        "eodhd",
+        f"{pe_source_section}.{pe_key}" if pe_key is not None else None,
+        as_of=as_of,
+        period_type={
+            "TrailingPE": ReportingPeriodType.TTM,
+            "ForwardPE": ReportingPeriodType.FORWARD,
+        }.get(pe_key),
+        confidence=(
+            ObservationConfidence.LOW
+            if pe_key == "ForwardPE"
+            else ObservationConfidence.MEDIUM
+        ),
+    )
+    _add_observation(
+        observations,
+        "price_to_book",
+        price_to_book,
+        "eodhd",
+        "Valuation.PriceBookMRQ" if price_to_book is not None else None,
+        as_of=as_of,
+        period_type=ReportingPeriodType.MRQ,
+    )
+    _add_fx_observation(
+        observations,
+        "revenue_eur_m",
+        revenue_eur_m,
+        "eodhd",
+        "Highlights.RevenueTTM" if revenue_eur_m is not None else None,
+        currency,
+        fx_rate,
+        as_of=as_of,
+        period_type=ReportingPeriodType.TTM,
+    )
+    _add_observation(
+        observations,
+        "revenue_growth_pct",
+        revenue_growth_pct,
+        "eodhd",
+        (
+            "Highlights.QuarterlyRevenueGrowthYOY"
+            if revenue_growth_pct is not None
+            else None
+        ),
+        as_of=as_of,
+        period_type=ReportingPeriodType.QUARTERLY,
+        is_derived=True,
+        derivation="ratio converted to percentage points",
+    )
+    _add_observation(
+        observations,
+        "operating_margin_pct",
+        operating_margin_pct,
+        "eodhd",
+        (
+            "Highlights.OperatingMarginTTM"
+            if operating_margin_pct is not None
+            else None
+        ),
+        as_of=as_of,
+        period_type=ReportingPeriodType.TTM,
+        is_derived=True,
+        derivation="ratio converted to percentage points",
+    )
     financials = FinancialSnapshot(
-        pe_ratio=_first_number(highlights, ("PERatio",))
-        or _first_number(valuation, ("TrailingPE", "ForwardPE")),
-        price_to_book=_first_number(valuation, ("PriceBookMRQ",)),
-        revenue_eur_m=_eur_m(_number(highlights, "RevenueTTM"), fx_rate),
-        revenue_growth_pct=_ratio_to_percent(
-            _number(highlights, "QuarterlyRevenueGrowthYOY")
-        ),
-        operating_margin_pct=_ratio_to_percent(
-            _number(highlights, "OperatingMarginTTM")
-        ),
+        pe_ratio=pe_ratio,
+        price_to_book=price_to_book,
+        revenue_eur_m=revenue_eur_m,
+        revenue_growth_pct=revenue_growth_pct,
+        operating_margin_pct=operating_margin_pct,
         data_quality=DataQuality.PARTIAL,
+        observations=tuple(observations),
     )
     if not _has_meaningful_fields(market_cap_eur_m, financials):
         return None
@@ -1044,7 +1433,7 @@ def _parse_fundamentals_payload(
     summary = _dict_value(result, "summaryDetail")
     financial_data = _dict_value(result, "financialData")
     currency = str(price.get("currency") or fallback_currency or "").upper()
-    fx_rate = _EUR_RATES.get(currency)
+    fx_rate = _STATIC_EUR_RATES.get(currency)
 
     market_cap = _raw(price, "marketCap")
     trailing_pe = _raw(summary, "trailingPE")
@@ -1068,19 +1457,105 @@ def _parse_fundamentals_payload(
         and average_daily_volume is not None
         and previous_close is not None
     ):
-        average_daily_value_eur = average_daily_volume * previous_close * fx_rate
+        average_daily_value_eur = _finite_number(
+            average_daily_volume * previous_close * fx_rate
+        )
+
+    revenue_growth_pct = _percent(revenue_growth)
+    operating_margin_pct = _percent(operating_margin)
+    normalized_debt_to_equity = (
+        _finite_number(round(debt_to_equity / 100, 4))
+        if debt_to_equity is not None
+        else None
+    )
+    observations: list[FinancialObservation] = []
+    _add_observation(
+        observations,
+        "pe_ratio",
+        trailing_pe,
+        "yahoo",
+        "summaryDetail.trailingPE" if trailing_pe is not None else None,
+        period_type=ReportingPeriodType.TTM,
+    )
+    _add_observation(
+        observations,
+        "price_to_book",
+        price_to_book,
+        "yahoo",
+        "summaryDetail.priceToBook" if price_to_book is not None else None,
+    )
+    _add_observation(
+        observations,
+        "revenue_growth_pct",
+        revenue_growth_pct,
+        "yahoo",
+        "financialData.revenueGrowth" if revenue_growth_pct is not None else None,
+        is_derived=True,
+        derivation="ratio converted to percentage points",
+    )
+    _add_observation(
+        observations,
+        "operating_margin_pct",
+        operating_margin_pct,
+        "yahoo",
+        "financialData.operatingMargins"
+        if operating_margin_pct is not None
+        else None,
+        is_derived=True,
+        derivation="ratio converted to percentage points",
+    )
+    _add_observation(
+        observations,
+        "debt_to_equity",
+        normalized_debt_to_equity,
+        "yahoo",
+        "financialData.debtToEquity"
+        if normalized_debt_to_equity is not None
+        else None,
+        is_derived=True,
+        derivation="provider percentage divided by 100 to normalize as a ratio",
+    )
+    _add_fx_observation(
+        observations,
+        "net_cash_eur_m",
+        net_cash_eur_m,
+        "yahoo",
+        (
+            "financialData.totalCash - financialData.totalDebt"
+            if net_cash_eur_m is not None
+            else None
+        ),
+        currency,
+        fx_rate,
+        extra_derivation="cash less debt",
+    )
+    _add_fx_observation(
+        observations,
+        "average_daily_value_eur",
+        average_daily_value_eur,
+        "yahoo",
+        (
+            "summaryDetail.previousClose * summaryDetail.averageDailyVolume10Day"
+            if average_daily_value_eur is not None
+            else None
+        ),
+        currency,
+        fx_rate,
+        reporting_period="10_trading_days",
+        normalize_to_millions=False,
+        extra_derivation="previous close multiplied by 10-day average volume",
+    )
 
     financials = FinancialSnapshot(
         pe_ratio=trailing_pe,
         price_to_book=price_to_book,
-        revenue_growth_pct=_percent(revenue_growth),
-        operating_margin_pct=_percent(operating_margin),
-        debt_to_equity=round(debt_to_equity / 100, 4)
-        if debt_to_equity is not None
-        else None,
+        revenue_growth_pct=revenue_growth_pct,
+        operating_margin_pct=operating_margin_pct,
+        debt_to_equity=normalized_debt_to_equity,
         net_cash_eur_m=net_cash_eur_m,
         average_daily_value_eur=average_daily_value_eur,
         data_quality=DataQuality.PARTIAL,
+        observations=tuple(observations),
     )
     if not _has_meaningful_fields(market_cap_eur_m, financials):
         return None
@@ -1110,26 +1585,25 @@ def _dict_value(source: dict[str, Any], key: str) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
 
 
+def _finite_number(value: Any) -> float | None:
+    if isinstance(value, bool) or value is None:
+        return None
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    return parsed if math.isfinite(parsed) else None
+
+
 def _raw(source: dict[str, Any], key: str) -> float | None:
     value = source.get(key)
     if isinstance(value, dict):
         value = value.get("raw")
-    if isinstance(value, bool) or value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
+    return _finite_number(value)
 
 
 def _number(source: dict[str, Any], key: str) -> float | None:
-    value = source.get(key)
-    if isinstance(value, bool) or value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
+    return _finite_number(source.get(key))
 
 
 def _clean_text(value: Any) -> str | None:
@@ -1140,17 +1614,115 @@ def _clean_text(value: Any) -> str | None:
 
 
 def _first_number(source: dict[str, Any], keys: tuple[str, ...]) -> float | None:
+    value, _ = _first_number_with_key(source, keys)
+    return value
+
+
+def _first_number_with_key(
+    source: dict[str, Any], keys: tuple[str, ...]
+) -> tuple[float | None, str | None]:
     for key in keys:
         value = _number(source, key)
         if value is not None:
-            return value
-    return None
+            return value, key
+    return None, None
+
+
+def _period_type_for_key(
+    key: str | None,
+    period_types: dict[str, ReportingPeriodType],
+) -> ReportingPeriodType | None:
+    return period_types.get(key) if key is not None else None
+
+
+def _add_observation(
+    observations: list[FinancialObservation],
+    canonical_field: str,
+    value: float | None,
+    provider: str,
+    source_metric: str | None,
+    *,
+    as_of: str | None = None,
+    reporting_period: str | None = None,
+    period_type: ReportingPeriodType | None = None,
+    original_currency: str | None = None,
+    normalized_currency: str | None = None,
+    is_derived: bool = False,
+    derivation: str | None = None,
+    confidence: ObservationConfidence | None = ObservationConfidence.MEDIUM,
+) -> None:
+    if value is None or source_metric is None:
+        return
+    observations.append(
+        FinancialObservation(
+            canonical_field=canonical_field,
+            normalized_value=value,
+            provider=provider,
+            source_metric=source_metric,
+            as_of=as_of,
+            reporting_period=reporting_period,
+            period_type=period_type,
+            original_currency=original_currency,
+            normalized_currency=normalized_currency,
+            is_derived=is_derived,
+            derivation=derivation,
+            confidence=confidence,
+        )
+    )
+
+
+def _add_fx_observation(
+    observations: list[FinancialObservation],
+    canonical_field: str,
+    value: float | None,
+    provider: str,
+    source_metric: str | None,
+    currency: str,
+    fx_rate: float | None,
+    *,
+    as_of: str | None = None,
+    reporting_period: str | None = None,
+    period_type: ReportingPeriodType | None = None,
+    normalize_to_millions: bool = True,
+    extra_derivation: str | None = None,
+) -> None:
+    if value is None or source_metric is None or fx_rate is None:
+        return
+    derivation_parts = [extra_derivation] if extra_derivation else []
+    if currency == "EUR":
+        if normalize_to_millions:
+            derivation_parts.append("divided by 1,000,000 to normalize to EUR millions")
+    else:
+        derivation_parts.append(
+            f"static FX assumption: 1 {currency} = {fx_rate:g} EUR"
+        )
+        if normalize_to_millions:
+            derivation_parts.append("divided by 1,000,000 to normalize to EUR millions")
+    _add_observation(
+        observations,
+        canonical_field,
+        value,
+        provider,
+        source_metric,
+        as_of=as_of,
+        reporting_period=reporting_period,
+        period_type=period_type,
+        original_currency=currency,
+        normalized_currency="EUR",
+        is_derived=True,
+        derivation="; ".join(derivation_parts) or "normalized to EUR",
+        confidence=(
+            ObservationConfidence.MEDIUM
+            if currency == "EUR"
+            else ObservationConfidence.LOW
+        ),
+    )
 
 
 def _percent(value: float | None) -> float | None:
     if value is None:
         return None
-    return round(value * 100, 2)
+    return _finite_number(round(value * 100, 2))
 
 
 def _ratio_to_percent(value: float | None) -> float | None:
@@ -1158,25 +1730,25 @@ def _ratio_to_percent(value: float | None) -> float | None:
         return None
     if -1 <= value <= 1:
         value *= 100
-    return round(value, 2)
+    return _finite_number(round(value, 2))
 
 
 def _eur_m(value: float | None, fx_rate: float | None) -> float | None:
     if value is None or fx_rate is None:
         return None
-    return round(value * fx_rate / 1_000_000, 2)
+    return _finite_number(round(value * fx_rate / 1_000_000, 2))
 
 
 def _currency_m_to_eur_m(value: float | None, fx_rate: float | None) -> float | None:
     if value is None or fx_rate is None:
         return None
-    return round(value * fx_rate, 2)
+    return _finite_number(round(value * fx_rate, 2))
 
 
 def _debt_to_equity_ratio(value: float | None) -> float | None:
     if value is None:
         return None
-    return round(value / 100, 4)
+    return _finite_number(round(value / 100, 4))
 
 
 def _token_safe_error(exc: Exception, token: str) -> str:

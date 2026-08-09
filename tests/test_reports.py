@@ -8,8 +8,11 @@ from investmentagent.models import (
     CompanyResearch,
     DataQuality,
     Evidence,
+    FinancialObservation,
     FinancialSnapshot,
     ListingSegment,
+    ObservationConfidence,
+    ReportingPeriodType,
     ScoreBreakdown,
     WatchlistItem,
 )
@@ -2206,7 +2209,11 @@ def test_render_watchlist_json_normalizes_non_finite_floats():
         rank=1,
         research=CompanyResearch(
             company=company,
-            financials=FinancialSnapshot(price=float("nan"), data_quality=DataQuality.GOOD),
+            financials=FinancialSnapshot(
+                price=float("nan"),
+                revenue_growth_pct=float("nan"),
+                data_quality=DataQuality.GOOD,
+            ),
             data_quality=DataQuality.GOOD,
         ),
         score=ScoreBreakdown(
@@ -2225,8 +2232,64 @@ def test_render_watchlist_json_normalizes_non_finite_floats():
     assert "Infinity" not in output
     payload = json.loads(output)
     assert payload["items"][0]["financials"]["price"] is None
+    assert payload["items"][0]["financials"]["revenue_growth_pct"] is None
     assert payload["items"][0]["score"]["value"] is None
     assert payload["items"][0]["score"]["total"] is None
+    text_output = render_watchlist_text([item])
+    assert "nan%" not in text_output.lower()
+    assert "Revenue declined nan%" not in text_output
+
+
+def test_render_watchlist_json_includes_financial_observation_diagnostics():
+    company = Company(
+        name="Traceable AB",
+        ticker="TRACE",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.MAIN_MARKET,
+    )
+    item = WatchlistItem(
+        rank=1,
+        research=CompanyResearch(
+            company=company,
+            financials=FinancialSnapshot(
+                pe_ratio=12.4,
+                data_quality=DataQuality.PARTIAL,
+                observations=(
+                    FinancialObservation(
+                        canonical_field="pe_ratio",
+                        normalized_value=12.4,
+                        provider="eodhd",
+                        source_metric="Highlights.PERatio",
+                        period_type=ReportingPeriodType.TTM,
+                        confidence=ObservationConfidence.MEDIUM,
+                    ),
+                ),
+            ),
+            data_quality=DataQuality.PARTIAL,
+        ),
+        score=ScoreBreakdown(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+    )
+
+    payload = json.loads(render_watchlist_json([item]))
+
+    assert payload["items"][0]["financials"]["pe_ratio"] == 12.4
+    assert payload["items"][0]["financials"]["observations"] == [
+        {
+            "as_of": None,
+            "canonical_field": "pe_ratio",
+            "confidence": "medium",
+            "derivation": None,
+            "is_derived": False,
+            "normalized_currency": None,
+            "normalized_value": 12.4,
+            "original_currency": None,
+            "period_type": "ttm",
+            "provider": "eodhd",
+            "reporting_period": None,
+            "source_metric": "Highlights.PERatio",
+        }
+    ]
 
 
 def test_render_deep_dive_text_includes_thesis_sections():

@@ -1,9 +1,12 @@
+import pytest
+
 from investmentagent.models import (
     Company,
     CompanyResearch,
     DataQuality,
     DeepDiveReport,
     Evidence,
+    FinancialObservation,
     FinancialSnapshot,
     ListingSegment,
     ScoreBreakdown,
@@ -65,6 +68,39 @@ def test_financial_snapshot_accepts_valuation_proxy_inputs():
     assert snapshot.revenue_eur_m == 120.0
     assert snapshot.book_value_eur_m == 80.0
     assert snapshot.net_income_eur_m == 12.0
+
+
+@pytest.mark.parametrize("invalid", [float("nan"), float("inf"), float("-inf")])
+def test_financial_snapshot_rejects_non_finite_values(invalid: float):
+    snapshot = FinancialSnapshot(
+        pe_ratio=invalid,
+        revenue_growth_pct=invalid,
+        observations=(
+            FinancialObservation(
+                canonical_field="pe_ratio",
+                normalized_value=invalid,
+                provider="test",
+                source_metric="invalid",
+            ),
+        ),
+    )
+
+    assert snapshot.pe_ratio is None
+    assert snapshot.revenue_growth_pct is None
+    assert snapshot.observations == ()
+
+
+def test_company_rejects_non_finite_market_cap():
+    company = Company(
+        name="Example AB",
+        ticker="EXAB",
+        country="SE",
+        exchange="Nasdaq Stockholm",
+        segment=ListingSegment.FIRST_NORTH,
+        market_cap_eur_m=float("nan"),
+    )
+
+    assert company.market_cap_eur_m is None
 
 
 def test_evidence_requires_label_and_url():

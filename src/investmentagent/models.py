@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from enum import Enum
 
@@ -8,6 +9,21 @@ class DataQuality(str, Enum):
     GOOD = "good"
     PARTIAL = "partial"
     THIN = "thin"
+
+
+class ObservationConfidence(str, Enum):
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+
+
+class ReportingPeriodType(str, Enum):
+    TTM = "ttm"
+    ANNUAL = "annual"
+    QUARTERLY = "quarterly"
+    MRQ = "mrq"
+    FORWARD = "forward"
+    POINT_IN_TIME = "point_in_time"
 
 
 class ListingSegment(str, Enum):
@@ -26,6 +42,37 @@ class Evidence:
 
 
 @dataclass(frozen=True)
+class FinancialObservation:
+    canonical_field: str
+    normalized_value: float | None
+    provider: str
+    source_metric: str
+    as_of: str | None = None
+    reporting_period: str | None = None
+    period_type: ReportingPeriodType | None = None
+    original_currency: str | None = None
+    normalized_currency: str | None = None
+    is_derived: bool = False
+    derivation: str | None = None
+    confidence: ObservationConfidence | None = None
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self, "normalized_value", _finite_number_or_none(self.normalized_value)
+        )
+        if self.original_currency is not None:
+            object.__setattr__(
+                self, "original_currency", self.original_currency.strip().upper() or None
+            )
+        if self.normalized_currency is not None:
+            object.__setattr__(
+                self,
+                "normalized_currency",
+                self.normalized_currency.strip().upper() or None,
+            )
+
+
+@dataclass(frozen=True)
 class Company:
     name: str
     ticker: str
@@ -41,6 +88,29 @@ class Company:
     def __post_init__(self) -> None:
         object.__setattr__(self, "ticker", self.ticker.strip().upper())
         object.__setattr__(self, "country", self.country.strip().upper())
+        object.__setattr__(
+            self,
+            "market_cap_eur_m",
+            _finite_number_or_none(self.market_cap_eur_m),
+        )
+
+
+_FINANCIAL_NUMERIC_FIELDS = (
+    "price",
+    "pe_ratio",
+    "price_to_book",
+    "ev_to_ebit",
+    "revenue_eur_m",
+    "book_value_eur_m",
+    "net_income_eur_m",
+    "net_cash_eur_m",
+    "debt_to_equity",
+    "revenue_growth_pct",
+    "operating_margin_pct",
+    "one_year_return_pct",
+    "distance_from_52w_high_pct",
+    "average_daily_value_eur",
+)
 
 
 @dataclass(frozen=True)
@@ -61,6 +131,50 @@ class FinancialSnapshot:
     distance_from_52w_high_pct: float | None = None
     average_daily_value_eur: float | None = None
     data_quality: DataQuality = DataQuality.THIN
+    observations: tuple[FinancialObservation, ...] = ()
+
+    def __post_init__(self) -> None:
+        for field_name in _FINANCIAL_NUMERIC_FIELDS:
+            object.__setattr__(
+                self,
+                field_name,
+                _finite_number_or_none(getattr(self, field_name)),
+            )
+
+        observations_by_field: dict[str, FinancialObservation] = {}
+        for observation in self.observations:
+            if not isinstance(observation, FinancialObservation):
+                continue
+            if observation.canonical_field not in _FINANCIAL_NUMERIC_FIELDS:
+                continue
+            field_value = getattr(self, observation.canonical_field)
+            if field_value is None or observation.normalized_value is None:
+                continue
+            if not math.isclose(
+                field_value,
+                observation.normalized_value,
+                rel_tol=1e-12,
+                abs_tol=1e-12,
+            ):
+                continue
+            observations_by_field[observation.canonical_field] = observation
+        object.__setattr__(self, "observations", tuple(observations_by_field.values()))
+
+    def observation_for(self, canonical_field: str) -> FinancialObservation | None:
+        return next(
+            (
+                observation
+                for observation in self.observations
+                if observation.canonical_field == canonical_field
+            ),
+            None,
+        )
+
+
+def _finite_number_or_none(value: float | None) -> float | None:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return value if math.isfinite(value) else None
 
 
 @dataclass(frozen=True)
