@@ -1,0 +1,736 @@
+import json
+import math
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+
+import pytest
+from typer.testing import CliRunner
+
+from investmentagent.cli import app
+from investmentagent.evaluation import (
+    EVALUATION_SCHEMA_VERSION,
+    EvaluationCompanyRow,
+    EvaluationSnapshot,
+    evaluation_run_id,
+    save_evaluation_snapshot,
+)
+from investmentagent.evaluation_analysis import (
+    build_performance_v2_analysis,
+    spearman_rank_correlation,
+)
+from investmentagent.evaluation_outcomes import (
+    OUTCOME_SCHEMA_VERSION,
+    EvaluationOutcomeSet,
+    HorizonDefinition,
+    load_outcome_set,
+    refresh_evaluation_outcomes,
+    save_outcome_set,
+)
+from investmentagent.market_calendar import (
+    advance_market_sessions,
+    first_session_closing_after,
+    market_for_country,
+)
+from investmentagent.market_prices import (
+    ADJUSTED_PRICE_TYPE,
+    EodhdHistoricalPriceProvider,
+    FixtureHistoricalPriceProvider,
+    HistoricalPriceObservation,
+    SecurityReference,
+)
+
+
+UTC = timezone.utc
+RUNNER = CliRunner()
+ONE_SESSION = (HorizonDefinition("1_session", 1),)
+
+
+def _timestamp(day: int = 10, hour: int = 8) -> datetime:
+    return datetime(2026, 8, day, hour, tzinfo=UTC)
+
+
+def _snapshot(
+    count: int,
+    *,
+    strategy: str = "long-term",
+    decision_at: datetime | None = None,
+    model_version: str = "nordic-ranking-v1",
+    countries: tuple[str, ...] = ("SE",),
+    scores: list[float] | None = None,
+) -> EvaluationSnapshot:
+    decision = decision_at or _timestamp()
+    configuration = {"provider": "fixture", "test": "performance-v2"}
+    report_date = decision.date()
+    rows = []
+    gate_tiers = (
+        "High-conviction candidate",
+        "Fundamental watchlist",
+        "Speculative monitor",
+        "Insufficient evidence",
+    )
+    for index in range(count):
+        rank = index + 1
+        country = countries[index % len(countries)]
+        score = scores[index] if scores is not None else float(count - index)
+        rows.append(
+            EvaluationCompanyRow(
+                company_id=f"isin:{country}{index:010d}",
+                isin=f"{country}{index:010d}",
+                ticker=f"C{index:03d}",
+                country=country,
+                name=f"Company {index:03d}",
+                exchange="Nasdaq Stockholm" if country == "SE" else "Nasdaq Helsinki",
+                segment="first_north" if index % 2 else "main_market",
+                sector="Software",
+                eligible_universe_member=True,
+                rank=rank,
+                score={
+                    "total": score,
+                    "value": score,
+                    "discovery": 0.0,
+                    "catalyst": 0.0,
+                    "risk_penalty": 0.0,
+                    "data_quality_penalty": 0.0,
+                },
+                long_term=(
+                    {"gate_tier": gate_tiers[index % len(gate_tiers)]}
+                    if strategy == "long-term"
+                    else None
+                ),
+                data_quality="good",
+                cache={
+                    "enabled": False,
+                    "participated": False,
+                    "state": "disabled",
+                    "refreshed_this_run": False,
+                    "retrieved_at": None,
+                    "providers": [],
+                },
+                model_inputs={"available_financial_fields": [], "threshold_flags": {}},
+            )
+        )
+    run_id = evaluation_run_id(
+        strategy=strategy,
+        decision_at=decision,
+        report_date=report_date,
+        countries=countries,
+        scoring_model_version=model_version,
+        configuration=configuration,
+    )
+    return EvaluationSnapshot(
+        schema_version=EVALUATION_SCHEMA_VERSION,
+        run_id=run_id,
+        strategy=strategy,
+        decision_at=decision,
+        report_date=report_date,
+        universe_size=count,
+        countries=countries,
+        scoring_model_version=model_version,
+        configuration=configuration,
+        diagnostics={"fixture": True},
+        rows=tuple(rows),
+    )
+
+
+def _observation(
+    row: EvaluationCompanyRow,
+    session_date: date,
+    adjusted_close: float,
+    *,
+    retrieved_at: datetime,
+    close: float | None = None,
+) -> HistoricalPriceObservation:
+    market = market_for_country(row.country)
+    return HistoricalPriceObservation(
+        provider="fixture",
+        symbol=f"{row.ticker}.{'ST' if row.country == 'SE' else 'HE'}",
+        market=market,
+        session_date=session_date,
+        close=close,
+        adjusted_close=adjusted_close,
+        currency="SEK" if row.country == "SE" else "EUR",
+        retrieved_at=retrieved_at,
+    )
+
+
+def _priced_store(
+    snapshot: EvaluationSnapshot,
+    returns_pct: list[float],
+    *,
+    horizon: tuple[HorizonDefinition, ...] = ONE_SESSION,
+) -> EvaluationOutcomeSet:
+    retrieved_at = snapshot.decision_at + timedelta(days=20)
+    histories = {}
+    for row, forward_return in zip(snapshot.rows, returns_pct, strict=True):
+        market = market_for_country(row.country)
+        entry = first_session_closing_after(snapshot.decision_at, market).day
+        observations = [_observation(row, entry, 100.0, retrieved_at=retrieved_at)]
+        for definition in horizon:
+            exit_day = advance_market_sessions(entry, definition.sessions, market).day
+            observations.append(
+                _observation(
+                    row,
+                    exit_day,
+                    100.0 * (1.0 + forward_return / 100.0),
+                    retrieved_at=retrieved_at,
+                )
+            )
+        histories[row.company_id] = observations
+    return refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(histories),
+        retrieved_at=retrieved_at,
+        horizons=horizon,
+    )
+
+
+def test_adjusted_price_is_used_instead_of_raw_close_for_split():
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
+    exit_day = advance_market_sessions(entry, 1, "stockholm").day
+    retrieved_at = _timestamp(12, 18)
+    provider = FixtureHistoricalPriceProvider(
+        {
+            row.company_id: (
+                _observation(row, entry, 50.0, close=100.0, retrieved_at=retrieved_at),
+                _observation(row, exit_day, 50.0, close=50.0, retrieved_at=retrieved_at),
+            )
+        }
+    )
+
+    outcome = refresh_evaluation_outcomes(
+        snapshot, provider, retrieved_at=retrieved_at, horizons=ONE_SESSION
+    ).outcomes[0]
+
+    assert outcome.status == "priced"
+    assert outcome.raw_forward_return_pct == 0.0
+    assert outcome.price_type == ADJUSTED_PRICE_TYPE
+    assert outcome.entry_price == 50.0
+
+
+def test_previous_close_can_never_become_post_decision_entry():
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
+    previous = advance_market_sessions(date(2026, 8, 7), 0, "stockholm").day
+    exit_day = advance_market_sessions(entry, 1, "stockholm").day
+    retrieved_at = _timestamp(12, 18)
+    provider = FixtureHistoricalPriceProvider(
+        {
+            row.company_id: (
+                _observation(row, previous, 10.0, retrieved_at=retrieved_at),
+                _observation(row, entry, 100.0, retrieved_at=retrieved_at),
+                _observation(row, exit_day, 110.0, retrieved_at=retrieved_at),
+            )
+        }
+    )
+
+    outcome = refresh_evaluation_outcomes(
+        snapshot, provider, retrieved_at=retrieved_at, horizons=ONE_SESSION
+    ).outcomes[0]
+
+    assert previous < outcome.entry_session
+    assert outcome.entry_price == 100.0
+    assert outcome.raw_forward_return_pct == pytest.approx(10.0)
+
+
+def test_dividend_adjusted_prices_do_not_create_a_fake_loss():
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
+    exit_day = advance_market_sessions(entry, 1, "stockholm").day
+    retrieved_at = _timestamp(12, 18)
+    provider = FixtureHistoricalPriceProvider(
+        {
+            row.company_id: (
+                _observation(row, entry, 95.0, close=100.0, retrieved_at=retrieved_at),
+                _observation(row, exit_day, 95.0, close=95.0, retrieved_at=retrieved_at),
+            )
+        }
+    )
+
+    outcome = refresh_evaluation_outcomes(
+        snapshot, provider, retrieved_at=retrieved_at, horizons=ONE_SESSION
+    ).outcomes[0]
+
+    assert outcome.raw_forward_return_pct == 0.0
+
+
+def test_eodhd_provider_parses_adjusted_close_and_explicit_metadata():
+    payload = json.dumps(
+        [
+            {
+                "date": "2026-08-10",
+                "close": 100.0,
+                "adjusted_close": 98.5,
+            }
+        ]
+    )
+    provider = EodhdHistoricalPriceProvider("secret", fetcher=lambda url: payload)
+    security = SecurityReference("isin:1", "SE1", "ABC", "SE", "Nasdaq Stockholm", "SEK")
+
+    history = provider.get_history(
+        security,
+        start_date=date(2026, 8, 10),
+        end_date=date(2026, 8, 10),
+        market="stockholm",
+        retrieved_at=_timestamp(12),
+    )
+
+    assert history.status == "ok"
+    assert history.symbol == "ABC.ST"
+    assert history.observations[0].adjusted_close == 98.5
+    assert history.observations[0].close == 100.0
+    assert history.observations[0].is_adjusted is True
+    assert history.observations[0].currency == "SEK"
+
+
+def test_eodhd_provider_never_substitutes_raw_close_for_missing_adjusted_close():
+    provider = EodhdHistoricalPriceProvider(
+        "secret",
+        fetcher=lambda url: json.dumps([{"date": "2026-08-10", "close": 100.0}]),
+    )
+    security = SecurityReference("isin:1", "SE1", "ABC", "SE", "Nasdaq Stockholm", "SEK")
+
+    history = provider.get_history(
+        security,
+        start_date=date(2026, 8, 10),
+        end_date=date(2026, 8, 10),
+        market="stockholm",
+        retrieved_at=_timestamp(12),
+    )
+
+    assert history.status == "corporate_action_unsupported"
+    assert not history.observations
+
+
+def test_eodhd_provider_stops_network_calls_after_repeated_provider_failures():
+    calls = []
+
+    def failing_fetcher(url):
+        calls.append(url)
+        raise TimeoutError("provider unavailable")
+
+    provider = EodhdHistoricalPriceProvider("secret", fetcher=failing_fetcher)
+    security = SecurityReference("isin:1", "SE1", "ABC", "SE", "Nasdaq Stockholm", "SEK")
+    histories = [
+        provider.get_history(
+            security,
+            start_date=date(2026, 8, 10),
+            end_date=date(2026, 8, 11),
+            market="stockholm",
+            retrieved_at=_timestamp(12),
+        )
+        for _ in range(5)
+    ]
+
+    assert len(calls) == 3
+    assert all(history.status == "provider_error" for history in histories)
+    assert "circuit opened" in histories[-1].detail
+
+
+def test_outcome_is_not_due_until_target_session_has_closed():
+    snapshot = _snapshot(1)
+    provider = FixtureHistoricalPriceProvider({})
+
+    store = refresh_evaluation_outcomes(
+        snapshot,
+        provider,
+        retrieved_at=_timestamp(10, 12),
+        horizons=ONE_SESSION,
+    )
+
+    assert store.outcomes[0].status == "not_due"
+    assert store.outcomes[0].retrieved_at is None
+
+
+def test_missing_entry_is_explicit():
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
+    exit_day = advance_market_sessions(entry, 1, "stockholm").day
+    retrieved_at = _timestamp(12, 18)
+    provider = FixtureHistoricalPriceProvider(
+        {row.company_id: [_observation(row, exit_day, 101.0, retrieved_at=retrieved_at)]}
+    )
+
+    outcome = refresh_evaluation_outcomes(
+        snapshot, provider, retrieved_at=retrieved_at, horizons=ONE_SESSION
+    ).outcomes[0]
+
+    assert outcome.status == "missing_entry"
+    assert outcome.entry_price is None
+
+
+def test_missing_exit_preserves_a_valid_entry_for_later_refresh():
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
+    exit_day = advance_market_sessions(entry, 1, "stockholm").day
+    first_retrieval = _timestamp(12, 18)
+    first = refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(
+            {row.company_id: [_observation(row, entry, 100.0, retrieved_at=first_retrieval)]}
+        ),
+        retrieved_at=first_retrieval,
+        horizons=ONE_SESSION,
+    )
+    assert first.outcomes[0].status == "missing_exit"
+
+    second_retrieval = _timestamp(13, 18)
+    second = refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(
+            {
+                row.company_id: (
+                    _observation(row, entry, 100.0, retrieved_at=second_retrieval),
+                    _observation(row, exit_day, 110.0, retrieved_at=second_retrieval),
+                )
+            }
+        ),
+        retrieved_at=second_retrieval,
+        existing=first,
+        horizons=ONE_SESSION,
+    )
+
+    outcome = second.outcomes[0]
+    assert outcome.status == "priced"
+    assert outcome.entry_price == 100.0
+    assert outcome.entry_retrieved_at == first_retrieval
+    assert outcome.raw_forward_return_pct == pytest.approx(10.0)
+
+
+def test_provider_revision_never_replaces_established_entry():
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
+    exit_day = advance_market_sessions(entry, 1, "stockholm").day
+    first_retrieval = _timestamp(12, 18)
+    first = refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(
+            {row.company_id: [_observation(row, entry, 100.0, retrieved_at=first_retrieval)]}
+        ),
+        retrieved_at=first_retrieval,
+        horizons=ONE_SESSION,
+    )
+    second_retrieval = _timestamp(13, 18)
+    revised = refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(
+            {
+                row.company_id: (
+                    _observation(row, entry, 50.0, retrieved_at=second_retrieval),
+                    _observation(row, exit_day, 55.0, retrieved_at=second_retrieval),
+                )
+            }
+        ),
+        retrieved_at=second_retrieval,
+        existing=first,
+        horizons=ONE_SESSION,
+    ).outcomes[0]
+
+    assert revised.status == "corporate_action_unsupported"
+    assert revised.entry_price == 100.0
+    assert "revised" in revised.detail
+
+
+def test_unresolved_symbol_and_provider_error_are_visible():
+    snapshot = _snapshot(2)
+    provider = FixtureHistoricalPriceProvider(
+        {},
+        unresolved=[snapshot.rows[0].company_id],
+        provider_errors={snapshot.rows[1].company_id: "quota exhausted"},
+    )
+
+    store = refresh_evaluation_outcomes(
+        snapshot, provider, retrieved_at=_timestamp(12, 18), horizons=ONE_SESSION
+    )
+
+    assert [outcome.status for outcome in store.outcomes] == [
+        "symbol_unresolved",
+        "provider_error",
+    ]
+
+
+def test_outcome_serialization_round_trip_and_schema_version(tmp_path):
+    snapshot = _snapshot(3)
+    store = _priced_store(snapshot, [3.0, 2.0, 1.0])
+    path = save_outcome_set(tmp_path / "outcomes.json", store)
+
+    restored = load_outcome_set(path)
+
+    assert restored == store
+    assert restored.outcomes[0].schema_version == OUTCOME_SCHEMA_VERSION
+    assert restored.outcomes[0].raw_forward_return_pct == pytest.approx(3.0)
+
+
+def test_outcome_save_is_idempotent(tmp_path):
+    store = _priced_store(_snapshot(2), [2.0, 1.0])
+    path = tmp_path / "outcomes.json"
+
+    save_outcome_set(path, store)
+    first_bytes = path.read_bytes()
+    save_outcome_set(path, store)
+
+    assert path.read_bytes() == first_bytes
+
+
+def test_unsupported_outcome_store_schema_is_rejected(tmp_path):
+    path = tmp_path / "unsupported.json"
+    path.write_text(json.dumps({"schema_version": 99}))
+
+    with pytest.raises(ValueError, match="unsupported outcome-store schema: 99"):
+        load_outcome_set(path)
+
+
+def test_refreshing_outcomes_does_not_mutate_evaluation_snapshot(tmp_path):
+    snapshot = _snapshot(2)
+    evaluation_path = save_evaluation_snapshot(tmp_path / "evaluations", snapshot)
+    original = evaluation_path.read_bytes()
+
+    _priced_store(snapshot, [2.0, 1.0])
+
+    assert evaluation_path.read_bytes() == original
+
+
+def test_perfect_positive_and_negative_spearman_ic():
+    assert spearman_rank_correlation([4, 3, 2, 1], [40, 30, 20, 10]) == pytest.approx(1.0)
+    assert spearman_rank_correlation([4, 3, 2, 1], [10, 20, 30, 40]) == pytest.approx(-1.0)
+
+
+def test_spearman_handles_tied_scores_with_average_ranks():
+    value = spearman_rank_correlation([3, 3, 1, 1], [4, 3, 2, 1])
+
+    assert value == pytest.approx(0.8944271909999159)
+
+
+def test_central_positive_signal_and_inverted_signal_regression():
+    snapshot = _snapshot(100)
+    positive_returns = [float(101 - rank) / 10 for rank in range(1, 101)]
+    positive = build_performance_v2_analysis(
+        (snapshot,),
+        (_priced_store(snapshot, positive_returns),),
+        generated_at=_timestamp(20),
+    )
+    positive_run = positive["run_metrics"][0]
+    positive_group = positive["groups"][0]
+
+    assert positive_run["score_return_spearman_ic"] == pytest.approx(1.0)
+    assert positive_run["final_rank_return_spearman_ic"] == pytest.approx(1.0)
+    assert positive_run["top_vs_universe"]["top_decile_minus_universe_pct"] > 0
+    assert positive_run["top_vs_universe"]["top_decile_minus_bottom_decile_pct"] > 0
+    assert positive_group["bucket_schemes"][0]["bucket_count"] == 10
+    assert positive_group["bucket_schemes"][0]["monotonic_run_count"] == 1
+
+    inverted_returns = list(reversed(positive_returns))
+    inverted = build_performance_v2_analysis(
+        (snapshot,),
+        (_priced_store(snapshot, inverted_returns),),
+        generated_at=_timestamp(20),
+    )
+    inverted_run = inverted["run_metrics"][0]
+    assert inverted_run["score_return_spearman_ic"] == pytest.approx(-1.0)
+    assert inverted_run["final_rank_return_spearman_ic"] == pytest.approx(-1.0)
+    assert inverted_run["top_vs_universe"]["top_decile_minus_universe_pct"] < 0
+    assert inverted_run["top_vs_universe"]["top_decile_minus_bottom_decile_pct"] < 0
+
+
+def test_benchmark_uses_valid_members_of_original_evaluation_universe():
+    snapshot = _snapshot(3)
+    retrieved_at = _timestamp(12, 18)
+    histories = {}
+    for row, forward_return in zip(snapshot.rows[:2], (10.0, 20.0), strict=True):
+        entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
+        exit_day = advance_market_sessions(entry, 1, "stockholm").day
+        histories[row.company_id] = (
+            _observation(row, entry, 100.0, retrieved_at=retrieved_at),
+            _observation(row, exit_day, 100 + forward_return, retrieved_at=retrieved_at),
+        )
+    store = refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(histories),
+        retrieved_at=retrieved_at,
+        horizons=ONE_SESSION,
+    )
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,), (store,), generated_at=_timestamp(20)
+    )
+    run = analysis["run_metrics"][0]
+
+    assert run["original_universe_size"] == 3
+    assert run["valid_company_count"] == 2
+    assert run["universe_equal_weight_return_pct"] == pytest.approx(15.0)
+    assert run["status_counts"]["symbol_unresolved"] == 1
+
+
+def test_same_country_benchmarks_and_country_specific_ic_are_reported():
+    snapshot = _snapshot(4, countries=("SE", "FI"))
+    store = _priced_store(snapshot, [8.0, 4.0, 2.0, 0.0])
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,), (store,), generated_at=_timestamp(20)
+    )
+    run = analysis["run_metrics"][0]
+    company = run["company_benchmarks"][0]
+
+    assert company["same_country_equal_weight_return_pct"] == pytest.approx(5.0)
+    assert company["excess_vs_country_pct"] == pytest.approx(3.0)
+    assert {row["country"] for row in run["country_metrics"]} == {"SE", "FI"}
+    assert all(row["score_return_spearman_ic"] == pytest.approx(1.0) for row in run["country_metrics"])
+
+
+def test_long_term_gate_tier_statistics_keep_sample_sizes():
+    snapshot = _snapshot(8)
+    store = _priced_store(snapshot, [8, 7, 6, 5, 4, 3, 2, 1])
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,), (store,), generated_at=_timestamp(20)
+    )
+    tiers = analysis["groups"][0]["gate_tiers"]
+
+    assert {tier["tier"] for tier in tiers} == {
+        "High-conviction candidate",
+        "Fundamental watchlist",
+        "Speculative monitor",
+        "Insufficient evidence",
+    }
+    assert sum(tier["observations"] for tier in tiers) == 8
+
+
+def test_model_versions_are_never_aggregated_together():
+    first = _snapshot(4, model_version="nordic-ranking-v1")
+    second = _snapshot(
+        4,
+        decision_at=_timestamp(11),
+        model_version="nordic-ranking-v2-challenger",
+    )
+
+    analysis = build_performance_v2_analysis(
+        (first, second),
+        (_priced_store(first, [4, 3, 2, 1]), _priced_store(second, [4, 3, 2, 1])),
+        generated_at=_timestamp(25),
+    )
+
+    assert len(analysis["groups"]) == 2
+    assert {group["scoring_model_version"] for group in analysis["groups"]} == {
+        "nordic-ranking-v1",
+        "nordic-ranking-v2-challenger",
+    }
+
+
+def test_repeated_companies_aggregate_ic_by_run_before_summary():
+    large = _snapshot(100)
+    small = _snapshot(2, decision_at=_timestamp(11))
+    large_store = _priced_store(large, [float(100 - index) for index in range(100)])
+    small_store = _priced_store(small, [0.0, 1.0])
+
+    analysis = build_performance_v2_analysis(
+        (large, small), (large_store, small_store), generated_at=_timestamp(25)
+    )
+    group = analysis["groups"][0]
+
+    assert group["score_ic"]["mean"] == pytest.approx(0.0)
+    assert group["evaluated_run_count"] == 2
+    assert group["unique_company_count"] == 100
+
+
+def test_missing_outcome_diagnostics_cover_country_segment_and_rank_bucket():
+    snapshot = _snapshot(10, countries=("SE", "FI"))
+    retrieved_at = _timestamp(12, 18)
+    provider = FixtureHistoricalPriceProvider(
+        {}, unresolved=[row.company_id for row in snapshot.rows]
+    )
+    store = refresh_evaluation_outcomes(
+        snapshot, provider, retrieved_at=retrieved_at, horizons=ONE_SESSION
+    )
+
+    analysis = build_performance_v2_analysis(
+        (snapshot,), (store,), generated_at=_timestamp(20)
+    )
+
+    assert analysis["missingness"]["by_country"]
+    assert analysis["missingness"]["by_segment"]
+    assert analysis["missingness"]["by_rank_decile"]
+    assert all(
+        row["status_counts"].get("symbol_unresolved")
+        for row in analysis["missingness"]["by_country"]
+    )
+
+
+def test_fixture_cli_outcomes_and_analysis_are_fully_offline(tmp_path):
+    snapshot = _snapshot(2)
+    evaluation_root = tmp_path / "evaluations"
+    outcome_root = tmp_path / "outcomes"
+    analysis_root = tmp_path / "analysis"
+    save_evaluation_snapshot(evaluation_root, snapshot)
+    retrieved_at = datetime(2027, 9, 1, 18, tzinfo=UTC)
+    histories = {}
+    for row in snapshot.rows:
+        market = market_for_country(row.country)
+        entry = first_session_closing_after(snapshot.decision_at, market).day
+        sessions = [entry]
+        for count in (20, 60, 126, 252):
+            sessions.append(advance_market_sessions(entry, count, market).day)
+        histories[row.company_id] = [
+            {
+                "symbol": f"{row.ticker}.ST",
+                "market": market,
+                "session_date": session.isoformat(),
+                "close": 100.0 + index,
+                "adjusted_close": 100.0 + index,
+                "currency": "SEK",
+                "retrieved_at": retrieved_at.isoformat(),
+            }
+            for index, session in enumerate(sessions)
+        ]
+    fixture = tmp_path / "prices.json"
+    fixture.write_text(json.dumps({"histories": histories}))
+
+    outcome_result = RUNNER.invoke(
+        app,
+        [
+            "evaluate",
+            "outcomes",
+            "--evaluation-root",
+            str(evaluation_root),
+            "--outcome-root",
+            str(outcome_root),
+            "--price-provider",
+            "fixture",
+            "--price-fixture",
+            str(fixture),
+            "--retrieved-at",
+            retrieved_at.isoformat(),
+        ],
+    )
+    assert outcome_result.exit_code == 0, outcome_result.output
+
+    analysis_result = RUNNER.invoke(
+        app,
+        [
+            "evaluate",
+            "analyze",
+            "--evaluation-root",
+            str(evaluation_root),
+            "--outcome-root",
+            str(outcome_root),
+            "--output-json",
+            str(analysis_root / "performance-v2.json"),
+            "--output-markdown",
+            str(analysis_root / "performance-v2.md"),
+            "--generated-at",
+            retrieved_at.isoformat(),
+        ],
+    )
+
+    assert analysis_result.exit_code == 0, analysis_result.output
+    payload = json.loads((analysis_root / "performance-v2.json").read_text())
+    markdown = (analysis_root / "performance-v2.md").read_text()
+    assert len(payload["groups"]) == 4
+    assert all(group["scoring_model_version"] == "nordic-ranking-v1" for group in payload["groups"])
+    assert "Insufficient history for reliable inference" in markdown
+    assert "Gross adjusted-close returns" in markdown

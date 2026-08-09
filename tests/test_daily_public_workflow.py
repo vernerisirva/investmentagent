@@ -77,6 +77,26 @@ def test_daily_workflow_persists_full_universe_evaluations_from_report_runs():
     assert "git add .investmentagent" not in workflow
 
 
+def test_daily_workflow_refreshes_performance_v2_without_blocking_publication():
+    workflow = WORKFLOW.read_text()
+
+    assert "OUTCOME_ROOT: data/evaluation-outcomes" in workflow
+    assert "ANALYSIS_ROOT: data/evaluation-analysis" in workflow
+    assert "- name: Refresh Performance v2 outcomes and analysis" in workflow
+    performance_v2_block = workflow[
+        workflow.index("- name: Refresh Performance v2 outcomes and analysis"):
+        workflow.index("- name: Commit public report")
+    ]
+    assert "continue-on-error: true" in performance_v2_block
+    assert "timeout-minutes: 45" in performance_v2_block
+    assert "EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}" in performance_v2_block
+    assert "investmentagent evaluate outcomes" in performance_v2_block
+    assert "investmentagent evaluate analyze" in performance_v2_block
+    assert "Skipping Performance v2 outcome refresh" in performance_v2_block
+    assert 'git add "$OUTCOME_ROOT"' in workflow
+    assert 'git add "$ANALYSIS_ROOT"' in workflow
+
+
 def test_daily_workflow_publishes_global_ai_report_and_links_index():
     workflow = WORKFLOW.read_text()
 

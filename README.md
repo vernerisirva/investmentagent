@@ -77,6 +77,52 @@ Live evaluation timestamps are captured after enrichment and final ranking, so
 the CLI does not provide a production historical-backfill path. Evaluation files
 are also rejected under `docs/` to keep them outside GitHub Pages.
 
+## Performance v2 market outcomes
+
+Performance v2 keeps future market outcomes separate from immutable evaluation
+snapshots. The live historical-price adapter uses EODHD end-of-day data and only
+accepts `adjusted_close`, which EODHD documents as adjusted for splits and
+dividends. It never substitutes a raw close into the primary research return.
+
+Configure `EODHD_API_KEY`, then refresh due outcomes and run the offline analysis:
+
+```bash
+investmentagent evaluate outcomes \
+  --evaluation-root data/evaluations \
+  --outcome-root data/evaluation-outcomes \
+  --price-provider eodhd
+
+investmentagent evaluate analyze \
+  --evaluation-root data/evaluations \
+  --outcome-root data/evaluation-outcomes \
+  --output-json data/evaluation-analysis/performance-v2.json \
+  --output-markdown data/evaluation-analysis/performance-v2.md
+```
+
+Outcomes are keyed by evaluation run, stable company identity, and horizon.
+Trading defaults to 1, 5, 20, and 60 valid market sessions; long-term defaults to
+20, 60, 126, and 252 sessions. Entry is the first Stockholm or Helsinki session
+close strictly after the recorded decision timestamp. Holidays, local time zones,
+and recurring Stockholm equity half days are part of the session calculation.
+
+The outcome store under `data/evaluation-outcomes/` is normalized, versioned,
+atomic, and idempotent. Established entries and priced outcomes are frozen. If a
+provider later revises an established adjusted entry, the record is excluded with
+an explicit corporate-action status instead of being silently rewritten. Missing
+entries, exits, mappings, and provider failures remain visible.
+
+Analysis is performed per evaluation run before aggregation and never pools model
+versions. It reports score and final-rank Spearman IC, equal-weight original-
+universe and same-country comparisons, rank buckets, top-decile spreads, long-term
+gate tiers, country splits, and missingness. Returns are gross and exclude spread,
+commissions, and slippage. Small samples are labeled as insufficient for reliable
+inference.
+
+EODHD's free plan has a low daily request allowance and may be insufficient for a
+complete daily Nordic universe. Tests and fixture analysis require no credential,
+but durable live coverage requires an EODHD plan/quota appropriate to the number
+of due unique securities.
+
 ## Scoring model
 
 The score is transparent:
@@ -93,7 +139,7 @@ The repository includes a GitHub Actions workflow named `Daily public watchlist`
 
 Setup:
 
-1. Add a repository secret named `FINIMPULSE_API_KEY` in GitHub: Settings -> Secrets and variables -> Actions -> New repository secret.
+1. Add a repository secret named `FINIMPULSE_API_KEY` in GitHub: Settings -> Secrets and variables -> Actions -> New repository secret. Add `EODHD_API_KEY` to enable Performance v2 market outcomes; if it is absent, that step is skipped explicitly without blocking the daily report.
 2. Enable GitHub Pages: Settings -> Pages -> Build and deployment -> Deploy from a branch -> branch `main`, folder `/docs`.
 3. Run the workflow manually once from Actions -> Daily public watchlist -> Run workflow, or wait for the weekday schedule.
 

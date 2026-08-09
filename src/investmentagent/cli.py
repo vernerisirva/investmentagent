@@ -10,6 +10,12 @@ from investmentagent.evaluation import (
     build_evaluation_snapshot,
     save_evaluation_snapshot,
 )
+from investmentagent.evaluation_analysis import (
+    analyze_outcome_store,
+    save_analysis_json,
+    save_analysis_markdown,
+)
+from investmentagent.evaluation_outcomes import refresh_outcome_store
 from investmentagent.fundamentals import (
     DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
     EnrichedResearchProvider,
@@ -27,6 +33,10 @@ from investmentagent.fundamentals_cache import (
 )
 from investmentagent.global_ai import build_global_ai_top5
 from investmentagent.market_calendar import market_day_status
+from investmentagent.market_prices import (
+    EodhdHistoricalPriceProvider,
+    FixtureHistoricalPriceProvider,
+)
 from investmentagent.providers import create_provider
 from investmentagent.performance import (
     add_report_picks,
@@ -60,10 +70,12 @@ sources_app = typer.Typer(help="Inspect and validate research sources.")
 performance_app = typer.Typer(help="Track and publish watchlist performance.")
 markets_app = typer.Typer(help="Inspect Nordic stock-market calendars.")
 global_ai_app = typer.Typer(help="Generate global AI investment candidate reports.")
+evaluate_app = typer.Typer(help="Refresh and analyze point-in-time market outcomes.")
 app.add_typer(sources_app, name="sources")
 app.add_typer(performance_app, name="performance")
 app.add_typer(markets_app, name="markets")
 app.add_typer(global_ai_app, name="global-ai")
+app.add_typer(evaluate_app, name="evaluate")
 
 
 @app.callback(invoke_without_command=True)
@@ -176,6 +188,15 @@ def _api_key_from_environment(name: str) -> str | None:
         return None
     stripped = api_key.strip()
     return stripped or None
+
+
+def _optional_evaluation_strategy(value: str | None) -> str | None:
+    if value is None:
+        return None
+    normalized = value.strip().lower()
+    if normalized not in {"trading", "long-term"}:
+        raise typer.BadParameter("strategy must be trading or long-term")
+    return normalized
 
 
 def _finimpulse_valuation_fallback_provider(
@@ -592,6 +613,152 @@ def test_sources(
     provider = _provider_from_option(provider_name)
     for check in provider.source_checks():
         typer.echo(f"{check.name}: {check.status} - {check.detail}")
+
+
+@evaluate_app.command("outcomes")
+def evaluate_outcomes(
+    evaluation_root: str = typer.Option(
+        "data/evaluations", "--evaluation-root", help="Evaluation snapshot root."
+    ),
+    outcome_root: str = typer.Option(
+        "data/evaluation-outcomes", "--outcome-root", help="Market-outcome store root."
+    ),
+    price_provider_name: str = typer.Option(
+        "eodhd", "--price-provider", help="Historical price provider: eodhd or fixture."
+    ),
+    price_fixture: str | None = typer.Option(
+        None, "--price-fixture", help="Offline fixture JSON used by the fixture provider."
+    ),
+    strategy: str | None = typer.Option(
+        None, "--strategy", help="Optional strategy filter: trading or long-term."
+    ),
+    run_id: str | None = typer.Option(None, "--run-id", help="Optional evaluation run ID."),
+    report_date_raw: str | None = typer.Option(
+        None, "--report-date", help="Optional evaluation report date YYYY-MM-DD."
+    ),
+    retrieved_at: str | None = typer.Option(
+        None, "--retrieved-at", help="Timezone-aware market-data retrieval timestamp."
+    ),
+) -> None:
+    evaluation_path = Path(evaluation_root)
+    outcome_path = Path(outcome_root)
+    if _is_under_docs(evaluation_path) or _is_under_docs(outcome_path):
+        raise typer.BadParameter("Performance v2 evaluations and outcomes must stay outside docs/")
+    normalized_strategy = _optional_evaluation_strategy(strategy)
+    normalized_provider = price_provider_name.strip().lower()
+    if normalized_provider == "fixture":
+        if price_fixture is None:
+            raise typer.BadParameter("--price-fixture is required for the fixture provider")
+        try:
+            provider = FixtureHistoricalPriceProvider.from_path(Path(price_fixture))
+        except ValueError as exc:
+            raise typer.BadParameter(str(exc)) from exc
+    elif normalized_provider == "eodhd":
+        api_key = _api_key_from_environment("EODHD_API_KEY")
+        if api_key is None:
+            raise typer.BadParameter("EODHD_API_KEY is required for Performance v2 outcomes")
+        provider = EodhdHistoricalPriceProvider(api_key)
+    else:
+        raise typer.BadParameter("price-provider must be eodhd or fixture")
+    retrieval_time = (
+        _parse_aware_timestamp(retrieved_at)
+        if retrieved_at is not None
+        else datetime.now(timezone.utc)
+    )
+    selected_date = (
+        _parse_iso_date(report_date_raw) if report_date_raw is not None else None
+    )
+    summary = refresh_outcome_store(
+        evaluation_path,
+        outcome_path,
+        provider,
+        retrieved_at=retrieval_time,
+        strategy=normalized_strategy,
+        run_id=run_id,
+        report_date=selected_date,
+    )
+    typer.echo(
+        json.dumps(
+            {
+                "evaluation_runs": summary.evaluation_runs,
+                "outcome_records": summary.outcome_records,
+                "priced": summary.priced,
+                "not_due": summary.not_due,
+                "unresolved": summary.unresolved,
+            },
+            sort_keys=True,
+        )
+    )
+
+
+@evaluate_app.command("analyze")
+def evaluate_analyze(
+    evaluation_root: str = typer.Option(
+        "data/evaluations", "--evaluation-root", help="Evaluation snapshot root."
+    ),
+    outcome_root: str = typer.Option(
+        "data/evaluation-outcomes", "--outcome-root", help="Market-outcome store root."
+    ),
+    output_json: str = typer.Option(
+        "data/evaluation-analysis/performance-v2.json",
+        "--output-json",
+        help="Machine-readable Performance v2 analysis path.",
+    ),
+    output_markdown: str = typer.Option(
+        "data/evaluation-analysis/performance-v2.md",
+        "--output-markdown",
+        help="Research-oriented Performance v2 Markdown path.",
+    ),
+    strategy: str | None = typer.Option(
+        None, "--strategy", help="Optional strategy filter: trading or long-term."
+    ),
+    run_id: str | None = typer.Option(None, "--run-id", help="Optional evaluation run ID."),
+    report_date_raw: str | None = typer.Option(
+        None, "--report-date", help="Optional evaluation report date YYYY-MM-DD."
+    ),
+    generated_at: str | None = typer.Option(
+        None, "--generated-at", help="Timezone-aware analysis generation timestamp."
+    ),
+) -> None:
+    paths = tuple(
+        Path(value)
+        for value in (
+            evaluation_root,
+            outcome_root,
+            output_json,
+            output_markdown,
+        )
+    )
+    if any(_is_under_docs(path) for path in paths):
+        raise typer.BadParameter("Performance v2 research data must stay outside docs/")
+    analysis_time = (
+        _parse_aware_timestamp(generated_at)
+        if generated_at is not None
+        else datetime.now(timezone.utc)
+    )
+    selected_date = (
+        _parse_iso_date(report_date_raw) if report_date_raw is not None else None
+    )
+    analysis = analyze_outcome_store(
+        Path(evaluation_root),
+        Path(outcome_root),
+        generated_at=analysis_time,
+        strategy=_optional_evaluation_strategy(strategy),
+        run_id=run_id,
+        report_date=selected_date,
+    )
+    save_analysis_json(Path(output_json), analysis)
+    save_analysis_markdown(Path(output_markdown), analysis)
+    typer.echo(
+        json.dumps(
+            {
+                "groups": len(analysis["groups"]),
+                "run_metrics": len(analysis["run_metrics"]),
+                "warnings": len(analysis["warnings"]),
+            },
+            sort_keys=True,
+        )
+    )
 
 
 @performance_app.command("update")

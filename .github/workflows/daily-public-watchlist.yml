@@ -20,6 +20,8 @@ jobs:
     env:
       REPORT_ROOT: docs/reports
       EVALUATION_ROOT: data/evaluations
+      OUTCOME_ROOT: data/evaluation-outcomes
+      ANALYSIS_ROOT: data/evaluation-analysis
       RUN_DAILY_REPORT: "true"
 
     steps:
@@ -189,12 +191,43 @@ jobs:
             echo "Reports are research triage only. Not financial advice."
           } > docs/global-ai.md
 
+      - name: Refresh Performance v2 outcomes and analysis
+        if: env.RUN_DAILY_REPORT == 'true'
+        continue-on-error: true
+        timeout-minutes: 45
+        env:
+          EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}
+        run: |
+          retrieved_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          if [ -z "$EODHD_API_KEY" ]; then
+            echo "::warning::Skipping Performance v2 outcome refresh because EODHD_API_KEY is missing."
+          else
+            investmentagent evaluate outcomes \
+              --evaluation-root "$EVALUATION_ROOT" \
+              --outcome-root "$OUTCOME_ROOT" \
+              --price-provider eodhd \
+              --retrieved-at "$retrieved_at"
+          fi
+
+          investmentagent evaluate analyze \
+            --evaluation-root "$EVALUATION_ROOT" \
+            --outcome-root "$OUTCOME_ROOT" \
+            --output-json "$ANALYSIS_ROOT/performance-v2.json" \
+            --output-markdown "$ANALYSIS_ROOT/performance-v2.md" \
+            --generated-at "$retrieved_at"
+
       - name: Commit public report
         if: env.RUN_DAILY_REPORT == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/index.md docs/global-ai.md "$REPORT_ROOT" docs/performance docs/data/performance "$EVALUATION_ROOT"
+          if [ -d "$OUTCOME_ROOT" ]; then
+            git add "$OUTCOME_ROOT"
+          fi
+          if [ -d "$ANALYSIS_ROOT" ]; then
+            git add "$ANALYSIS_ROOT"
+          fi
           if git diff --cached --quiet; then
             echo "No report changes to commit."
             exit 0
