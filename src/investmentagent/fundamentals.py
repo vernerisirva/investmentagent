@@ -78,6 +78,10 @@ FINIMPULSE_NET_INCOME_KEYS = (
 DIRECT_VALUATION_FIELDS = ("pe_ratio", "price_to_book", "ev_to_ebit")
 PROXY_VALUATION_FIELDS = ("revenue_eur_m", "book_value_eur_m", "net_income_eur_m")
 
+# The public top-10 reports evaluate a 3x preliminary pool. Thirty companies is
+# materially broader than the output while keeping daily provider work bounded.
+DEFAULT_WATCHLIST_ENRICHMENT_LIMIT = 30
+
 
 @dataclass(frozen=True)
 class FundamentalsSnapshot:
@@ -620,13 +624,24 @@ def compose_valuation_fallback_provider(
 
 class EnrichedResearchProvider:
     def __init__(
-        self, base_provider, fundamentals_provider, max_enrichments: int | None = None
+        self,
+        base_provider,
+        fundamentals_provider,
+        enrichment_limit: int = DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
     ) -> None:
+        if enrichment_limit < 0:
+            raise ValueError("enrichment_limit must be at least 0")
         self.base_provider = base_provider
         self.fundamentals_provider = fundamentals_provider
-        self.max_enrichments = max_enrichments
+        self.enrichment_limit = enrichment_limit
         self._enrichment_attempts = 0
+        self._successful_enrichments = 0
         self._eligible_enrichment_keys: set[tuple[str, str]] | None = None
+        self._selected_enrichment_keys: tuple[tuple[str, str], ...] = ()
+        self._eligible_universe_size = 0
+        self._cutoff_tie_count = 0
+        self._cutoff_tie_excluded = 0
+        self._watchlist_enrichment_prepared = False
 
     def list_companies(self, countries, include_first_north):
         return self.base_provider.list_companies(countries, include_first_north)
@@ -645,14 +660,70 @@ class EnrichedResearchProvider:
             return get_company_research(company)
         return self.base_provider.get_research(company.ticker)
 
-    def prepare_watchlist_enrichment(self, companies: tuple[Company, ...]) -> None:
+    def prepare_watchlist_enrichment(
+        self,
+        companies: tuple[Company, ...],
+        *,
+        eligible_universe_size: int | None = None,
+        cutoff_tie_count: int = 0,
+        cutoff_tie_excluded: int = 0,
+    ) -> None:
+        companies = companies[: self.enrichment_limit]
         self._enrichment_attempts = 0
-        self._eligible_enrichment_keys = {
+        self._successful_enrichments = 0
+        self._selected_enrichment_keys = tuple(
             (company.ticker, company.country) for company in companies
+        )
+        self._eligible_enrichment_keys = set(self._selected_enrichment_keys)
+        self._eligible_universe_size = (
+            len(companies)
+            if eligible_universe_size is None
+            else eligible_universe_size
+        )
+        self._cutoff_tie_count = cutoff_tie_count
+        self._cutoff_tie_excluded = cutoff_tie_excluded
+        self._watchlist_enrichment_prepared = True
+
+    def enrichment_stats(self) -> dict:
+        return {
+            "eligible_universe_size": self._eligible_universe_size,
+            "enrichment_budget": self.enrichment_limit,
+            "selected_candidates": len(self._selected_enrichment_keys),
+            "candidate_keys": tuple(
+                f"{country}|{ticker}"
+                for ticker, country in self._selected_enrichment_keys
+            ),
+            "attempts": self._enrichment_attempts,
+            "successful_enrichments": self._successful_enrichments,
+            "cutoff_tie_count": self._cutoff_tie_count,
+            "cutoff_tie_excluded": self._cutoff_tie_excluded,
         }
+
+    def enrichment_source_check(self) -> SourceCheck:
+        if not self._watchlist_enrichment_prepared:
+            return SourceCheck(
+                "fundamentals enrichment",
+                "warning",
+                f"watchlist enrichment not prepared; budget={self.enrichment_limit}",
+            )
+        stats = self.enrichment_stats()
+        return SourceCheck(
+            "fundamentals enrichment",
+            "ok",
+            (
+                f"eligible={stats['eligible_universe_size']}; "
+                f"budget={stats['enrichment_budget']}; "
+                f"selected={stats['selected_candidates']}; "
+                f"attempts={stats['attempts']}; "
+                f"successful={stats['successful_enrichments']}; "
+                f"cutoff ties={stats['cutoff_tie_count']} "
+                f"({stats['cutoff_tie_excluded']} excluded)"
+            ),
+        )
 
     def source_checks(self):
         checks = list(self.base_provider.source_checks())
+        checks.append(self.enrichment_source_check())
         source_checks = getattr(self.fundamentals_provider, "source_checks", None)
         if callable(source_checks):
             checks.extend(source_checks())
@@ -669,15 +740,13 @@ class EnrichedResearchProvider:
             and key not in self._eligible_enrichment_keys
         ):
             return research
-        if (
-            self.max_enrichments is not None
-            and self._enrichment_attempts >= self.max_enrichments
-        ):
+        if self._enrichment_attempts >= self.enrichment_limit:
             return research
         self._enrichment_attempts += 1
         snapshot = self.fundamentals_provider.get_fundamentals(research.company)
         if snapshot is None:
             return research
+        self._successful_enrichments += 1
 
         company = research.company
         market_cap_enriched = False

@@ -276,6 +276,13 @@ def test_watchlist_rejects_invalid_min_country_option():
     assert "min-country must use COUNTRY:COUNT" in result.output
 
 
+def test_watchlist_rejects_negative_enrichment_limit():
+    result = runner.invoke(app, ["watchlist", "--enrichment-limit", "-1"])
+
+    assert result.exit_code != 0
+    assert "--enrichment-limit" in result.output
+
+
 def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
     wrapped = {}
 
@@ -290,10 +297,10 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
         pass
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+        def __init__(self, base_provider, fundamentals_provider, enrichment_limit=30):
             wrapped["base_provider"] = base_provider
             wrapped["fundamentals_provider"] = fundamentals_provider
-            wrapped["max_enrichments"] = max_enrichments
+            wrapped["enrichment_limit"] = enrichment_limit
             self.base_provider = base_provider
 
         def list_companies(self, countries, include_first_north):
@@ -308,12 +315,23 @@ def test_watchlist_auto_fundamentals_wraps_live_provider(monkeypatch):
     monkeypatch.setattr(cli, "YahooFundamentalsProvider", FundamentalsProvider, raising=False)
     monkeypatch.setattr(cli, "EnrichedResearchProvider", EnrichedProvider, raising=False)
 
-    result = runner.invoke(app, ["watchlist", "--provider", "live", "--limit", "10"])
+    result = runner.invoke(
+        app,
+        [
+            "watchlist",
+            "--provider",
+            "live",
+            "--limit",
+            "10",
+            "--enrichment-limit",
+            "24",
+        ],
+    )
 
     assert result.exit_code == 0
     assert isinstance(wrapped["base_provider"], LiveProvider)
     assert isinstance(wrapped["fundamentals_provider"], FundamentalsProvider)
-    assert wrapped["max_enrichments"] == 10
+    assert wrapped["enrichment_limit"] == 24
 
 
 def test_watchlist_auto_fundamentals_prefers_finnhub_when_key_is_present(monkeypatch):
@@ -334,9 +352,9 @@ def test_watchlist_auto_fundamentals_prefers_finnhub_when_key_is_present(monkeyp
             self.api_key = api_key
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+        def __init__(self, base_provider, fundamentals_provider, enrichment_limit=30):
             wrapped["fundamentals_provider"] = fundamentals_provider
-            wrapped["max_enrichments"] = max_enrichments
+            wrapped["enrichment_limit"] = enrichment_limit
             self.base_provider = base_provider
 
         def list_companies(self, countries, include_first_north):
@@ -357,7 +375,7 @@ def test_watchlist_auto_fundamentals_prefers_finnhub_when_key_is_present(monkeyp
     assert result.exit_code == 0
     assert isinstance(wrapped["fundamentals_provider"], FinnhubProvider)
     assert wrapped["fundamentals_provider"].api_key == "secret-token"
-    assert wrapped["max_enrichments"] == 7
+    assert wrapped["enrichment_limit"] == 30
 
 
 def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch):
@@ -392,9 +410,9 @@ def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch
         return "composed-provider"
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+        def __init__(self, base_provider, fundamentals_provider, enrichment_limit=30):
             wrapped["fundamentals_provider"] = fundamentals_provider
-            wrapped["max_enrichments"] = max_enrichments
+            wrapped["enrichment_limit"] = enrichment_limit
             self.base_provider = base_provider
 
         def list_companies(self, countries, include_first_north):
@@ -423,7 +441,7 @@ def test_watchlist_auto_fundamentals_prefers_finimpulse_over_finnhub(monkeypatch
     assert isinstance(wrapped["eodhd_provider"], EodhdProvider)
     assert wrapped["eodhd_provider"].api_key is None
     assert isinstance(wrapped["yahoo_provider"], YahooProvider)
-    assert wrapped["max_enrichments"] == 7
+    assert wrapped["enrichment_limit"] == 30
 
 
 def test_watchlist_finimpulse_wraps_yahoo_valuation_fallback(monkeypatch):
@@ -454,7 +472,7 @@ def test_watchlist_finimpulse_wraps_yahoo_valuation_fallback(monkeypatch):
         return "composed-provider"
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+        def __init__(self, base_provider, fundamentals_provider, enrichment_limit=30):
             wrapped["fundamentals_provider"] = fundamentals_provider
             self.base_provider = base_provider
 
@@ -505,7 +523,7 @@ def test_watchlist_finimpulse_wraps_eodhd_before_yahoo_when_key_present(monkeypa
         pass
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+        def __init__(self, base_provider, fundamentals_provider, enrichment_limit=30):
             wrapped["fundamentals_provider"] = fundamentals_provider
             self.base_provider = base_provider
 
@@ -810,6 +828,8 @@ def test_watchlist_saves_fundamentals_metadata():
 
     assert result.exit_code == 0
     assert payload["metadata"]["fundamentals"] == "off"
+    assert payload["metadata"]["enrichment_limit"] == 0
+    assert payload["metadata"]["enrichment"] is None
 
 
 def test_watchlist_saves_effective_fixture_fundamentals_metadata_by_default():
@@ -869,14 +889,27 @@ def test_watchlist_saves_effective_finnhub_fundamentals_metadata(monkeypatch):
             self.api_key = api_key
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+        def __init__(self, base_provider, fundamentals_provider, enrichment_limit=30):
             self.base_provider = base_provider
+            self.enrichment_limit = enrichment_limit
 
         def list_companies(self, countries, include_first_north):
             return []
 
         def source_checks(self):
             return self.base_provider.source_checks()
+
+        def enrichment_stats(self):
+            return {
+                "eligible_universe_size": 40,
+                "enrichment_budget": self.enrichment_limit,
+                "selected_candidates": 30,
+                "candidate_keys": ("SE|AAA",),
+                "attempts": 30,
+                "successful_enrichments": 20,
+                "cutoff_tie_count": 4,
+                "cutoff_tie_excluded": 2,
+            }
 
     monkeypatch.delenv("FINIMPULSE_API_KEY", raising=False)
     monkeypatch.setenv("FINNHUB_API_KEY", "secret-token")
@@ -902,6 +935,16 @@ def test_watchlist_saves_effective_finnhub_fundamentals_metadata(monkeypatch):
 
     assert result.exit_code == 0
     assert payload["metadata"]["fundamentals"] == "finnhub"
+    assert payload["metadata"]["enrichment_limit"] == 30
+    assert payload["metadata"]["enrichment"] == {
+        "eligible_universe_size": 40,
+        "enrichment_budget": 30,
+        "selected_candidates": 30,
+        "attempts": 30,
+        "successful_enrichments": 20,
+        "cutoff_tie_count": 4,
+        "cutoff_tie_excluded": 2,
+    }
 
 
 def test_watchlist_saves_effective_finimpulse_fundamentals_metadata(monkeypatch):
@@ -917,7 +960,7 @@ def test_watchlist_saves_effective_finimpulse_fundamentals_metadata(monkeypatch)
             self.api_key = api_key
 
     class EnrichedProvider:
-        def __init__(self, base_provider, fundamentals_provider, max_enrichments=None):
+        def __init__(self, base_provider, fundamentals_provider, enrichment_limit=30):
             self.base_provider = base_provider
 
         def list_companies(self, countries, include_first_north):

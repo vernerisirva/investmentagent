@@ -39,6 +39,18 @@ class FakeResearchProvider:
         return self._research_by_ticker[ticker]
 
 
+class RecordingFundamentalsProvider:
+    def __init__(
+        self, snapshots: dict[str, FundamentalsSnapshot | None] | None = None
+    ) -> None:
+        self.snapshots = snapshots or {}
+        self.requests: list[Company] = []
+
+    def get_fundamentals(self, company: Company):
+        self.requests.append(company)
+        return self.snapshots.get(company.ticker)
+
+
 class MissingResearchProvider(FakeResearchProvider):
     def get_research(self, ticker: str) -> CompanyResearch:
         if ticker == "BROKEN":
@@ -565,7 +577,7 @@ def test_watchlist_fundamentals_budget_uses_preliminary_ranking_not_listing_orde
 
     fundamentals = StaticFundamentalsProvider()
     provider = EnrichedResearchProvider(
-        FakeResearchProvider((weak, value)), fundamentals, max_enrichments=1
+        FakeResearchProvider((weak, value)), fundamentals, enrichment_limit=1
     )
 
     items = build_watchlist(
@@ -615,7 +627,7 @@ def test_watchlist_fundamentals_budget_includes_min_country_candidates():
 
     fundamentals = StaticFundamentalsProvider()
     provider = EnrichedResearchProvider(
-        FakeResearchProvider((sweden, finland)), fundamentals, max_enrichments=1
+        FakeResearchProvider((sweden, finland)), fundamentals, enrichment_limit=1
     )
 
     items = build_watchlist(
@@ -630,6 +642,199 @@ def test_watchlist_fundamentals_budget_includes_min_country_candidates():
     assert [company.ticker for company in fundamentals.requests] == ["FINA"]
     assert items[0].research.company.ticker == "FINA"
     assert items[0].research.financials.operating_margin_pct == 12.0
+
+
+def test_preliminary_rank_11_can_become_final_rank_1_after_broader_enrichment():
+    preliminary_leaders = tuple(
+        make_research(
+            f"A{index:02d}",
+            pe_ratio=None,
+            price_to_book=None,
+            net_cash_eur_m=None,
+            catalysts=("High live turnover",),
+            risks=("Sparse live-source data",),
+            data_quality=DataQuality.THIN,
+        )
+        for index in range(10)
+    )
+    outsider = make_research(
+        "ZZZ",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+    base_provider = FakeResearchProvider((*preliminary_leaders, outsider))
+
+    preliminary = build_watchlist(
+        base_provider,
+        countries=("SE",),
+        limit=10,
+        include_first_north=True,
+    )
+    assert "ZZZ" not in [item.research.company.ticker for item in preliminary]
+
+    fundamentals = RecordingFundamentalsProvider(
+        {
+            "ZZZ": FundamentalsSnapshot(
+                symbol="ZZZ.ST",
+                business_description="ZZZ has a profitable long-term operating business.",
+                financials=FinancialSnapshot(
+                    pe_ratio=5.0,
+                    price_to_book=0.5,
+                    net_cash_eur_m=50.0,
+                    revenue_growth_pct=25.0,
+                    operating_margin_pct=25.0,
+                    debt_to_equity=0.1,
+                    data_quality=DataQuality.PARTIAL,
+                ),
+            )
+        }
+    )
+    provider = EnrichedResearchProvider(
+        base_provider,
+        fundamentals,
+        enrichment_limit=11,
+    )
+
+    enriched = build_watchlist(
+        provider,
+        countries=("SE",),
+        limit=10,
+        include_first_north=True,
+    )
+
+    assert len(fundamentals.requests) == 11
+    assert enriched[0].research.company.ticker == "ZZZ"
+    assert enriched[0].rank == 1
+
+
+@pytest.mark.parametrize(
+    ("output_limit", "enrichment_limit", "expected_attempts"),
+    ((1, 3, 3), (3, 1, 1)),
+)
+def test_output_and_enrichment_limits_are_independent(
+    output_limit, enrichment_limit, expected_attempts
+):
+    research = tuple(make_research(ticker) for ticker in ("AAA", "BBB", "CCC"))
+    fundamentals = RecordingFundamentalsProvider()
+    provider = EnrichedResearchProvider(
+        FakeResearchProvider(research),
+        fundamentals,
+        enrichment_limit=enrichment_limit,
+    )
+
+    items = build_watchlist(
+        provider,
+        countries=("SE",),
+        limit=output_limit,
+        include_first_north=True,
+    )
+
+    assert len(items) == output_limit
+    assert len(fundamentals.requests) == expected_attempts
+    assert provider.enrichment_stats()["attempts"] == expected_attempts
+
+
+def test_broader_enrichment_pool_preserves_min_country_candidates():
+    swedish = tuple(
+        make_research(
+            f"SE{index}",
+            country="SE",
+            catalysts=("High live turnover",),
+            risks=("Sparse live-source data",),
+            data_quality=DataQuality.THIN,
+        )
+        for index in range(5)
+    )
+    finnish = make_research(
+        "FINX",
+        country="FI",
+        pe_ratio=None,
+        price_to_book=None,
+        net_cash_eur_m=None,
+        risks=("Sparse live-source data",),
+        data_quality=DataQuality.THIN,
+    )
+    fundamentals = RecordingFundamentalsProvider(
+        {
+            "FINX": FundamentalsSnapshot(
+                symbol="FINX.HE",
+                financials=FinancialSnapshot(
+                    pe_ratio=7.0,
+                    operating_margin_pct=18.0,
+                    data_quality=DataQuality.PARTIAL,
+                ),
+            )
+        }
+    )
+    provider = EnrichedResearchProvider(
+        FakeResearchProvider((*swedish, finnish)),
+        fundamentals,
+        enrichment_limit=4,
+    )
+
+    items = build_watchlist(
+        provider,
+        countries=("SE", "FI"),
+        limit=2,
+        include_first_north=True,
+        min_country_counts={"FI": 1},
+    )
+
+    assert "FINX" in [company.ticker for company in fundamentals.requests]
+    assert sum(item.research.company.country == "FI" for item in items) == 1
+
+
+def test_equal_preliminary_score_cutoff_is_deterministic_and_auditable():
+    research = tuple(
+        make_research(ticker) for ticker in ("EEE", "CCC", "AAA", "DDD", "BBB")
+    )
+
+    def run_watchlist():
+        fundamentals = RecordingFundamentalsProvider()
+        provider = EnrichedResearchProvider(
+            FakeResearchProvider(research), fundamentals, enrichment_limit=2
+        )
+        items = build_watchlist(
+            provider,
+            countries=("SE",),
+            limit=1,
+            include_first_north=True,
+        )
+        return items, fundamentals, provider.enrichment_stats()
+
+    first_items, first_fundamentals, first_stats = run_watchlist()
+    second_items, second_fundamentals, second_stats = run_watchlist()
+
+    assert [company.ticker for company in first_fundamentals.requests] == ["AAA", "BBB"]
+    assert [company.ticker for company in second_fundamentals.requests] == ["AAA", "BBB"]
+    assert [item.research.company.ticker for item in first_items] == ["AAA"]
+    assert [item.research.company.ticker for item in second_items] == ["AAA"]
+    assert first_stats == second_stats
+    assert first_stats["cutoff_tie_count"] == 5
+    assert first_stats["cutoff_tie_excluded"] == 3
+
+
+def test_zero_enrichment_limit_makes_no_fundamentals_requests():
+    fundamentals = RecordingFundamentalsProvider()
+    provider = EnrichedResearchProvider(
+        FakeResearchProvider((make_research("AAA"),)),
+        fundamentals,
+        enrichment_limit=0,
+    )
+
+    items = build_watchlist(
+        provider,
+        countries=("SE",),
+        limit=1,
+        include_first_north=True,
+    )
+
+    assert [item.research.company.ticker for item in items] == ["AAA"]
+    assert fundamentals.requests == []
+    assert provider.enrichment_stats()["selected_candidates"] == 0
 
 
 def test_trading_strategy_boosts_strong_momentum_and_turnover():

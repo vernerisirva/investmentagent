@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 
 from investmentagent.models import (
     Company,
@@ -22,6 +23,14 @@ from investmentagent.scoring import score_research
 
 
 WATCHLIST_STRATEGIES = ("balanced", "long-term", "trading", "momentum", "discovery")
+
+
+@dataclass(frozen=True)
+class WatchlistEnrichmentSelection:
+    companies: tuple[Company, ...]
+    eligible_universe_size: int
+    cutoff_tie_count: int
+    cutoff_tie_excluded: int
 
 
 def normalize_watchlist_strategy(strategy: str) -> str:
@@ -63,14 +72,14 @@ def build_watchlist(
             WatchlistItem(rank=0, research=research, score=score)
         )
 
-    enrichment_candidates = _watchlist_enrichment_candidates(
+    enrichment_selection = _watchlist_enrichment_candidates(
         provider,
         scored_items,
-        limit=limit,
         min_country_counts=min_country_counts or {},
     )
+    _prepare_watchlist_enrichment(provider, enrichment_selection)
+    enrichment_candidates = enrichment_selection.companies
     if enrichment_candidates:
-        _prepare_watchlist_enrichment(provider, enrichment_candidates)
         enriched_keys = {
             (company.ticker, company.country) for company in enrichment_candidates
         }
@@ -264,27 +273,46 @@ def _get_base_company_research(provider: ResearchProvider, company: Company) -> 
 def _watchlist_enrichment_candidates(
     provider: ResearchProvider,
     scored_items: list[WatchlistItem],
-    limit: int,
     min_country_counts: dict[str, int],
-) -> tuple[Company, ...]:
-    budget = getattr(provider, "max_enrichments", None)
-    if budget is None or budget < 1:
-        return ()
+) -> WatchlistEnrichmentSelection:
+    budget = getattr(provider, "enrichment_limit", 0)
     ranked_items = _rank_watchlist_items(_deduplicate_company_ideas(scored_items))
+    eligible_universe_size = len(ranked_items)
+    selection_limit = min(max(budget, 0), eligible_universe_size)
+    if selection_limit == 0:
+        return WatchlistEnrichmentSelection((), eligible_universe_size, 0, 0)
+
+    cutoff_score = ranked_items[selection_limit - 1].score.total
+    cutoff_tie_count = sum(
+        item.score.total == cutoff_score for item in ranked_items
+    )
+    cutoff_tie_selected = sum(
+        item.score.total == cutoff_score for item in ranked_items[:selection_limit]
+    )
     constrained_items = _apply_min_country_counts(
         ranked_items,
-        limit=limit,
+        limit=selection_limit,
         min_country_counts=min_country_counts,
     )
-    return tuple(item.research.company for item in constrained_items[:budget])
+    return WatchlistEnrichmentSelection(
+        companies=tuple(item.research.company for item in constrained_items),
+        eligible_universe_size=eligible_universe_size,
+        cutoff_tie_count=cutoff_tie_count,
+        cutoff_tie_excluded=cutoff_tie_count - cutoff_tie_selected,
+    )
 
 
 def _prepare_watchlist_enrichment(
-    provider: ResearchProvider, companies: tuple[Company, ...]
+    provider: ResearchProvider, selection: WatchlistEnrichmentSelection
 ) -> None:
     prepare_watchlist_enrichment = getattr(provider, "prepare_watchlist_enrichment", None)
     if callable(prepare_watchlist_enrichment):
-        prepare_watchlist_enrichment(companies)
+        prepare_watchlist_enrichment(
+            selection.companies,
+            eligible_universe_size=selection.eligible_universe_size,
+            cutoff_tie_count=selection.cutoff_tie_count,
+            cutoff_tie_excluded=selection.cutoff_tie_excluded,
+        )
 
 
 def _score_for_strategy(research: CompanyResearch, strategy: str) -> ScoreBreakdown:

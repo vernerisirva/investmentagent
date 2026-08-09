@@ -1,6 +1,7 @@
 import json
 
 import investmentagent.fundamentals as fundamentals
+import pytest
 from investmentagent.fundamentals import (
     EnrichedResearchProvider,
     EodhdFundamentalsProvider,
@@ -569,7 +570,7 @@ def test_enriched_provider_merges_finimpulse_business_description_into_company()
     provider = EnrichedResearchProvider(
         BaseProvider(),
         FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher),
-        max_enrichments=1,
+        enrichment_limit=1,
     )
 
     research = provider.get_research("KAR")
@@ -958,6 +959,7 @@ def test_enriched_provider_includes_composite_fundamentals_source_checks():
     checks = provider.source_checks()
 
     assert [check.detail for check in checks] == [
+        "watchlist enrichment not prepared; budget=30",
         "primary detail",
         "fallback detail",
         "0 fallback valuation enrichments; no fallback lookups attempted",
@@ -1157,7 +1159,7 @@ def test_enriched_provider_respects_enrichment_budget():
     )
     fundamentals = StaticFundamentalsProvider(snapshot)
     provider = EnrichedResearchProvider(
-        ThreeCompanyProvider(), fundamentals, max_enrichments=2
+        ThreeCompanyProvider(), fundamentals, enrichment_limit=2
     )
 
     companies = provider.list_companies(("SE",), include_first_north=True)
@@ -1181,7 +1183,9 @@ def test_enriched_provider_can_restrict_enrichment_to_prepared_companies():
         financials=FinancialSnapshot(pe_ratio=9.5, data_quality=DataQuality.PARTIAL),
     )
     fundamentals = StaticFundamentalsProvider(snapshot)
-    provider = EnrichedResearchProvider(CompanyEchoProvider(), fundamentals, max_enrichments=2)
+    provider = EnrichedResearchProvider(
+        CompanyEchoProvider(), fundamentals, enrichment_limit=2
+    )
     eligible = make_company("ELIGIBLE")
     skipped = make_company("SKIPPED")
 
@@ -1192,3 +1196,38 @@ def test_enriched_provider_can_restrict_enrichment_to_prepared_companies():
     assert enriched.financials.pe_ratio == 9.5
     assert not_enriched.financials.pe_ratio is None
     assert [company.ticker for company in fundamentals.requests] == ["ELIGIBLE"]
+
+
+def test_enriched_provider_rejects_negative_enrichment_limit():
+    with pytest.raises(ValueError, match="enrichment_limit must be at least 0"):
+        EnrichedResearchProvider(BaseProvider(), StaticFundamentalsProvider(None), -1)
+
+
+def test_enriched_provider_reports_watchlist_enrichment_diagnostics():
+    base = BaseProvider()
+    company = base.company
+    snapshot = FundamentalsSnapshot(
+        symbol="AUDIT.ST",
+        financials=FinancialSnapshot(pe_ratio=9.5, data_quality=DataQuality.PARTIAL),
+    )
+    provider = EnrichedResearchProvider(
+        base, StaticFundamentalsProvider(snapshot), enrichment_limit=3
+    )
+
+    provider.prepare_watchlist_enrichment(
+        (company,),
+        eligible_universe_size=20,
+        cutoff_tie_count=4,
+        cutoff_tie_excluded=2,
+    )
+    provider.get_company_research(company)
+    check = provider.enrichment_source_check()
+
+    assert check.status == "ok"
+    assert "eligible=20" in check.detail
+    assert "budget=3" in check.detail
+    assert "selected=1" in check.detail
+    assert "attempts=1" in check.detail
+    assert "successful=1" in check.detail
+    assert "cutoff ties=4 (2 excluded)" in check.detail
+    assert provider.enrichment_stats()["candidate_keys"] == ("SE|KAR",)

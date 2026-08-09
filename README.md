@@ -33,11 +33,18 @@ The live provider is an early free-source integration point for Sweden and Finla
 
 ```bash
 investmentagent sources test --provider live
-investmentagent watchlist --provider live --country se,fi --limit 20
+investmentagent watchlist --provider live --country se,fi --limit 20 --enrichment-limit 30
 investmentagent deep-dive FREEM --provider live
 ```
 
 The live provider does not silently fall back to fixture data. If the public source cannot be fetched or parsed, `sources test --provider live` reports the failure and live watchlists or deep dives stop with a clear source error.
+
+`--limit` controls only the final watchlist size. `--enrichment-limit` separately
+bounds how many preliminary candidates may receive fundamentals; it defaults to
+30 companies so a top-10 report can evaluate a 3x broader pool without making
+full-universe requests. Use `--enrichment-limit 0` to make no fundamentals
+requests. Individual data providers may perform more than one endpoint or symbol
+lookup per selected company, and their source diagnostics report those attempts.
 
 ## Scoring model
 

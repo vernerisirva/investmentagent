@@ -49,6 +49,13 @@ def test_report_commit_keeps_scheduler_branch_in_sync():
     assert "git push origin HEAD:codex/investmentagent-live-data" in workflow
 
 
+def test_daily_watchlists_use_explicit_broader_enrichment_budget():
+    workflow = WORKFLOW.read_text()
+
+    assert "--limit 10" in workflow
+    assert "--enrichment-limit 30" in workflow
+
+
 def test_daily_workflow_publishes_global_ai_report_and_links_index():
     workflow = WORKFLOW.read_text()
 

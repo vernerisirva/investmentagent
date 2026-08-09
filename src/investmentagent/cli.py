@@ -7,6 +7,7 @@ from zoneinfo import ZoneInfo
 import typer
 
 from investmentagent.fundamentals import (
+    DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
     EnrichedResearchProvider,
     EodhdFundamentalsProvider,
     FallbackFundamentalsProvider,
@@ -272,6 +273,13 @@ def watchlist(
         help="Comma-separated country codes, such as se,fi.",
     ),
     limit: int = typer.Option(20, "--limit", min=1, max=100),
+    enrichment_limit: int = typer.Option(
+        DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
+        "--enrichment-limit",
+        min=0,
+        max=100,
+        help="Maximum companies eligible for fundamentals enrichment.",
+    ),
     include_first_north: bool = typer.Option(True, "--include-first-north/--exclude-first-north"),
     min_market_cap: float | None = typer.Option(None, "--min-market-cap"),
     max_market_cap: float | None = typer.Option(None, "--max-market-cap"),
@@ -326,6 +334,7 @@ def watchlist(
         if effective_fundamentals == "finnhub" and finnhub_api_key is None:
             raise typer.BadParameter("FINNHUB_API_KEY is required for --fundamentals finnhub")
     provider = _provider_from_option(provider_name)
+    effective_enrichment_limit = 0
     if normalized_provider_name == "live":
         _raise_for_source_errors(provider)
         fundamentals_provider = None
@@ -339,10 +348,11 @@ def watchlist(
         elif effective_fundamentals == "finnhub":
             fundamentals_provider = FinnhubFundamentalsProvider(finnhub_api_key)
         if fundamentals_provider is not None:
+            effective_enrichment_limit = enrichment_limit
             provider = EnrichedResearchProvider(
                 provider,
                 fundamentals_provider,
-                max_enrichments=limit,
+                enrichment_limit=enrichment_limit,
             )
     items = build_watchlist(
         provider,
@@ -356,12 +366,19 @@ def watchlist(
         min_country_counts=min_country_counts,
     )
     source_checks = provider.source_checks()
+    enrichment_stats = getattr(provider, "enrichment_stats", None)
+    enrichment_metadata = None
+    if callable(enrichment_stats):
+        enrichment_metadata = dict(enrichment_stats())
+        enrichment_metadata.pop("candidate_keys", None)
     metadata = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "provider": normalized_provider_name,
         "fundamentals": effective_fundamentals,
         "countries": list(countries),
         "limit": limit,
+        "enrichment_limit": effective_enrichment_limit,
+        "enrichment": enrichment_metadata,
         "include_first_north": include_first_north,
         "min_market_cap": min_market_cap,
         "max_market_cap": max_market_cap,

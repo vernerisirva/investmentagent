@@ -98,6 +98,7 @@ jobs:
               --fundamentals finimpulse \
               --country se,fi \
               --limit 10 \
+              --enrichment-limit 30 \
               --min-country FI:3 \
               --strategy "$strategy" \
               --verbose \
