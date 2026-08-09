@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 390
     env:
       REPORT_ROOT: docs/reports
+      EVALUATION_ROOT: data/evaluations
       RUN_DAILY_REPORT: "true"
 
     steps:
@@ -110,6 +111,8 @@ jobs:
               --refresh-limit 30 \
               --fundamentals-cache .investmentagent/fundamentals-cache.json \
               --cache-max-age-days 45 \
+              --evaluation-dir "$EVALUATION_ROOT" \
+              --evaluation-report-date "$report_date" \
               --min-country FI:3 \
               --strategy "$strategy" \
               --verbose \
@@ -191,7 +194,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/index.md docs/global-ai.md "$REPORT_ROOT" docs/performance docs/data/performance
+          git add docs/index.md docs/global-ai.md "$REPORT_ROOT" docs/performance docs/data/performance "$EVALUATION_ROOT"
           if git diff --cached --quiet; then
             echo "No report changes to commit."
             exit 0

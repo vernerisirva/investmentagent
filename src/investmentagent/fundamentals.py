@@ -668,6 +668,7 @@ class EnrichedResearchProvider:
         self._cache_misses = 0
         self._cache_coverage: CacheCoverage | None = None
         self._cache_eligible_companies: tuple[Company, ...] = ()
+        self._refreshed_company_ids: set[str] = set()
 
     def list_companies(self, countries, include_first_north):
         return self.base_provider.list_companies(countries, include_first_north)
@@ -853,6 +854,42 @@ class EnrichedResearchProvider:
             ),
         )
 
+    def evaluation_cache_status(self, company: Company) -> dict[str, Any]:
+        if self.cache is None:
+            return {
+                "enabled": False,
+                "participated": False,
+                "state": "disabled",
+                "refreshed_this_run": False,
+                "retrieved_at": None,
+                "providers": [],
+            }
+        company_id = company_cache_identity(company)
+        record = self._cached_record(company)
+        if record is None:
+            return {
+                "enabled": True,
+                "participated": False,
+                "state": "missing",
+                "refreshed_this_run": False,
+                "retrieved_at": None,
+                "providers": [],
+            }
+        refreshed_this_run = company_id in self._refreshed_company_ids
+        freshness = self.freshness_policy.classify(record, known_at=self.known_at)
+        return {
+            "enabled": True,
+            "participated": not refreshed_this_run,
+            "state": (
+                CacheFreshness.FRESH.value
+                if refreshed_this_run
+                else freshness.value
+            ),
+            "refreshed_this_run": refreshed_this_run,
+            "retrieved_at": record.retrieved_at.isoformat().replace("+00:00", "Z"),
+            "providers": list(record.providers),
+        }
+
     def source_checks(self):
         checks = list(self.base_provider.source_checks())
         checks.append(self.enrichment_source_check())
@@ -892,7 +929,9 @@ class EnrichedResearchProvider:
                 snapshot,
                 retrieved_at=retrieved_at,
             )
-            self._cache_records[company_cache_identity(base_research.company)] = record
+            company_id = company_cache_identity(base_research.company)
+            self._cache_records[company_id] = record
+            self._refreshed_company_ids.add(company_id)
             self.known_at = max(self.known_at, retrieved_at)
         self._successful_enrichments += 1
         return self._apply_snapshot(base_research, snapshot)

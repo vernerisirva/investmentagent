@@ -3,6 +3,7 @@ from __future__ import annotations
 from investmentagent.models import CompanyResearch, DataQuality, ListingSegment, ScoreBreakdown
 
 
+SCORING_MODEL_VERSION = "nordic-ranking-v1"
 DATA_QUALITY_PENALTIES = {
     DataQuality.GOOD: 0.0,
     DataQuality.PARTIAL: 7.0,

@@ -55,6 +55,28 @@ be placed under `docs/`, and the scheduled workflow persists it through GitHub
 Actions cache storage. Confirm applicable provider redistribution terms before
 choosing a repository-backed cache deployment.
 
+## Performance v2 evaluation snapshots
+
+Trading and long-term watchlists can persist the complete final ranked universe
+from the same scoring run used for the public top N:
+
+```bash
+investmentagent watchlist --provider fixture --strategy long-term --limit 3 \
+  --evaluation-dir data/evaluations \
+  --evaluation-decision-at 2026-08-10T08:30:00+00:00
+```
+
+Snapshots are versioned JSONL files under `data/evaluations/<date>/<strategy>/`.
+They contain stable company identity, final ranks, score components, gate outputs,
+structured threshold flags, field-availability/provenance summaries, cache state,
+and universe diagnostics. They deliberately omit raw financial values and full
+provider observations, which remain in the private fundamentals cache.
+
+An explicit decision timestamp is accepted only for deterministic fixture runs.
+Live evaluation timestamps are captured after enrichment and final ranking, so
+the CLI does not provide a production historical-backfill path. Evaluation files
+are also rejected under `docs/` to keep them outside GitHub Pages.
+
 ## Scoring model
 
 The score is transparent:

@@ -66,6 +66,17 @@ def test_daily_workflow_reuses_a_private_fundamentals_cache():
     assert "git add .investmentagent" not in workflow
 
 
+def test_daily_workflow_persists_full_universe_evaluations_from_report_runs():
+    workflow = WORKFLOW.read_text()
+
+    assert "EVALUATION_ROOT: data/evaluations" in workflow
+    assert '--evaluation-dir "$EVALUATION_ROOT"' in workflow
+    assert '--evaluation-report-date "$report_date"' in workflow
+    assert 'git add docs/index.md docs/global-ai.md "$REPORT_ROOT"' in workflow
+    assert '"$EVALUATION_ROOT"' in workflow
+    assert "git add .investmentagent" not in workflow
+
+
 def test_daily_workflow_publishes_global_ai_report_and_links_index():
     workflow = WORKFLOW.read_text()
 

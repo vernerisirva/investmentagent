@@ -33,6 +33,25 @@ class WatchlistEnrichmentSelection:
     cutoff_tie_excluded: int
 
 
+@dataclass(frozen=True)
+class WatchlistBuildDiagnostics:
+    source_universe_size: int
+    filtered_universe_size: int
+    successfully_scored_universe_size: int
+    final_ranked_universe_size: int
+    public_selection_size: int
+    source_country_counts: dict[str, int]
+    source_segment_counts: dict[str, int]
+    exclusion_counts: dict[str, int]
+
+
+@dataclass(frozen=True)
+class WatchlistBuildResult:
+    ranked_items: tuple[WatchlistItem, ...]
+    selected_items: tuple[WatchlistItem, ...]
+    diagnostics: WatchlistBuildDiagnostics
+
+
 def normalize_watchlist_strategy(strategy: str) -> str:
     normalized = strategy.strip().lower()
     if normalized not in WATCHLIST_STRATEGIES:
@@ -52,20 +71,66 @@ def build_watchlist(
     strategy: str = "balanced",
     min_country_counts: dict[str, int] | None = None,
 ) -> list[WatchlistItem]:
+    result = build_watchlist_result(
+        provider,
+        countries=countries,
+        limit=limit,
+        include_first_north=include_first_north,
+        min_market_cap=min_market_cap,
+        max_market_cap=max_market_cap,
+        sector=sector,
+        strategy=strategy,
+        min_country_counts=min_country_counts,
+    )
+    return list(result.selected_items)
+
+
+def build_watchlist_result(
+    provider: ResearchProvider,
+    countries: tuple[str, ...],
+    limit: int,
+    include_first_north: bool,
+    min_market_cap: float | None = None,
+    max_market_cap: float | None = None,
+    sector: str | None = None,
+    strategy: str = "balanced",
+    min_country_counts: dict[str, int] | None = None,
+) -> WatchlistBuildResult:
     if limit < 1:
         raise ValueError("limit must be at least 1")
     strategy = normalize_watchlist_strategy(strategy)
 
-    companies = provider.list_companies(countries, include_first_north)
+    companies = list(provider.list_companies(countries, include_first_north))
+    source_country_counts: dict[str, int] = {}
+    source_segment_counts: dict[str, int] = {}
+    for company in companies:
+        source_country_counts[company.country] = (
+            source_country_counts.get(company.country, 0) + 1
+        )
+        segment_key = f"{company.country}|{company.segment.value}"
+        source_segment_counts[segment_key] = source_segment_counts.get(segment_key, 0) + 1
+
+    exclusion_counts: dict[str, int] = {}
+    filtered_universe_size = 0
     scored_items: list[WatchlistItem] = []
     for company in companies:
-        if not _company_matches_filters(company, min_market_cap, max_market_cap, sector):
+        exclusion_reason = _company_filter_exclusion_reason(
+            company,
+            min_market_cap,
+            max_market_cap,
+            sector,
+        )
+        if exclusion_reason is not None:
+            _increment_count(exclusion_counts, exclusion_reason)
             continue
+        filtered_universe_size += 1
         try:
             research = _get_base_company_research(provider, company)
         except Exception:
+            _increment_count(exclusion_counts, "research_error")
             continue
         if strategy == "trading" and not _has_trading_setup(research):
+            _increment_count(exclusion_counts, "trading_setup_missing")
             continue
         score = _score_for_strategy(research, strategy)
         scored_items.append(
@@ -97,6 +162,7 @@ def build_watchlist(
             try:
                 research = _get_company_research(provider, company)
             except Exception:
+                _increment_count(exclusion_counts, "enrichment_error")
                 rescored_items.append(item)
                 continue
             rescored_items.append(
@@ -113,21 +179,49 @@ def build_watchlist(
         if strategy == "long-term"
         else _watchlist_rank_key
     )
+    deduplicated_items = _deduplicate_company_ideas(scored_items)
+    duplicate_count = len(scored_items) - len(deduplicated_items)
+    if duplicate_count:
+        exclusion_counts["duplicate_company"] = duplicate_count
     ranked_candidates = _rank_watchlist_items(
-        _deduplicate_company_ideas(scored_items),
+        deduplicated_items,
         rank_key=rank_key,
     )
-    ranked_items = _apply_min_country_counts(
+    selected_candidates = _apply_min_country_counts(
         ranked_candidates,
         limit=limit,
         min_country_counts=min_country_counts or {},
         rank_key=rank_key,
     )
-
-    return [
-        WatchlistItem(rank=rank, research=item.research, score=item.score)
-        for rank, item in enumerate(ranked_items, start=1)
+    selected_item_ids = {id(item) for item in selected_candidates}
+    constrained_full_order = [
+        *selected_candidates,
+        *(
+            item
+            for item in ranked_candidates
+            if id(item) not in selected_item_ids
+        ),
     ]
+    ranked_items = tuple(
+        WatchlistItem(rank=rank, research=item.research, score=item.score)
+        for rank, item in enumerate(constrained_full_order, start=1)
+    )
+    selected_items = ranked_items[: len(selected_candidates)]
+    diagnostics = WatchlistBuildDiagnostics(
+        source_universe_size=len(companies),
+        filtered_universe_size=filtered_universe_size,
+        successfully_scored_universe_size=len(scored_items),
+        final_ranked_universe_size=len(ranked_items),
+        public_selection_size=len(selected_items),
+        source_country_counts=source_country_counts,
+        source_segment_counts=source_segment_counts,
+        exclusion_counts=exclusion_counts,
+    )
+    return WatchlistBuildResult(
+        ranked_items=ranked_items,
+        selected_items=selected_items,
+        diagnostics=diagnostics,
+    )
 
 
 def _apply_min_country_counts(
@@ -617,25 +711,29 @@ def _has_signal(signals: tuple[str, ...], needle: str) -> bool:
     return any(normalized in signal for signal in signals)
 
 
-def _company_matches_filters(
+def _company_filter_exclusion_reason(
     company: Company,
     min_market_cap: float | None,
     max_market_cap: float | None,
     sector: str | None,
-) -> bool:
+) -> str | None:
     if min_market_cap is not None and (
         company.market_cap_eur_m is None or company.market_cap_eur_m < min_market_cap
     ):
-        return False
+        return "below_minimum_market_cap"
     if max_market_cap is not None and (
         company.market_cap_eur_m is None or company.market_cap_eur_m > max_market_cap
     ):
-        return False
+        return "above_maximum_market_cap"
     if sector is not None:
         company_sector = (company.sector or "").strip().lower()
         if company_sector != sector.strip().lower():
-            return False
-    return True
+            return "sector_mismatch"
+    return None
+
+
+def _increment_count(counts: dict[str, int], key: str) -> None:
+    counts[key] = counts.get(key, 0) + 1
 
 
 def build_deep_dive(provider: ResearchProvider, ticker: str) -> DeepDiveReport:

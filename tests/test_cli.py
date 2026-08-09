@@ -11,6 +11,7 @@ from typer.testing import CliRunner
 
 import investmentagent.cli as cli
 from investmentagent.cli import app
+from investmentagent.evaluation import load_evaluation_snapshot
 from investmentagent.fundamentals import FundamentalsSnapshot
 from investmentagent.models import DataQuality, Evidence, FinancialSnapshot, SourceCheck
 from investmentagent.providers import LiveNasdaqNordicProvider
@@ -243,6 +244,114 @@ def test_watchlist_accepts_fundamentals_option():
     )
 
     assert result.exit_code == 0
+
+
+def test_fixture_watchlist_persists_full_evaluation_with_explicit_clock():
+    with isolated_filesystem():
+        result = runner.invoke(
+            app,
+            [
+                "watchlist",
+                "--provider",
+                "fixture",
+                "--strategy",
+                "long-term",
+                "--limit",
+                "3",
+                "--evaluation-dir",
+                "data/evaluations",
+                "--evaluation-report-date",
+                "2026-08-10",
+                "--evaluation-decision-at",
+                "2026-08-10T08:30:00+00:00",
+                "--save",
+                "reports/watchlist.json",
+            ],
+        )
+        paths = tuple(Path("data/evaluations").rglob("*.jsonl"))
+        snapshot = load_evaluation_snapshot(paths[0])
+        report = json.loads(Path("reports/watchlist.json").read_text())
+
+    assert result.exit_code == 0
+    assert len(paths) == 1
+    assert snapshot.universe_size > 3
+    assert len(report["items"]) == 3
+    assert [row.ticker for row in snapshot.rows[:3]] == [
+        item["company"]["ticker"] for item in report["items"]
+    ]
+    assert [row.score["total"] for row in snapshot.rows[:3]] == [
+        item["score"]["total"] for item in report["items"]
+    ]
+    assert snapshot.decision_at.isoformat() == "2026-08-10T08:30:00+00:00"
+    assert report["metadata"]["evaluation"]["run_id"] == snapshot.run_id
+
+
+def test_live_watchlist_rejects_explicit_historical_evaluation_clock(monkeypatch):
+    monkeypatch.setattr(
+        cli,
+        "create_provider",
+        lambda name: pytest.fail("provider must not be constructed"),
+    )
+
+    result = runner.invoke(
+        app,
+        [
+            "watchlist",
+            "--provider",
+            "live",
+            "--strategy",
+            "long-term",
+            "--evaluation-dir",
+            "data/evaluations",
+            "--evaluation-decision-at",
+            "2026-08-01T08:00:00+00:00",
+        ],
+    )
+
+    assert result.exit_code != 0
+    assert "cannot use an explicit decision timestamp" in result.output
+
+
+def test_live_watchlist_rejects_historical_evaluation_report_date(monkeypatch):
+    monkeypatch.setattr(
+        cli,
+        "create_provider",
+        lambda name: pytest.fail("provider must not be constructed"),
+    )
+
+    result = runner.invoke(
+        app,
+        [
+            "watchlist",
+            "--provider",
+            "live",
+            "--strategy",
+            "long-term",
+            "--evaluation-dir",
+            "data/evaluations",
+            "--evaluation-report-date",
+            "2026-08-01",
+        ],
+    )
+
+    assert result.exit_code != 0
+    assert "report date must be today" in result.output
+
+
+def test_watchlist_rejects_evaluation_storage_under_docs():
+    result = runner.invoke(
+        app,
+        [
+            "watchlist",
+            "--strategy",
+            "long-term",
+            "--evaluation-dir",
+            "docs/data/evaluations",
+        ],
+    )
+
+    assert result.exit_code != 0
+    assert "must not be stored under docs" in result.output
 
 
 def test_watchlist_accepts_min_country_option_in_saved_metadata():

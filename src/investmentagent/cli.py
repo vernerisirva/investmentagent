@@ -6,6 +6,10 @@ from zoneinfo import ZoneInfo
 
 import typer
 
+from investmentagent.evaluation import (
+    build_evaluation_snapshot,
+    save_evaluation_snapshot,
+)
 from investmentagent.fundamentals import (
     DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
     EnrichedResearchProvider,
@@ -44,7 +48,11 @@ from investmentagent.renderers import (
     render_watchlist_report_markdown,
     render_watchlist_text,
 )
-from investmentagent.reports import build_deep_dive, build_watchlist, normalize_watchlist_strategy
+from investmentagent.reports import (
+    build_deep_dive,
+    build_watchlist_result,
+    normalize_watchlist_strategy,
+)
 
 
 app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args_is_help=False)
@@ -78,6 +86,22 @@ def _parse_iso_date(raw: str) -> date:
         return date.fromisoformat(raw)
     except ValueError as exc:
         raise typer.BadParameter("date must use YYYY-MM-DD") from exc
+
+
+def _parse_aware_timestamp(raw: str) -> datetime:
+    try:
+        parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise typer.BadParameter("decision timestamp must use ISO 8601") from exc
+    if parsed.tzinfo is None:
+        raise typer.BadParameter("decision timestamp must include a timezone")
+    return parsed.astimezone(timezone.utc)
+
+
+def _is_under_docs(path: Path) -> bool:
+    resolved = path.resolve()
+    docs_root = (Path.cwd() / "docs").resolve()
+    return resolved == docs_root or docs_root in resolved.parents
 
 
 def _parse_min_country_options(raw_values: tuple[str, ...]) -> dict[str, int]:
@@ -298,6 +322,21 @@ def watchlist(
         max=3650,
         help="Retrieval age after which cached fundamentals are refreshed.",
     ),
+    evaluation_dir: str | None = typer.Option(
+        None,
+        "--evaluation-dir",
+        help="Persist a durable Performance v2 snapshot under this directory.",
+    ),
+    evaluation_report_date: str | None = typer.Option(
+        None,
+        "--evaluation-report-date",
+        help="Evaluation report date in YYYY-MM-DD format.",
+    ),
+    evaluation_decision_at: str | None = typer.Option(
+        None,
+        "--evaluation-decision-at",
+        help="Fixture-only timezone-aware decision timestamp.",
+    ),
     include_first_north: bool = typer.Option(True, "--include-first-north/--exclude-first-north"),
     min_market_cap: float | None = typer.Option(None, "--min-market-cap"),
     max_market_cap: float | None = typer.Option(None, "--max-market-cap"),
@@ -336,6 +375,40 @@ def watchlist(
     countries = _parse_countries(country)
     min_country_counts = _parse_min_country_options(tuple(min_country or ()))
     normalized_provider_name = provider_name.strip().lower()
+    explicit_decision_at = (
+        _parse_aware_timestamp(evaluation_decision_at)
+        if evaluation_decision_at is not None
+        else None
+    )
+    explicit_evaluation_report_date = (
+        _parse_iso_date(evaluation_report_date)
+        if evaluation_report_date is not None
+        else None
+    )
+    if evaluation_dir is None and (
+        evaluation_report_date is not None or explicit_decision_at is not None
+    ):
+        raise typer.BadParameter(
+            "evaluation report date/decision timestamp requires --evaluation-dir"
+        )
+    if evaluation_dir is not None:
+        if normalized_strategy not in {"trading", "long-term"}:
+            raise typer.BadParameter(
+                "evaluation snapshots support trading and long-term strategies"
+            )
+        if _is_under_docs(Path(evaluation_dir)):
+            raise typer.BadParameter("evaluation snapshots must not be stored under docs/")
+    if normalized_provider_name == "live" and explicit_decision_at is not None:
+        raise typer.BadParameter(
+            "live evaluation cannot use an explicit decision timestamp"
+        )
+    if (
+        normalized_provider_name == "live"
+        and explicit_evaluation_report_date is not None
+        and explicit_evaluation_report_date
+        != datetime.now(ZoneInfo("Europe/Helsinki")).date()
+    ):
+        raise typer.BadParameter("live evaluation report date must be today")
     finimpulse_api_key = _api_key_from_environment("FINIMPULSE_API_KEY")
     eodhd_api_key = _api_key_from_environment("EODHD_API_KEY")
     finnhub_api_key = _api_key_from_environment("FINNHUB_API_KEY")
@@ -392,7 +465,7 @@ def watchlist(
                 fundamentals_provider,
                 **enrichment_options,
             )
-    items = build_watchlist(
+    build_result = build_watchlist_result(
         provider,
         countries=countries,
         limit=limit,
@@ -403,13 +476,14 @@ def watchlist(
         strategy=normalized_strategy,
         min_country_counts=min_country_counts,
     )
+    items = list(build_result.selected_items)
     source_checks = provider.source_checks()
     enrichment_stats = getattr(provider, "enrichment_stats", None)
     enrichment_metadata = None
     if callable(enrichment_stats):
         enrichment_metadata = dict(enrichment_stats())
         enrichment_metadata.pop("candidate_keys", None)
-    report_timestamp = datetime.now(timezone.utc)
+    report_timestamp = explicit_decision_at or datetime.now(timezone.utc)
     metadata = {
         "generated_at": report_timestamp.isoformat(),
         "provider": normalized_provider_name,
@@ -431,6 +505,49 @@ def watchlist(
         "strategy": normalized_strategy,
         "min_country_counts": min_country_counts,
     }
+    if evaluation_dir is not None:
+        report_day = (
+            explicit_evaluation_report_date
+            if explicit_evaluation_report_date is not None
+            else report_timestamp.astimezone(ZoneInfo("Europe/Helsinki")).date()
+        )
+        evaluation_configuration = {
+            "provider": normalized_provider_name,
+            "fundamentals": effective_fundamentals,
+            "include_first_north": include_first_north,
+            "public_limit": limit,
+            "refresh_budget": effective_enrichment_limit,
+            "minimum_country_counts": min_country_counts,
+            "filters": {
+                "min_market_cap_eur_m": min_market_cap,
+                "max_market_cap_eur_m": max_market_cap,
+                "sector": sector,
+            },
+            "cache": {
+                "enabled": metadata["fundamentals_cache"]["enabled"],
+                "max_age_days": cache_max_age_days,
+            },
+        }
+        evaluation_snapshot = build_evaluation_snapshot(
+            build_result,
+            provider=provider,
+            strategy=normalized_strategy,
+            decision_at=report_timestamp,
+            report_date=report_day,
+            countries=countries,
+            configuration=evaluation_configuration,
+            source_checks=source_checks,
+        )
+        evaluation_path = save_evaluation_snapshot(
+            Path(evaluation_dir), evaluation_snapshot
+        )
+        metadata["evaluation"] = {
+            "run_id": evaluation_snapshot.run_id,
+            "scoring_model_version": evaluation_snapshot.scoring_model_version,
+            "decision_at": evaluation_snapshot.header_payload()["decision_at"],
+        }
+        if verbose:
+            typer.echo(f"evaluation snapshot: {evaluation_path}", err=True)
     for save_path in save_paths or ():
         _save_watchlist_report(save_path, items, metadata, source_checks)
 
