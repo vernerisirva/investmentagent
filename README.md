@@ -123,6 +123,37 @@ complete daily Nordic universe. Tests and fixture analysis require no credential
 but durable live coverage requires an EODHD plan/quota appropriate to the number
 of due unique securities.
 
+## Shadow challenger experiments
+
+Long-term production runs can record the `relative-valuation-v1` shadow
+challenger from the same final research universe used by the production ranking:
+
+```bash
+investmentagent watchlist --provider fixture --strategy long-term --limit 3 \
+  --evaluation-dir data/evaluations \
+  --experiment-dir data/evaluation-experiments \
+  --evaluation-decision-at 2026-08-10T08:30:00+00:00
+
+investmentagent evaluate experiments \
+  --experiment-root data/evaluation-experiments
+```
+
+The challenger leaves `nordic-ranking-v1`, its gates, public ranks, and public
+reports unchanged. It applies a bounded `-6 ... +6` adjustment from the
+contemporaneous cross-sectional ranks of positive P/E, P/B, and EV/EBIT values.
+Normalization is country-relative with at least five observations per metric and
+falls back to the full universe with at least three; missing and non-positive
+values are neutral. Sidecars contain derived factor values rather than raw
+financial data and are stored under
+`data/evaluation-experiments/<date>/long-term/relative-valuation-v1/`.
+
+Pass `--experiment-root data/evaluation-experiments` to `evaluate analyze` to add
+paired champion-versus-challenger diagnostics. Historical evaluations without a
+contemporaneous sidecar are reported as `challenger not recorded`; they are never
+reconstructed from newer fundamentals. Fewer than 20 completed paired dates is
+explicitly treated as insufficient history, and no result promotes a challenger
+automatically.
+
 ## Scoring model
 
 The score is transparent:

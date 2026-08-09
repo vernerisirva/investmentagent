@@ -20,6 +20,7 @@ jobs:
     env:
       REPORT_ROOT: docs/reports
       EVALUATION_ROOT: data/evaluations
+      EXPERIMENT_ROOT: data/evaluation-experiments
       OUTCOME_ROOT: data/evaluation-outcomes
       ANALYSIS_ROOT: data/evaluation-analysis
       RUN_DAILY_REPORT: "true"
@@ -103,6 +104,10 @@ jobs:
             report_dir="$REPORT_ROOT/$report_name"
             report_path="$report_dir/${report_date}.md"
             json_path="$RUNNER_TEMP/${report_name}-${report_date}.json"
+            experiment_args=()
+            if [ "$strategy" = "long-term" ]; then
+              experiment_args=(--experiment-dir "$EXPERIMENT_ROOT")
+            fi
 
             mkdir -p "$report_dir"
             investmentagent watchlist \
@@ -115,6 +120,7 @@ jobs:
               --cache-max-age-days 45 \
               --evaluation-dir "$EVALUATION_ROOT" \
               --evaluation-report-date "$report_date" \
+              "${experiment_args[@]}" \
               --min-country FI:3 \
               --strategy "$strategy" \
               --verbose \
@@ -212,6 +218,7 @@ jobs:
           investmentagent evaluate analyze \
             --evaluation-root "$EVALUATION_ROOT" \
             --outcome-root "$OUTCOME_ROOT" \
+            --experiment-root "$EXPERIMENT_ROOT" \
             --output-json "$ANALYSIS_ROOT/performance-v2.json" \
             --output-markdown "$ANALYSIS_ROOT/performance-v2.md" \
             --generated-at "$retrieved_at"
@@ -224,6 +231,9 @@ jobs:
           git add docs/index.md docs/global-ai.md "$REPORT_ROOT" docs/performance docs/data/performance "$EVALUATION_ROOT"
           if [ -d "$OUTCOME_ROOT" ]; then
             git add "$OUTCOME_ROOT"
+          fi
+          if [ -d "$EXPERIMENT_ROOT" ]; then
+            git add "$EXPERIMENT_ROOT"
           fi
           if [ -d "$ANALYSIS_ROOT" ]; then
             git add "$ANALYSIS_ROOT"

@@ -16,6 +16,12 @@ from investmentagent.evaluation_analysis import (
     save_analysis_markdown,
 )
 from investmentagent.evaluation_outcomes import refresh_outcome_store
+from investmentagent.experiments import (
+    RELATIVE_VALUATION_EXPERIMENT_ID,
+    build_challenger_experiment_snapshot,
+    discover_experiment_snapshots,
+    save_experiment_snapshot,
+)
 from investmentagent.fundamentals import (
     DEFAULT_WATCHLIST_ENRICHMENT_LIMIT,
     EnrichedResearchProvider,
@@ -348,6 +354,11 @@ def watchlist(
         "--evaluation-dir",
         help="Persist a durable Performance v2 snapshot under this directory.",
     ),
+    experiment_dir: str | None = typer.Option(
+        None,
+        "--experiment-dir",
+        help="Persist contemporaneous long-term challenger sidecars under this directory.",
+    ),
     evaluation_report_date: str | None = typer.Option(
         None,
         "--evaluation-report-date",
@@ -407,10 +418,12 @@ def watchlist(
         else None
     )
     if evaluation_dir is None and (
-        evaluation_report_date is not None or explicit_decision_at is not None
+        evaluation_report_date is not None
+        or explicit_decision_at is not None
+        or experiment_dir is not None
     ):
         raise typer.BadParameter(
-            "evaluation report date/decision timestamp requires --evaluation-dir"
+            "evaluation report date, decision timestamp, and experiment storage require --evaluation-dir"
         )
     if evaluation_dir is not None:
         if normalized_strategy not in {"trading", "long-term"}:
@@ -419,6 +432,13 @@ def watchlist(
             )
         if _is_under_docs(Path(evaluation_dir)):
             raise typer.BadParameter("evaluation snapshots must not be stored under docs/")
+    if experiment_dir is not None:
+        if normalized_strategy != "long-term":
+            raise typer.BadParameter(
+                "challenger experiments support long-term strategy only"
+            )
+        if _is_under_docs(Path(experiment_dir)):
+            raise typer.BadParameter("challenger experiments must not be stored under docs/")
     if normalized_provider_name == "live" and explicit_decision_at is not None:
         raise typer.BadParameter(
             "live evaluation cannot use an explicit decision timestamp"
@@ -569,6 +589,26 @@ def watchlist(
         }
         if verbose:
             typer.echo(f"evaluation snapshot: {evaluation_path}", err=True)
+        if experiment_dir is not None:
+            try:
+                experiment_snapshot = build_challenger_experiment_snapshot(
+                    build_result,
+                    evaluation_snapshot,
+                )
+                experiment_path = save_experiment_snapshot(
+                    Path(experiment_dir), experiment_snapshot
+                )
+            except Exception as exc:
+                typer.echo(
+                    f"challenger experiment error: {exc}",
+                    err=True,
+                )
+            else:
+                if verbose:
+                    typer.echo(
+                        f"challenger experiment snapshot: {experiment_path}",
+                        err=True,
+                    )
     for save_path in save_paths or ():
         _save_watchlist_report(save_path, items, metadata, source_checks)
 
@@ -613,6 +653,74 @@ def test_sources(
     provider = _provider_from_option(provider_name)
     for check in provider.source_checks():
         typer.echo(f"{check.name}: {check.status} - {check.detail}")
+
+
+@evaluate_app.command("experiments")
+def evaluate_experiments(
+    experiment_root: str = typer.Option(
+        "data/evaluation-experiments",
+        "--experiment-root",
+        help="Challenger experiment snapshot root.",
+    ),
+    experiment_id: str = typer.Option(
+        RELATIVE_VALUATION_EXPERIMENT_ID,
+        "--experiment-id",
+        help="Experiment ID to inspect.",
+    ),
+    run_id: str | None = typer.Option(
+        None, "--run-id", help="Optional base evaluation run ID."
+    ),
+    output: str = typer.Option(
+        "text", "--output", help="Inspection output: text or json."
+    ),
+) -> None:
+    root = Path(experiment_root)
+    if _is_under_docs(root):
+        raise typer.BadParameter("challenger experiments must stay outside docs/")
+    normalized_output = output.strip().lower()
+    if normalized_output not in {"text", "json"}:
+        raise typer.BadParameter("output must be text or json")
+    try:
+        snapshots = discover_experiment_snapshots(
+            root,
+            experiment_id=experiment_id,
+            run_id=run_id,
+        )
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc)) from exc
+    if normalized_output == "json":
+        typer.echo(
+            json.dumps(
+                [snapshot.as_payload() for snapshot in snapshots],
+                allow_nan=False,
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return
+    if not snapshots:
+        typer.echo("challenger not recorded")
+        return
+    for snapshot in snapshots:
+        typer.echo(
+            f"{snapshot.experiment_id} v{snapshot.experiment_version} | "
+            f"base={snapshot.base_evaluation_run_id} | "
+            f"decision={snapshot.as_payload()['decision_at']}"
+        )
+        typer.echo(
+            "champion  challenger  delta  adjustment  factor  ticker  gate"
+        )
+        for row in snapshot.rows:
+            factor = (
+                "n/a"
+                if row.challenger_factor_score is None
+                else f"{row.challenger_factor_score:+.3f}"
+            )
+            typer.echo(
+                f"{row.champion_rank:>8}  {row.challenger_rank:>10}  "
+                f"{row.rank_delta:>+5}  {row.challenger_adjustment:>+10.3f}  "
+                f"{factor:>6}  {row.ticker}  {row.long_term_gate_tier}"
+            )
 
 
 @evaluate_app.command("outcomes")
@@ -699,6 +807,11 @@ def evaluate_analyze(
     outcome_root: str = typer.Option(
         "data/evaluation-outcomes", "--outcome-root", help="Market-outcome store root."
     ),
+    experiment_root: str = typer.Option(
+        "data/evaluation-experiments",
+        "--experiment-root",
+        help="Challenger experiment snapshot root.",
+    ),
     output_json: str = typer.Option(
         "data/evaluation-analysis/performance-v2.json",
         "--output-json",
@@ -725,6 +838,7 @@ def evaluate_analyze(
         for value in (
             evaluation_root,
             outcome_root,
+            experiment_root,
             output_json,
             output_markdown,
         )
@@ -743,6 +857,7 @@ def evaluate_analyze(
         Path(evaluation_root),
         Path(outcome_root),
         generated_at=analysis_time,
+        experiment_root=Path(experiment_root),
         strategy=_optional_evaluation_strategy(strategy),
         run_id=run_id,
         report_date=selected_date,

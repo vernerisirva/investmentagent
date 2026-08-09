@@ -17,6 +17,10 @@ from investmentagent.evaluation_outcomes import (
     discover_evaluation_snapshots,
     discover_outcome_sets,
 )
+from investmentagent.experiments import (
+    ChallengerExperimentSnapshot,
+    discover_experiment_snapshots,
+)
 
 
 ANALYSIS_SCHEMA_VERSION = 1
@@ -29,6 +33,7 @@ def analyze_outcome_store(
     outcome_root: Path,
     *,
     generated_at: datetime,
+    experiment_root: Path | None = None,
     strategy: str | None = None,
     run_id: str | None = None,
     report_date: date | None = None,
@@ -45,10 +50,20 @@ def analyze_outcome_store(
         for store in discover_outcome_sets(outcome_root)
         if store.evaluation_run_id in selected_run_ids
     )
+    experiments = (
+        tuple(
+            experiment
+            for experiment in discover_experiment_snapshots(experiment_root)
+            if experiment.base_evaluation_run_id in selected_run_ids
+        )
+        if experiment_root is not None
+        else None
+    )
     return build_performance_v2_analysis(
         snapshots,
         stores,
         generated_at=generated_at,
+        experiment_snapshots=experiments,
     )
 
 
@@ -57,6 +72,7 @@ def build_performance_v2_analysis(
     outcome_sets: Iterable[EvaluationOutcomeSet],
     *,
     generated_at: datetime,
+    experiment_snapshots: Iterable[ChallengerExperimentSnapshot] | None = None,
 ) -> dict[str, Any]:
     if generated_at.tzinfo is None:
         raise ValueError("analysis generated_at must be timezone-aware")
@@ -108,7 +124,7 @@ def build_performance_v2_analysis(
     ]
     if not groups:
         warnings.append("No stored market outcomes are available for analysis.")
-    return {
+    analysis = {
         "schema_version": ANALYSIS_SCHEMA_VERSION,
         "generated_at": _format_timestamp(generated_at),
         "return_basis": "gross adjusted-close total-return-compatible prices",
@@ -145,6 +161,15 @@ def build_performance_v2_analysis(
             "Small samples are descriptive and do not establish statistical significance.",
         ],
     }
+    if experiment_snapshots is not None:
+        from investmentagent.challenger_analysis import build_challenger_analysis
+
+        analysis["challenger_analysis"] = build_challenger_analysis(
+            ordered_snapshots,
+            ordered_stores,
+            tuple(experiment_snapshots),
+        )
+    return analysis
 
 
 def spearman_rank_correlation(left: Iterable[float], right: Iterable[float]) -> float | None:
@@ -191,6 +216,7 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
     groups = analysis.get("groups", [])
     if not groups:
         lines.append("No completed outcomes are available yet.")
+        _append_challenger_report(lines, analysis.get("challenger_analysis"))
         return "\n".join(lines)
     lines.extend(
         [
@@ -277,6 +303,7 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
                 f"{country['evaluation_dates']} dates"
             )
         lines.append("")
+    _append_challenger_report(lines, analysis.get("challenger_analysis"))
     lines.extend(
         [
             "## Interpretation Limits",
@@ -289,6 +316,54 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         ]
     )
     return "\n".join(lines)
+
+
+def _append_challenger_report(
+    lines: list[str], challenger: dict[str, Any] | None
+) -> None:
+    if challenger is None:
+        return
+    lines.extend(["## Shadow Challenger", ""])
+    for warning in challenger.get("warnings", []):
+        lines.append(f"> **Warning:** {warning}")
+        lines.append("")
+    groups = challenger.get("groups", [])
+    if groups:
+        lines.extend(
+            [
+                "| Experiment | Champion | Horizon | Paired dates | Mean score IC delta | Median score IC delta | IC improved | Top-decile spread delta | Top-10 overlap |",
+                "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+            ]
+        )
+        for group in groups:
+            score_delta = group["paired_deltas"]["score_ic"]
+            top_delta = group["paired_deltas"]["top_decile_minus_universe_pct"]
+            churn = group["ranking_churn"]
+            lines.append(
+                "| {experiment} v{version} | {champion} | {horizon} | {dates} | {mean_delta} | {median_delta} | {improved} | {top_delta} | {overlap} |".format(
+                    experiment=group["experiment_id"],
+                    version=group["experiment_version"],
+                    champion=group["champion_scoring_model_version"],
+                    horizon=group["horizon"]["label"],
+                    dates=group["paired_completed_date_count"],
+                    mean_delta=_format_number(score_delta["mean"], 3),
+                    median_delta=_format_number(score_delta["median"], 3),
+                    improved=_format_percent(score_delta["positive_date_pct"]),
+                    top_delta=_format_return(top_delta["mean"]),
+                    overlap=_format_percent(churn["mean_top_10_overlap_pct"]),
+                )
+            )
+        lines.append("")
+    statuses = challenger.get("run_statuses", [])
+    missing = [status for status in statuses if status["status"] == "challenger not recorded"]
+    if missing:
+        lines.append(
+            f"Challenger not recorded for {len(missing)} historical long-term evaluation run(s); no backfill was attempted."
+        )
+        lines.append("")
+    if not groups and not missing:
+        lines.append("No paired challenger outcomes are available yet.")
+        lines.append("")
 
 
 def _analyze_run_horizon(

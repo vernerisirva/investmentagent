@@ -77,6 +77,22 @@ def test_daily_workflow_persists_full_universe_evaluations_from_report_runs():
     assert "git add .investmentagent" not in workflow
 
 
+def test_daily_workflow_records_long_term_shadow_experiment_without_another_refresh():
+    workflow = WORKFLOW.read_text()
+
+    assert "EXPERIMENT_ROOT: data/evaluation-experiments" in workflow
+    generation_block = workflow[
+        workflow.index("generate_report() {"):
+        workflow.index('generate_report "trading" "trading"')
+    ]
+    assert 'if [ "$strategy" = "long-term" ]; then' in generation_block
+    assert 'experiment_args=(--experiment-dir "$EXPERIMENT_ROOT")' in generation_block
+    assert '"${experiment_args[@]}" \\' in generation_block
+    assert generation_block.count("--refresh-limit 30") == 1
+    assert '--experiment-root "$EXPERIMENT_ROOT"' in workflow
+    assert 'git add "$EXPERIMENT_ROOT"' in workflow
+
+
 def test_daily_workflow_refreshes_performance_v2_without_blocking_publication():
     workflow = WORKFLOW.read_text()
 
