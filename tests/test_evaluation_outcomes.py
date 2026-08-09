@@ -1,5 +1,6 @@
 import json
 import math
+from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -19,11 +20,15 @@ from investmentagent.evaluation_analysis import (
     spearman_rank_correlation,
 )
 from investmentagent.evaluation_outcomes import (
+    DEFAULT_STRATEGY_HORIZONS,
     OUTCOME_SCHEMA_VERSION,
     EvaluationOutcomeSet,
     HorizonDefinition,
+    discover_outcome_sets,
     load_outcome_set,
+    outcome_store_path,
     refresh_evaluation_outcomes,
+    refresh_outcome_store,
     save_outcome_set,
 )
 from investmentagent.market_calendar import (
@@ -38,6 +43,7 @@ from investmentagent.market_prices import (
     HistoricalPriceObservation,
     SecurityReference,
 )
+from investmentagent.market_price_cache import FileHistoricalPriceCache
 
 
 UTC = timezone.utc
@@ -703,11 +709,18 @@ def test_fixture_cli_outcomes_and_analysis_are_fully_offline(tmp_path):
             "fixture",
             "--price-fixture",
             str(fixture),
+            "--price-cache",
+            str(tmp_path / "market-price-cache.json"),
             "--retrieved-at",
             retrieved_at.isoformat(),
         ],
     )
     assert outcome_result.exit_code == 0, outcome_result.output
+    outcome_diagnostics = json.loads(outcome_result.output)
+    assert outcome_diagnostics["provider_calls_executed"] == 2
+    assert outcome_diagnostics["api_budget"] == 20
+    assert outcome_diagnostics["work_deferred_by_budget"] == 0
+    assert outcome_diagnostics["cache_coverage"]["observations"] == 10
 
     analysis_result = RUNNER.invoke(
         app,
@@ -734,3 +747,478 @@ def test_fixture_cli_outcomes_and_analysis_are_fully_offline(tmp_path):
     assert all(group["scoring_model_version"] == "nordic-ranking-v1" for group in payload["groups"])
     assert "Insufficient history for reliable inference" in markdown
     assert "Gross adjusted-close returns" in markdown
+
+
+def _observations_for_snapshots(
+    snapshots: tuple[EvaluationSnapshot, ...],
+    *,
+    retrieved_at: datetime,
+) -> dict[str, tuple[HistoricalPriceObservation, ...]]:
+    sessions_by_company: dict[str, set[date]] = {}
+    rows_by_company: dict[str, EvaluationCompanyRow] = {}
+    for snapshot in snapshots:
+        definitions = DEFAULT_STRATEGY_HORIZONS[snapshot.strategy]
+        for row in snapshot.rows:
+            rows_by_company[row.company_id] = row
+            market = market_for_country(row.country)
+            entry = first_session_closing_after(snapshot.decision_at, market).day
+            sessions = sessions_by_company.setdefault(row.company_id, set())
+            sessions.add(entry)
+            sessions.update(
+                advance_market_sessions(entry, definition.sessions, market).day
+                for definition in definitions
+            )
+    return {
+        company_id: tuple(
+            _observation(
+                rows_by_company[company_id],
+                session,
+                100.0
+                + int(rows_by_company[company_id].ticker[1:])
+                + (session.toordinal() % 100) / 100.0,
+                retrieved_at=retrieved_at,
+            )
+            for session in sorted(sessions)
+        )
+        for company_id, sessions in sessions_by_company.items()
+    }
+
+
+def _save_snapshots(root: Path, snapshots: tuple[EvaluationSnapshot, ...]) -> None:
+    for snapshot in snapshots:
+        save_evaluation_snapshot(root, snapshot)
+
+
+def test_market_price_cache_round_trip_and_revision_audit(tmp_path):
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    session = first_session_closing_after(
+        snapshot.decision_at, market_for_country(row.country)
+    ).day
+    first = _observation(row, session, 100.0, retrieved_at=_timestamp(12, 18))
+    same_adjusted = _observation(
+        row,
+        session,
+        100.0,
+        close=101.0,
+        retrieved_at=_timestamp(13, 12),
+    )
+    revised = _observation(row, session, 50.0, retrieved_at=_timestamp(13, 18))
+    path = tmp_path / "market-price-cache.json"
+    cache = FileHistoricalPriceCache(path)
+
+    stored = cache.store(row.company_id, (first,))
+    reused = cache.store(row.company_id, (same_adjusted,))
+    revision = cache.store(row.company_id, (revised,))
+    restored = FileHistoricalPriceCache(path)
+
+    assert stored.observations_stored == 1
+    assert reused.observations_reused == 1
+    assert reused.revisions_detected == 0
+    assert revision.revisions_detected == 1
+    assert restored.get_observation(
+        row.company_id,
+        provider="fixture",
+        market="stockholm",
+        session_date=session,
+        symbol=first.symbol,
+    ) == first
+    assert restored.revisions[0].cached_adjusted_close == 100.0
+    assert restored.revisions[0].observed_adjusted_close == 50.0
+    assert restored.coverage().observations == 1
+    assert restored.coverage().revisions == 1
+
+
+def test_market_price_cache_rejects_non_adjusted_persisted_rows(tmp_path):
+    path = tmp_path / "market-price-cache.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "price_type": ADJUSTED_PRICE_TYPE,
+                "observations": [
+                    {
+                        "schema_version": 1,
+                        "record_id": "invalid",
+                        "company_id": "isin:SE0000000000",
+                        "provider": "fixture",
+                        "provider_symbol": "AAA.ST",
+                        "market": "stockholm",
+                        "session_date": "2026-08-10",
+                        "close": 100.0,
+                        "adjusted_close": 100.0,
+                        "currency": "SEK",
+                        "retrieved_at": "2026-08-10T18:00:00Z",
+                        "price_type": ADJUSTED_PRICE_TYPE,
+                        "is_adjusted": False,
+                    }
+                ],
+                "revisions": [],
+            }
+        )
+    )
+
+    with pytest.raises(ValueError, match="adjusted closes only"):
+        FileHistoricalPriceCache(path)
+
+
+def test_complete_cache_hit_makes_zero_provider_calls(tmp_path):
+    snapshot = _snapshot(1)
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
+    cache = FileHistoricalPriceCache(tmp_path / "prices.json")
+    cache.store(snapshot.rows[0].company_id, histories[snapshot.rows[0].company_id])
+    evaluation_root = tmp_path / "evaluations"
+    _save_snapshots(evaluation_root, (snapshot,))
+    provider = FixtureHistoricalPriceProvider({})
+
+    summary = refresh_outcome_store(
+        evaluation_root,
+        tmp_path / "outcomes",
+        provider,
+        retrieved_at=retrieved_at,
+        price_cache=cache,
+        max_price_api_calls=20,
+    )
+
+    assert summary.provider_calls_executed == 0
+    assert summary.cache_hits == 5
+    assert summary.cache_misses == 0
+    assert summary.priced == 4
+    assert provider.api_call_count == 0
+
+
+def test_partial_cache_fetches_only_smallest_missing_range(tmp_path):
+    snapshot = _snapshot(1)
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
+    company_id = snapshot.rows[0].company_id
+    rows = histories[company_id]
+    cache = FileHistoricalPriceCache(tmp_path / "prices.json")
+    cache.store(company_id, rows[:-1])
+    evaluation_root = tmp_path / "evaluations"
+    _save_snapshots(evaluation_root, (snapshot,))
+    provider = FixtureHistoricalPriceProvider(histories)
+
+    summary = refresh_outcome_store(
+        evaluation_root,
+        tmp_path / "outcomes",
+        provider,
+        retrieved_at=retrieved_at,
+        price_cache=cache,
+        max_price_api_calls=20,
+    )
+
+    assert summary.cache_hits == 4
+    assert summary.cache_misses == 1
+    assert provider.requests == [(company_id, rows[-1].session_date, rows[-1].session_date, rows[0].symbol)]
+    assert summary.priced == 4
+
+
+def test_global_plan_deduplicates_same_security_across_evaluation_runs(tmp_path):
+    snapshots = (
+        _snapshot(1, decision_at=datetime(2026, 8, 10, 8, tzinfo=UTC)),
+        _snapshot(1, decision_at=datetime(2026, 8, 11, 8, tzinfo=UTC)),
+    )
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots(snapshots, retrieved_at=retrieved_at)
+    evaluation_root = tmp_path / "evaluations"
+    _save_snapshots(evaluation_root, snapshots)
+    provider = FixtureHistoricalPriceProvider(histories)
+
+    summary = refresh_outcome_store(
+        evaluation_root,
+        tmp_path / "outcomes",
+        provider,
+        retrieved_at=retrieved_at,
+        price_cache=FileHistoricalPriceCache(tmp_path / "prices.json"),
+        max_price_api_calls=20,
+    )
+
+    assert summary.evaluation_runs == 2
+    assert summary.securities_requiring_prices == 1
+    assert summary.provider_calls_executed == 1
+    assert summary.priced == 8
+
+
+def test_global_plan_deduplicates_across_trading_and_long_term(tmp_path):
+    decision = datetime(2026, 8, 10, 8, tzinfo=UTC)
+    snapshots = (
+        _snapshot(1, strategy="trading", decision_at=decision),
+        _snapshot(1, strategy="long-term", decision_at=decision),
+    )
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots(snapshots, retrieved_at=retrieved_at)
+    evaluation_root = tmp_path / "evaluations"
+    _save_snapshots(evaluation_root, snapshots)
+    provider = FixtureHistoricalPriceProvider(histories)
+
+    summary = refresh_outcome_store(
+        evaluation_root,
+        tmp_path / "outcomes",
+        provider,
+        retrieved_at=retrieved_at,
+        price_cache=FileHistoricalPriceCache(tmp_path / "prices.json"),
+        max_price_api_calls=20,
+    )
+
+    assert summary.evaluation_runs == 2
+    assert summary.provider_calls_executed == 1
+    assert summary.priced == 8
+    assert len(provider.requests) == 1
+
+
+def test_api_budget_defers_deterministically_and_backlog_remains_refreshable(tmp_path):
+    snapshot = _snapshot(3)
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
+    evaluation_root = tmp_path / "evaluations"
+    outcome_root = tmp_path / "outcomes"
+    cache = FileHistoricalPriceCache(tmp_path / "prices.json")
+    _save_snapshots(evaluation_root, (snapshot,))
+    first_provider = FixtureHistoricalPriceProvider(histories)
+
+    first = refresh_outcome_store(
+        evaluation_root,
+        outcome_root,
+        first_provider,
+        retrieved_at=retrieved_at,
+        price_cache=cache,
+        max_price_api_calls=1,
+    )
+
+    assert first.provider_calls_executed == 1
+    assert first.work_deferred_by_budget == 2
+    assert first.deferred_security_ids == tuple(
+        row.company_id for row in snapshot.rows[1:]
+    )
+    assert [item.company_id for item in first.fetch_plan] == [
+        row.company_id for row in snapshot.rows
+    ]
+    assert first.fetch_plan[0].deferred_by_budget is False
+    assert all(item.deferred_by_budget for item in first.fetch_plan[1:])
+    assert first.provider_errors == 0
+
+    second_provider = FixtureHistoricalPriceProvider(histories)
+    second = refresh_outcome_store(
+        evaluation_root,
+        outcome_root,
+        second_provider,
+        retrieved_at=retrieved_at,
+        price_cache=cache,
+        max_price_api_calls=2,
+    )
+
+    assert second.provider_calls_executed == 2
+    assert second.work_deferred_by_budget == 0
+    assert second.priced == 12
+
+
+def test_eodhd_multiple_symbol_candidates_cannot_exceed_api_budget(tmp_path):
+    original = _snapshot(1)
+    row = replace(original.rows[0], ticker="ABC-B")
+    snapshot = replace(original, rows=(row,))
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    market = market_for_country(row.country)
+    entry = first_session_closing_after(snapshot.decision_at, market).day
+    sessions = [entry]
+    sessions.extend(
+        advance_market_sessions(entry, definition.sessions, market).day
+        for definition in DEFAULT_STRATEGY_HORIZONS[snapshot.strategy]
+    )
+    payload = json.dumps(
+        [
+            {
+                "date": session.isoformat(),
+                "close": 100.0 + index,
+                "adjusted_close": 100.0 + index,
+            }
+            for index, session in enumerate(sessions)
+        ]
+    )
+    evaluation_root = tmp_path / "evaluations"
+    outcome_root = tmp_path / "outcomes"
+    cache = FileHistoricalPriceCache(tmp_path / "prices.json")
+    _save_snapshots(evaluation_root, (snapshot,))
+    deferred_provider = EodhdHistoricalPriceProvider(
+        "secret", fetcher=lambda url: payload
+    )
+
+    deferred = refresh_outcome_store(
+        evaluation_root,
+        outcome_root,
+        deferred_provider,
+        retrieved_at=retrieved_at,
+        price_cache=cache,
+        max_price_api_calls=1,
+    )
+
+    assert deferred.provider_calls_executed == 0
+    assert deferred.provider_calls_planned == 0
+    assert deferred.work_deferred_by_budget == 1
+    assert deferred.fetch_plan[0].estimated_api_calls == 2
+
+    executed_provider = EodhdHistoricalPriceProvider(
+        "secret", fetcher=lambda url: payload
+    )
+    executed = refresh_outcome_store(
+        evaluation_root,
+        outcome_root,
+        executed_provider,
+        retrieved_at=retrieved_at,
+        price_cache=cache,
+        max_price_api_calls=2,
+    )
+
+    assert executed.provider_calls_planned == 2
+    assert executed.provider_calls_executed == 1
+    assert executed.provider_calls_executed <= executed.api_budget
+    assert executed.priced == 4
+
+
+def test_provider_failure_preserves_cached_observations(tmp_path):
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
+    cache = FileHistoricalPriceCache(tmp_path / "prices.json")
+    cache.store(row.company_id, histories[row.company_id][:1])
+    original_records = cache.records
+    evaluation_root = tmp_path / "evaluations"
+    _save_snapshots(evaluation_root, (snapshot,))
+    provider = FixtureHistoricalPriceProvider(
+        {}, provider_errors={row.company_id: "quota unavailable"}
+    )
+
+    summary = refresh_outcome_store(
+        evaluation_root,
+        tmp_path / "outcomes",
+        provider,
+        retrieved_at=retrieved_at,
+        price_cache=cache,
+        max_price_api_calls=1,
+    )
+
+    assert summary.provider_errors == 1
+    assert cache.records == original_records
+    assert summary.observations_stored == 0
+    assert summary.oldest_unresolved_evaluation_date == snapshot.report_date
+
+
+def test_cached_provider_revision_preserves_established_entry(tmp_path):
+    snapshot = _snapshot(1)
+    row = snapshot.rows[0]
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
+    entry = histories[row.company_id][0]
+    existing = refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider({row.company_id: (entry,)}),
+        retrieved_at=retrieved_at,
+    )
+    assert all(outcome.status == "missing_exit" for outcome in existing.outcomes)
+    outcome_root = tmp_path / "outcomes"
+    save_outcome_set(outcome_store_path(outcome_root, snapshot), existing)
+    cache = FileHistoricalPriceCache(tmp_path / "prices.json")
+    cache.store(row.company_id, histories[row.company_id])
+    revised_entry = _observation(
+        row,
+        entry.session_date,
+        entry.adjusted_close / 2.0,
+        retrieved_at=retrieved_at + timedelta(days=1),
+    )
+    cache.store(row.company_id, (revised_entry,))
+    evaluation_root = tmp_path / "evaluations"
+    _save_snapshots(evaluation_root, (snapshot,))
+
+    summary = refresh_outcome_store(
+        evaluation_root,
+        outcome_root,
+        FixtureHistoricalPriceProvider({}),
+        retrieved_at=retrieved_at + timedelta(days=1),
+        price_cache=cache,
+        max_price_api_calls=0,
+    )
+    refreshed = discover_outcome_sets(outcome_root)[0]
+
+    assert summary.provider_calls_executed == 0
+    assert all(
+        outcome.status == "corporate_action_unsupported"
+        for outcome in refreshed.outcomes
+    )
+    assert all(outcome.entry_price == entry.adjusted_close for outcome in refreshed.outcomes)
+    assert all("revised cached adjusted-close" in outcome.detail for outcome in refreshed.outcomes)
+
+
+def test_cache_loss_changes_calls_but_not_calculated_outcomes(tmp_path):
+    snapshot = _snapshot(4, countries=("SE", "FI"))
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
+    naive = refresh_evaluation_outcomes(
+        snapshot,
+        FixtureHistoricalPriceProvider(histories),
+        retrieved_at=retrieved_at,
+    )
+    evaluation_root = tmp_path / "evaluations"
+    outcome_root = tmp_path / "outcomes"
+    _save_snapshots(evaluation_root, (snapshot,))
+
+    refresh_outcome_store(
+        evaluation_root,
+        outcome_root,
+        FixtureHistoricalPriceProvider(histories),
+        retrieved_at=retrieved_at,
+        price_cache=FileHistoricalPriceCache(tmp_path / "new-cache.json"),
+        max_price_api_calls=4,
+    )
+    cached = discover_outcome_sets(outcome_root)[0]
+
+    assert cached.as_payload() == naive.as_payload()
+
+
+def test_twenty_overlapping_runs_reduce_two_thousand_calls_to_one_hundred(tmp_path):
+    evaluation_days = (10, 11, 12, 13, 14, 17, 18, 19, 20, 21)
+    snapshots = tuple(
+        _snapshot(
+            100,
+            strategy=strategy,
+            decision_at=datetime(2026, 8, day, 8, tzinfo=UTC),
+            countries=("SE", "FI"),
+        )
+        for day in evaluation_days
+        for strategy in ("trading", "long-term")
+    )
+    retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
+    histories = _observations_for_snapshots(snapshots, retrieved_at=retrieved_at)
+    naive_provider = FixtureHistoricalPriceProvider(histories)
+    naive = {
+        snapshot.run_id: refresh_evaluation_outcomes(
+            snapshot,
+            naive_provider,
+            retrieved_at=retrieved_at,
+        ).as_payload()
+        for snapshot in snapshots
+    }
+    evaluation_root = tmp_path / "evaluations"
+    outcome_root = tmp_path / "outcomes"
+    _save_snapshots(evaluation_root, snapshots)
+    cached_provider = FixtureHistoricalPriceProvider(histories)
+
+    summary = refresh_outcome_store(
+        evaluation_root,
+        outcome_root,
+        cached_provider,
+        retrieved_at=retrieved_at,
+        price_cache=FileHistoricalPriceCache(tmp_path / "prices.json"),
+        max_price_api_calls=100,
+    )
+    cached = {
+        store.evaluation_run_id: store.as_payload()
+        for store in discover_outcome_sets(outcome_root)
+    }
+
+    assert naive_provider.api_call_count == 2_000
+    assert summary.provider_calls_executed == 100
+    assert summary.provider_calls_executed <= summary.api_budget
+    assert summary.work_deferred_by_budget == 0
+    assert cached == naive

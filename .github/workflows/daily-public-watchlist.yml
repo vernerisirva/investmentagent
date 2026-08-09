@@ -73,6 +73,15 @@ jobs:
           restore-keys: |
             fundamentals-${{ runner.os }}-
 
+      - name: Restore private market-price cache
+        if: env.RUN_DAILY_REPORT == 'true'
+        uses: actions/cache@v5
+        with:
+          path: .investmentagent/market-price-cache.json
+          key: market-prices-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            market-prices-${{ runner.os }}-
+
       - name: Skip closed Nordic market days
         if: github.event_name == 'schedule' && env.RUN_DAILY_REPORT == 'true'
         run: |
@@ -212,6 +221,8 @@ jobs:
               --evaluation-root "$EVALUATION_ROOT" \
               --outcome-root "$OUTCOME_ROOT" \
               --price-provider eodhd \
+              --price-cache .investmentagent/market-price-cache.json \
+              --max-price-api-calls 20 \
               --retrieved-at "$retrieved_at"
           fi
 

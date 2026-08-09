@@ -90,7 +90,9 @@ Configure `EODHD_API_KEY`, then refresh due outcomes and run the offline analysi
 investmentagent evaluate outcomes \
   --evaluation-root data/evaluations \
   --outcome-root data/evaluation-outcomes \
-  --price-provider eodhd
+  --price-provider eodhd \
+  --price-cache .investmentagent/market-price-cache.json \
+  --max-price-api-calls 20
 
 investmentagent evaluate analyze \
   --evaluation-root data/evaluations \
@@ -110,6 +112,27 @@ atomic, and idempotent. Established entries and priced outcomes are frozen. If a
 provider later revises an established adjusted entry, the record is excluded with
 an explicit corporate-action status instead of being silently rewritten. Missing
 entries, exits, mappings, and provider failures remain visible.
+
+Outcome refresh first plans the union of due entry and exit sessions across all
+selected evaluation dates and both strategies. Accepted adjusted-close
+observations are reused from the private normalized cache by stable company ID,
+provider, symbol, market, and session. Only the smallest range spanning missing
+sessions is requested once per security, so trading, long-term, and challenger
+analysis share the same archive without changing outcome calculations.
+
+`--max-price-api-calls` is a hard per-invocation budget and defaults to 20.
+Unestablished entries, shorter due horizons, older evaluations, and stable
+company identity determine deterministic backlog order. Completed cache and
+outcome work is retained when the budget is exhausted; deferred securities are
+reported in CLI diagnostics and remain refreshable. Conflicting provider
+revisions are recorded in the cache while the first accepted observation and
+established evaluation entries remain immutable.
+
+The operational cache contains normalized observations and revision evidence,
+not provider payloads, API keys, or public report data. It is ignored by Git,
+must stay outside `docs/`, and the scheduled workflow restores it through GitHub
+Actions cache. Losing it increases future API calls but does not invalidate the
+durable evaluation or outcome stores.
 
 Analysis is performed per evaluation run before aggregation and never pools model
 versions. It reports score and final-rank Spearman IC, equal-weight original-

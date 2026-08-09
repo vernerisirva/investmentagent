@@ -109,8 +109,14 @@ def test_daily_workflow_refreshes_performance_v2_without_blocking_publication():
     assert "investmentagent evaluate outcomes" in performance_v2_block
     assert "investmentagent evaluate analyze" in performance_v2_block
     assert "Skipping Performance v2 outcome refresh" in performance_v2_block
+    assert "Restore private market-price cache" in workflow
+    assert "path: .investmentagent/market-price-cache.json" in workflow
+    assert "market-prices-${{ runner.os }}-" in workflow
+    assert "--price-cache .investmentagent/market-price-cache.json" in performance_v2_block
+    assert "--max-price-api-calls 20" in performance_v2_block
     assert 'git add "$OUTCOME_ROOT"' in workflow
     assert 'git add "$ANALYSIS_ROOT"' in workflow
+    assert "git add .investmentagent" not in workflow
 
 
 def test_daily_workflow_publishes_global_ai_report_and_links_index():

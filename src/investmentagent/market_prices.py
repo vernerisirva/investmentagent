@@ -102,6 +102,16 @@ class HistoricalPriceHistory:
 class HistoricalPriceProvider(Protocol):
     name: str
 
+    @property
+    def api_call_count(self) -> int: ...
+
+    def estimated_api_calls(
+        self,
+        security: SecurityReference,
+        *,
+        symbol: str | None = None,
+    ) -> int: ...
+
     def get_history(
         self,
         security: SecurityReference,
@@ -132,6 +142,21 @@ class FixtureHistoricalPriceProvider:
         self._unresolved = set(unresolved)
         self._provider_errors = dict(provider_errors or {})
         self._unsupported_adjustments = set(unsupported_adjustments)
+        self._api_call_count = 0
+        self.requests: list[tuple[str, date, date, str | None]] = []
+
+    @property
+    def api_call_count(self) -> int:
+        return self._api_call_count
+
+    def estimated_api_calls(
+        self,
+        security: SecurityReference,
+        *,
+        symbol: str | None = None,
+    ) -> int:
+        del security, symbol
+        return 1
 
     @classmethod
     def from_path(cls, path: Path) -> FixtureHistoricalPriceProvider:
@@ -188,6 +213,8 @@ class FixtureHistoricalPriceProvider:
         symbol: str | None = None,
     ) -> HistoricalPriceHistory:
         del retrieved_at
+        self._api_call_count += 1
+        self.requests.append((security.company_id, start_date, end_date, symbol))
         if security.company_id in self._provider_errors:
             return HistoricalPriceHistory(
                 "provider_error",
@@ -241,6 +268,21 @@ class EodhdHistoricalPriceProvider:
         self._fetcher = fetcher or _fetch_eodhd_url
         self._consecutive_provider_errors = 0
         self._circuit_error: str | None = None
+        self._api_call_count = 0
+
+    @property
+    def api_call_count(self) -> int:
+        return self._api_call_count
+
+    def estimated_api_calls(
+        self,
+        security: SecurityReference,
+        *,
+        symbol: str | None = None,
+    ) -> int:
+        if symbol is not None:
+            return 1
+        return len(eodhd_symbol_candidates(security))
 
     def get_history(
         self,
@@ -286,6 +328,7 @@ class EodhdHistoricalPriceProvider:
         received_valid_response = False
         for candidate in candidates:
             try:
+                self._api_call_count += 1
                 payload = self._fetcher(
                     _eodhd_history_url(
                         candidate,

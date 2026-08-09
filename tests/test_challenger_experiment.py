@@ -576,6 +576,44 @@ def test_paired_analysis_uses_exact_same_priced_company_sample():
     assert paired["challenger"]["score_return_ic"] is not None
 
 
+def test_challenger_analysis_causes_zero_additional_price_requests():
+    research = [_research(index, pe_ratio=5.0 + index) for index in range(4)]
+    _, _, snapshot, experiment = _experiment(research, [4, 3, 2, 1])
+    retrieved_at = snapshot.decision_at + timedelta(days=20)
+    histories = {}
+    for row in snapshot.rows:
+        market = market_for_country(row.country)
+        entry = first_session_closing_after(snapshot.decision_at, market).day
+        exit_day = advance_market_sessions(entry, 1, market).day
+        symbol = f"{row.ticker}.{'ST' if row.country == 'SE' else 'HE'}"
+        currency = "SEK" if row.country == "SE" else "EUR"
+        histories[row.company_id] = (
+            HistoricalPriceObservation(
+                "fixture", symbol, market, entry, 100.0, 100.0, currency, retrieved_at
+            ),
+            HistoricalPriceObservation(
+                "fixture", symbol, market, exit_day, 101.0, 101.0, currency, retrieved_at
+            ),
+        )
+    provider = FixtureHistoricalPriceProvider(histories)
+    outcomes = refresh_evaluation_outcomes(
+        snapshot,
+        provider,
+        retrieved_at=retrieved_at,
+        horizons=ONE_SESSION,
+    )
+    calls_before_analysis = provider.api_call_count
+
+    build_performance_v2_analysis(
+        (snapshot,),
+        (outcomes,),
+        generated_at=retrieved_at,
+        experiment_snapshots=(experiment,),
+    )
+
+    assert provider.api_call_count == calls_before_analysis
+
+
 def _synthetic_case():
     count = 100
     value_orders = [((index * 37) % count) + 1 for index in range(count)]

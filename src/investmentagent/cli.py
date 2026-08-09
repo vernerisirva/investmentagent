@@ -15,7 +15,10 @@ from investmentagent.evaluation_analysis import (
     save_analysis_json,
     save_analysis_markdown,
 )
-from investmentagent.evaluation_outcomes import refresh_outcome_store
+from investmentagent.evaluation_outcomes import (
+    DEFAULT_MAX_PRICE_API_CALLS,
+    refresh_outcome_store,
+)
 from investmentagent.experiments import (
     RELATIVE_VALUATION_EXPERIMENT_ID,
     build_challenger_experiment_snapshot,
@@ -43,6 +46,7 @@ from investmentagent.market_prices import (
     EodhdHistoricalPriceProvider,
     FixtureHistoricalPriceProvider,
 )
+from investmentagent.market_price_cache import FileHistoricalPriceCache
 from investmentagent.providers import create_provider
 from investmentagent.performance import (
     add_report_picks,
@@ -737,6 +741,17 @@ def evaluate_outcomes(
     price_fixture: str | None = typer.Option(
         None, "--price-fixture", help="Offline fixture JSON used by the fixture provider."
     ),
+    price_cache: str = typer.Option(
+        ".investmentagent/market-price-cache.json",
+        "--price-cache",
+        help="Private normalized adjusted-close cache file.",
+    ),
+    max_price_api_calls: int = typer.Option(
+        DEFAULT_MAX_PRICE_API_CALLS,
+        "--max-price-api-calls",
+        min=0,
+        help="Maximum external historical-price requests for this invocation.",
+    ),
     strategy: str | None = typer.Option(
         None, "--strategy", help="Optional strategy filter: trading or long-term."
     ),
@@ -750,8 +765,18 @@ def evaluate_outcomes(
 ) -> None:
     evaluation_path = Path(evaluation_root)
     outcome_path = Path(outcome_root)
-    if _is_under_docs(evaluation_path) or _is_under_docs(outcome_path):
-        raise typer.BadParameter("Performance v2 evaluations and outcomes must stay outside docs/")
+    price_cache_path = Path(price_cache)
+    if any(
+        _is_under_docs(path)
+        for path in (evaluation_path, outcome_path, price_cache_path)
+    ):
+        raise typer.BadParameter(
+            "Performance v2 evaluations, outcomes, and price cache must stay outside docs/"
+        )
+    try:
+        cache = FileHistoricalPriceCache(price_cache_path)
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc)) from exc
     normalized_strategy = _optional_evaluation_strategy(strategy)
     normalized_provider = price_provider_name.strip().lower()
     if normalized_provider == "fixture":
@@ -784,6 +809,8 @@ def evaluate_outcomes(
         strategy=normalized_strategy,
         run_id=run_id,
         report_date=selected_date,
+        price_cache=cache,
+        max_price_api_calls=max_price_api_calls,
     )
     typer.echo(
         json.dumps(
@@ -793,6 +820,27 @@ def evaluate_outcomes(
                 "priced": summary.priced,
                 "not_due": summary.not_due,
                 "unresolved": summary.unresolved,
+                "securities_requiring_prices": summary.securities_requiring_prices,
+                "required_session_observations": summary.required_session_observations,
+                "cache_hits": summary.cache_hits,
+                "cache_misses": summary.cache_misses,
+                "provider_calls_planned": summary.provider_calls_planned,
+                "provider_calls_executed": summary.provider_calls_executed,
+                "api_budget": summary.api_budget,
+                "work_deferred_by_budget": summary.work_deferred_by_budget,
+                "deferred_api_calls": summary.deferred_api_calls,
+                "observations_stored": summary.observations_stored,
+                "provider_errors": summary.provider_errors,
+                "unresolved_symbols": summary.unresolved_symbols,
+                "revisions_detected": summary.revisions_detected,
+                "oldest_unresolved_evaluation_date": (
+                    summary.oldest_unresolved_evaluation_date.isoformat()
+                    if summary.oldest_unresolved_evaluation_date
+                    else None
+                ),
+                "deferred_security_ids": list(summary.deferred_security_ids),
+                "fetch_plan": [item.as_dict() for item in summary.fetch_plan],
+                "cache_coverage": summary.cache_coverage,
             },
             sort_keys=True,
         )
