@@ -1,0 +1,87 @@
+{
+  "challenger_analysis": {
+    "groups": [],
+    "methodology": {
+      "aggregation": "paired deltas are calculated per run before aggregation",
+      "analysis_eligibility": {
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "purpose": "research-quality aggregation guardrail; not a statistical-significance threshold"
+      },
+      "automatic_promotion": false,
+      "sample": "champion and challenger use the exact same priced companies from the original evaluation run"
+    },
+    "recorded_sidecar_count": 1,
+    "reporting_criteria": [
+      "positive mean and median paired IC delta",
+      "paired IC improvement on more than half of completed dates",
+      "improved top-decile-minus-universe spread",
+      "no deterioration in paired outcome coverage",
+      "ranking churn remains reasonable for a bounded factor experiment"
+    ],
+    "run_metrics": [],
+    "run_statuses": [
+      {
+        "decision_at": "2026-08-10T05:43:54.073633Z",
+        "evaluation_run_id": "evaluation-4850c4a75f98ad229cae24a3",
+        "experiment_id": "relative-valuation-v1",
+        "experiment_version": 1,
+        "status": "outcomes not recorded"
+      }
+    ],
+    "warnings": [
+      "Insufficient paired history to judge challenger performance."
+    ]
+  },
+  "costs_excluded": [
+    "spread",
+    "commissions",
+    "slippage"
+  ],
+  "generated_at": "2026-08-10T05:44:30Z",
+  "groups": [],
+  "limitations": [
+    "Repeated company observations across evaluation dates are not independent.",
+    "Run-level aggregation limits domination by repeated securities but does not use clustered standard errors.",
+    "Missing prices and possible delistings are retained as explicit states and are never treated as zero returns.",
+    "Partial price coverage may be non-random across symbol resolution, country, segment, or company identity; ineligible run metrics are descriptive only.",
+    "Gross returns do not establish trading profitability because transaction costs are excluded.",
+    "Small samples are descriptive and do not establish statistical significance."
+  ],
+  "methodology": {
+    "aggregation": "cross-sectional metrics are computed for every run; only analysis-eligible runs are aggregated",
+    "analysis_eligibility": {
+      "minimum_coverage_pct": 70.0,
+      "minimum_valid_companies": 50,
+      "purpose": "research-quality aggregation guardrail; not a statistical-significance threshold"
+    },
+    "analysis_key": [
+      "strategy",
+      "scoring_model_version",
+      "horizon"
+    ],
+    "benchmark": "equal-weight valid outcomes from the original point-in-time evaluation universe",
+    "buckets": "rank quantiles; 10 buckets at n>=50, 5 at n>=25, 2 at n>=10, otherwise 1",
+    "country_analysis_eligibility": {
+      "minimum_coverage_pct": 70.0,
+      "minimum_valid_companies": 20,
+      "purpose": "research-quality aggregation guardrail; not a statistical-significance threshold"
+    },
+    "country_benchmark_minimum": 2,
+    "final_rank_ic": "Spearman correlation of negative recorded final rank and forward return",
+    "score_ic": "Spearman correlation of recorded total score and forward return"
+  },
+  "missingness": {
+    "by_country": [],
+    "by_rank_decile": [],
+    "by_segment": [],
+    "by_strategy": []
+  },
+  "primary_question": "Do companies ranked higher subsequently outperform companies ranked lower?",
+  "return_basis": "gross adjusted-close total-return-compatible prices",
+  "run_metrics": [],
+  "schema_version": 1,
+  "warnings": [
+    "No stored market outcomes are available for analysis."
+  ]
+}
