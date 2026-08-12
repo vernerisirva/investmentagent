@@ -11,7 +11,7 @@
       "automatic_promotion": false,
       "sample": "champion and challenger use the exact same priced companies from the original evaluation run"
     },
-    "recorded_sidecar_count": 2,
+    "recorded_sidecar_count": 3,
     "reporting_criteria": [
       "positive mean and median paired IC delta",
       "paired IC improvement on more than half of completed dates",
@@ -34,6 +34,13 @@
         "experiment_id": "relative-valuation-v1",
         "experiment_version": 1,
         "status": "outcomes not recorded"
+      },
+      {
+        "decision_at": "2026-08-12T05:02:50.714417Z",
+        "evaluation_run_id": "evaluation-3d5dab0a06f3c4c00e94002c",
+        "experiment_id": "relative-valuation-v1",
+        "experiment_version": 1,
+        "status": "outcomes not recorded"
       }
     ],
     "warnings": [
@@ -45,7 +52,7 @@
     "commissions",
     "slippage"
   ],
-  "generated_at": "2026-08-11T05:03:30Z",
+  "generated_at": "2026-08-12T05:03:36Z",
   "groups": [],
   "limitations": [
     "Repeated company observations across evaluation dates are not independent.",
