@@ -1,6 +1,6 @@
 # Performance v2: Ranking Quality
 
-Generated: 2026-08-13T06:03:28Z
+Generated: 2026-08-14T05:03:27Z
 
 Gross adjusted-close returns are shown. Spread, commissions, and slippage are excluded.
 
@@ -9,7 +9,7 @@ Gross adjusted-close returns are shown. Spread, commissions, and slippage are ex
 No completed outcomes are available yet.
 ## Shadow Challenger
 
-Challenger sidecars recorded: 4.
+Challenger sidecars recorded: 5.
 
 > **Warning:** Insufficient paired history to judge challenger performance.
 
