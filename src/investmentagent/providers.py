@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import time
 from collections.abc import Callable
 from dataclasses import dataclass
 from importlib.resources import files
@@ -66,6 +67,10 @@ NASDAQ_NORDIC_MIN_REQUEST_COUNTS = {
     ("SE", ListingSegment.FIRST_NORTH.value): 200,
     ("FI", ListingSegment.FIRST_NORTH.value): 20,
 }
+# Nasdaq sometimes serves a transient partial segment around its early-morning
+# refresh. Retry only the affected segment; publication safety still rejects the
+# final response when the segment remains below its established coverage floor.
+NASDAQ_NORDIC_RETRY_DELAYS_SECONDS = (15.0, 45.0, 90.0, 180.0)
 
 
 @dataclass(frozen=True)
@@ -291,21 +296,73 @@ def _fetch_url(url: str) -> str:
 
 
 def _fetch_nasdaq_nordic_screener_payload(
-    base_url: str, fetcher: Callable[[str], str]
+    base_url: str,
+    fetcher: Callable[[str], str],
+    *,
+    retry_delays_seconds: tuple[float, ...] = NASDAQ_NORDIC_RETRY_DELAYS_SECONDS,
+    sleeper: Callable[[float], None] = time.sleep,
 ) -> str:
+    if any(delay < 0 for delay in retry_delays_seconds):
+        raise ValueError("Nasdaq retry delays must be non-negative")
     responses = []
     for request in NASDAQ_NORDIC_SCREENER_REQUESTS:
         source_url = _build_nasdaq_nordic_screener_url(base_url, request)
+        payload = None
+        fetch_attempts = 0
+        last_issue = None
+        for attempt in range(len(retry_delays_seconds) + 1):
+            fetch_attempts = attempt + 1
+            try:
+                candidate = json.loads(fetcher(source_url))
+            except Exception:
+                if attempt == len(retry_delays_seconds):
+                    raise
+            else:
+                payload = candidate
+                last_issue = _nasdaq_request_payload_issue(candidate, request)
+                if last_issue is None or attempt == len(retry_delays_seconds):
+                    break
+            sleeper(retry_delays_seconds[attempt])
+        if payload is None:
+            raise ValueError("Nasdaq segment fetch returned no parseable payload")
         responses.append(
             {
                 "country": request["country"],
                 "exchange": request["exchange"],
                 "segment": request["listing_segment"],
                 "source_url": source_url,
-                "payload": json.loads(fetcher(source_url)),
+                "fetch_attempts": fetch_attempts,
+                "last_fetch_issue": last_issue,
+                "payload": payload,
             }
         )
     return json.dumps({"source": NASDAQ_NORDIC_SCREENER_SOURCE, "responses": responses})
+
+
+def _nasdaq_request_payload_issue(payload: object, request: dict[str, str]) -> str | None:
+    rows, rows_issue = _nasdaq_screener_rows({"payload": payload})
+    if rows_issue is not None:
+        return rows_issue
+    segment = ListingSegment(request["listing_segment"])
+    companies = {
+        (company.ticker, company.country)
+        for row in rows
+        if isinstance(row, dict)
+        and (
+            company := _company_from_nasdaq_screener_row(
+                row,
+                request["country"],
+                request["exchange"],
+                segment,
+            )
+        )
+        is not None
+    }
+    request_key = (request["country"], request["listing_segment"])
+    minimum = NASDAQ_NORDIC_MIN_REQUEST_COUNTS[request_key]
+    if len(companies) < minimum:
+        return f"{len(companies)} parseable companies is below {minimum}"
+    return None
 
 
 def _build_nasdaq_nordic_screener_url(base_url: str, request: dict[str, str]) -> str:

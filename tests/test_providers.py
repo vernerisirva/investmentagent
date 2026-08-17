@@ -1,4 +1,6 @@
 import json
+from collections import Counter
+from urllib.parse import parse_qs, urlparse
 
 import pytest
 
@@ -188,6 +190,31 @@ def _nasdaq_coverage_payload(
             }
         )
     return json.dumps({"source": "nasdaq_nordic_screener", "responses": responses})
+
+
+def _nasdaq_request_key(url: str) -> tuple[str, str]:
+    params = parse_qs(urlparse(url).query)
+    country = "SE" if params["market"] == ["STO"] else "FI"
+    segment = (
+        ListingSegment.MAIN_MARKET.value
+        if params["category"] == ["MAIN_MARKET"]
+        else ListingSegment.FIRST_NORTH.value
+    )
+    return country, segment
+
+
+def _nasdaq_segment_response(key: tuple[str, str], count: int) -> str:
+    segment_code = "M" if key[1] == ListingSegment.MAIN_MARKET.value else "F"
+    rows = [
+        {
+            "fullName": f"{key[0]} {segment_code} Company {index}",
+            "symbol": f"{key[0]}{segment_code}{index:04d}",
+            "currency": "SEK" if key[0] == "SE" else "EUR",
+            "isin": f"{key[0]}{index:010d}",
+        }
+        for index in range(count)
+    ]
+    return json.dumps({"data": {"instrumentListing": {"rows": rows}}})
 
 
 def test_fixture_provider_filters_country_and_first_north():
@@ -392,6 +419,7 @@ def test_live_provider_fetches_nasdaq_nordic_screener_segments():
     payload = _fetch_nasdaq_nordic_screener_payload(
         "https://api.nasdaq.com/api/nordic/screener/shares",
         fake_fetcher,
+        retry_delays_seconds=(),
     )
 
     assert "nasdaq_nordic_screener" in payload
@@ -399,6 +427,69 @@ def test_live_provider_fetches_nasdaq_nordic_screener_segments():
     assert any("market=HEL" in url for url in fetched_urls)
     assert any("category=FIRST_NORTH" in url for url in fetched_urls)
     assert len(fetched_urls) == 4
+
+
+def test_live_provider_retries_only_transiently_incomplete_nasdaq_segment():
+    attempts: Counter[tuple[str, str]] = Counter()
+    sleeps = []
+
+    def fake_fetcher(url: str) -> str:
+        key = _nasdaq_request_key(url)
+        attempts[key] += 1
+        count = HEALTHY_NASDAQ_COUNTS[key]
+        if key == ("SE", ListingSegment.MAIN_MARKET.value) and attempts[key] < 3:
+            count = 14
+        return _nasdaq_segment_response(key, count)
+
+    payload = _fetch_nasdaq_nordic_screener_payload(
+        "https://api.nasdaq.com/api/nordic/screener/shares",
+        fake_fetcher,
+        retry_delays_seconds=(15.0, 45.0),
+        sleeper=sleeps.append,
+    )
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: payload)
+    responses = json.loads(payload)["responses"]
+
+    assert provider.source_checks()[0].status == "ok"
+    assert attempts[("SE", ListingSegment.MAIN_MARKET.value)] == 3
+    assert all(
+        attempts[key] == 1
+        for key in HEALTHY_NASDAQ_COUNTS
+        if key != ("SE", ListingSegment.MAIN_MARKET.value)
+    )
+    assert sleeps == [15.0, 45.0]
+    assert responses[0]["fetch_attempts"] == 3
+    assert responses[0]["last_fetch_issue"] is None
+
+
+def test_live_provider_still_rejects_segment_incomplete_after_retries():
+    attempts: Counter[tuple[str, str]] = Counter()
+    sleeps = []
+
+    def fake_fetcher(url: str) -> str:
+        key = _nasdaq_request_key(url)
+        attempts[key] += 1
+        count = HEALTHY_NASDAQ_COUNTS[key]
+        if key == ("SE", ListingSegment.MAIN_MARKET.value):
+            count = 14
+        return _nasdaq_segment_response(key, count)
+
+    payload = _fetch_nasdaq_nordic_screener_payload(
+        "https://api.nasdaq.com/api/nordic/screener/shares",
+        fake_fetcher,
+        retry_delays_seconds=(15.0, 45.0),
+        sleeper=sleeps.append,
+    )
+    provider = LiveNasdaqNordicProvider(fetcher=lambda url: payload)
+    check = provider.source_checks()[0]
+    responses = json.loads(payload)["responses"]
+
+    assert check.status == "error"
+    assert "STO/main_market 14 is below 300" in check.detail
+    assert attempts[("SE", ListingSegment.MAIN_MARKET.value)] == 3
+    assert sleeps == [15.0, 45.0]
+    assert responses[0]["fetch_attempts"] == 3
+    assert responses[0]["last_fetch_issue"] == "14 parseable companies is below 300"
 
 
 def test_live_provider_filters_first_north():
