@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-08-17T05:17:56.288206+00:00
+- generated_at: 2026-08-17T05:40:25.564305+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 931, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 27, 'cutoff_tie_count': 17, 'cutoff_tie_excluded': 12, 'cache_enabled': True, 'cache_hits': 101, 'cache_misses': 830, 'cache_max_age_days': 45, 'eligible_companies': 931, 'cached_companies': 128, 'fresh_companies': 128, 'stale_companies': 0, 'missing_companies': 803, 'oldest_retrieved_at': '2026-08-10T05:42:52.304259Z', 'newest_retrieved_at': '2026-08-17T05:17:56.237552Z', 'country_coverage': {'SE': {'eligible': 737, 'cached': 39, 'fresh': 39, 'stale': 0, 'missing': 698}, 'FI': {'eligible': 194, 'cached': 89, 'fresh': 89, 'stale': 0, 'missing': 105}}}
+- enrichment: {'eligible_universe_size': 931, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 128, 'cache_misses': 803, 'cache_max_age_days': 45, 'eligible_companies': 931, 'cached_companies': 157, 'fresh_companies': 157, 'stale_companies': 0, 'missing_companies': 774, 'oldest_retrieved_at': '2026-08-10T05:42:52.304259Z', 'newest_retrieved_at': '2026-08-17T05:40:25.507336Z', 'country_coverage': {'SE': {'eligible': 737, 'cached': 41, 'fresh': 41, 'stale': 0, 'missing': 696}, 'FI': {'eligible': 194, 'cached': 116, 'fresh': 116, 'stale': 0, 'missing': 78}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,16 +19,16 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-5e9398b90d5ae94e314f412d', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-08-17T05:17:56.288206Z'}
+- evaluation: {'run_id': 'evaluation-15bd213b00f884f44cbdc6d7', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-08-17T05:40:25.564305Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=939, SE=745, FI=194; STO/main_market=412, HEL/main_market=147, STO/first_north=333, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=931; budget=30; selected=30; attempts=30; successful=27; cache coverage=128/931 (fresh=128, stale=0, missing=803); cache hits=101; cache misses=830; cutoff ties=17 (12 excluded)
-- finimpulse fundamentals: warning - 27/30 Finimpulse lookups parsed; valuation support 0/27; direct valuation 0/27; proxy inputs 0/27; missing valuation support 27/27
+- fundamentals enrichment: ok - eligible=931; budget=30; selected=30; attempts=30; successful=29; cache coverage=157/931 (fresh=157, stale=0, missing=774); cache hits=128; cache misses=803; cutoff ties=2 (1 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 0/29; direct valuation 0/29; proxy inputs 0/29; missing valuation support 29/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/30 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/30 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/30 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/30 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/31 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/30 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/31 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
 
 ## Watchlist
 
@@ -164,7 +164,89 @@ _These are not primary long-term investment ideas; they need valuation or strong
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ADMCM.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #4 Atria Oyj A (ATRAV)
+## #4 Detection Technology Oyj (DETEC)
+
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
+
+**What the company does:** Detection Technology Oyj engages in the provision of X-ray detector solutions for industrial, medical, and security applications in Finland and internationally. The company offers medical computed tomography (CT) detectors; security CT detectors; photon-counting detectors; flat-panel detectors; and line scan detectors, including linear detector arrays and detectors boards. It also provides myDT+ service portfolio comprising application testing, product commissioning, customer support, repair, failure analysis, extended warranty, warehousing, and training services. Its products are used in medical applications for computed tomography, dental, surgical, and veterinary imaging, as well as digital radiography; in security applications for Cabin and hold baggage, parcel and mail, cargo, container, vehicle, and person screening; and industrial applications comprising material sorting in the agriculture, forest, mining, and recycling industries, as well as production process control and quality inspection in the aerospace, automotive, battery, defense, food, pharmaceutical, renewable energy, oil, and gas industries. The company was incorporated in 1991 and is headquartered in Espoo, Finland.
+
+**Score:** 0.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative small-cap monitor
+**Thesis:** Detection Technology Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 3/5 | Clear business profile, but margin data is missing. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 3/5 | Modest revenue growth of 2.4%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- First North listing
+- Speculative small-cap monitor
+- First North discovery opportunity
+- Revenue growth
+- Conservative balance sheet
+- Business description available
+- Adequate liquidity
+
+### Risks
+- No profitability signal
+- Missing valuation data
+- Gate tier: Speculative monitor
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (DETEC.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #5 Anora Group Oyj (ANORA)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** Anora Group Oyj engages in the production, import, sale, and distribution of alcoholic and non-alcoholic beverages in Finland, Sweden, Norway, Denmark, and internationally. It operates in three segments: Wine, Spirits, and Industrial. The company offers wines; spirits; no- and low-alcohol products; industrial products, such as barley starch, technical ethanol, neutral potable ethanol, and feed components; and contract manufacturing services. It is also involved in consumer research, innovation, product development, distillation, maturation, blending, bottling, packaging, logistics, and warehousing services. In addition, the company offers storage and product distribution services. It serves alcohol retail monopolies, alcoholic beverage wholesalers, the HoReCa industry, retail grocery stores, travel trade, restaurants, retail stores, travel retail, wine and spirit companies, importers in the export markets, and industrial customers. The company offers its products under the Koskenkorva, Linie, O.P. Anderson, Xanté, Skagerrak, Chill Out, Ruby Zin, Blossa, Wongraven, Il Capolavoro, and Falling Feather brands, as well as under partner brands. It exports its products to approximately 30 markets. The company was formerly known as Altia Oyj and changed its name to Anora Group Oyj in September 2021. Anora Group Oyj was founded in 1888 and is headquartered in Helsinki, Finland.
+
+**Score:** -7.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative small-cap monitor
+**Thesis:** Anora Group Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 3/5 | Clear business profile, but margin data is missing. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 6.6%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- Speculative small-cap monitor
+- Revenue growth
+- Conservative balance sheet
+- Business description available
+- Adequate liquidity
+
+### Risks
+- No profitability signal
+- Missing valuation data
+- Gate tier: Speculative monitor
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ANORA.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #6 Atria Oyj A (ATRAV)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -204,7 +286,7 @@ _These are not primary long-term investment ideas; they need valuation or strong
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ATRAV.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #5 CapMan Oyj (CAPMAN)
+## #7 CapMan Oyj (CAPMAN)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -244,7 +326,87 @@ _These are not primary long-term investment ideas; they need valuation or strong
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CAPMAN.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
 
-## #6 Incap Oyj (ICP1V)
+## #8 Enersense International Oyj (ESENSE)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** Enersense International Oyj, together with its subsidiaries, provides energy solutions in Finland and internationally. The company operates through Power, Connectivity, and Energy Transition segments. It offers design, construction, and maintenance of transmission grids, electric substations, and wind and solar farms; and provides energy transition solutions, such as power plants, district heating networks, hydrogen facilities, hydropower plants, shipyards, and steel and piping structures, as well as energy storage systems. The company provides mobile and fixed network services, and related infrastructure; and designs, constructs, maintains, and repairs fixed and wireless telecommunications networks and infrastructure. It serves customers operating in energy transmission and production, industrial energy transition, telecommunications, and data centers. The company was incorporated in 1986 and is headquartered in Pori, Finland.
+
+**Score:** -7.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative small-cap monitor
+**Thesis:** Enersense International Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 3/5 | Clear business profile, but margin data is missing. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 5.1%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- Speculative small-cap monitor
+- Revenue growth
+- Conservative balance sheet
+- Business description available
+- Adequate liquidity
+
+### Risks
+- No profitability signal
+- Missing valuation data
+- Gate tier: Speculative monitor
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ESENSE.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #9 Gofore Oyj (GOFORE)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** Gofore Oyj provides digital transformation consultancy services for private and public sectors in Finland and internationally. It is involved in the management of digital change, service design, and software development and testing; and provision of cloud services utilization consulting and cloud capacity services. The company was incorporated in 2001 and is headquartered in Tampere, Finland.
+
+**Score:** -7.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Speculative small-cap monitor
+**Thesis:** Gofore Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 3/5 | Clear business profile, but margin data is missing. |
+| Valuation | 1/5 | No valuation multiple is available. |
+| Growth | 4/5 | Healthy revenue growth of 12.9%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Profitability risk needs manual confirmation. |
+| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
+
+### Reasons
+- Small market cap
+- Speculative small-cap monitor
+- Revenue growth
+- Conservative balance sheet
+- Business description available
+- Adequate liquidity
+
+### Risks
+- No profitability signal
+- Missing valuation data
+- Gate tier: Speculative monitor
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (GOFORE.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
+
+## #10 Incap Oyj (ICP1V)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -283,163 +445,3 @@ _These are not primary long-term investment ideas; they need valuation or strong
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ICP1V.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #7 Lindex Group Oyj (LINDEX)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Lindex Group Oyj engages in the retailing business in Finland and internationally. The company operates through Lindex and Stockmann segments. It also offers women's clothing, lingerie and underwear, children's clothing, and cosmetics and accessories. In addition, the company operates department stores; e-commerce, logistics centres, and production offices; and online store. Further, it operates department stores, which offer fashion, cosmetics, and home products. The company was formerly known as Stockmann Oyj Abp and changed its name to Lindex Group Oyj in March 2024. Lindex Group Oyj was founded in 1862 and is based in Helsinki, Finland.
-
-**Score:** -7.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Speculative small-cap monitor
-**Thesis:** Lindex Group Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 3/5 | Clear business profile, but margin data is missing. |
-| Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 3/5 | Modest revenue growth of 1.2%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Profitability risk needs manual confirmation. |
-| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
-
-### Reasons
-- Small market cap
-- Speculative small-cap monitor
-- Revenue growth
-- Conservative balance sheet
-- Business description available
-- Adequate liquidity
-
-### Risks
-- No profitability signal
-- Missing valuation data
-- Gate tier: Speculative monitor
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (LINDEX.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #8 Marimekko Oyj (MEKKO)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Marimekko Oyj, a lifestyle design company, designs, manufactures, and sells clothing, bags and accessories, and interior decoration products worldwide. The company offers various clothes, such as dresses, denim, knitwear, tops, nightwear and loungewear, bottoms, and coats and jackets, as well as kids clothing products. It provides crossbody bags, shoulder bags, knitted bags, and mini bags, as well as coin purses, wallets, and backpacks. In addition, the company offers printed fabrics; kitchen textiles and napkins; cosmetic bags; dining, home textiles, rugs, furniture, vases and candleholders, bedding, and towels and bathrobes products; and accessories, including hats, scarves, jewelry, hair accessories, socks, key chain, and umbrellas. Marimekko Oyj was incorporated in 1951 and is headquartered in Helsinki, Finland.
-
-**Score:** -7.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Speculative small-cap monitor
-**Thesis:** Marimekko Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 3/5 | Clear business profile, but margin data is missing. |
-| Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 3/5 | Modest revenue growth of 4.5%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Profitability risk needs manual confirmation. |
-| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
-
-### Reasons
-- Small market cap
-- Speculative small-cap monitor
-- Revenue growth
-- Conservative balance sheet
-- Business description available
-- Adequate liquidity
-
-### Risks
-- No profitability signal
-- Missing valuation data
-- Gate tier: Speculative monitor
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (MEKKO.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #9 Raisio Oyj Vaihto-osake (RAIVV)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Raisio plc, together with its subsidiaries, produces and sells food and food ingredients in Finland, the United Kingdom, and internationally. It operates through Brands & Industrial and Other Operations segment. The company offers grain-based food and ingredients; and plant proteins to industrial and catering companies. It also offers fat-based products, including margarines and vegetable oil spreads; dairy products, such as yogurt drinks and yogurt, quark; cereals comprising flour, pasta, barley, mueslis, breakfast cereals, instant porridge, biscuits, bars, and breads; and plant-based products that include unflavored and flavoured drinks, spoonable products, smoothies, and cream alternatives under the Benecol, Elovena, Sunnuntai, Torino, Nalle, and Raisio food solutions brand names. The company was formerly known as Raisio Group plc and changed its name to Raisio plc in April 2005. Raisio plc was founded in 1939 and is headquartered in Raisio, Finland.
-
-**Score:** -7.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Speculative small-cap monitor
-**Thesis:** Raisio Oyj Vaihto-osake is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 3/5 | Clear business profile, but margin data is missing. |
-| Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 3/5 | Modest revenue growth of 2.3%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Profitability risk needs manual confirmation. |
-| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
-
-### Reasons
-- Small market cap
-- Speculative small-cap monitor
-- Revenue growth
-- Conservative balance sheet
-- Business description available
-- Adequate liquidity
-
-### Risks
-- No profitability signal
-- Missing valuation data
-- Gate tier: Speculative monitor
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (RAIVV.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
-
-## #10 Revenio Group Oyj (REG1V)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Revenio Group Oyj, provides ophthalmological devices and software solutions for the diagnosis of glaucoma, macular degeneration, and diabetic retinopathy in Finland, the United States, and internationally. The company offers iCare IC100, ST500, and IC200 tonometers; iCare HOME2, a tonometer to measure eye pressure; iCare Sensors that are accessories of iCare tonometer for measuring intraocular pressure (IOP); iCare TONOVET Pro, a tonometer designed for use in surgical or emergency settings; and iCare TONOVET Plus tonometer, which is used by veterinarians, ophthalmologists and other personnel to measure intraocular pressure in animal patients. It also provides imaging devices comprising iCare EIDON, a device with confocal retinal imaging; iCare DRSplus, a device for pupil imaging; and iCare COMPASS, which provides fundus perimetry with true-color confocal retinal images. In addition, the company offers iCare ILLUME, a screening software that helps to detect the early signs of diabetic retinopathy, age-related macular degeneration, and glaucoma using artificial intelligence; iCare CLINIC cloud software to store long-term IOP data; and Oculo, an eye care software platform, which combines clinical communication, telehealth, remote patient monitoring and data analytics capabilities. Revenio Group Oyj was incorporated in 2001 and is based in Vantaa, Finland.
-
-**Score:** -7.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Speculative small-cap monitor
-**Thesis:** Revenio Group Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 3/5 | Clear business profile, but margin data is missing. |
-| Valuation | 1/5 | No valuation multiple is available. |
-| Growth | 4/5 | Healthy revenue growth of 6.8%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Profitability risk needs manual confirmation. |
-| Data confidence | 3/5 | Some fundamentals are available; verify in reports. |
-
-### Reasons
-- Small market cap
-- Speculative small-cap monitor
-- Revenue growth
-- Conservative balance sheet
-- Business description available
-- Adequate liquidity
-
-### Risks
-- No profitability signal
-- Missing valuation data
-- Gate tier: Speculative monitor
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (REG1V.HE)](https://developers.finimpulse.com/v1/search/) (finimpulse)
