@@ -101,43 +101,35 @@ def finnhub_payload() -> str:
     )
 
 
-def finimpulse_search_payload() -> str:
+def finimpulse_statistics_payload() -> str:
     return json.dumps(
         {
             "status_code": 20000,
             "status_message": "OK",
-            "data": {"symbols": ["KAR.ST"], "quote_types": ["stock"], "limit": 1},
-            "result": {
-                "total_count": 1,
-                "items_count": 1,
-                "items": [
-                    {
-                        "symbol": "KAR.ST",
-                        "short_name": "Karnov Group AB",
-                        "long_name": "Karnov Group AB (publ)",
-                        "quote_type": "stock",
-                        "currency": "SEK",
-                        "regular_market_price": 72.0,
-                        "average_daily_volume_10_day": 485039,
-                        "one_year_return": -16.473,
-                        "fifty_two_week_high_change_percent": -44.272444,
-                        "market_region": "SE",
-                        "sector": "Industrials",
-                        "industry": "Specialty Business Services",
-                        "amount": 7024167424,
-                        "trailing_pe": 13.4,
-                        "price_to_book": 1.2,
-                        "enterprise_value_to_ebit": 9.8,
-                        "total_revenue": 2_400_000_000,
-                        "book_value": 840_000_000,
-                        "net_income": 210_000_000,
-                        "revenue_growth": 0.24636247668524147,
-                        "net_margin": 0.36760195,
-                        "free_cash_flow_margin": 0.19304025,
-                        "debt_to_equity": 0.29354096,
-                    }
-                ],
-            },
+            "data": {"symbol": "KAR.ST"},
+            "result": [
+                {
+                    "symbol": "KAR.ST",
+                    "quote_type": "stock",
+                    "currency": "SEK",
+                    "current_price": 72.0,
+                    "average_volume_10days": 485039,
+                    "fifty_two_week_high": 129.2,
+                    "market_cap": 7024167424,
+                    "trailing_pe": 13.4,
+                    "price_to_book": 1.2,
+                    "enterprise_to_ebitda": 9.8,
+                    "total_revenue": 2_400_000_000,
+                    "net_income_to_common": 210_000_000,
+                    "total_cash": 500_000_000,
+                    "total_debt": 800_000_000,
+                    "revenue_growth": 0.24636247668524147,
+                    "profit_margins": 0.36760195,
+                    "operating_margins": 0.21,
+                    "debt_to_equity": 29.354096,
+                    "update_time": "2026-08-08T05:30:00Z",
+                }
+            ],
         }
     )
 
@@ -169,33 +161,27 @@ def finimpulse_profile_payload() -> str:
     )
 
 
-def finimpulse_global_search_payload() -> str:
+def finimpulse_global_statistics_payload() -> str:
     return json.dumps(
         {
             "status_code": 20000,
             "status_message": "OK",
-            "data": {"symbols": ["NVDA"], "quote_types": ["stock"], "limit": 1},
-            "result": {
-                "total_count": 1,
-                "items_count": 1,
-                "items": [
-                    {
-                        "symbol": "NVDA",
-                        "short_name": "NVIDIA Corporation",
-                        "long_name": "NVIDIA Corporation",
-                        "quote_type": "stock",
-                        "currency": "USD",
-                        "regular_market_price": 142.0,
-                        "average_daily_volume_10_day": 180_000_000,
-                        "amount": 3_500_000_000_000,
-                        "trailing_pe": 31.2,
-                        "total_revenue": 130_000_000_000,
-                        "revenue_growth": 0.65,
-                        "net_margin": 0.54,
-                        "debt_to_equity": 0.2,
-                    }
-                ],
-            },
+            "data": {"symbol": "NVDA"},
+            "result": [
+                {
+                    "symbol": "NVDA",
+                    "quote_type": "stock",
+                    "currency": "USD",
+                    "current_price": 142.0,
+                    "average_volume_10days": 180_000_000,
+                    "market_cap": 3_500_000_000_000,
+                    "trailing_pe": 31.2,
+                    "total_revenue": 130_000_000_000,
+                    "revenue_growth": 0.65,
+                    "profit_margins": 0.54,
+                    "debt_to_equity": 20.0,
+                }
+            ],
         }
     )
 
@@ -561,12 +547,12 @@ def test_finimpulse_symbol_candidates_normalize_spaces_and_share_classes():
     )
 
 
-def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
+def test_finimpulse_provider_parses_statistics_with_token_safe_evidence():
     requested: list[tuple[str, str, dict[str, str]]] = []
 
     def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
         requested.append((url, payload, headers))
-        return finimpulse_search_payload()
+        return finimpulse_statistics_payload()
 
     provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
 
@@ -577,33 +563,48 @@ def test_finimpulse_provider_parses_search_result_with_token_safe_evidence():
     assert snapshot.market_cap_eur_m == 702.42
     assert snapshot.financials.pe_ratio == 13.4
     assert snapshot.financials.price_to_book == 1.2
-    assert snapshot.financials.ev_to_ebit == 9.8
+    assert snapshot.financials.ev_to_ebit is None
     assert snapshot.financials.revenue_eur_m == 240.0
     assert snapshot.financials.book_value_eur_m is None
     assert snapshot.financials.net_income_eur_m == 21.0
+    assert snapshot.financials.net_cash_eur_m == -30.0
     assert snapshot.financials.revenue_growth_pct == 24.64
-    assert snapshot.financials.operating_margin_pct is None
-    assert snapshot.financials.debt_to_equity == 0.29354096
-    assert snapshot.financials.one_year_return_pct == -16.473
-    assert snapshot.financials.distance_from_52w_high_pct == -44.272444
+    assert snapshot.financials.operating_margin_pct == 21.0
+    assert snapshot.financials.debt_to_equity == 0.2935
+    assert snapshot.financials.one_year_return_pct is None
+    assert snapshot.financials.distance_from_52w_high_pct == -44.27
     assert snapshot.financials.average_daily_value_eur == 3_492_280.8
     assert snapshot.financials.data_quality == DataQuality.PARTIAL
     assert snapshot.evidence.source == "finimpulse"
     assert "KAR.ST" in snapshot.evidence.label
     assert "secret-token" not in snapshot.evidence.url
     assert requested
-    assert requested[0][0] == "https://api.finimpulse.com/v1/search"
+    assert requested[0][0] == "https://api.finimpulse.com/v1/statistics/general"
+    assert json.loads(requested[0][1]) == {"symbol": "KAR.ST"}
     assert "secret-token" in requested[0][2]["Authorization"]
+    assert snapshot.evidence.url.endswith("/v1/statistics/general/")
 
 
-@pytest.mark.parametrize("margin_key", ["net_margin", "free_cash_flow_margin"])
+def test_finimpulse_does_not_substitute_ev_to_ebitda_for_ev_to_ebit():
+    provider = FinimpulseFundamentalsProvider(
+        api_key="secret-token",
+        fetcher=lambda url, request, headers: finimpulse_statistics_payload(),
+    )
+
+    snapshot = provider.get_fundamentals(make_company())
+
+    assert snapshot is not None
+    assert snapshot.financials.ev_to_ebit is None
+    assert snapshot.financials.observation_for("ev_to_ebit") is None
+
+
+@pytest.mark.parametrize("margin_key", ["profit_margins", "ebitda_margins"])
 def test_finimpulse_does_not_substitute_other_margins_for_operating_margin(
     margin_key: str,
 ):
-    payload = json.loads(finimpulse_search_payload())
-    item = payload["result"]["items"][0]
-    item.pop("net_margin", None)
-    item.pop("free_cash_flow_margin", None)
+    payload = json.loads(finimpulse_statistics_payload())
+    item = payload["result"][0]
+    item.pop("operating_margins")
     item[margin_key] = 0.41
     provider = FinimpulseFundamentalsProvider(
         api_key="secret-token",
@@ -618,8 +619,8 @@ def test_finimpulse_does_not_substitute_other_margins_for_operating_margin(
 
 
 def test_finimpulse_retains_genuine_operating_margin_when_supplied():
-    payload = json.loads(finimpulse_search_payload())
-    payload["result"]["items"][0]["operating_margin"] = 0.21
+    payload = json.loads(finimpulse_statistics_payload())
+    payload["result"][0]["operating_margins"] = 0.31
     provider = FinimpulseFundamentalsProvider(
         api_key="secret-token",
         fetcher=lambda url, request, headers: json.dumps(payload),
@@ -628,10 +629,10 @@ def test_finimpulse_retains_genuine_operating_margin_when_supplied():
     snapshot = provider.get_fundamentals(make_company())
 
     assert snapshot is not None
-    assert snapshot.financials.operating_margin_pct == 21.0
+    assert snapshot.financials.operating_margin_pct == 31.0
     observation = snapshot.financials.observation_for("operating_margin_pct")
     assert observation is not None
-    assert observation.source_metric == "operating_margin"
+    assert observation.source_metric == "operating_margins"
     assert observation.provider == "finimpulse"
 
 
@@ -648,8 +649,8 @@ def test_finimpulse_rejects_non_finite_provider_values(
     invalid_value: str,
     canonical_field: str,
 ):
-    payload = json.loads(finimpulse_search_payload())
-    payload["result"]["items"][0][source_metric] = invalid_value
+    payload = json.loads(finimpulse_statistics_payload())
+    payload["result"][0][source_metric] = invalid_value
     provider = FinimpulseFundamentalsProvider(
         api_key="secret-token",
         fetcher=lambda url, request, headers: json.dumps(payload),
@@ -663,8 +664,8 @@ def test_finimpulse_rejects_non_finite_provider_values(
 
 
 def test_finimpulse_as_of_metadata_is_preserved_without_inference():
-    payload = json.loads(finimpulse_search_payload())
-    payload["result"]["items"][0]["update_time"] = "2026-08-08T05:30:00Z"
+    payload = json.loads(finimpulse_statistics_payload())
+    payload["result"][0]["update_time"] = "2026-08-08T05:30:00Z"
     provider = FinimpulseFundamentalsProvider(
         api_key="secret-token",
         fetcher=lambda url, request, headers: json.dumps(payload),
@@ -684,7 +685,7 @@ def test_finimpulse_provider_fetches_explicit_symbol():
 
     def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
         requested_payloads.append(json.loads(payload))
-        return finimpulse_global_search_payload()
+        return finimpulse_global_statistics_payload()
 
     provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
 
@@ -696,7 +697,7 @@ def test_finimpulse_provider_fetches_explicit_symbol():
     assert snapshot.financials.revenue_eur_m is not None
     assert provider.source_check().status == "ok"
     assert "Finimpulse lookups parsed" in provider.source_check().detail
-    assert requested_payloads[0]["symbols"] == ["NVDA"]
+    assert requested_payloads[0] == {"symbol": "NVDA"}
 
 
 def test_finimpulse_provider_fetches_profile_business_description():
@@ -706,7 +707,7 @@ def test_finimpulse_provider_fetches_profile_business_description():
         requested.append(url)
         if url.endswith("/v1/profile"):
             return finimpulse_profile_payload()
-        return finimpulse_search_payload()
+        return finimpulse_statistics_payload()
 
     provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
 
@@ -715,7 +716,7 @@ def test_finimpulse_provider_fetches_profile_business_description():
     assert isinstance(snapshot, FundamentalsSnapshot)
     assert snapshot.business_description.startswith("Karnov Group provides legal")
     assert snapshot.ir_url == "https://www.karnovgroup.com/en/investors/"
-    assert "https://api.finimpulse.com/v1/search" in requested
+    assert "https://api.finimpulse.com/v1/statistics/general" in requested
     assert "https://api.finimpulse.com/v1/profile" in requested
 
 
@@ -737,7 +738,7 @@ def test_enriched_provider_merges_finimpulse_business_description_into_company()
     def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
         if url.endswith("/v1/profile"):
             return finimpulse_profile_payload()
-        return finimpulse_search_payload()
+        return finimpulse_statistics_payload()
 
     provider = EnrichedResearchProvider(
         BaseProvider(),
@@ -751,11 +752,11 @@ def test_enriched_provider_merges_finimpulse_business_description_into_company()
     assert research.company.ir_url == "https://www.karnovgroup.com/en/investors/"
 
 
-def test_finimpulse_profile_failure_keeps_search_fundamentals():
+def test_finimpulse_profile_failure_keeps_statistics_fundamentals():
     def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
         if url.endswith("/v1/profile"):
             raise RuntimeError(f"profile failed {headers['Authorization']}")
-        return finimpulse_search_payload()
+        return finimpulse_statistics_payload()
 
     provider = FinimpulseFundamentalsProvider(api_key="secret-token", fetcher=fetcher)
 
@@ -768,32 +769,30 @@ def test_finimpulse_profile_failure_keeps_search_fundamentals():
     assert "secret-token" not in check.detail
 
 
-def test_finimpulse_provider_returns_none_for_empty_search_results():
+def test_finimpulse_provider_returns_none_for_empty_statistics_results():
     provider = FinimpulseFundamentalsProvider(
         api_key="secret-token",
         fetcher=lambda url, payload, headers: json.dumps(
-            {"status_code": 20000, "result": {"items": []}}
+            {"status_code": 20000, "result": []}
         ),
     )
 
     assert provider.get_fundamentals(make_company()) is None
 
 
-def test_finimpulse_provider_ignores_non_matching_search_results():
+def test_finimpulse_provider_ignores_non_matching_statistics_results():
     def fetcher(url: str, payload: str, headers: dict[str, str]) -> str:
         return json.dumps(
             {
                 "status_code": 20000,
-                "result": {
-                    "items": [
-                        {
-                            "symbol": "AAPL",
-                            "currency": "USD",
-                            "amount": 4_000_000_000_000,
-                            "revenue_growth": 0.1,
-                        }
-                    ]
-                },
+                "result": [
+                    {
+                        "symbol": "AAPL",
+                        "currency": "USD",
+                        "market_cap": 4_000_000_000_000,
+                        "revenue_growth": 0.1,
+                    }
+                ],
             }
         )
 
@@ -821,7 +820,7 @@ def test_finimpulse_source_check_warns_without_leaking_token_when_lookups_fail()
 def test_finimpulse_source_check_reports_valuation_coverage():
     provider = FinimpulseFundamentalsProvider(
         api_key="secret-token",
-        fetcher=lambda url, payload, headers: finimpulse_search_payload(),
+        fetcher=lambda url, payload, headers: finimpulse_statistics_payload(),
     )
     provider.get_fundamentals(make_company())
 

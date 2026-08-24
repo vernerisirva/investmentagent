@@ -69,9 +69,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .investmentagent/fundamentals-cache.json
-          key: fundamentals-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: fundamentals-statistics-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            fundamentals-${{ runner.os }}-
+            fundamentals-statistics-v1-${{ runner.os }}-
 
       - name: Restore private market-price cache
         if: env.RUN_DAILY_REPORT == 'true'

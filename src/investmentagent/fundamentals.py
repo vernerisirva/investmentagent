@@ -48,8 +48,10 @@ FINNHUB_METRIC_URL = (
 )
 FINNHUB_PROFILE_DOC_URL = "https://finnhub.io/docs/api/company-profile2"
 FINNHUB_FETCH_TIMEOUT_SECONDS = 3
-FINIMPULSE_SEARCH_URL = "https://api.finimpulse.com/v1/search"
-FINIMPULSE_SEARCH_DOC_URL = "https://developers.finimpulse.com/v1/search/"
+FINIMPULSE_STATISTICS_URL = "https://api.finimpulse.com/v1/statistics/general"
+FINIMPULSE_STATISTICS_DOC_URL = (
+    "https://developers.finimpulse.com/v1/statistics/general/"
+)
 FINIMPULSE_PROFILE_URL = "https://api.finimpulse.com/v1/profile"
 FINIMPULSE_PROFILE_DOC_URL = "https://developers.finimpulse.com/v1/profile/"
 FINIMPULSE_FETCH_TIMEOUT_SECONDS = 3
@@ -59,40 +61,8 @@ EODHD_FUNDAMENTALS_DOC_URL = (
 )
 EODHD_FETCH_TIMEOUT_SECONDS = 3
 _STATIC_EUR_RATES = {"EUR": 1.0, "SEK": 0.1, "USD": 0.92}
-FINIMPULSE_PE_KEYS = ("pe_ratio", "trailing_pe", "trailingPE", "forward_pe")
-FINIMPULSE_PRICE_TO_BOOK_KEYS = (
-    "price_to_book",
-    "priceToBook",
-    "pb_ratio",
-    "price_book_ratio",
-)
-FINIMPULSE_EV_TO_EBIT_KEYS = (
-    "enterprise_value_to_ebit",
-    "ev_to_ebit",
-    "evEbit",
-    "enterprise_value_ebit",
-)
-FINIMPULSE_REVENUE_KEYS = (
-    "total_revenue",
-    "revenue",
-    "annual_revenue",
-    "revenue_ttm",
-)
-FINIMPULSE_BOOK_VALUE_KEYS = (
-    "shareholders_equity",
-    "stockholders_equity",
-    "total_equity",
-)
-FINIMPULSE_NET_INCOME_KEYS = (
-    "net_income",
-    "net_income_common_stockholders",
-    "net_income_ttm",
-)
-FINIMPULSE_OPERATING_MARGIN_KEYS = (
-    "operating_margin",
-    "operating_margins",
-    "operating_margin_ttm",
-)
+FINIMPULSE_PE_KEYS = ("trailing_pe", "forward_pe")
+FINIMPULSE_PRICE_TO_BOOK_KEYS = ("price_to_book",)
 DIRECT_VALUATION_FIELDS = ("pe_ratio", "price_to_book", "ev_to_ebit")
 PROXY_VALUATION_FIELDS = ("revenue_eur_m", "book_value_eur_m", "net_income_eur_m")
 
@@ -429,9 +399,7 @@ class FinimpulseFundamentalsProvider:
         self, symbol: str, fallback_currency: str | None
     ) -> FundamentalsSnapshot | None:
         self.attempted_lookups += 1
-        payload = json.dumps(
-            {"symbols": [symbol], "quote_types": ["stock"], "limit": 1}
-        )
+        payload = json.dumps({"symbol": symbol})
         headers = {
             "Accept": "application/json,text/plain,*/*",
             "Authorization": f"Bearer {self.api_key}",
@@ -439,8 +407,8 @@ class FinimpulseFundamentalsProvider:
             "User-Agent": "Mozilla/5.0",
         }
         try:
-            snapshot = _parse_finimpulse_search_payload(
-                payload=self._fetcher(FINIMPULSE_SEARCH_URL, payload, headers),
+            snapshot = _parse_finimpulse_statistics_payload(
+                payload=self._fetcher(FINIMPULSE_STATISTICS_URL, payload, headers),
                 symbol=symbol,
                 fallback_currency=fallback_currency,
             )
@@ -1225,18 +1193,17 @@ def _parse_finnhub_payload(
     )
 
 
-def _parse_finimpulse_search_payload(
+def _parse_finimpulse_statistics_payload(
     payload: str, symbol: str, fallback_currency: str | None
 ) -> FundamentalsSnapshot | None:
-    result = _dict_value(json.loads(payload), "result")
-    items = result.get("items")
-    if not isinstance(items, list) or not items:
+    result = json.loads(payload).get("result")
+    if not isinstance(result, list) or not result:
         return None
 
     item = next(
         (
             candidate
-            for candidate in items
+            for candidate in result
             if isinstance(candidate, dict)
             and str(candidate.get("symbol") or "").upper() == symbol.upper()
         ),
@@ -1248,11 +1215,11 @@ def _parse_finimpulse_search_payload(
     currency = str(item.get("currency") or fallback_currency or "").upper()
     fx_rate = _STATIC_EUR_RATES.get(currency)
     as_of = _clean_text(item.get("update_time"))
-    market_cap_eur_m = _eur_m(_number(item, "amount"), fx_rate)
+    market_cap_eur_m = _eur_m(_number(item, "market_cap"), fx_rate)
 
     average_daily_value_eur = None
-    price = _number(item, "regular_market_price")
-    average_daily_volume = _number(item, "average_daily_volume_10_day")
+    price = _number(item, "current_price")
+    average_daily_volume = _number(item, "average_volume_10days")
     if fx_rate is not None and price is not None and average_daily_volume is not None:
         average_daily_value_eur = _finite_number(
             round(price * average_daily_volume * fx_rate, 2)
@@ -1262,29 +1229,35 @@ def _parse_finimpulse_search_payload(
     price_to_book, pb_key = _first_number_with_key(
         item, FINIMPULSE_PRICE_TO_BOOK_KEYS
     )
-    ev_to_ebit, ev_key = _first_number_with_key(item, FINIMPULSE_EV_TO_EBIT_KEYS)
-    revenue_source, revenue_key = _first_number_with_key(
-        item, FINIMPULSE_REVENUE_KEYS
-    )
+    revenue_source = _number(item, "total_revenue")
+    revenue_key = "total_revenue" if revenue_source is not None else None
     revenue_eur_m = _eur_m(revenue_source, fx_rate)
-    book_value_source, book_value_key = _first_number_with_key(
-        item, FINIMPULSE_BOOK_VALUE_KEYS
-    )
-    book_value_eur_m = _eur_m(book_value_source, fx_rate)
-    net_income_source, net_income_key = _first_number_with_key(
-        item, FINIMPULSE_NET_INCOME_KEYS
+    net_income_source = _number(item, "net_income_to_common")
+    net_income_key = (
+        "net_income_to_common" if net_income_source is not None else None
     )
     net_income_eur_m = _eur_m(net_income_source, fx_rate)
+    total_cash = _number(item, "total_cash")
+    total_debt = _number(item, "total_debt")
+    net_cash_eur_m = None
+    if total_cash is not None and total_debt is not None:
+        net_cash_eur_m = _eur_m(total_cash - total_debt, fx_rate)
     revenue_growth_source = _number(item, "revenue_growth")
     revenue_growth_pct = _ratio_to_percent(revenue_growth_source)
-    operating_margin_source, operating_margin_key = _first_number_with_key(
-        item, FINIMPULSE_OPERATING_MARGIN_KEYS
+    operating_margin_source = _number(item, "operating_margins")
+    operating_margin_key = (
+        "operating_margins" if operating_margin_source is not None else None
     )
     operating_margin_pct = _ratio_to_percent(operating_margin_source)
-    debt_to_equity = _number(item, "debt_to_equity")
-    one_year_return_pct = _number(item, "one_year_return")
-    distance_from_52w_high_pct = _number(
-        item, "fifty_two_week_high_change_percent"
+    debt_to_equity_source = _number(item, "debt_to_equity")
+    debt_to_equity = _debt_to_equity_ratio(debt_to_equity_source)
+    fifty_two_week_high = _number(item, "fifty_two_week_high")
+    distance_from_52w_high_pct = (
+        _finite_number(round((price / fifty_two_week_high - 1) * 100, 2))
+        if price is not None
+        and fifty_two_week_high is not None
+        and fifty_two_week_high > 0
+        else None
     )
 
     observations: list[FinancialObservation] = []
@@ -1299,7 +1272,6 @@ def _parse_finimpulse_search_payload(
             pe_key,
             {
                 "trailing_pe": ReportingPeriodType.TTM,
-                "trailingPE": ReportingPeriodType.TTM,
                 "forward_pe": ReportingPeriodType.FORWARD,
             },
         ),
@@ -1315,14 +1287,6 @@ def _parse_finimpulse_search_payload(
         price_to_book,
         "finimpulse",
         pb_key,
-        as_of=as_of,
-    )
-    _add_observation(
-        observations,
-        "ev_to_ebit",
-        ev_to_ebit,
-        "finimpulse",
-        ev_key,
         as_of=as_of,
     )
     _add_fx_observation(
@@ -1344,16 +1308,6 @@ def _parse_finimpulse_search_payload(
     )
     _add_fx_observation(
         observations,
-        "book_value_eur_m",
-        book_value_eur_m,
-        "finimpulse",
-        book_value_key,
-        currency,
-        fx_rate,
-        as_of=as_of,
-    )
-    _add_fx_observation(
-        observations,
         "net_income_eur_m",
         net_income_eur_m,
         "finimpulse",
@@ -1361,9 +1315,17 @@ def _parse_finimpulse_search_payload(
         currency,
         fx_rate,
         as_of=as_of,
-        period_type=(
-            ReportingPeriodType.TTM if net_income_key == "net_income_ttm" else None
-        ),
+    )
+    _add_fx_observation(
+        observations,
+        "net_cash_eur_m",
+        net_cash_eur_m,
+        "finimpulse",
+        "total_cash - total_debt" if net_cash_eur_m is not None else None,
+        currency,
+        fx_rate,
+        as_of=as_of,
+        extra_derivation="total cash minus total debt",
     )
     _add_observation(
         observations,
@@ -1382,11 +1344,6 @@ def _parse_finimpulse_search_payload(
         "finimpulse",
         operating_margin_key,
         as_of=as_of,
-        period_type=(
-            ReportingPeriodType.TTM
-            if operating_margin_key == "operating_margin_ttm"
-            else None
-        ),
         is_derived=True,
         derivation="ratio converted to percentage points",
     )
@@ -1395,17 +1352,10 @@ def _parse_finimpulse_search_payload(
         "debt_to_equity",
         debt_to_equity,
         "finimpulse",
-        "debt_to_equity" if debt_to_equity is not None else None,
+        "debt_to_equity" if debt_to_equity_source is not None else None,
         as_of=as_of,
-    )
-    _add_observation(
-        observations,
-        "one_year_return_pct",
-        one_year_return_pct,
-        "finimpulse",
-        "one_year_return" if one_year_return_pct is not None else None,
-        as_of=as_of,
-        reporting_period="trailing_1_year",
+        is_derived=True,
+        derivation="provider percentage divided by 100 to normalize as a ratio",
     )
     _add_observation(
         observations,
@@ -1413,12 +1363,16 @@ def _parse_finimpulse_search_payload(
         distance_from_52w_high_pct,
         "finimpulse",
         (
-            "fifty_two_week_high_change_percent"
+            "current_price / fifty_two_week_high"
             if distance_from_52w_high_pct is not None
             else None
         ),
         as_of=as_of,
         reporting_period="trailing_52_weeks",
+        is_derived=True,
+        derivation=(
+            "current price divided by 52-week high, minus one, as percentage points"
+        ),
     )
     _add_fx_observation(
         observations,
@@ -1426,13 +1380,13 @@ def _parse_finimpulse_search_payload(
         average_daily_value_eur,
         "finimpulse",
         (
-            "regular_market_price * average_daily_volume_10_day"
+            "current_price * average_volume_10days"
             if average_daily_value_eur is not None
             else None
         ),
         currency,
         fx_rate,
-        as_of=_clean_text(item.get("regular_market_time")),
+        as_of=as_of,
         reporting_period="10_trading_days",
         normalize_to_millions=False,
         extra_derivation="price multiplied by 10-day average volume",
@@ -1441,14 +1395,12 @@ def _parse_finimpulse_search_payload(
     financials = FinancialSnapshot(
         pe_ratio=pe_ratio,
         price_to_book=price_to_book,
-        ev_to_ebit=ev_to_ebit,
         revenue_eur_m=revenue_eur_m,
-        book_value_eur_m=book_value_eur_m,
         net_income_eur_m=net_income_eur_m,
+        net_cash_eur_m=net_cash_eur_m,
         revenue_growth_pct=revenue_growth_pct,
         operating_margin_pct=operating_margin_pct,
         debt_to_equity=debt_to_equity,
-        one_year_return_pct=one_year_return_pct,
         distance_from_52w_high_pct=distance_from_52w_high_pct,
         average_daily_value_eur=average_daily_value_eur,
         data_quality=DataQuality.PARTIAL,
@@ -1464,7 +1416,7 @@ def _parse_finimpulse_search_payload(
         financials=financials,
         evidence=Evidence(
             label=f"Finimpulse fundamentals lookup ({parsed_symbol})",
-            url=FINIMPULSE_SEARCH_DOC_URL,
+            url=FINIMPULSE_STATISTICS_DOC_URL,
             source="finimpulse",
         ),
     )
