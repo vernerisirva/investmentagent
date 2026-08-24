@@ -1,0 +1,34 @@
+{
+  "entry_policy": "first_market_session_adjusted_close_after_decision",
+  "evaluation_run_id": "evaluation-da204d57ff58dd38328bd6fc",
+  "evaluation_schema_version": 1,
+  "horizon_definitions": [
+    {
+      "label": "1_session",
+      "sessions": 1,
+      "unit": "market_sessions"
+    },
+    {
+      "label": "5_sessions",
+      "sessions": 5,
+      "unit": "market_sessions"
+    },
+    {
+      "label": "20_sessions",
+      "sessions": 20,
+      "unit": "market_sessions"
+    },
+    {
+      "label": "60_sessions",
+      "sessions": 60,
+      "unit": "market_sessions"
+    }
+  ],
+  "outcomes": [],
+  "price_basis": "adjusted_close_total_return",
+  "report_date": "2026-08-24",
+  "return_basis": "gross",
+  "schema_version": 1,
+  "scoring_model_version": "nordic-ranking-v1",
+  "strategy": "trading"
+}
