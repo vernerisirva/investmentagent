@@ -2,16 +2,16 @@
 
 > Research triage only. Not financial advice.
 
-Generated: 2026-08-24 08:01 EEST
+Generated: 2026-08-24 23:20 EEST
 
 ## Market Context
 
 - Latest snapshot: 2026-08-24
 - Market tone: Mixed / quiet
 - Companies tracked: 936
-- Large positive movers: 0
-- Sharp selloffs: 0
-- Active turnover signals: 0
+- Large positive movers: 24
+- Sharp selloffs: 36
+- Active turnover signals: 518
 
 ## Trading Ideas
 
