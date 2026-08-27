@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-08-26T05:07:01.922565+00:00
+- generated_at: 2026-08-27T09:25:13.729926+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 929, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 29, 'cache_misses': 900, 'cache_max_age_days': 45, 'eligible_companies': 929, 'cached_companies': 58, 'fresh_companies': 58, 'stale_companies': 0, 'missing_companies': 871, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-08-26T05:07:01.881089Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 37, 'fresh': 37, 'stale': 0, 'missing': 698}, 'FI': {'eligible': 194, 'cached': 21, 'fresh': 21, 'stale': 0, 'missing': 173}}}
+- enrichment: {'eligible_universe_size': 929, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 30, 'cutoff_tie_count': 3, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 88, 'cache_misses': 841, 'cache_max_age_days': 45, 'eligible_companies': 929, 'cached_companies': 118, 'fresh_companies': 118, 'stale_companies': 0, 'missing_companies': 811, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-08-27T09:25:13.684852Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 63, 'fresh': 63, 'stale': 0, 'missing': 672}, 'FI': {'eligible': 194, 'cached': 55, 'fresh': 55, 'stale': 0, 'missing': 139}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,28 +19,73 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-b7ab0e7f56bd284f74571152', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-08-26T05:07:01.922565Z'}
+- evaluation: {'run_id': 'evaluation-b91a7a62772a5f5ba693a7bc', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-08-27T09:25:13.729926Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=937, SE=743, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=332, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=929; budget=30; selected=30; attempts=30; successful=29; cache coverage=58/929 (fresh=58, stale=0, missing=871); cache hits=29; cache misses=900; cutoff ties=1 (0 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 28/29; proxy inputs 29/29; missing valuation support 0/29
+- fundamentals enrichment: ok - eligible=929; budget=30; selected=30; attempts=30; successful=30; cache coverage=118/929 (fresh=118, stale=0, missing=811); cache hits=88; cache misses=841; cutoff ties=3 (1 excluded)
+- finimpulse fundamentals: ok - 30/30 Finimpulse lookups parsed; valuation support 30/30; direct valuation 30/30; proxy inputs 30/30; missing valuation support 0/30
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
-- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0 fallback valuation enrichments; no fallback lookups attempted
+- free fundamentals: warning - No lookups attempted for Yahoo-style fundamentals
+- valuation fallback: warning - 0 fallback valuation enrichments; no fallback lookups attempted
 
 ## Watchlist
 
 ## High-Conviction Candidates
 
-## #1 Outokumpu Oyj (OUT1V)
+## #1 Surgical Science Sweden (SUS)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Surgical Science Sweden AB (publ) develops and markets virtual reality simulators and customized training solutions for evidence-based medical training in Europe, North and South America, Asia, and internationally. The company offers Angio Mentor simulator for endovascular training; BRONCH Express, a portable version of BRONCH mentor simulator; ARTHRO Mentor for arthroscopic surgery skills acquisition; BRONCH Mentor, a simulator for optimizing bronchoscopy training; GI Mentor, a simulator for GI Endoscopy; HYST Mentor for True-To-Life diagnostic and therapeutic hysteroscopy training; URO Mentor, a virtual reality simulator for endourology training; EndoSim, a realistic scope simulator; FlexVR, a flexible and portable training platform which is designed to teach basic and advanced skills for robotic surgery; and LAP Mentor provides a wide array of laparoscopic training cases. It also provides LapSim training system comprising LapSim Haptic simulator that provides laparoscopic training; LapSim essence, a portable and ready-to-use VR simulator; and LapSim 360, which provides a high-immersion virtual reality training experience; MentorLearn, an end-to-end educational platform that makes simulation course management; and LapSim ST, a training system that prepares students for the operating room. In addition, the company offers PELVIC Mentor simulator provides anatomy and pelvic exam training; Perc Mentor suite for image-guided interventions; RobotiX Mentor for practice the motor and cognitive skills for surgeons; Simball Box, which combines with digitally collected metrics into a training tool; Spine Mentor, a training simulator for minimal invasive spine surgery; TEE Express, designed to teach Trans-Esophageal Echocardiography procedure using a TEE probe; TraumaVR, an ultimate mix of manikin and VR simulation; and Ultrasound Mentor for ultrasound training with multiple medical specialties. Surgical Science AB was founded in 1997 and is based in Gothenburg, Sweden.
+
+**Score:** 67.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Surgical Science Sweden has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 5/5 | Strong revenue growth of 21.7%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/B
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Valuation data available
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #2 Outokumpu Oyj (OUT1V)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
 **What the company does:** Outokumpu Oyj produces and sells various stainless-steel products in Finland, Germany, Italy, the United Kingdom, other European countries, North America, the Asia-Pacific, and internationally. It operates through Europe, the Americas, Ferrochrome, and Other operations segments. The company offers cold rolled coils, strips, and sheets; hot rolled coils, strips, and plates; quarto plates; precision strips; and specialized components, such as welded stainless-steel I-beams, H-beams, hollow-section tubes, bent profiles, duprof structural sections, hardened and customized press plates, suction roll shells, and blancs and disks. It also provides stainless steel powder which includes Supra 316L, Dura 17-4PH, Ultra 904L, Therma 253MA, Dura 4116, and Ni-free austenitic stainless-steel powder, ferritic grades as well as tailored product; and nickel-based alloys for environments in the process industry, oil and gas, and electric vehicles. In addition, the company offers cutting, polishing and brushing, welding, machining, plate bending and other services. Further, its products are used in various applications, including commercial kitchens, cooking, food industry, and home appliances; automotive and transportation; building and infrastructure; energy; marine; and heavy industries. Outokumpu Oyj was founded in 1910 and is headquartered in Helsinki, Finland.
 
-**Score:** 60
+**Score:** 63
 **Data quality:** partial
 
 ### Long-Term Conviction
@@ -76,7 +121,139 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (OUT1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #2 Arlandastad Group (AGROUP)
+## #3 Coffee Stain Group B (COFFEE B)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Coffee Stain Group AB (publ) develops and publishes community-driven games primarily for PC and console platforms in Scandinavia and internationally. The company operates game studios, including Coffee Stain, Ghost Ship, and Tuxedo Labs. It provides Goat Simulator, Satisfactory, Deep Rock Galactic, Valheim, Teardown, and Welcome to Bloxburg games. The company was founded in 2010 and is headquartered in Karlstad, Sweden.
+
+**Score:** 57.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Coffee Stain Group B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 5/5 | Strong revenue growth of 37.5%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 3/5 | High P/E |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/B
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Valuation data available
+- Business description available
+- Adequate liquidity
+
+### Risks
+- High P/E
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (COFFEE-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #4 Zinzino B (ZZ B)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Zinzino AB (publ), a direct sales company, provides dietary supplements and skincare products in Sweden and internationally. The company operates through two segments, Zinzino and Faun. It offers skincare products including cleansers, face creams, serums, and masks. The company provides coffee, coffee machines, accessories, and cups; immune, omega, and restored supplements; weight management products; gut health supplements; and home health test products. It also sells its products online. The company was founded in 2005 and is based in Västra Frölunda, Sweden.
+
+**Score:** 53.5
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Zinzino B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation support: P/E is 13.9939. |
+| Growth | 5/5 | Strong revenue growth of 27.4%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Net cash balance sheet
+- First North listing
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ZZ-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #5 Admicom Oyj (ADMCM)
+
+`FI` | Nasdaq First North Growth Market Finland | `first_north`
+
+**What the company does:** Admicom Oyj provides software solutions and support services in Finland and internationally. The company offers enterprise resource planning solutions, including project financials, production and site management, and payroll and accounting; project management solutions, such as project lifecycle management, project control and planning, and site quality and safety; and business services comprising statutory accounting and payroll services, as well as additional financial management expert services. It also provides documentation; accounting; training and consulting; customer support; implementation; and service contracts. The company serves construction, building services engineering, and real estate sectors. Admicom Oyj was incorporated in 2004 and is based in Jyväskylä, Finland.
+
+**Score:** 52.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Admicom Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 2/5 | Valuation is available but not clearly attractive. |
+| Growth | 3/5 | Modest revenue growth of 0.2%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 2/5 | No medium-term price context is available. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Valuation data available
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (ADMCM.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #6 Arlandastad Group (AGROUP)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -114,30 +291,31 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - Business description available
 
 ### Risks
+- Low live turnover
 - Thin liquidity
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (AGROUP.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #3 Admicom Oyj (ADMCM)
+## #7 Cheffelo (CHEF)
 
-`FI` | Nasdaq First North Growth Market Finland | `first_north`
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Admicom Oyj provides software solutions and support services in Finland and internationally. The company offers enterprise resource planning solutions, including project financials, production and site management, and payroll and accounting; project management solutions, such as project lifecycle management, project control and planning, and site quality and safety; and business services comprising statutory accounting and payroll services, as well as additional financial management expert services. It also provides documentation; accounting; training and consulting; customer support; implementation; and service contracts. The company serves construction, building services engineering, and real estate sectors. Admicom Oyj was incorporated in 2004 and is based in Jyväskylä, Finland.
+**What the company does:** Cheffelo AB (publ) provides subscription-based meal kit solutions to various customers in Sweden, Norway, and Denmark. The company operates under the Linas Matkasse, Godtlevert, Adams Matkasse, and RetNemt brand names. The company was formerly known as LMK Group AB (publ) and changed its name to Cheffelo AB (publ) in October 2023. The company was founded in 2008 and is headquartered in Sundbyberg, Sweden.
 
-**Score:** 49.75
+**Score:** 52.75
 **Data quality:** partial
 
 ### Long-Term Conviction
 **Bucket:** Quality small-cap candidate
-**Thesis:** Admicom Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+**Thesis:** Cheffelo has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 2/5 | Valuation is available but not clearly attractive. |
-| Growth | 3/5 | Modest revenue growth of 0.2%. |
+| Valuation | 4/5 | Reasonable valuation on available multiples. |
+| Growth | 5/5 | Strong revenue growth of 26.8%. |
 | Balance sheet | 5/5 | Net cash and conservative debt/equity. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
 | Risk | 4/5 | No specific risk flag surfaced in the current screen. |
@@ -162,117 +340,34 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ADMCM.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (CHEF.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #4 Apetit Oyj (APETIT)
+## #8 Aspo Oyj (ASPO)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
-**What the company does:** Apetit Oyj manufactures and sells plant-based food products in Finland, Norway, Sweden, and internationally. It operates through two segments, Food Solutions and Oilseed Products. The company offers frozen vegetables, food, and pizzas; vegetable oil; fish based products; rapeseed expeller, BlackGrain rapeseed powder, and rapeseed oil; and burgers, nuggets, gratines, and arctic peas. It also manufactures products for private labels. It serves retail trade, food industry and service, and animal feed industries. Apetit Oyj was founded in 1950 and is based in Säkylä, Finland.
+**What the company does:** Aspo Oyj provides shipping services in Finland, Scandinavia, the Baltic countries, other European countries, and internationally. It operates through ESL Shipping and Telko segments. The ESL Shipping segment conducts sea transportation of raw materials for industry and the energy sector; and offers related services. The Telko segment acquires and supplies plastic raw materials, chemicals, and lubricants to industries. This segment also provides technical support services; and engages in the development of production processes. Aspo Oyj was founded in 1929 and is based in Espoo, Finland.
 
-**Score:** 44.25
+**Score:** 45.25
 **Data quality:** partial
 
 ### Long-Term Conviction
-**Bucket:** Fundamental watchlist candidate
-**Thesis:** Apetit Oyj has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
+**Bucket:** Quality small-cap candidate
+**Thesis:** Aspo Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 4/5 | Good - profitable business with a clear profile. |
 | Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 1.4%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (8.64583)
-- Low P/B
-- Small market cap
-- Gate tier: High-conviction candidate
-- Fundamental watchlist candidate
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Attractive valuation support
-- Business description available
-
-### Risks
-- Thin liquidity
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (APETIT.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #5 Raisio Oyj Vaihto-osake (RAIVV)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Raisio plc, together with its subsidiaries, produces and sells food and food ingredients in Finland, the United Kingdom, and internationally. It operates through Brands & Industrial and Other Operations segment. The company offers grain-based food and ingredients; and plant proteins to industrial and catering companies. It also offers fat-based products, including margarines and vegetable oil spreads; dairy products, such as yogurt drinks and yogurt, quark; cereals comprising flour, pasta, barley, mueslis, breakfast cereals, instant porridge, biscuits, bars, and breads; and plant-based products that include unflavored and flavoured drinks, spoonable products, smoothies, and cream alternatives under the Benecol, Elovena, Sunnuntai, Torino, Nalle, and Raisio food solutions brand names. The company was formerly known as Raisio Group plc and changed its name to Raisio plc in April 2005. Raisio plc was founded in 1939 and is headquartered in Raisio, Finland.
-
-**Score:** 41.25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Raisio Oyj Vaihto-osake has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 4/5 | Reasonable valuation on available multiples. |
-| Growth | 3/5 | Modest revenue growth of 2.8%. |
-| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Net cash balance sheet
-- Small market cap
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Valuation data available
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (RAIVV.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #6 TRATON (8TRA)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Traton SE, together with its subsidiaries, manufactures and sells commercial vehicles in Germany, rest of Europe, the United States of America, rest of North America, Brazil, rest of South America, and internationally. It operates through Scania Vehicles and Services; MAN Truck & Bus; International Motors; Volkswagen Truck & Bus; and TRATON Financial Services segments. The company offers heavy-duty trucks; light commercial options and durable construction vehicles; school buses under the IC Bus brand; commercial buses; vans, trucks, and buses; and diesel and gas engines, as well as services for passenger and freight transport. It provides a cloud-based platform for the transport and logistics industry under the RIO brand; after-sales services; and custom digital solutions, as well as operates charging stations for commercial vehicles. The company offers its products and services under the MAN, Scania, International, and Volkswagen Truck & Bus brands. In addition, it finances, insures, and leases commercial vehicles. The company was founded in 2015 and is headquartered in Munich, Germany. Traton SE is a subsidiary of Volkswagen International Luxemburg S.A.
-
-**Score:** 32
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** TRATON has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 4.1%. |
+| Growth | 3/5 | Modest revenue growth of 4.4%. |
 | Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 3/5 | High P/B |
+| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
 | Data confidence | 4/5 | Several fundamentals plus profile text are available. |
 
 ### Reasons
-- Low P/E (10.4178)
+- Low P/E (8.84337)
+- Small market cap
 - Gate tier: High-conviction candidate
 - Quality small-cap candidate
 - Positive operating margin
@@ -282,75 +377,33 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - Adequate liquidity
 
 ### Risks
-- High P/B
+- Low live turnover
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (8TRA.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (ASPO.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Raute Oyj (RAUTE)
+## #9 Kambi Group Plc (KAMBI)
 
-`FI` | Nasdaq Helsinki | `main_market`
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Raute Oyj operates as a technology and service company that serves the wood products industry in Europe, Africa, Finland, North America, South America, Russia, and the Asia-Pacific. The company operates through three segments: Wood Processing, Services, and Analyzers. The company offers machinery and equipment to produce veneer, plywood, and laminated veneer lumber (LVL). Its machines and lines are used for veneer peeling, drying, scarf-jointing, composing, and patching, as well as log handling; plywood; LVL lay-up and pressing, and billet handling; and panel handling. The company also provides analyzers for sorting veneer, plywood, and LVL; project deliveries, including individual machine or production line deliveries; and technology services, which include spare parts deliveries, regular maintenance, and equipment modernization, as well as consulting, training, reconditioned machinery and digital services. In addition, it offers MillSIGHTS software, a data collection management information system that converts production data into actionable insights. Raute Oyj was incorporated in 1908 and is headquartered in Nastola, Finland.
+**What the company does:** Kambi Group plc provides sports betting technology and services to the betting and gaming industry in Europe, the Americas, and internationally. The company provides Odds Feed+, Managed Trading, Sportsbook Platform, Bet Builder, Esports, and Front-End products for betting and gaming. It also offers eSports subscriptions; and front end-based development platform services. Kambi Group plc was incorporated in 2010 and is based in Birkirkara, Malta.
 
-**Score:** 31.25
+**Score:** 44.75
 **Data quality:** partial
 
 ### Long-Term Conviction
-**Bucket:** Fundamental watchlist candidate
-**Thesis:** Raute Oyj has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
+**Bucket:** Quality small-cap candidate
+**Thesis:** Kambi Group Plc has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 1/5 | Revenue declined 24.6%. |
+| Valuation | 1/5 | Expensive on available valuation multiples. |
+| Growth | 4/5 | Healthy revenue growth of 13.5%. |
 | Balance sheet | 5/5 | Net cash and conservative debt/equity. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (7.76596)
-- Net cash balance sheet
-- Small market cap
-- Gate tier: High-conviction candidate
-- Fundamental watchlist candidate
-- Positive operating margin
-- Conservative balance sheet
-- Attractive valuation support
-- Business description available
-
-### Risks
-- Thin liquidity
-- No growth signal
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (RAUTE.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #8 Alexandria Group Oyj (ALEX)
-
-`FI` | Nasdaq First North Growth Market Finland | `first_north`
-
-**What the company does:** Alexandria Group Oyj provides investment and savings insurance products in Finland. It offers funds; structured investment products; and investment-linked products, such as unit-linked savings and investment insurance products. The company also provides wealth management services to wealthy individuals and institutions; and asset management and legal services. The company was incorporated in 1996 and is based in Helsinki, Finland.
-
-**Score:** 28.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Fundamental watchlist candidate
-**Thesis:** Alexandria Group Oyj has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 4/5 | Reasonable valuation on available multiples. |
-| Growth | 4/5 | Healthy revenue growth of 12.2%. |
-| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
+| Risk | 3/5 | High P/B |
 | Data confidence | 4/5 | Several fundamentals plus profile text are available. |
 
 ### Reasons
@@ -358,48 +411,8 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - Small market cap
 - First North listing
 - Gate tier: High-conviction candidate
-- Fundamental watchlist candidate
-- First North discovery opportunity
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Valuation data available
-- Business description available
-
-### Risks
-- Thin liquidity
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ALEX.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #9 Lundin Gold (LUG)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Lundin Gold Inc., together with its subsidiaries, develops and operates its mineral concessions in Ecuador. It explores for gold and silver deposits. The company holds interests in 27 metallic mineral concessions and 3 construction material concessions covering an area of approximately 65,000 hectares located in Ecuador. It also holds a 100% interest in the Fruta del Norte gold project that comprising seven concessions covering an area of approximately 5,566 hectares located in the Cordillera del Cóndor region of southeast Ecuador. The company was formerly known as Fortress Minerals Corp. and changed its name to Lundin Gold Inc. in December 2014. Lundin Gold Inc. was incorporated in 1986 and is headquartered in Vancouver, Canada.
-
-**Score:** 28
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Lundin Gold has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 4/5 | Reasonable valuation on available multiples. |
-| Growth | 4/5 | Healthy revenue growth of 5.5%. |
-| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 3/5 | High P/B |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Net cash balance sheet
-- Gate tier: High-conviction candidate
 - Quality small-cap candidate
+- First North discovery opportunity
 - Positive operating margin
 - Revenue growth
 - Conservative balance sheet
@@ -412,35 +425,38 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (LUG.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (KAMBI.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #10 Nokia Oyj (NOKIA)
+## #10 Nordrest Holding (NREST)
 
-`FI` | Nasdaq Helsinki | `main_market`
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
-**What the company does:** Nokia Oyj, together with its subsidiaries, provides mobile, fixed, and cloud network solutions in North and Latin America, Greater China, India, Asia Pacific, Europe, the Middle East, and Africa. It operates in four segments: Network Infrastructure, Mobile Networks, Cloud and Network Services, and Nokia Technologies. The company offers fixed network solutions, such as fiber and copper technologies, access infrastructure, in-home Wi-Fi solutions, and cloud and virtualization services; IP network solutions, which delivers IP edge routing and data center networking solutions for residential, mobile, enterprise, and cloud applications; and optical networks solutions, which provides optical transport networks for metro, regional, and long-haul applications. It also provides mobile technology products and services for radio access networks and microwave radio links for transport networks; and network management solutions, as well as network planning, optimization, network deployment, and technical support services. In addition, the company offers cloud and network services, including open, secure, automated, and scalable software and solutions; and 5G core, secure autonomous networks, private wireless and industrial edge, and network APIs. Further, it licenses intellectual property, including patents, technologies, and the Nokia brand. The company serves its products and services to defense communications energy and resources, enterprise and industrial campus, private networks, public sector, and transportation industries. Nokia Oyj was founded in 1865 and is headquartered in Espoo, Finland.
+**What the company does:** Nordrest Holding AB (publ) operates as a foodservice company in Sweden and internationally. The company operates restaurants. It also provides catering services. In addition, the company develops, produces, packs, and distributes complete meal solutions and food components for defence, emergency preparedness, humanitarian operations, and institutional customers under the OrifO, Surviva foods, and Outmeals names. Further, it provides meal solutions under the Taste by Nordrest, Togo by Nordrest,, PocketbyNordrest, LaGirafe, Dinners, and WayCup brands. The company serves defense, companies, colleges and universities, schools, hospitals and elderly care, and travel groups. The company was incorporated in 2013 and is based in Solna, Sweden.
 
-**Score:** 26
+**Score:** 44.75
 **Data quality:** partial
 
 ### Long-Term Conviction
 **Bucket:** Quality small-cap candidate
-**Thesis:** Nokia Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+**Thesis:** Nordrest Holding has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 4/5 | Good - profitable business with a clear profile. |
 | Valuation | 4/5 | Reasonable valuation on available multiples. |
-| Growth | 4/5 | Healthy revenue growth of 8.4%. |
+| Growth | 5/5 | Strong revenue growth of 30.5%. |
 | Balance sheet | 5/5 | Net cash and conservative debt/equity. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 3/5 | High P/E |
+| Risk | 3/5 | High P/B |
 | Data confidence | 4/5 | Several fundamentals plus profile text are available. |
 
 ### Reasons
 - Net cash balance sheet
+- Small market cap
+- First North listing
 - Gate tier: High-conviction candidate
 - Quality small-cap candidate
+- First North discovery opportunity
 - Positive operating margin
 - Revenue growth
 - Conservative balance sheet
@@ -449,8 +465,8 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - Adequate liquidity
 
 ### Risks
-- High P/E
+- High P/B
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (NOKIA.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (NREST.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
