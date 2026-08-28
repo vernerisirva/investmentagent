@@ -5,13 +5,13 @@
 _Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ## Metadata
-- generated_at: 2026-08-27T09:24:31.134584+00:00
+- generated_at: 2026-08-28T11:12:12.431213+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 259, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 30, 'cutoff_tie_count': 206, 'cutoff_tie_excluded': 202, 'cache_enabled': True, 'cache_hits': 58, 'cache_misses': 871, 'cache_max_age_days': 45, 'eligible_companies': 259, 'cached_companies': 40, 'fresh_companies': 40, 'stale_companies': 0, 'missing_companies': 219, 'oldest_retrieved_at': '2026-08-25T05:06:47.910536Z', 'newest_retrieved_at': '2026-08-27T09:24:31.114856Z', 'country_coverage': {'SE': {'eligible': 244, 'cached': 33, 'fresh': 33, 'stale': 0, 'missing': 211}, 'FI': {'eligible': 15, 'cached': 7, 'fresh': 7, 'stale': 0, 'missing': 8}}}
+- enrichment: {'eligible_universe_size': 325, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 30, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 118, 'cache_misses': 811, 'cache_max_age_days': 45, 'eligible_companies': 325, 'cached_companies': 74, 'fresh_companies': 74, 'stale_companies': 0, 'missing_companies': 251, 'oldest_retrieved_at': '2026-08-25T05:06:32.429340Z', 'newest_retrieved_at': '2026-08-28T11:12:12.391199Z', 'country_coverage': {'SE': {'eligible': 302, 'cached': 51, 'fresh': 51, 'stale': 0, 'missing': 251}, 'FI': {'eligible': 23, 'cached': 23, 'fresh': 23, 'stale': 0, 'missing': 0}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,11 +19,11 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 - sector: None
 - strategy: trading
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-b929bca1f9d8abc5c4fcc207', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-08-27T09:24:31.134584Z'}
+- evaluation: {'run_id': 'evaluation-730efc6dbe71501d3b071627', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-08-28T11:12:12.431213Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=937, SE=743, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=332, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=259; budget=30; selected=30; attempts=30; successful=30; cache coverage=40/259 (fresh=40, stale=0, missing=219); cache hits=58; cache misses=871; cutoff ties=206 (202 excluded)
+- fundamentals enrichment: ok - eligible=325; budget=30; selected=30; attempts=30; successful=30; cache coverage=74/325 (fresh=74, stale=0, missing=251); cache hits=118; cache misses=811; cutoff ties=2 (0 excluded)
 - finimpulse fundamentals: ok - 30/30 Finimpulse lookups parsed; valuation support 30/30; direct valuation 30/30; proxy inputs 30/30; missing valuation support 0/30
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0 fallback valuation enrichments; no fallback lookups attempted
@@ -32,28 +32,7 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ## Watchlist
 
-## #1 AlzeCure Pharma (ALZCUR)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** AlzeCure Pharma AB (publ) operates as a pharmaceutical company that develops small-molecule drug therapies for the treatment of severe diseases and conditions that affect the central nervous system. The company is involved in the development of drug candidates based on the NeuroRestore, Alzstatin, and Painless research platforms. Its products pipeline includes ACD856 for the treatment of Alzheimer's disease, sleep disorders, depression, traumatic brain injuries, and Parkinson's disease, which is in phase I clinical trial; ACD857 and ACD680 that are in preclinical trial for the treatment of Alzheimer's disease; ACD440, a TRPV1 antagonist, which is in phase II clinical trial for neuropathic pain indications; and ACD137 negative allosteric modulator (NAM) of TrkA receptors for osteoarthritic pain indications, which is in preclinical phase. AlzeCure Pharma AB (publ) was founded in 2012 and is based in Huddinge, Sweden.
-
-**Score:** 9.75
-**Data quality:** partial
-
-### Reasons
-- Strong intraday momentum (+17.19%)
-- High live turnover
-- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
-
-### Risks
-- High P/B
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ALZCUR.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #2 Surgical Science Sweden (SUS)
+## #1 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -73,28 +52,7 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #3 Elon (ELON)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Elon AB (publ) operates a chain of consumer electronics stores in the Nordic countries. The company operates through three segments: Business to Consumer, Business to Business, and Solutions. The company offers white goods, kitchens, and communication solutions; cooling and heating products; and warehousing, logistics, freight contract, IT, and payment solutions. It operates through Elon, Elon Ljud & Bild, Nordanro Studio, RingUp, Elvita, and Canvac brand names. The company sells its products through a network of stores, as well as web platforms. The company was founded in 1949 and is headquartered in Stockholm, Sweden. Elon AB (publ) operates as a subsidiary of Elon Group Holding AB (publ).
-
-**Score:** 6
-**Data quality:** partial
-
-### Reasons
-- Strong intraday momentum (+14.73%)
-- Moderate live turnover
-- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
-
-### Risks
-- Thin liquidity
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ELON.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #4 Cheffelo (CHEF)
+## #2 Cheffelo (CHEF)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -114,17 +72,16 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CHEF.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Kinnevik B (KINV B)
+## #3 Industrivärden C (INDU C)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
-**What the company does:** Kinnevik AB is a venture capital firm specializing in investments in early to late venture and growth capital. The firm also prefers indirect investments in venture capital funds. It prefers to invest in digital consumer business, education, communication, e-commerce and marketplaces, entertainment, healthcare, and financial services but may also invest in other areas. The firm invests worldwide, especially in Europe with a focus on the Nordics, Latin America, Asia, Australia, Africa, and North America. The firm looks for disruptive, technology-enabled and value-added consumer services in developed and emerging markets. It takes an active role on the boards of its subsidiaries and associated companies. It acts as a long-term lead shareholder in large listed entities. Kinnevik AB was founded in 1936 and is based in Stockholm, Sweden and additional office in London, United Kingdom. Kinnevik AB was formerly known as Investment AB Kinnevik.
+**What the company does:** AB Industrivärden is a publicly owned investment manager. The firm invests in the public equity markets of Nordic region. It employs fundamental analysis, with a focus on factors like long term return potential, proven business model, balance between risk and return, and attractive valuation to create its portfolio. AB Industrivärden was founded in 1944 and is based in Stockholm, Sweden.
 
-**Score:** 4.75
+**Score:** 3.25
 **Data quality:** partial
 
 ### Reasons
-- Positive intraday momentum (+5.12%)
 - High live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
@@ -133,30 +90,90 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (KINV-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (INDU-C.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 CombinedX (CX)
+## #4 Lundbergföretagen B (LUND B)
 
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+`SE` | Nasdaq Stockholm | `main_market`
 
-**What the company does:** CombinedX AB (publ) operates as an IT consulting company in Sweden and internationally. It offers digital business development and transformation, service design and customer experience, business systems and business processes, data analysis and decision support, automation and robotization, application development and life cycle management, digital workplace and identity management, managed infrastructure services and security, Internet of Things and AI, and customer relationship management services. The company was incorporated in 2013 and is headquartered in Karlstad, Sweden.
+**What the company does:** L E Lundbergföretagen AB (publ) engages in the manufacture and sale of paperboard, paper, and sawn timber products worldwide. The company operates through Lundberg's Real Estate Operations, Equity Management, Holmen, and Hufvudstaden segments. It is involved in the real estate, forest, and power operations; and provision of equity management services, including securities trading. The company also owns and manages office and retail properties. The company was founded in 1944 and is headquartered in Stockholm, Sweden.
 
-**Score:** 3.75
+**Score:** 3.25
 **Data quality:** partial
 
 ### Reasons
-- Positive intraday momentum (+6.41%)
 - High live turnover
 - Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
 
 ### Risks
-- Thin liquidity
+- None provided.
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (CX.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (LUND-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Zinzino B (ZZ B)
+## #5 Outokumpu Oyj (OUT1V)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** Outokumpu Oyj produces and sells various stainless-steel products in Finland, Germany, Italy, the United Kingdom, other European countries, North America, the Asia-Pacific, and internationally. It operates through Europe, the Americas, Ferrochrome, and Other operations segments. The company offers cold rolled coils, strips, and sheets; hot rolled coils, strips, and plates; quarto plates; precision strips; and specialized components, such as welded stainless-steel I-beams, H-beams, hollow-section tubes, bent profiles, duprof structural sections, hardened and customized press plates, suction roll shells, and blancs and disks. It also provides stainless steel powder which includes Supra 316L, Dura 17-4PH, Ultra 904L, Therma 253MA, Dura 4116, and Ni-free austenitic stainless-steel powder, ferritic grades as well as tailored product; and nickel-based alloys for environments in the process industry, oil and gas, and electric vehicles. In addition, the company offers cutting, polishing and brushing, welding, machining, plate bending and other services. Further, its products are used in various applications, including commercial kitchens, cooking, food industry, and home appliances; automotive and transportation; building and infrastructure; energy; marine; and heavy industries. Outokumpu Oyj was founded in 1910 and is headquartered in Helsinki, Finland.
+
+**Score:** 3.25
+**Data quality:** partial
+
+### Reasons
+- High live turnover
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (OUT1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #6 Ratos B (RATO B)
+
+`SE` | Nasdaq Stockholm | `main_market`
+
+**What the company does:** Ratos AB (publ) is a private equity firm specializing in buyouts, turnarounds, add on acquisitions, small and middle market transactions. The firm does not invest in early stages and in companies that operate in the arms industry, pornography, or are detrimental to the environment. It seeks to invest in unlisted medium sized companies. The firm invests in industry and technology (including aftermarket information and training solutions, sustainable core material development, product and digital service development at the intersection between business strategy and technological development, secondary optics, camping and outdoor equipment, third-party logistics, and contract research for biotech and pharmaceutical companies,) construction and services (including electrification of rail infrastructure, maintenance of critical transportation infrastructure, technology and design of complex sustainable energy solutions, and Construction of commercial properties, public buildings and housing), consumer (including plants, flowers and related products) sectors. The firm typically invests in the Nordic region, with focus on Sweden, Finland, Denmark, and Norway. It seeks to invest in companies with equity investments between SEK250 million ($27.20 million) and SEK5000 million ($543.99 million), sales value between SEK300 million ($32.64 million) and SEK5000 million ($543.99million) and EBITDA greater than SEK50 million ($5.43 million). The firm takes both minority and majority stakes. The firm prefers to be the principal owner with a minimum holding of at least 20 percent and also seeks a board seat. It prefers to hold its investment between five to ten years. Ratos AB (publ) was founded in 1866 and is based in Stockholm, Sweden with additional office in Stockholm, Sweden.
+
+**Score:** 3.25
+**Data quality:** partial
+
+### Reasons
+- High live turnover
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (RATO-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #7 SRV Yhtiöt Oyj (SRV1V)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** SRV Yhtiöt Oyj, together with its subsidiaries, operates as a project management contractor company in Finland. The company builds and develops commercial and business premises, such as offices, hotels, retail premises, and industrial and logistics centers; and housing. It also provides building maintenance, renovation, and technology services; technical units and procurement; internal services; building services engineering; and energy and lifecycle services. SRV Yhtiöt Oyj was founded in 1987 and is headquartered in Helsinki, Finland.
+
+**Score:** 2.75
+**Data quality:** partial
+
+### Reasons
+- Positive intraday momentum (+6.68%)
+- Moderate live turnover
+- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (SRV1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #8 Zinzino B (ZZ B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -176,13 +193,13 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ZZ-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #8 Stora Enso Oyj R (STERV)
+## #9 Kinnevik B (KINV B)
 
-`FI` | Nasdaq Helsinki | `main_market`
+`SE` | Nasdaq Stockholm | `main_market`
 
-**What the company does:** Stora Enso Oyj provides renewable solutions for the packaging, biomaterials, wooden constructions, and paper industries in Finland and internationally. It operates through Packaging Materials, Packaging Solutions, Biomaterials, Wood Products, Forest, and Other segments. The company's Packaging Materials segment offers virgin and recycled fiber replace fossil-based materials, renewable and recyclable packaging materials for food and beverage, and transport packaging. Its Packaging Solutions segment develops and sells fiber-based packaging products and services, including converting carton and corrugated boards for packaging solutions for retail, e-commerce, and industrials. The company's Biomaterials segment provides various pulp for packaging, paper, tissue, specialties, and hygiene products; and tall oil and turpentine from biomass. Its Wood Products segment offers wood-based solutions, including digital tools for design and construction of building projects with wood; applications for windows and doors; and pellets for sustainable heating solutions. The company's Forest segment engages in sustainable forest management, as well as supplies wood. The company's Other segment produces electricity and heat. It serves packaging manufacturers, brand owners, retailers, converters, and construction companies. The company was incorporated in 1996 and is headquartered in Helsinki, Finland.
+**What the company does:** Kinnevik AB is a venture capital firm specializing in investments in early to late venture and growth capital. The firm also prefers indirect investments in venture capital funds. It prefers to invest in digital consumer business, education, communication, e-commerce and marketplaces, entertainment, healthcare, and financial services but may also invest in other areas. The firm invests worldwide, especially in Europe with a focus on the Nordics, Latin America, Asia, Australia, Africa, and North America. The firm looks for disruptive, technology-enabled and value-added consumer services in developed and emerging markets. It takes an active role on the boards of its subsidiaries and associated companies. It acts as a long-term lead shareholder in large listed entities. Kinnevik AB was founded in 1936 and is based in Stockholm, Sweden and additional office in London, United Kingdom. Kinnevik AB was formerly known as Investment AB Kinnevik.
 
-**Score:** 0.25
+**Score:** 1.75
 **Data quality:** partial
 
 ### Reasons
@@ -194,15 +211,15 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (STERV.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (KINV-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #9 Elisa Oyj (ELISA)
+## #10 Tieto Oyj (TIETO)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
-**What the company does:** Elisa Oyj provides telecommunications, information and communication technology (ICT), and online services in Finland, rest of Europe, and internationally. It operates through two segments: Consumer Customers and Corporate Customers. The company offers consumers with telecommunications and communications services, including fixed and mobile subscriptions, supplementary digital services, cable TV subscriptions, and entertainment services, as well as IT and communication solutions. It provides sedApta, supply chain management and operational planning software; camLine, an automation, MES, and data analytics software; CalcuQuote, a integrated software for sourcing, quoting, procurement, and supplier collaboration; and TenForce, a platform to strengthen safety culture and operational oversight across complex industrial environments. It also offers Polystar, an intelligent network analytics and optimization software. The company markets its solutions under Elisa IndustrIQ brand. Further, it provides Gridle, an AI-powered energy flexibility optimization service; and Elisa Kotiakku, that smooths out spikes in electricity spot prices and stores electricity generated by solar panels. In addition, the company offers automation solutions for network management and operation for mobile operators, industrial IoT solutions and distributed energy solutions. It serves consumers, corporates, and public administration organizations. Elisa Oyj was founded in 1882 and is headquartered in Helsinki, Finland.
+**What the company does:** Tieto Oyj operates as a software and digital engineering company in Norway, Sweden, Finland, and internationally. It operates through four segments: Tieto Tech Consulting, Tieto Banktech, Tieto Caretech, and Tieto Indtech Services. The Tieto Tech Consulting segment provides business advisory and design, data engineering, and other software research and development services. The Tieto Banktech segment offers Banking-as-a-Service platform and software products for payments, cards, wealth management, financial crime prevention, and credit domains. The Tieto Caretech segment provides modular, open, and interoperable software for customers in the health and social care sectors. The Tieto Indtech segment offers software and services to various industries, such as case management, pulp, paper, and fiber; and supports processes, including billing and invoicing and industry messaging, as well as purchase-to-pay process automation. It serves automotive, banking and financial services, education, energy and utilities, healthcare and welfare, manufacturing, public sector, pulp, paper, fibre, packaging and tissue, and telecom sectors. The company was formerly known as TietoEVRY Oyj and changed its name to Tieto Oyj in March 2026. Tieto Oyj was incorporated in 1968 and is headquartered in Espoo, Finland.
 
-**Score:** -2
+**Score:** 1
 **Data quality:** partial
 
 ### Reasons
@@ -214,24 +231,4 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (ELISA.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #10 Konecranes Oyj (KCR)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Konecranes Plc manufactures, sells, and services material handling products in Europe, the Middle East, Africa, the Americas, and the Asia-Pacific. It operates through three segments: Industrial Service, Industrial Equipment, and Port Solutions. The Industrial Service segment provides maintenance services for various industrial cranes and hoists. The Industrial Equipment segment offers industrial cranes and wire rope hoists, crane manufacturing components, digital controls, and software and automation; chain hoists, workstation lifting systems, overhead cranes, and cranes and hoists for hazardous environments. The Port Solutions segment provides equipment, services and software, and products, such as ship-to shore cranes, yard cranes, lift trucks, mobile harbor cranes, straddle carriers, and automated guided vehicles. It also offers maintenance, repair and digital services, and spare parts for the container handling industry. It serves general manufacturing metals production, power generation, automotive, pulp and paper, raw materials and chemicals, and container handling industries. The company was founded in 1910 and is headquartered in Hyvinkää, Finland.
-
-**Score:** -2
-**Data quality:** partial
-
-### Reasons
-- High live turnover
-- Trading strategy boost: liquidity and momentum signals make this more relevant for a short-term watchlist.
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (KCR.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (TIETO.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)

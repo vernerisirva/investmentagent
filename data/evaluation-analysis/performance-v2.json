@@ -90,7 +90,7 @@
           "mean_top_decile_overlap_pct": null,
           "median_absolute_rank_change": null
         },
-        "recorded_run_count": 16,
+        "recorded_run_count": 17,
         "sample_warning": true,
         "strategy": "long-term"
       },
@@ -183,7 +183,7 @@
           "mean_top_decile_overlap_pct": null,
           "median_absolute_rank_change": null
         },
-        "recorded_run_count": 16,
+        "recorded_run_count": 17,
         "sample_warning": true,
         "strategy": "long-term"
       },
@@ -276,7 +276,7 @@
           "mean_top_decile_overlap_pct": null,
           "median_absolute_rank_change": null
         },
-        "recorded_run_count": 16,
+        "recorded_run_count": 17,
         "sample_warning": true,
         "strategy": "long-term"
       },
@@ -369,7 +369,7 @@
           "mean_top_decile_overlap_pct": null,
           "median_absolute_rank_change": null
         },
-        "recorded_run_count": 16,
+        "recorded_run_count": 17,
         "sample_warning": true,
         "strategy": "long-term"
       }
@@ -384,7 +384,7 @@
       "automatic_promotion": false,
       "sample": "champion and challenger use the exact same priced companies from the original evaluation run"
     },
-    "recorded_sidecar_count": 16,
+    "recorded_sidecar_count": 17,
     "reporting_criteria": [
       "positive mean and median paired IC delta",
       "paired IC improvement on more than half of completed dates",
@@ -9736,6 +9736,590 @@
           "top_decile_size": 90
         },
         "strategy": "long-term"
+      },
+      {
+        "analysis_eligibility": {
+          "coverage_pct": 0.0,
+          "eligible": false,
+          "minimum_coverage_pct": 70.0,
+          "minimum_valid_companies": 50,
+          "original_company_count": 892,
+          "reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 50"
+          ],
+          "valid_company_count": 0
+        },
+        "analysis_eligible": false,
+        "analysis_ineligibility_reasons": [
+          "horizon is not due"
+        ],
+        "challenger": {
+          "rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "challenger_analysis_eligible": false,
+        "champion": {
+          "final_rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "champion_analysis_eligible": false,
+        "champion_scoring_model_version": "nordic-ranking-v1",
+        "decision_at": "2026-08-28T11:12:53.036169Z",
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "experiment_id": "relative-valuation-v1",
+        "experiment_run_id": "experiment-95a4dcce9af4f8b8eb098e20",
+        "experiment_version": 1,
+        "factor_coverage_outcomes": [],
+        "horizon": {
+          "label": "20_sessions",
+          "sessions": 20,
+          "unit": "market_sessions"
+        },
+        "is_due": false,
+        "metric_scope": "descriptive_partial",
+        "original_universe_size": 892,
+        "paired_company_count": 0,
+        "paired_company_ids": [],
+        "paired_deltas": {
+          "outcome_coverage_pct": 0.0,
+          "rank_ic": null,
+          "score_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "paired_outcome_coverage_pct": 0.0,
+        "paired_sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ranking_churn": {
+          "mean_absolute_rank_change": 0.6569506726457399,
+          "median_absolute_rank_change": 0.0,
+          "most_demoted": [
+            {
+              "challenger_rank": 51,
+              "champion_rank": 36,
+              "company_id": "isin:FI0009000681",
+              "rank_delta": -15,
+              "ticker": "NOKIA"
+            },
+            {
+              "challenger_rank": 78,
+              "champion_rank": 64,
+              "company_id": "isin:FI0009007264",
+              "rank_delta": -14,
+              "ticker": "BITTI"
+            },
+            {
+              "challenger_rank": 47,
+              "champion_rank": 34,
+              "company_id": "isin:FI0009013403",
+              "rank_delta": -13,
+              "ticker": "KNEBV"
+            },
+            {
+              "challenger_rank": 55,
+              "champion_rank": 43,
+              "company_id": "isin:FI4000049812",
+              "rank_delta": -12,
+              "ticker": "VERK"
+            },
+            {
+              "challenger_rank": 102,
+              "champion_rank": 91,
+              "company_id": "isin:CH0012221716",
+              "rank_delta": -11,
+              "ticker": "ABB"
+            }
+          ],
+          "most_promoted": [
+            {
+              "challenger_rank": 93,
+              "champion_rank": 107,
+              "company_id": "isin:FI0009005953",
+              "rank_delta": 14,
+              "ticker": "STEAV"
+            },
+            {
+              "challenger_rank": 36,
+              "champion_rank": 49,
+              "company_id": "isin:FI0009900658",
+              "rank_delta": 13,
+              "ticker": "ELEAV"
+            },
+            {
+              "challenger_rank": 69,
+              "champion_rank": 80,
+              "company_id": "isin:SE0026821076",
+              "rank_delta": 11,
+              "ticker": "ARFA"
+            },
+            {
+              "challenger_rank": 41,
+              "champion_rank": 52,
+              "company_id": "isin:FI0009008452",
+              "rank_delta": 11,
+              "ticker": "WUF1V"
+            },
+            {
+              "challenger_rank": 43,
+              "champion_rank": 53,
+              "company_id": "isin:FI0009800098",
+              "rank_delta": 10,
+              "ticker": "AFAGR"
+            }
+          ],
+          "top_10_overlap_count": 9,
+          "top_10_overlap_pct": 90.0,
+          "top_10_size": 10,
+          "top_decile_overlap_count": 89,
+          "top_decile_overlap_pct": 98.88888888888889,
+          "top_decile_size": 90
+        },
+        "strategy": "long-term"
+      },
+      {
+        "analysis_eligibility": {
+          "coverage_pct": 0.0,
+          "eligible": false,
+          "minimum_coverage_pct": 70.0,
+          "minimum_valid_companies": 50,
+          "original_company_count": 892,
+          "reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 50"
+          ],
+          "valid_company_count": 0
+        },
+        "analysis_eligible": false,
+        "analysis_ineligibility_reasons": [
+          "horizon is not due"
+        ],
+        "challenger": {
+          "rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "challenger_analysis_eligible": false,
+        "champion": {
+          "final_rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "champion_analysis_eligible": false,
+        "champion_scoring_model_version": "nordic-ranking-v1",
+        "decision_at": "2026-08-28T11:12:53.036169Z",
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "experiment_id": "relative-valuation-v1",
+        "experiment_run_id": "experiment-95a4dcce9af4f8b8eb098e20",
+        "experiment_version": 1,
+        "factor_coverage_outcomes": [],
+        "horizon": {
+          "label": "60_sessions",
+          "sessions": 60,
+          "unit": "market_sessions"
+        },
+        "is_due": false,
+        "metric_scope": "descriptive_partial",
+        "original_universe_size": 892,
+        "paired_company_count": 0,
+        "paired_company_ids": [],
+        "paired_deltas": {
+          "outcome_coverage_pct": 0.0,
+          "rank_ic": null,
+          "score_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "paired_outcome_coverage_pct": 0.0,
+        "paired_sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ranking_churn": {
+          "mean_absolute_rank_change": 0.6569506726457399,
+          "median_absolute_rank_change": 0.0,
+          "most_demoted": [
+            {
+              "challenger_rank": 51,
+              "champion_rank": 36,
+              "company_id": "isin:FI0009000681",
+              "rank_delta": -15,
+              "ticker": "NOKIA"
+            },
+            {
+              "challenger_rank": 78,
+              "champion_rank": 64,
+              "company_id": "isin:FI0009007264",
+              "rank_delta": -14,
+              "ticker": "BITTI"
+            },
+            {
+              "challenger_rank": 47,
+              "champion_rank": 34,
+              "company_id": "isin:FI0009013403",
+              "rank_delta": -13,
+              "ticker": "KNEBV"
+            },
+            {
+              "challenger_rank": 55,
+              "champion_rank": 43,
+              "company_id": "isin:FI4000049812",
+              "rank_delta": -12,
+              "ticker": "VERK"
+            },
+            {
+              "challenger_rank": 102,
+              "champion_rank": 91,
+              "company_id": "isin:CH0012221716",
+              "rank_delta": -11,
+              "ticker": "ABB"
+            }
+          ],
+          "most_promoted": [
+            {
+              "challenger_rank": 93,
+              "champion_rank": 107,
+              "company_id": "isin:FI0009005953",
+              "rank_delta": 14,
+              "ticker": "STEAV"
+            },
+            {
+              "challenger_rank": 36,
+              "champion_rank": 49,
+              "company_id": "isin:FI0009900658",
+              "rank_delta": 13,
+              "ticker": "ELEAV"
+            },
+            {
+              "challenger_rank": 69,
+              "champion_rank": 80,
+              "company_id": "isin:SE0026821076",
+              "rank_delta": 11,
+              "ticker": "ARFA"
+            },
+            {
+              "challenger_rank": 41,
+              "champion_rank": 52,
+              "company_id": "isin:FI0009008452",
+              "rank_delta": 11,
+              "ticker": "WUF1V"
+            },
+            {
+              "challenger_rank": 43,
+              "champion_rank": 53,
+              "company_id": "isin:FI0009800098",
+              "rank_delta": 10,
+              "ticker": "AFAGR"
+            }
+          ],
+          "top_10_overlap_count": 9,
+          "top_10_overlap_pct": 90.0,
+          "top_10_size": 10,
+          "top_decile_overlap_count": 89,
+          "top_decile_overlap_pct": 98.88888888888889,
+          "top_decile_size": 90
+        },
+        "strategy": "long-term"
+      },
+      {
+        "analysis_eligibility": {
+          "coverage_pct": 0.0,
+          "eligible": false,
+          "minimum_coverage_pct": 70.0,
+          "minimum_valid_companies": 50,
+          "original_company_count": 892,
+          "reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 50"
+          ],
+          "valid_company_count": 0
+        },
+        "analysis_eligible": false,
+        "analysis_ineligibility_reasons": [
+          "horizon is not due"
+        ],
+        "challenger": {
+          "rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "challenger_analysis_eligible": false,
+        "champion": {
+          "final_rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "champion_analysis_eligible": false,
+        "champion_scoring_model_version": "nordic-ranking-v1",
+        "decision_at": "2026-08-28T11:12:53.036169Z",
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "experiment_id": "relative-valuation-v1",
+        "experiment_run_id": "experiment-95a4dcce9af4f8b8eb098e20",
+        "experiment_version": 1,
+        "factor_coverage_outcomes": [],
+        "horizon": {
+          "label": "126_sessions",
+          "sessions": 126,
+          "unit": "market_sessions"
+        },
+        "is_due": false,
+        "metric_scope": "descriptive_partial",
+        "original_universe_size": 892,
+        "paired_company_count": 0,
+        "paired_company_ids": [],
+        "paired_deltas": {
+          "outcome_coverage_pct": 0.0,
+          "rank_ic": null,
+          "score_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "paired_outcome_coverage_pct": 0.0,
+        "paired_sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ranking_churn": {
+          "mean_absolute_rank_change": 0.6569506726457399,
+          "median_absolute_rank_change": 0.0,
+          "most_demoted": [
+            {
+              "challenger_rank": 51,
+              "champion_rank": 36,
+              "company_id": "isin:FI0009000681",
+              "rank_delta": -15,
+              "ticker": "NOKIA"
+            },
+            {
+              "challenger_rank": 78,
+              "champion_rank": 64,
+              "company_id": "isin:FI0009007264",
+              "rank_delta": -14,
+              "ticker": "BITTI"
+            },
+            {
+              "challenger_rank": 47,
+              "champion_rank": 34,
+              "company_id": "isin:FI0009013403",
+              "rank_delta": -13,
+              "ticker": "KNEBV"
+            },
+            {
+              "challenger_rank": 55,
+              "champion_rank": 43,
+              "company_id": "isin:FI4000049812",
+              "rank_delta": -12,
+              "ticker": "VERK"
+            },
+            {
+              "challenger_rank": 102,
+              "champion_rank": 91,
+              "company_id": "isin:CH0012221716",
+              "rank_delta": -11,
+              "ticker": "ABB"
+            }
+          ],
+          "most_promoted": [
+            {
+              "challenger_rank": 93,
+              "champion_rank": 107,
+              "company_id": "isin:FI0009005953",
+              "rank_delta": 14,
+              "ticker": "STEAV"
+            },
+            {
+              "challenger_rank": 36,
+              "champion_rank": 49,
+              "company_id": "isin:FI0009900658",
+              "rank_delta": 13,
+              "ticker": "ELEAV"
+            },
+            {
+              "challenger_rank": 69,
+              "champion_rank": 80,
+              "company_id": "isin:SE0026821076",
+              "rank_delta": 11,
+              "ticker": "ARFA"
+            },
+            {
+              "challenger_rank": 41,
+              "champion_rank": 52,
+              "company_id": "isin:FI0009008452",
+              "rank_delta": 11,
+              "ticker": "WUF1V"
+            },
+            {
+              "challenger_rank": 43,
+              "champion_rank": 53,
+              "company_id": "isin:FI0009800098",
+              "rank_delta": 10,
+              "ticker": "AFAGR"
+            }
+          ],
+          "top_10_overlap_count": 9,
+          "top_10_overlap_pct": 90.0,
+          "top_10_size": 10,
+          "top_decile_overlap_count": 89,
+          "top_decile_overlap_pct": 98.88888888888889,
+          "top_decile_size": 90
+        },
+        "strategy": "long-term"
+      },
+      {
+        "analysis_eligibility": {
+          "coverage_pct": 0.0,
+          "eligible": false,
+          "minimum_coverage_pct": 70.0,
+          "minimum_valid_companies": 50,
+          "original_company_count": 892,
+          "reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 50"
+          ],
+          "valid_company_count": 0
+        },
+        "analysis_eligible": false,
+        "analysis_ineligibility_reasons": [
+          "horizon is not due"
+        ],
+        "challenger": {
+          "rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "challenger_analysis_eligible": false,
+        "champion": {
+          "final_rank_return_ic": null,
+          "score_return_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "champion_analysis_eligible": false,
+        "champion_scoring_model_version": "nordic-ranking-v1",
+        "decision_at": "2026-08-28T11:12:53.036169Z",
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "experiment_id": "relative-valuation-v1",
+        "experiment_run_id": "experiment-95a4dcce9af4f8b8eb098e20",
+        "experiment_version": 1,
+        "factor_coverage_outcomes": [],
+        "horizon": {
+          "label": "252_sessions",
+          "sessions": 252,
+          "unit": "market_sessions"
+        },
+        "is_due": false,
+        "metric_scope": "descriptive_partial",
+        "original_universe_size": 892,
+        "paired_company_count": 0,
+        "paired_company_ids": [],
+        "paired_deltas": {
+          "outcome_coverage_pct": 0.0,
+          "rank_ic": null,
+          "score_ic": null,
+          "top_decile_minus_bottom_decile_pct": null,
+          "top_decile_minus_universe_pct": null,
+          "top_decile_return_pct": null
+        },
+        "paired_outcome_coverage_pct": 0.0,
+        "paired_sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ranking_churn": {
+          "mean_absolute_rank_change": 0.6569506726457399,
+          "median_absolute_rank_change": 0.0,
+          "most_demoted": [
+            {
+              "challenger_rank": 51,
+              "champion_rank": 36,
+              "company_id": "isin:FI0009000681",
+              "rank_delta": -15,
+              "ticker": "NOKIA"
+            },
+            {
+              "challenger_rank": 78,
+              "champion_rank": 64,
+              "company_id": "isin:FI0009007264",
+              "rank_delta": -14,
+              "ticker": "BITTI"
+            },
+            {
+              "challenger_rank": 47,
+              "champion_rank": 34,
+              "company_id": "isin:FI0009013403",
+              "rank_delta": -13,
+              "ticker": "KNEBV"
+            },
+            {
+              "challenger_rank": 55,
+              "champion_rank": 43,
+              "company_id": "isin:FI4000049812",
+              "rank_delta": -12,
+              "ticker": "VERK"
+            },
+            {
+              "challenger_rank": 102,
+              "champion_rank": 91,
+              "company_id": "isin:CH0012221716",
+              "rank_delta": -11,
+              "ticker": "ABB"
+            }
+          ],
+          "most_promoted": [
+            {
+              "challenger_rank": 93,
+              "champion_rank": 107,
+              "company_id": "isin:FI0009005953",
+              "rank_delta": 14,
+              "ticker": "STEAV"
+            },
+            {
+              "challenger_rank": 36,
+              "champion_rank": 49,
+              "company_id": "isin:FI0009900658",
+              "rank_delta": 13,
+              "ticker": "ELEAV"
+            },
+            {
+              "challenger_rank": 69,
+              "champion_rank": 80,
+              "company_id": "isin:SE0026821076",
+              "rank_delta": 11,
+              "ticker": "ARFA"
+            },
+            {
+              "challenger_rank": 41,
+              "champion_rank": 52,
+              "company_id": "isin:FI0009008452",
+              "rank_delta": 11,
+              "ticker": "WUF1V"
+            },
+            {
+              "challenger_rank": 43,
+              "champion_rank": 53,
+              "company_id": "isin:FI0009800098",
+              "rank_delta": 10,
+              "ticker": "AFAGR"
+            }
+          ],
+          "top_10_overlap_count": 9,
+          "top_10_overlap_pct": 90.0,
+          "top_10_size": 10,
+          "top_decile_overlap_count": 89,
+          "top_decile_overlap_pct": 98.88888888888889,
+          "top_decile_size": 90
+        },
+        "strategy": "long-term"
       }
     ],
     "run_statuses": [
@@ -9850,6 +10434,13 @@
         "experiment_id": "relative-valuation-v1",
         "experiment_version": 1,
         "status": "paired analysis available"
+      },
+      {
+        "decision_at": "2026-08-28T11:12:53.036169Z",
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "experiment_id": "relative-valuation-v1",
+        "experiment_version": 1,
+        "status": "paired analysis available"
       }
     ],
     "warnings": [
@@ -9864,7 +10455,7 @@
     "commissions",
     "slippage"
   ],
-  "generated_at": "2026-08-27T09:25:38Z",
+  "generated_at": "2026-08-28T11:13:16Z",
   "groups": [
     {
       "analysis_eligibility": {
@@ -9880,7 +10471,7 @@
       "countries": [],
       "due_run_count": 0,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -9932,7 +10523,7 @@
       "countries": [],
       "due_run_count": 0,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -9984,7 +10575,7 @@
       "countries": [],
       "due_run_count": 0,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -10036,7 +10627,7 @@
       "countries": [],
       "due_run_count": 0,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -10082,16 +10673,16 @@
       },
       "analysis_eligible_run_count": 0,
       "average_eligible_outcome_coverage_pct": null,
-      "average_outcome_coverage_pct": 5.540166204986149,
-      "average_valid_universe_size": 20.0,
+      "average_outcome_coverage_pct": 10.526315789473683,
+      "average_valid_universe_size": 38.0,
       "bucket_schemes": [],
       "countries": [
         {
           "analysis_eligible_run_count": 0,
-          "average_outcome_coverage_pct": 39.39393939393939,
+          "average_outcome_coverage_pct": 90.9090909090909,
           "country": "FI",
           "due_evaluation_dates": 1,
-          "due_observations": 13,
+          "due_observations": 30,
           "evaluation_dates": 0,
           "final_rank_ic": {
             "hit_rate_pct": null,
@@ -10117,10 +10708,10 @@
         },
         {
           "analysis_eligible_run_count": 0,
-          "average_outcome_coverage_pct": 2.1341463414634148,
+          "average_outcome_coverage_pct": 2.4390243902439024,
           "country": "SE",
           "due_evaluation_dates": 1,
-          "due_observations": 7,
+          "due_observations": 8,
           "evaluation_dates": 0,
           "final_rank_ic": {
             "hit_rate_pct": null,
@@ -10147,7 +10738,7 @@
       ],
       "due_run_count": 1,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -10183,7 +10774,7 @@
         "mean_universe_return_pct": null,
         "positive_excess_hit_rate_pct": null
       },
-      "unique_company_count": 20
+      "unique_company_count": 38
     },
     {
       "analysis_eligibility": {
@@ -10199,7 +10790,7 @@
       "countries": [],
       "due_run_count": 0,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -10251,7 +10842,7 @@
       "countries": [],
       "due_run_count": 0,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -10303,7 +10894,7 @@
       "countries": [],
       "due_run_count": 0,
       "evaluated_run_count": 0,
-      "evaluation_run_count": 16,
+      "evaluation_run_count": 17,
       "final_rank_ic": {
         "hit_rate_pct": null,
         "information_ratio": null,
@@ -10381,10 +10972,10 @@
         "due_records": 0,
         "horizon": "126_sessions",
         "priced_records": 0,
-        "records": 2962,
+        "records": 3148,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 2962
+          "not_due": 3148
         },
         "strategy": "long-term"
       },
@@ -10394,10 +10985,10 @@
         "due_records": 0,
         "horizon": "126_sessions",
         "priced_records": 0,
-        "records": 11332,
+        "records": 12038,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 11332
+          "not_due": 12038
         },
         "strategy": "long-term"
       },
@@ -10407,10 +10998,10 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 2962,
+        "records": 3148,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 2962
+          "not_due": 3148
         },
         "strategy": "long-term"
       },
@@ -10420,10 +11011,10 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 11332,
+        "records": 12038,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 11332
+          "not_due": 12038
         },
         "strategy": "long-term"
       },
@@ -10433,10 +11024,10 @@
         "due_records": 0,
         "horizon": "252_sessions",
         "priced_records": 0,
-        "records": 2962,
+        "records": 3148,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 2962
+          "not_due": 3148
         },
         "strategy": "long-term"
       },
@@ -10446,10 +11037,10 @@
         "due_records": 0,
         "horizon": "252_sessions",
         "priced_records": 0,
-        "records": 11332,
+        "records": 12038,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 11332
+          "not_due": 12038
         },
         "strategy": "long-term"
       },
@@ -10459,10 +11050,10 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 2962,
+        "records": 3148,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 2962
+          "not_due": 3148
         },
         "strategy": "long-term"
       },
@@ -10472,38 +11063,38 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 11332,
+        "records": 12038,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 11332
+          "not_due": 12038
         },
         "strategy": "long-term"
       },
       {
         "country": "FI",
         "due_coverage_pct": 100.0,
-        "due_records": 13,
+        "due_records": 30,
         "horizon": "1_session",
-        "priced_records": 13,
-        "records": 48,
+        "priced_records": 30,
+        "records": 71,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 35,
-          "priced": 13
+          "not_due": 41,
+          "priced": 30
         },
         "strategy": "trading"
       },
       {
         "country": "SE",
         "due_coverage_pct": 100.0,
-        "due_records": 7,
+        "due_records": 8,
         "horizon": "1_session",
-        "priced_records": 7,
-        "records": 565,
+        "priced_records": 8,
+        "records": 860,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 558,
-          "priced": 7
+          "not_due": 852,
+          "priced": 8
         },
         "strategy": "trading"
       },
@@ -10513,10 +11104,10 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 48,
+        "records": 71,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 48
+          "not_due": 71
         },
         "strategy": "trading"
       },
@@ -10526,10 +11117,10 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 565,
+        "records": 860,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 565
+          "not_due": 860
         },
         "strategy": "trading"
       },
@@ -10539,10 +11130,10 @@
         "due_records": 0,
         "horizon": "5_sessions",
         "priced_records": 0,
-        "records": 48,
+        "records": 71,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 48
+          "not_due": 71
         },
         "strategy": "trading"
       },
@@ -10552,10 +11143,10 @@
         "due_records": 0,
         "horizon": "5_sessions",
         "priced_records": 0,
-        "records": 565,
+        "records": 860,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 565
+          "not_due": 860
         },
         "strategy": "trading"
       },
@@ -10565,10 +11156,10 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 48,
+        "records": 71,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 48
+          "not_due": 71
         },
         "strategy": "trading"
       },
@@ -10578,10 +11169,10 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 565,
+        "records": 860,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 565
+          "not_due": 860
         },
         "strategy": "trading"
       }
@@ -10593,10 +11184,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_1",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
@@ -10606,10 +11197,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_10",
-        "records": 1440,
+        "records": 1530,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1440
+          "not_due": 1530
         },
         "strategy": "long-term"
       },
@@ -10619,10 +11210,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_2",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -10632,10 +11223,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_3",
-        "records": 1431,
+        "records": 1520,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1431
+          "not_due": 1520
         },
         "strategy": "long-term"
       },
@@ -10645,10 +11236,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_4",
-        "records": 1430,
+        "records": 1519,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1430
+          "not_due": 1519
         },
         "strategy": "long-term"
       },
@@ -10658,10 +11249,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_5",
-        "records": 1434,
+        "records": 1524,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1434
+          "not_due": 1524
         },
         "strategy": "long-term"
       },
@@ -10671,10 +11262,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_6",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -10684,10 +11275,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_7",
-        "records": 1429,
+        "records": 1518,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1429
+          "not_due": 1518
         },
         "strategy": "long-term"
       },
@@ -10697,10 +11288,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_8",
-        "records": 1432,
+        "records": 1521,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1432
+          "not_due": 1521
         },
         "strategy": "long-term"
       },
@@ -10710,10 +11301,10 @@
         "horizon": "126_sessions",
         "priced_records": 0,
         "rank_decile": "decile_9",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
@@ -10723,10 +11314,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_1",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
@@ -10736,10 +11327,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_10",
-        "records": 1440,
+        "records": 1530,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1440
+          "not_due": 1530
         },
         "strategy": "long-term"
       },
@@ -10749,10 +11340,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_2",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -10762,10 +11353,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_3",
-        "records": 1431,
+        "records": 1520,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1431
+          "not_due": 1520
         },
         "strategy": "long-term"
       },
@@ -10775,10 +11366,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_4",
-        "records": 1430,
+        "records": 1519,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1430
+          "not_due": 1519
         },
         "strategy": "long-term"
       },
@@ -10788,10 +11379,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_5",
-        "records": 1434,
+        "records": 1524,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1434
+          "not_due": 1524
         },
         "strategy": "long-term"
       },
@@ -10801,10 +11392,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_6",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -10814,10 +11405,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_7",
-        "records": 1429,
+        "records": 1518,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1429
+          "not_due": 1518
         },
         "strategy": "long-term"
       },
@@ -10827,10 +11418,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_8",
-        "records": 1432,
+        "records": 1521,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1432
+          "not_due": 1521
         },
         "strategy": "long-term"
       },
@@ -10840,10 +11431,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_9",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
@@ -10853,10 +11444,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_1",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
@@ -10866,10 +11457,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_10",
-        "records": 1440,
+        "records": 1530,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1440
+          "not_due": 1530
         },
         "strategy": "long-term"
       },
@@ -10879,10 +11470,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_2",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -10892,10 +11483,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_3",
-        "records": 1431,
+        "records": 1520,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1431
+          "not_due": 1520
         },
         "strategy": "long-term"
       },
@@ -10905,10 +11496,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_4",
-        "records": 1430,
+        "records": 1519,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1430
+          "not_due": 1519
         },
         "strategy": "long-term"
       },
@@ -10918,10 +11509,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_5",
-        "records": 1434,
+        "records": 1524,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1434
+          "not_due": 1524
         },
         "strategy": "long-term"
       },
@@ -10931,10 +11522,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_6",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -10944,10 +11535,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_7",
-        "records": 1429,
+        "records": 1518,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1429
+          "not_due": 1518
         },
         "strategy": "long-term"
       },
@@ -10957,10 +11548,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_8",
-        "records": 1432,
+        "records": 1521,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1432
+          "not_due": 1521
         },
         "strategy": "long-term"
       },
@@ -10970,10 +11561,10 @@
         "horizon": "252_sessions",
         "priced_records": 0,
         "rank_decile": "decile_9",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
@@ -10983,10 +11574,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_1",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
@@ -10996,10 +11587,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_10",
-        "records": 1440,
+        "records": 1530,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1440
+          "not_due": 1530
         },
         "strategy": "long-term"
       },
@@ -11009,10 +11600,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_2",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -11022,10 +11613,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_3",
-        "records": 1431,
+        "records": 1520,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1431
+          "not_due": 1520
         },
         "strategy": "long-term"
       },
@@ -11035,10 +11626,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_4",
-        "records": 1430,
+        "records": 1519,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1430
+          "not_due": 1519
         },
         "strategy": "long-term"
       },
@@ -11048,10 +11639,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_5",
-        "records": 1434,
+        "records": 1524,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1434
+          "not_due": 1524
         },
         "strategy": "long-term"
       },
@@ -11061,10 +11652,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_6",
-        "records": 1425,
+        "records": 1514,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1425
+          "not_due": 1514
         },
         "strategy": "long-term"
       },
@@ -11074,10 +11665,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_7",
-        "records": 1429,
+        "records": 1518,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1429
+          "not_due": 1518
         },
         "strategy": "long-term"
       },
@@ -11087,10 +11678,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_8",
-        "records": 1432,
+        "records": 1521,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1432
+          "not_due": 1521
         },
         "strategy": "long-term"
       },
@@ -11100,23 +11691,24 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_9",
-        "records": 1424,
+        "records": 1513,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 1424
+          "not_due": 1513
         },
         "strategy": "long-term"
       },
       {
-        "due_coverage_pct": null,
-        "due_records": 0,
+        "due_coverage_pct": 100.0,
+        "due_records": 3,
         "horizon": "1_session",
-        "priced_records": 0,
+        "priced_records": 3,
         "rank_decile": "decile_1",
-        "records": 61,
+        "records": 92,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 89,
+          "priced": 3
         },
         "strategy": "trading"
       },
@@ -11126,10 +11718,10 @@
         "horizon": "1_session",
         "priced_records": 2,
         "rank_decile": "decile_10",
-        "records": 63,
+        "records": 95,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61,
+          "not_due": 93,
           "priced": 2
         },
         "strategy": "trading"
@@ -11140,10 +11732,10 @@
         "horizon": "1_session",
         "priced_records": 2,
         "rank_decile": "decile_2",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 59,
+          "not_due": 91,
           "priced": 2
         },
         "strategy": "trading"
@@ -11154,10 +11746,10 @@
         "horizon": "1_session",
         "priced_records": 1,
         "rank_decile": "decile_3",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 60,
+          "not_due": 92,
           "priced": 1
         },
         "strategy": "trading"
@@ -11168,66 +11760,11 @@
         "horizon": "1_session",
         "priced_records": 1,
         "rank_decile": "decile_4",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 60,
+          "not_due": 92,
           "priced": 1
-        },
-        "strategy": "trading"
-      },
-      {
-        "due_coverage_pct": 100.0,
-        "due_records": 2,
-        "horizon": "1_session",
-        "priced_records": 2,
-        "rank_decile": "decile_5",
-        "records": 62,
-        "scoring_model_version": "nordic-ranking-v1",
-        "status_counts": {
-          "not_due": 60,
-          "priced": 2
-        },
-        "strategy": "trading"
-      },
-      {
-        "due_coverage_pct": 100.0,
-        "due_records": 6,
-        "horizon": "1_session",
-        "priced_records": 6,
-        "rank_decile": "decile_6",
-        "records": 61,
-        "scoring_model_version": "nordic-ranking-v1",
-        "status_counts": {
-          "not_due": 55,
-          "priced": 6
-        },
-        "strategy": "trading"
-      },
-      {
-        "due_coverage_pct": 100.0,
-        "due_records": 2,
-        "horizon": "1_session",
-        "priced_records": 2,
-        "rank_decile": "decile_7",
-        "records": 61,
-        "scoring_model_version": "nordic-ranking-v1",
-        "status_counts": {
-          "not_due": 59,
-          "priced": 2
-        },
-        "strategy": "trading"
-      },
-      {
-        "due_coverage_pct": null,
-        "due_records": 0,
-        "horizon": "1_session",
-        "priced_records": 0,
-        "rank_decile": "decile_8",
-        "records": 61,
-        "scoring_model_version": "nordic-ranking-v1",
-        "status_counts": {
-          "not_due": 61
         },
         "strategy": "trading"
       },
@@ -11236,25 +11773,81 @@
         "due_records": 4,
         "horizon": "1_session",
         "priced_records": 4,
-        "rank_decile": "decile_9",
-        "records": 61,
+        "rank_decile": "decile_5",
+        "records": 94,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 57,
+          "not_due": 90,
           "priced": 4
         },
         "strategy": "trading"
       },
       {
+        "due_coverage_pct": 100.0,
+        "due_records": 10,
+        "horizon": "1_session",
+        "priced_records": 10,
+        "rank_decile": "decile_6",
+        "records": 92,
+        "scoring_model_version": "nordic-ranking-v1",
+        "status_counts": {
+          "not_due": 82,
+          "priced": 10
+        },
+        "strategy": "trading"
+      },
+      {
+        "due_coverage_pct": 100.0,
+        "due_records": 5,
+        "horizon": "1_session",
+        "priced_records": 5,
+        "rank_decile": "decile_7",
+        "records": 93,
+        "scoring_model_version": "nordic-ranking-v1",
+        "status_counts": {
+          "not_due": 88,
+          "priced": 5
+        },
+        "strategy": "trading"
+      },
+      {
+        "due_coverage_pct": 100.0,
+        "due_records": 2,
+        "horizon": "1_session",
+        "priced_records": 2,
+        "rank_decile": "decile_8",
+        "records": 93,
+        "scoring_model_version": "nordic-ranking-v1",
+        "status_counts": {
+          "not_due": 91,
+          "priced": 2
+        },
+        "strategy": "trading"
+      },
+      {
+        "due_coverage_pct": 100.0,
+        "due_records": 8,
+        "horizon": "1_session",
+        "priced_records": 8,
+        "rank_decile": "decile_9",
+        "records": 93,
+        "scoring_model_version": "nordic-ranking-v1",
+        "status_counts": {
+          "not_due": 85,
+          "priced": 8
+        },
+        "strategy": "trading"
+      },
+      {
         "due_coverage_pct": null,
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_1",
-        "records": 61,
+        "records": 92,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 92
         },
         "strategy": "trading"
       },
@@ -11264,10 +11857,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_10",
-        "records": 63,
+        "records": 95,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 63
+          "not_due": 95
         },
         "strategy": "trading"
       },
@@ -11277,10 +11870,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_2",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11290,10 +11883,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_3",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11303,10 +11896,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_4",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11316,10 +11909,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_5",
-        "records": 62,
+        "records": 94,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 62
+          "not_due": 94
         },
         "strategy": "trading"
       },
@@ -11329,10 +11922,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_6",
-        "records": 61,
+        "records": 92,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 92
         },
         "strategy": "trading"
       },
@@ -11342,10 +11935,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_7",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11355,10 +11948,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_8",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11368,10 +11961,10 @@
         "horizon": "20_sessions",
         "priced_records": 0,
         "rank_decile": "decile_9",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11381,10 +11974,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_1",
-        "records": 61,
+        "records": 92,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 92
         },
         "strategy": "trading"
       },
@@ -11394,10 +11987,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_10",
-        "records": 63,
+        "records": 95,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 63
+          "not_due": 95
         },
         "strategy": "trading"
       },
@@ -11407,10 +12000,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_2",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11420,10 +12013,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_3",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11433,10 +12026,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_4",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11446,10 +12039,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_5",
-        "records": 62,
+        "records": 94,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 62
+          "not_due": 94
         },
         "strategy": "trading"
       },
@@ -11459,10 +12052,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_6",
-        "records": 61,
+        "records": 92,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 92
         },
         "strategy": "trading"
       },
@@ -11472,10 +12065,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_7",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11485,10 +12078,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_8",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11498,10 +12091,10 @@
         "horizon": "5_sessions",
         "priced_records": 0,
         "rank_decile": "decile_9",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11511,10 +12104,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_1",
-        "records": 61,
+        "records": 92,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 92
         },
         "strategy": "trading"
       },
@@ -11524,10 +12117,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_10",
-        "records": 63,
+        "records": 95,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 63
+          "not_due": 95
         },
         "strategy": "trading"
       },
@@ -11537,10 +12130,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_2",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11550,10 +12143,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_3",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11563,10 +12156,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_4",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11576,10 +12169,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_5",
-        "records": 62,
+        "records": 94,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 62
+          "not_due": 94
         },
         "strategy": "trading"
       },
@@ -11589,10 +12182,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_6",
-        "records": 61,
+        "records": 92,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 92
         },
         "strategy": "trading"
       },
@@ -11602,10 +12195,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_7",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11615,10 +12208,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_8",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       },
@@ -11628,10 +12221,10 @@
         "horizon": "60_sessions",
         "priced_records": 0,
         "rank_decile": "decile_9",
-        "records": 61,
+        "records": 93,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 61
+          "not_due": 93
         },
         "strategy": "trading"
       }
@@ -11642,11 +12235,11 @@
         "due_records": 0,
         "horizon": "126_sessions",
         "priced_records": 0,
-        "records": 5992,
+        "records": 6366,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 5992
+          "not_due": 6366
         },
         "strategy": "long-term"
       },
@@ -11655,11 +12248,11 @@
         "due_records": 0,
         "horizon": "126_sessions",
         "priced_records": 0,
-        "records": 8302,
+        "records": 8820,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 8302
+          "not_due": 8820
         },
         "strategy": "long-term"
       },
@@ -11668,11 +12261,11 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 5992,
+        "records": 6366,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 5992
+          "not_due": 6366
         },
         "strategy": "long-term"
       },
@@ -11681,11 +12274,11 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 8302,
+        "records": 8820,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 8302
+          "not_due": 8820
         },
         "strategy": "long-term"
       },
@@ -11694,11 +12287,11 @@
         "due_records": 0,
         "horizon": "252_sessions",
         "priced_records": 0,
-        "records": 5992,
+        "records": 6366,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 5992
+          "not_due": 6366
         },
         "strategy": "long-term"
       },
@@ -11707,11 +12300,11 @@
         "due_records": 0,
         "horizon": "252_sessions",
         "priced_records": 0,
-        "records": 8302,
+        "records": 8820,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 8302
+          "not_due": 8820
         },
         "strategy": "long-term"
       },
@@ -11720,11 +12313,11 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 5992,
+        "records": 6366,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 5992
+          "not_due": 6366
         },
         "strategy": "long-term"
       },
@@ -11733,11 +12326,11 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 8302,
+        "records": 8820,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 8302
+          "not_due": 8820
         },
         "strategy": "long-term"
       },
@@ -11746,25 +12339,25 @@
         "due_records": 0,
         "horizon": "1_session",
         "priced_records": 0,
-        "records": 84,
+        "records": 127,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 84
+          "not_due": 127
         },
         "strategy": "trading"
       },
       {
         "due_coverage_pct": 100.0,
-        "due_records": 20,
+        "due_records": 38,
         "horizon": "1_session",
-        "priced_records": 20,
-        "records": 529,
+        "priced_records": 38,
+        "records": 804,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 509,
-          "priced": 20
+          "not_due": 766,
+          "priced": 38
         },
         "strategy": "trading"
       },
@@ -11773,11 +12366,11 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 84,
+        "records": 127,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 84
+          "not_due": 127
         },
         "strategy": "trading"
       },
@@ -11786,11 +12379,11 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 529,
+        "records": 804,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 529
+          "not_due": 804
         },
         "strategy": "trading"
       },
@@ -11799,11 +12392,11 @@
         "due_records": 0,
         "horizon": "5_sessions",
         "priced_records": 0,
-        "records": 84,
+        "records": 127,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 84
+          "not_due": 127
         },
         "strategy": "trading"
       },
@@ -11812,11 +12405,11 @@
         "due_records": 0,
         "horizon": "5_sessions",
         "priced_records": 0,
-        "records": 529,
+        "records": 804,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 529
+          "not_due": 804
         },
         "strategy": "trading"
       },
@@ -11825,11 +12418,11 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 84,
+        "records": 127,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "first_north",
         "status_counts": {
-          "not_due": 84
+          "not_due": 127
         },
         "strategy": "trading"
       },
@@ -11838,11 +12431,11 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 529,
+        "records": 804,
         "scoring_model_version": "nordic-ranking-v1",
         "segment": "main_market",
         "status_counts": {
-          "not_due": 529
+          "not_due": 804
         },
         "strategy": "trading"
       }
@@ -11853,10 +12446,10 @@
         "due_records": 0,
         "horizon": "126_sessions",
         "priced_records": 0,
-        "records": 14294,
+        "records": 15186,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 14294
+          "not_due": 15186
         },
         "strategy": "long-term"
       },
@@ -11865,10 +12458,10 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 14294,
+        "records": 15186,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 14294
+          "not_due": 15186
         },
         "strategy": "long-term"
       },
@@ -11877,10 +12470,10 @@
         "due_records": 0,
         "horizon": "252_sessions",
         "priced_records": 0,
-        "records": 14294,
+        "records": 15186,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 14294
+          "not_due": 15186
         },
         "strategy": "long-term"
       },
@@ -11889,23 +12482,23 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 14294,
+        "records": 15186,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 14294
+          "not_due": 15186
         },
         "strategy": "long-term"
       },
       {
         "due_coverage_pct": 100.0,
-        "due_records": 20,
+        "due_records": 38,
         "horizon": "1_session",
-        "priced_records": 20,
-        "records": 613,
+        "priced_records": 38,
+        "records": 931,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 593,
-          "priced": 20
+          "not_due": 893,
+          "priced": 38
         },
         "strategy": "trading"
       },
@@ -11914,10 +12507,10 @@
         "due_records": 0,
         "horizon": "20_sessions",
         "priced_records": 0,
-        "records": 613,
+        "records": 931,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 613
+          "not_due": 931
         },
         "strategy": "trading"
       },
@@ -11926,10 +12519,10 @@
         "due_records": 0,
         "horizon": "5_sessions",
         "priced_records": 0,
-        "records": 613,
+        "records": 931,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 613
+          "not_due": 931
         },
         "strategy": "trading"
       },
@@ -11938,10 +12531,10 @@
         "due_records": 0,
         "horizon": "60_sessions",
         "priced_records": 0,
-        "records": 613,
+        "records": 931,
         "scoring_model_version": "nordic-ranking-v1",
         "status_counts": {
-          "not_due": 613
+          "not_due": 931
         },
         "strategy": "trading"
       }
@@ -19680,361 +20273,610 @@
     },
     {
       "analysis_eligibility": {
-        "coverage_pct": 5.540166204986149,
+        "coverage_pct": 10.526315789473683,
         "eligible": false,
         "minimum_coverage_pct": 70.0,
         "minimum_valid_companies": 50,
         "original_company_count": 361,
         "reasons": [
-          "outcome coverage 5.5% is below 70%",
-          "valid company count 20 is below 50"
+          "outcome coverage 10.5% is below 70%",
+          "valid company count 38 is below 50"
         ],
-        "valid_company_count": 20
+        "valid_company_count": 38
       },
       "analysis_eligible": false,
       "analysis_ineligibility_reasons": [
-        "outcome coverage 5.5% is below 70%",
-        "valid company count 20 is below 50"
+        "outcome coverage 10.5% is below 70%",
+        "valid company count 38 is below 50"
       ],
-      "bucket_count": 2,
-      "bucket_returns_monotonic": true,
+      "bucket_count": 5,
+      "bucket_returns_monotonic": false,
       "buckets": [
         {
           "bucket": 1,
-          "mean_excess_vs_universe_pct": 0.2091979174420644,
-          "mean_return_pct": 0.35388717824601734,
-          "median_return_pct": 0.19185674696226007,
-          "observations": 10
+          "mean_excess_vs_universe_pct": -0.027814963730393133,
+          "mean_return_pct": 0.16804024678136464,
+          "median_return_pct": 0.02182453077258506,
+          "observations": 8
         },
         {
           "bucket": 2,
-          "mean_excess_vs_universe_pct": -0.2091979174420644,
-          "mean_return_pct": -0.06450865663811145,
-          "median_return_pct": -0.08622036663187838,
-          "observations": 10
+          "mean_excess_vs_universe_pct": 0.4569897364497677,
+          "mean_return_pct": 0.6528449469615255,
+          "median_return_pct": 0.7250623615642993,
+          "observations": 8
+        },
+        {
+          "bucket": 3,
+          "mean_excess_vs_universe_pct": 0.3664230154668179,
+          "mean_return_pct": 0.5622782259785757,
+          "median_return_pct": 0.6637168141592875,
+          "observations": 7
+        },
+        {
+          "bucket": 4,
+          "mean_excess_vs_universe_pct": -0.13282649069736388,
+          "mean_return_pct": 0.0630287198143939,
+          "median_return_pct": -0.01581591839509011,
+          "observations": 8
+        },
+        {
+          "bucket": 5,
+          "mean_excess_vs_universe_pct": -0.705106766349116,
+          "mean_return_pct": -0.5092515558373581,
+          "median_return_pct": -0.1404494382022392,
+          "observations": 7
         }
       ],
       "company_benchmarks": [
         {
+          "company_id": "isin:FI4000508023",
+          "country": "FI",
+          "excess_vs_country_pct": -0.22287932602351365,
+          "excess_vs_universe_pct": -0.19585521051175778,
+          "rank": 5,
+          "rank_bucket": 1,
+          "return_pct": 0.0,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": 5.75,
+          "ticker": "PAMPALO",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI0009007884",
+          "country": "FI",
+          "excess_vs_country_pct": -0.9348179897694172,
+          "excess_vs_universe_pct": -0.9077938742576613,
+          "rank": 9,
+          "rank_bucket": 1,
+          "return_pct": -0.7119386637459035,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -2.0,
+          "ticker": "ELISA",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000567029",
+          "country": "FI",
+          "excess_vs_country_pct": -0.17923026447834353,
+          "excess_vs_universe_pct": -0.15220614896658766,
+          "rank": 10,
+          "rank_bucket": 1,
+          "return_pct": 0.04364906154517012,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "FIA1S",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
           "company_id": "isin:DE000TRAT0N7",
           "country": "SE",
-          "excess_vs_country_pct": 1.0529150514913417,
-          "excess_vs_universe_pct": 0.9510706248558665,
+          "excess_vs_country_pct": 1.001245108317146,
+          "excess_vs_universe_pct": 0.8999046751480616,
           "rank": 47,
           "rank_bucket": 1,
           "return_pct": 1.0957598856598194,
-          "same_country_equal_weight_return_pct": 0.042844834168477765,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
           "score": -9.0,
           "ticker": "8TRA",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:CH0012221716",
           "country": "SE",
-          "excess_vs_country_pct": 0.34086865975604236,
-          "excess_vs_universe_pct": 0.2390242331205672,
+          "excess_vs_country_pct": 0.28919871658184687,
+          "excess_vs_universe_pct": 0.18785828341276237,
           "rank": 49,
           "rank_bucket": 1,
           "return_pct": 0.38371349392452014,
-          "same_country_equal_weight_return_pct": 0.042844834168477765,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
           "score": -9.0,
           "ticker": "ABB",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:DK0060952240",
           "country": "SE",
-          "excess_vs_country_pct": -0.544517074971153,
-          "excess_vs_universe_pct": -0.6463615016066282,
+          "excess_vs_country_pct": -0.5961870181453486,
+          "excess_vs_universe_pct": -0.6975274513144331,
           "rank": 81,
           "rank_bucket": 1,
           "return_pct": -0.5016722408026753,
-          "same_country_equal_weight_return_pct": 0.042844834168477765,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
           "score": -9.0,
           "ticker": "BETCO",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009007132",
           "country": "FI",
-          "excess_vs_country_pct": -0.4950950699168869,
-          "excess_vs_universe_pct": -0.44025576326701565,
+          "excess_vs_country_pct": -0.5184458284865764,
+          "excess_vs_universe_pct": -0.4914217129748205,
           "rank": 143,
           "rank_bucket": 1,
           "return_pct": -0.2955665024630627,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "FORTUM",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000306873",
+          "country": "FI",
+          "excess_vs_country_pct": 1.1074976141095354,
+          "excess_vs_universe_pct": 1.1345217296212913,
+          "rank": 151,
+          "rank_bucket": 1,
+          "return_pct": 1.330376940133049,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "HARVIA",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000571013",
+          "country": "FI",
+          "excess_vs_country_pct": 1.4958706739764775,
+          "excess_vs_universe_pct": 1.5228947894882334,
+          "rank": 155,
+          "rank_bucket": 2,
+          "return_pct": 1.7187499999999911,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "HIAB",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009000459",
           "country": "FI",
-          "excess_vs_country_pct": 0.6089291439889762,
-          "excess_vs_universe_pct": 0.6637684506388475,
+          "excess_vs_country_pct": 0.5855783854192868,
+          "excess_vs_universe_pct": 0.6126025009310426,
           "rank": 164,
-          "rank_bucket": 1,
+          "rank_bucket": 2,
           "return_pct": 0.8084577114428004,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "HUH1V",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:CA46016U1084",
           "country": "SE",
-          "excess_vs_country_pct": -0.042844834168477765,
-          "excess_vs_universe_pct": -0.14468926080395295,
+          "excess_vs_country_pct": -0.09451477734267327,
+          "excess_vs_universe_pct": -0.19585521051175778,
           "rank": 177,
-          "rank_bucket": 1,
+          "rank_bucket": 2,
           "return_pct": 0.0,
-          "same_country_equal_weight_return_pct": 0.042844834168477765,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
           "score": -9.0,
           "ticker": "IPCO",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009005870",
           "country": "FI",
-          "excess_vs_country_pct": 2.78960186732877,
-          "excess_vs_universe_pct": 2.844441173978641,
+          "excess_vs_country_pct": 2.7662511087590804,
+          "excess_vs_universe_pct": 2.7932752242708365,
           "rank": 186,
-          "rank_bucket": 1,
+          "rank_bucket": 2,
           "return_pct": 2.989130434782594,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "KCR",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009004824",
           "country": "FI",
-          "excess_vs_country_pct": 0.6032237261241332,
-          "excess_vs_universe_pct": 0.6580630327740045,
+          "excess_vs_country_pct": 0.5798729675544437,
+          "excess_vs_universe_pct": 0.6068970830661996,
           "rank": 187,
-          "rank_bucket": 1,
+          "rank_bucket": 2,
           "return_pct": 0.8027522935779574,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "KEMIRA",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009000202",
           "country": "FI",
-          "excess_vs_country_pct": -0.1995285674538242,
-          "excess_vs_universe_pct": -0.14468926080395295,
+          "excess_vs_country_pct": -0.22287932602351365,
+          "excess_vs_universe_pct": -0.19585521051175778,
           "rank": 189,
-          "rank_bucket": 1,
+          "rank_bucket": 2,
           "return_pct": 0.0,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "KESKOB",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI0009013403",
+          "country": "FI",
+          "excess_vs_country_pct": 0.42449310352712744,
+          "excess_vs_universe_pct": 0.4515172190388833,
+          "rank": 193,
+          "rank_bucket": 2,
+          "return_pct": 0.6473724295506411,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "KNEBV",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:CA5503711080",
           "country": "SE",
-          "excess_vs_country_pct": -1.786548127830258,
-          "excess_vs_universe_pct": -1.8883925544657332,
+          "excess_vs_country_pct": -1.8382180710044536,
+          "excess_vs_universe_pct": -1.939558504173538,
           "rank": 203,
-          "rank_bucket": 1,
+          "rank_bucket": 2,
           "return_pct": -1.7437032936617802,
-          "same_country_equal_weight_return_pct": 0.042844834168477765,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
           "score": -9.0,
           "ticker": "LUG",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:CA5503721063",
           "country": "SE",
-          "excess_vs_country_pct": 0.7580704976393167,
-          "excess_vs_universe_pct": 0.6562260710038414,
+          "excess_vs_country_pct": 0.7064005544651211,
+          "excess_vs_universe_pct": 0.6050601212960366,
           "rank": 204,
-          "rank_bucket": 2,
+          "rank_bucket": 3,
           "return_pct": 0.8009153318077944,
-          "same_country_equal_weight_return_pct": 0.042844834168477765,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
           "score": -9.0,
           "ticker": "LUMI",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000312251",
+          "country": "FI",
+          "excess_vs_country_pct": 1.1838485027226435,
+          "excess_vs_universe_pct": 1.2108726182343994,
+          "rank": 205,
+          "rank_bucket": 3,
+          "return_pct": 1.406727828746157,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "LUMO",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000552526",
+          "country": "FI",
+          "excess_vs_country_pct": 0.6453132548762489,
+          "excess_vs_universe_pct": 0.6723373703880048,
+          "rank": 207,
+          "rank_bucket": 3,
+          "return_pct": 0.8681925808997626,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "MANTA",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:CA5889141019",
           "country": "SE",
-          "excess_vs_country_pct": 0.2220558280831881,
-          "excess_vs_universe_pct": 0.12021140144771292,
+          "excess_vs_country_pct": 0.1703858849089926,
+          "excess_vs_universe_pct": 0.06904545173990809,
           "rank": 211,
-          "rank_bucket": 2,
+          "rank_bucket": 3,
           "return_pct": 0.26490066225166586,
-          "same_country_equal_weight_return_pct": 0.042844834168477765,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
           "score": -9.0,
           "ticker": "MER",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI0009014575",
+          "country": "FI",
+          "excess_vs_country_pct": 0.44083748813577384,
+          "excess_vs_universe_pct": 0.4678616036475297,
+          "rank": 212,
+          "rank_bucket": 3,
+          "return_pct": 0.6637168141592875,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "METSO",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000297767",
+          "country": "FI",
+          "excess_vs_country_pct": -0.16563834147857634,
+          "excess_vs_universe_pct": -0.13861422596682046,
+          "rank": 224,
+          "rank_bucket": 3,
+          "return_pct": 0.05724098454493731,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "NDA FI",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI0009013296",
+          "country": "FI",
+          "excess_vs_country_pct": -0.34862594658308843,
+          "excess_vs_universe_pct": -0.32160183107133256,
+          "rank": 227,
+          "rank_bucket": 3,
+          "return_pct": -0.12574662055957475,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "NESTE",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009000681",
           "country": "FI",
-          "excess_vs_country_pct": -1.1871828884414874,
-          "excess_vs_universe_pct": -1.132343581791616,
+          "excess_vs_country_pct": -1.2105336470111767,
+          "excess_vs_universe_pct": -1.1835095314994208,
           "rank": 235,
-          "rank_bucket": 2,
+          "rank_bucket": 4,
           "return_pct": -0.9876543209876631,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "NOKIA",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI0009014377",
+          "country": "FI",
+          "excess_vs_country_pct": -1.0892159596868807,
+          "excess_vs_universe_pct": -1.0621918441751248,
+          "rank": 245,
+          "rank_bucket": 4,
+          "return_pct": -0.8663366336633671,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "ORNBV",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009002422",
           "country": "FI",
-          "excess_vs_country_pct": 1.8651033894581976,
-          "excess_vs_universe_pct": 1.919942696108069,
+          "excess_vs_country_pct": 1.8417526308885084,
+          "excess_vs_universe_pct": 1.8687767464002643,
           "rank": 247,
-          "rank_bucket": 2,
+          "rank_bucket": 4,
           "return_pct": 2.064631956912022,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "OUT1V",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000198031",
+          "country": "FI",
+          "excess_vs_country_pct": -0.6183595520122117,
+          "excess_vs_universe_pct": -0.5913354365004558,
+          "rank": 258,
+          "rank_bucket": 4,
+          "return_pct": -0.39548022598869803,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "QTCOM",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000552500",
+          "country": "FI",
+          "excess_vs_country_pct": 0.04161711344748223,
+          "excess_vs_universe_pct": 0.0686412289592381,
+          "rank": 269,
+          "rank_bucket": 4,
+          "return_pct": 0.2644964394709959,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "SAMPO",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI0009007611",
+          "country": "SE",
+          "excess_vs_country_pct": 0.3616896022193686,
+          "excess_vs_universe_pct": 0.26034916905028405,
+          "rank": 295,
+          "rank_bucket": 4,
+          "return_pct": 0.45620437956204185,
+          "same_country_equal_weight_return_pct": 0.09451477734267327,
+          "score": -9.0,
+          "ticker": "STE R",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009005961",
           "country": "FI",
-          "excess_vs_country_pct": -0.17934693274140023,
-          "excess_vs_universe_pct": -0.12450762609152899,
+          "excess_vs_country_pct": -0.2026976913110897,
+          "excess_vs_universe_pct": -0.17567357579933382,
           "rank": 296,
-          "rank_bucket": 2,
+          "rank_bucket": 4,
           "return_pct": 0.020181634712423957,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "STERV",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009000277",
           "country": "FI",
-          "excess_vs_country_pct": -0.25134203895642837,
-          "excess_vs_universe_pct": -0.19650273230655713,
+          "excess_vs_country_pct": -0.27469279752611786,
+          "excess_vs_universe_pct": -0.24766868201436196,
           "rank": 312,
-          "rank_bucket": 2,
+          "rank_bucket": 4,
           "return_pct": -0.05181347150260418,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "TIETO",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000197934",
+          "country": "FI",
+          "excess_vs_country_pct": 0.394404624593773,
+          "excess_vs_universe_pct": 0.4214287401055289,
+          "rank": 314,
+          "rank_bucket": 5,
+          "return_pct": 0.6172839506172867,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "TOKMAN",
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000252127",
+          "country": "FI",
+          "excess_vs_country_pct": -1.5082263697253147,
+          "excess_vs_universe_pct": -1.4812022542135588,
+          "rank": 318,
+          "rank_bucket": 5,
+          "return_pct": -1.285347043701801,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "TTALO",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009005318",
           "country": "FI",
-          "excess_vs_country_pct": -0.32015582921497676,
-          "excess_vs_universe_pct": -0.2653165225651055,
+          "excess_vs_country_pct": -0.34350658778466625,
+          "excess_vs_universe_pct": -0.3164824722729104,
           "rank": 319,
-          "rank_bucket": 2,
+          "rank_bucket": 5,
           "return_pct": -0.12062726176115257,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "TYRES",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009005987",
           "country": "FI",
-          "excess_vs_country_pct": -0.325631972245746,
-          "excess_vs_universe_pct": -0.2707926655958748,
+          "excess_vs_country_pct": -0.3489827308154355,
+          "excess_vs_universe_pct": -0.32195861530367964,
           "rank": 320,
-          "rank_bucket": 2,
+          "rank_bucket": 5,
           "return_pct": -0.12610340479192184,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "UPM",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
+        },
+        {
+          "company_id": "isin:FI4000074984",
+          "country": "FI",
+          "excess_vs_country_pct": -0.3633287642257529,
+          "excess_vs_universe_pct": -0.336304648713997,
+          "rank": 321,
+          "rank_bucket": 5,
+          "return_pct": -0.1404494382022392,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
+          "score": -9.0,
+          "ticker": "VALMT",
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009003727",
           "country": "FI",
-          "excess_vs_country_pct": -1.0917955866210498,
-          "excess_vs_universe_pct": -1.0369562799711785,
+          "excess_vs_country_pct": -1.115146345190739,
+          "excess_vs_universe_pct": -1.0881222296789832,
           "rank": 337,
-          "rank_bucket": 2,
+          "rank_bucket": 5,
           "return_pct": -0.8922670191672255,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -9.0,
           "ticker": "WRT1V",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         },
         {
           "company_id": "isin:FI0009007264",
           "country": "FI",
-          "excess_vs_country_pct": -1.8167792413082777,
-          "excess_vs_universe_pct": -1.7619399346584064,
+          "excess_vs_country_pct": -1.840129999877967,
+          "excess_vs_universe_pct": -1.8131058843662111,
           "rank": 358,
-          "rank_bucket": 2,
+          "rank_bucket": 5,
           "return_pct": -1.6172506738544534,
-          "same_country_equal_weight_return_pct": 0.1995285674538242,
+          "same_country_equal_weight_return_pct": 0.22287932602351365,
           "score": -18.5,
           "ticker": "BITTI",
-          "universe_equal_weight_return_pct": 0.14468926080395295
+          "universe_equal_weight_return_pct": 0.19585521051175778
         }
       ],
       "country_metrics": [
         {
           "analysis_eligibility": {
-            "coverage_pct": 39.39393939393939,
-            "eligible": false,
+            "coverage_pct": 90.9090909090909,
+            "eligible": true,
             "minimum_coverage_pct": 70.0,
             "minimum_valid_companies": 20,
             "original_company_count": 33,
-            "reasons": [
-              "outcome coverage 39.4% is below 70%",
-              "valid company count 13 is below 20"
-            ],
-            "valid_company_count": 13
+            "reasons": [],
+            "valid_company_count": 30
           },
-          "analysis_eligible": false,
-          "analysis_ineligibility_reasons": [
-            "outcome coverage 39.4% is below 70%",
-            "valid company count 13 is below 20"
-          ],
+          "analysis_eligible": true,
+          "analysis_ineligibility_reasons": [],
           "country": "FI",
-          "equal_weight_return_pct": 0.1995285674538242,
-          "final_rank_return_spearman_ic": 0.532967032967033,
-          "metric_scope": "descriptive_partial",
+          "equal_weight_return_pct": 0.22287932602351365,
+          "final_rank_return_spearman_ic": 0.45121815831553586,
+          "metric_scope": "analysis_eligible",
           "original_company_count": 33,
-          "outcome_coverage_pct": 39.39393939393939,
-          "score_return_spearman_ic": 0.46291004988627577,
-          "valid_company_count": 13
+          "outcome_coverage_pct": 90.9090909090909,
+          "score_return_spearman_ic": 0.04699745041086316,
+          "valid_company_count": 30
         },
         {
           "analysis_eligibility": {
-            "coverage_pct": 2.1341463414634148,
+            "coverage_pct": 2.4390243902439024,
             "eligible": false,
             "minimum_coverage_pct": 70.0,
             "minimum_valid_companies": 20,
             "original_company_count": 328,
             "reasons": [
-              "outcome coverage 2.1% is below 70%",
-              "valid company count 7 is below 20"
+              "outcome coverage 2.4% is below 70%",
+              "valid company count 8 is below 20"
             ],
-            "valid_company_count": 7
+            "valid_company_count": 8
           },
           "analysis_eligible": false,
           "analysis_ineligibility_reasons": [
-            "outcome coverage 2.1% is below 70%",
-            "valid company count 7 is below 20"
+            "outcome coverage 2.4% is below 70%",
+            "valid company count 8 is below 20"
           ],
           "country": "SE",
-          "equal_weight_return_pct": 0.042844834168477765,
-          "final_rank_return_spearman_ic": 0.2857142857142857,
+          "equal_weight_return_pct": 0.09451477734267327,
+          "final_rank_return_spearman_ic": 0.07142857142857142,
           "metric_scope": "descriptive_partial",
           "original_company_count": 328,
-          "outcome_coverage_pct": 2.1341463414634148,
+          "outcome_coverage_pct": 2.4390243902439024,
           "score_return_spearman_ic": null,
-          "valid_company_count": 7
+          "valid_company_count": 8
         }
       ],
       "decision_at": "2026-08-24T20:21:02.968724Z",
       "evaluation_run_id": "evaluation-386d52d6101679f8de62dfbb",
-      "final_rank_return_spearman_ic": 0.4084242485146109,
+      "final_rank_return_spearman_ic": 0.33698151184874253,
       "horizon": {
         "label": "1_session",
         "sessions": 1,
@@ -20044,26 +20886,26 @@
       "long_term_gate_tiers": [],
       "metric_scope": "descriptive_partial",
       "original_universe_size": 361,
-      "outcome_coverage_pct": 5.540166204986149,
+      "outcome_coverage_pct": 10.526315789473683,
       "report_date": "2026-08-24",
-      "score_return_spearman_ic": 0.33830594561008714,
+      "score_return_spearman_ic": 0.01989107490354599,
       "scoring_model_version": "nordic-ranking-v1",
       "status_counts": {
-        "not_due": 341,
-        "priced": 20
+        "not_due": 323,
+        "priced": 38
       },
       "strategy": "trading",
       "top_vs_universe": {
-        "top_10_average_return_pct": 0.35388717824601734,
-        "top_decile_average_return_pct": 0.7397366897921698,
-        "top_decile_count": 2,
-        "top_decile_minus_bottom_decile_pct": 1.9944955363030092,
-        "top_decile_minus_universe_pct": 0.5950474289882168,
-        "universe_average_return_pct": 0.14468926080395295
+        "top_10_average_return_pct": 0.38715296856937087,
+        "top_decile_average_return_pct": 0.1068675708647715,
+        "top_decile_count": 4,
+        "top_decile_minus_bottom_decile_pct": 0.8008852048687315,
+        "top_decile_minus_universe_pct": -0.08898763964698628,
+        "universe_average_return_pct": 0.19585521051175778
       },
-      "unique_company_count": 20,
-      "universe_equal_weight_return_pct": 0.14468926080395295,
-      "valid_company_count": 20
+      "unique_company_count": 38,
+      "universe_equal_weight_return_pct": 0.19585521051175778,
+      "valid_company_count": 38
     },
     {
       "analysis_eligibility": {
@@ -22970,6 +23812,878 @@
       "original_universe_size": 892,
       "outcome_coverage_pct": 0.0,
       "report_date": "2026-08-27",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 892
+      },
+      "strategy": "long-term",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 318,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 23,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 23,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 295,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 295,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:12.431213Z",
+      "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "1_session",
+        "sessions": 1,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 318,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 318
+      },
+      "strategy": "trading",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 318,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 23,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 23,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 295,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 295,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:12.431213Z",
+      "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "5_sessions",
+        "sessions": 5,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 318,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 318
+      },
+      "strategy": "trading",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 318,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 23,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 23,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 295,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 295,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:12.431213Z",
+      "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "20_sessions",
+        "sessions": 20,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 318,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 318
+      },
+      "strategy": "trading",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 318,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 23,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 23,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 295,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 295,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:12.431213Z",
+      "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "60_sessions",
+        "sessions": 60,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 318,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 318
+      },
+      "strategy": "trading",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 892,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 186,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 186,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 706,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 706,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:53.036169Z",
+      "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "20_sessions",
+        "sessions": 20,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 892,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 892
+      },
+      "strategy": "long-term",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 892,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 186,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 186,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 706,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 706,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:53.036169Z",
+      "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "60_sessions",
+        "sessions": 60,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 892,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 892
+      },
+      "strategy": "long-term",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 892,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 186,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 186,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 706,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 706,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:53.036169Z",
+      "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "126_sessions",
+        "sessions": 126,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 892,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
+      "score_return_spearman_ic": null,
+      "scoring_model_version": "nordic-ranking-v1",
+      "status_counts": {
+        "not_due": 892
+      },
+      "strategy": "long-term",
+      "top_vs_universe": {
+        "top_10_average_return_pct": null,
+        "top_decile_average_return_pct": null,
+        "top_decile_count": 0,
+        "top_decile_minus_bottom_decile_pct": null,
+        "top_decile_minus_universe_pct": null,
+        "universe_average_return_pct": null
+      },
+      "unique_company_count": 0,
+      "universe_equal_weight_return_pct": null,
+      "valid_company_count": 0
+    },
+    {
+      "analysis_eligibility": {
+        "coverage_pct": 0.0,
+        "eligible": false,
+        "minimum_coverage_pct": 70.0,
+        "minimum_valid_companies": 50,
+        "original_company_count": 892,
+        "reasons": [
+          "outcome coverage 0.0% is below 70%",
+          "valid company count 0 is below 50"
+        ],
+        "valid_company_count": 0
+      },
+      "analysis_eligible": false,
+      "analysis_ineligibility_reasons": [
+        "horizon is not due"
+      ],
+      "bucket_count": 0,
+      "bucket_returns_monotonic": null,
+      "buckets": [],
+      "company_benchmarks": [],
+      "country_metrics": [
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 186,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "FI",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 186,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        },
+        {
+          "analysis_eligibility": {
+            "coverage_pct": 0.0,
+            "eligible": false,
+            "minimum_coverage_pct": 70.0,
+            "minimum_valid_companies": 20,
+            "original_company_count": 706,
+            "reasons": [
+              "outcome coverage 0.0% is below 70%",
+              "valid company count 0 is below 20"
+            ],
+            "valid_company_count": 0
+          },
+          "analysis_eligible": false,
+          "analysis_ineligibility_reasons": [
+            "outcome coverage 0.0% is below 70%",
+            "valid company count 0 is below 20"
+          ],
+          "country": "SE",
+          "equal_weight_return_pct": null,
+          "final_rank_return_spearman_ic": null,
+          "metric_scope": "descriptive_partial",
+          "original_company_count": 706,
+          "outcome_coverage_pct": 0.0,
+          "score_return_spearman_ic": null,
+          "valid_company_count": 0
+        }
+      ],
+      "decision_at": "2026-08-28T11:12:53.036169Z",
+      "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+      "final_rank_return_spearman_ic": null,
+      "horizon": {
+        "label": "252_sessions",
+        "sessions": 252,
+        "unit": "market_sessions"
+      },
+      "is_due": false,
+      "long_term_gate_tiers": [],
+      "metric_scope": "descriptive_partial",
+      "original_universe_size": 892,
+      "outcome_coverage_pct": 0.0,
+      "report_date": "2026-08-28",
       "score_return_spearman_ic": null,
       "scoring_model_version": "nordic-ranking-v1",
       "status_counts": {
