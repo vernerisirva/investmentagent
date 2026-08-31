@@ -1,6 +1,6 @@
 # Performance v2: Ranking Quality
 
-Generated: 2026-08-28T11:13:16Z
+Generated: 2026-08-31T05:20:23Z
 
 Gross adjusted-close returns are shown. Spread, commissions, and slippage are excluded.
 
@@ -28,14 +28,14 @@ Gross adjusted-close returns are shown. Spread, commissions, and slippage are ex
 
 | Strategy | Model | Horizon | Evaluations | Due | Eligible | Partial | Avg n | Avg due coverage | Required coverage | Mean score IC | Median score IC | Mean final-rank IC | IC hit rate | Top decile - universe |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| long-term | nordic-ranking-v1 | 20_sessions | 17 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
-| long-term | nordic-ranking-v1 | 60_sessions | 17 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
-| long-term | nordic-ranking-v1 | 126_sessions | 17 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
-| long-term | nordic-ranking-v1 | 252_sessions | 17 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
-| trading | nordic-ranking-v1 | 1_session | 17 | 1 | 0 | 1 | 38.0 | 10.5% | 70.0% | n/a | n/a | n/a | n/a | n/a |
-| trading | nordic-ranking-v1 | 5_sessions | 17 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
-| trading | nordic-ranking-v1 | 20_sessions | 17 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
-| trading | nordic-ranking-v1 | 60_sessions | 17 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| long-term | nordic-ranking-v1 | 20_sessions | 18 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| long-term | nordic-ranking-v1 | 60_sessions | 18 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| long-term | nordic-ranking-v1 | 126_sessions | 18 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| long-term | nordic-ranking-v1 | 252_sessions | 18 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| trading | nordic-ranking-v1 | 1_session | 18 | 1 | 0 | 1 | 50.0 | 13.9% | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| trading | nordic-ranking-v1 | 5_sessions | 18 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| trading | nordic-ranking-v1 | 20_sessions | 18 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
+| trading | nordic-ranking-v1 | 60_sessions | 18 | 0 | 0 | 0 | n/a | n/a | 70.0% | n/a | n/a | n/a | n/a | n/a |
 
 ## Rank Buckets
 
@@ -88,8 +88,8 @@ No country-specific outcomes are available.
 No country-specific outcomes are available.
 
 ### trading / nordic-ranking-v1 / 1_session
-- FI: n/a; mean score IC n/a; 0/1 eligible dates; 90.9% average coverage; 0 eligible observations
-- SE: n/a; mean score IC n/a; 0/1 eligible dates; 2.4% average coverage; 0 eligible observations
+- FI: n/a; mean score IC n/a; 0/1 eligible dates; 97.0% average coverage; 0 eligible observations
+- SE: n/a; mean score IC n/a; 0/1 eligible dates; 5.5% average coverage; 0 eligible observations
 
 ### trading / nordic-ranking-v1 / 5_sessions
 No country-specific outcomes are available.
@@ -102,7 +102,7 @@ No country-specific outcomes are available.
 
 ## Shadow Challenger
 
-Challenger sidecars recorded: 17.
+Challenger sidecars recorded: 18.
 
 > **Warning:** Insufficient paired history to judge challenger performance. 0 completed dates for relative-valuation-v1 v1 / 20_sessions.
 
@@ -114,10 +114,10 @@ Challenger sidecars recorded: 17.
 
 | Experiment | Champion | Horizon | Recorded | Due | Eligible | Partial | Mean score IC delta | Median score IC delta | IC improved | Top-decile spread delta | Top-10 overlap |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| relative-valuation-v1 v1 | nordic-ranking-v1 | 20_sessions | 17 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
-| relative-valuation-v1 v1 | nordic-ranking-v1 | 60_sessions | 17 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
-| relative-valuation-v1 v1 | nordic-ranking-v1 | 126_sessions | 17 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
-| relative-valuation-v1 v1 | nordic-ranking-v1 | 252_sessions | 17 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
+| relative-valuation-v1 v1 | nordic-ranking-v1 | 20_sessions | 18 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
+| relative-valuation-v1 v1 | nordic-ranking-v1 | 60_sessions | 18 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
+| relative-valuation-v1 v1 | nordic-ranking-v1 | 126_sessions | 18 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
+| relative-valuation-v1 v1 | nordic-ranking-v1 | 252_sessions | 18 | 0 | 0 | 0 | n/a | n/a | n/a | n/a | n/a |
 
 ## Interpretation Limits
 

@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-08-28 14:11 EEST
+- generated_at: 2026-08-31 08:19 EEST
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -90,30 +90,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 #### Evidence
 - [Finimpulse fundamentals lookup (MSFT)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-### #4 NVIDIA (NVDA)
-`US` | NASDAQ | `AI compute semiconductors`
-
-**AI thesis:** Dominant accelerator platform for model training, inference, networking, and AI software ecosystems.
-**Score:** 59
-**Valuation:** P/E 32.8821; P/B 26.6072
-**Quality:** Operating margin 65.6%; debt/equity 0.0655
-**Growth:** Revenue growth 85.2%
-**Data quality:** partial
-
-#### Reasons
-- reasonable P/E
-- profitable AI-exposed business
-- conservative balance sheet
-- strong revenue growth
-- direct AI infrastructure exposure
-
-#### Risks
-- valuation risk: high P/B
-
-#### Evidence
-- [Finimpulse fundamentals lookup (NVDA)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-### #5 Taiwan Semiconductor Manufacturing (TSM)
+### #4 Taiwan Semiconductor Manufacturing (TSM)
 `TW` | NYSE | `AI compute manufacturing`
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
@@ -135,3 +112,24 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 #### Evidence
 - [Finimpulse fundamentals lookup (TSM)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+### #5 Adobe (ADBE)
+`US` | NASDAQ | `Enterprise AI software`
+
+**AI thesis:** Creative Cloud and Document Cloud integrate generative AI into established professional workflows.
+**Score:** 57
+**Valuation:** P/E 15.6447; P/B 9.47345
+**Quality:** Operating margin 35.3%; debt/equity 0.6144
+**Growth:** Revenue growth 12.7%
+**Data quality:** partial
+
+#### Reasons
+- reasonable P/E
+- profitable AI-exposed business
+- enterprise AI software exposure
+
+#### Risks
+- None provided.
+
+#### Evidence
+- [Finimpulse fundamentals lookup (ADBE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
