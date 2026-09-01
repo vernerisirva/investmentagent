@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-08-31T05:20:02.834081+00:00
+- generated_at: 2026-09-01T05:02:43.736377+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 929, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 3, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 178, 'cache_misses': 751, 'cache_max_age_days': 45, 'eligible_companies': 929, 'cached_companies': 207, 'fresh_companies': 207, 'stale_companies': 0, 'missing_companies': 722, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-08-31T05:20:02.764753Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 84, 'fresh': 84, 'stale': 0, 'missing': 651}, 'FI': {'eligible': 194, 'cached': 123, 'fresh': 123, 'stale': 0, 'missing': 71}}}
+- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 207, 'cache_misses': 721, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 236, 'fresh_companies': 236, 'stale_companies': 0, 'missing_companies': 692, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-01T05:02:43.646640Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 84, 'fresh': 84, 'stale': 0, 'missing': 650}, 'FI': {'eligible': 194, 'cached': 152, 'fresh': 152, 'stale': 0, 'missing': 42}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,12 +19,12 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-fb670ae7dd82f755419acda2', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-08-31T05:20:02.834081Z'}
+- evaluation: {'run_id': 'evaluation-96ba48232ea6980741b6a056', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-01T05:02:43.736377Z'}
 
 ## Source Checks
-- nasdaq nordic live data: ok - universe coverage: total=937, SE=743, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=332, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=929; budget=30; selected=30; attempts=30; successful=29; cache coverage=207/929 (fresh=207, stale=0, missing=722); cache hits=178; cache misses=751; cutoff ties=3 (0 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 28/29; proxy inputs 29/29; missing valuation support 0/29
+- nasdaq nordic live data: ok - universe coverage: total=936, SE=742, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=331, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
+- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=236/928 (fresh=236, stale=0, missing=692); cache hits=207; cache misses=721; cutoff ties=1 (0 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 27/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
 - free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
@@ -333,7 +333,48 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (KINV-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #8 Coffee Stain Group B (COFFEE B)
+## #8 Citycon Oyj (CTY1S)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** Citycon Oyj, a real estate investment company, owns and develops mixed-use centers in Finland, Norway, Sweden, Denmark, and Estonia. It develops mixed-use centers that include retail, offices, hotels, and housing, as well as for food and beverage, healthcare, culture, and leisure services. Citycon Oyj was incorporated in 1988 and is headquartered in Espoo, Finland. As of March 6, 2026, Citycon Oyj operates as a subsidiary of G City Ltd.
+
+**Score:** 55
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Citycon Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 3/5 | Modest revenue growth of 3.9%. |
+| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (2.33871)
+- Low P/B
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (CTY1S.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #9 Coffee Stain Group B (COFFEE B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -378,7 +419,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (COFFEE-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #9 Titanium Oyj (TITAN)
+## #10 Titanium Oyj (TITAN)
 
 `FI` | Nasdaq First North Growth Market Finland | `first_north`
 
@@ -421,47 +462,3 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (TITAN.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #10 Arlandastad Group (AGROUP)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** Arlandastad Group AB (publ), together with its subsidiaries, operates as a real estate development company in Sweden. It operates through Property Improvement; Management of Real Estate; and Operational Activities segments. The company focuses on identifying strategic land areas and developing properties. It also provides property management, and training for dealers and general agents in the automotive industry. In addition, it conducts event operations; and operates an airport in Skavsta. The company was incorporated in 2005 and is headquartered in Arlandastad, Sweden.
-
-**Score:** 52.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Fundamental watchlist candidate
-**Thesis:** Arlandastad Group has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 11.0%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (11.8387)
-- Low P/B
-- Small market cap
-- First North listing
-- Gate tier: High-conviction candidate
-- Fundamental watchlist candidate
-- First North discovery opportunity
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Attractive valuation support
-- Business description available
-
-### Risks
-- Thin liquidity
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (AGROUP.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
