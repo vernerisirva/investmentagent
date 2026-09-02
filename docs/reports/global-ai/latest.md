@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-09-01 08:00 EEST
+- generated_at: 2026-09-02 08:00 EEST
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -26,7 +26,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Owns frontier model research, search distribution, cloud AI infrastructure, and TPU compute capacity.
 **Score:** 67
-**Valuation:** P/E 17.4072; P/B 6.81979
+**Valuation:** P/E 16.7987; P/B 6.57478
 **Quality:** Operating margin 34.0%; debt/equity 0.1886
 **Growth:** Revenue growth 24.2%
 **Data quality:** partial
