@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-03T05:07:13.518041+00:00
+- generated_at: 2026-09-04T05:06:57.679532+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 265, 'cache_misses': 663, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 294, 'fresh_companies': 294, 'stale_companies': 0, 'missing_companies': 634, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-03T05:07:13.408065Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 104, 'fresh': 104, 'stale': 0, 'missing': 630}, 'FI': {'eligible': 194, 'cached': 190, 'fresh': 190, 'stale': 0, 'missing': 4}}}
+- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 4, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 294, 'cache_misses': 634, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 323, 'fresh_companies': 323, 'stale_companies': 0, 'missing_companies': 605, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-04T05:06:57.585998Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 132, 'fresh': 132, 'stale': 0, 'missing': 602}, 'FI': {'eligible': 194, 'cached': 191, 'fresh': 191, 'stale': 0, 'missing': 3}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,12 +19,12 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-468b0054e0e8f0859b24247a', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-03T05:07:13.518041Z'}
+- evaluation: {'run_id': 'evaluation-eced9df903d710751c56da13', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-04T05:06:57.679532Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=936, SE=742, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=331, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=294/928 (fresh=294, stale=0, missing=634); cache hits=265; cache misses=663; cutoff ties=2 (1 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 27/29; missing valuation support 0/29
+- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=323/928 (fresh=323, stale=0, missing=605); cache hits=294; cache misses=634; cutoff ties=4 (1 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 28/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
 - free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
@@ -78,7 +78,50 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (TAALA.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #2 Surgical Science Sweden (SUS)
+## #2 Traction  B (TRAC B)
+
+`SE` | Nasdaq Stockholm | `main_market`
+
+**What the company does:** AB Traction is a private equity firm specializing in distressed, middle market, later stage, mature, bridge, recapitalization, buyouts and PIPES investments. It invests in public and private companies. In private companies, the firm invests in turnaround projects, reconstructions, management buy-outs, and buy-ins. In public companies, it underwrites new share issues in companies. It does not focus on any specific industry and invests across all sectors. The firm typically invests in Sweden. The firm exits its investments through sale of equity. The firm makes balance sheet investments. AB Traction was founded in 1974 and is based in Stockholm, Sweden.
+
+**Score:** 77.25
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Traction  B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 4/5 | Healthy revenue growth of 6.8%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (11.6095)
+- Low P/B
+- Net cash balance sheet
+- Small market cap
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (TRAC-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #3 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -123,7 +166,49 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #3 Industrivärden C (INDU C)
+## #4 Industrivärden A (INDU A)
+
+`SE` | Nasdaq Stockholm | `main_market`
+
+**What the company does:** AB Industrivärden is a publicly owned investment manager. The firm invests in the public equity markets of Nordic region. It employs fundamental analysis, with a focus on factors like long term return potential, proven business model, balance between risk and return, and attractive valuation to create its portfolio. AB Industrivärden was founded in 1944 and is based in Stockholm, Sweden.
+
+**Score:** 60
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Industrivärden A has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 4/5 | Healthy revenue growth of 12.0%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (3.64136)
+- Low P/B
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (INDU-A.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #5 Industrivärden C (INDU C)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -165,7 +250,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (INDU-C.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #4 Lundbergföretagen B (LUND B)
+## #6 Lundbergföretagen B (LUND B)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -207,7 +292,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (LUND-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Outokumpu Oyj (OUT1V)
+## #7 Outokumpu Oyj (OUT1V)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -249,7 +334,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (OUT1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Ratos B (RATO B)
+## #8 Ratos B (RATO B)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -291,92 +376,49 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (RATO-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Kinnevik B (KINV B)
+## #9 Bure Equity (BURE)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
-**What the company does:** Kinnevik AB is a venture capital firm specializing in investments in early to late venture and growth capital. The firm also prefers indirect investments in venture capital funds. It prefers to invest in digital consumer business, education, communication, e-commerce and marketplaces, entertainment, healthcare, and financial services but may also invest in other areas. The firm invests worldwide, especially in Europe with a focus on the Nordics, Latin America, Asia, Australia, Africa, and North America. The firm looks for disruptive, technology-enabled and value-added consumer services in developed and emerging markets. It takes an active role on the boards of its subsidiaries and associated companies. It acts as a long-term lead shareholder in large listed entities. Kinnevik AB was founded in 1936 and is based in Stockholm, Sweden and additional office in London, United Kingdom. Kinnevik AB was formerly known as Investment AB Kinnevik.
+**What the company does:** Bure Equity AB (publ) is a private equity and venture capital firm specializing in secondary direct, later stage, middle market, mature, buyouts, mid venture, late venture, PIPES, bridge, industry consolidation, recapitalizations, growth capital, special situation and turnarounds. It primarily invests in education service companies, communication services, telecommunication services, medtech, consumer staples, financials, industrials, healthcare and information technology sectors. The firm prefers to invest in the Nordics and European developed markets. It invests between $5 million to $100 million. The firm seeks to be a principal shareholder with a controlling influence in the portfolio company. The firm takes majority stakes. Bure Equity AB (publ) was founded on November 23, 1992 and is based in Stockholm, Sweden.
 
-**Score:** 57
+**Score:** 59
 **Data quality:** partial
 
 ### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Kinnevik B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Bure Equity has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 5/5 | Strong - profitable business with a clear profile. |
 | Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 1.6%. |
+| Growth | 1/5 | Revenue growth is not available. |
 | Balance sheet | 5/5 | Net cash and conservative debt/equity. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Risk | 3/5 | No growth signal |
 | Data confidence | 4/5 | Several fundamentals plus profile text are available. |
 
 ### Reasons
+- Low P/E (4.59387)
 - Low P/B
 - Net cash balance sheet
 - Gate tier: High-conviction candidate
-- Quality small-cap candidate
+- Fundamental watchlist candidate
 - Positive operating margin
-- Revenue growth
 - Conservative balance sheet
 - Attractive valuation support
 - Business description available
 - Adequate liquidity
 
 ### Risks
-- None provided.
+- No growth signal
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (KINV-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (BURE.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #8 KABE Group B (KABE B)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** KABE Group AB (publ.), together with its subsidiaries, manufactures and sells caravans, motorhomes, and camping accessories in Sweden, the United Kingdom, Germany, Norway, Finland, Denmark, Poland, and internationally. The company operates in three segments: Caravans and Motorhomes, Accessories, and Other. It is involved in the production, development, logistics, marketing, and sale of caravans, motorhomes, transport vehicles, and other mobile units, as well as camping accessories and equipment. The company offers its products under the KABE, Adria, Sun Living, Coachman, Affinity, and KAMA Fritid brand names. It exports and distributes its products through local independent dealerships. The company was formerly known as KABE AB (publ.) and changed its name to KABE Group AB (publ.) in July 2018. KABE Group AB (publ.) was founded in 1957 and is headquartered in Tenhult, Sweden.
-
-**Score:** 56.25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** KABE Group B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 16.6%. |
-| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/B
-- Net cash balance sheet
-- Small market cap
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Valuation data available
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (KABE-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #9 Citycon Oyj (CTY1S)
+## #10 Citycon Oyj (CTY1S)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -416,48 +458,3 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CTY1S.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #10 Coffee Stain Group B (COFFEE B)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** Coffee Stain Group AB (publ) develops and publishes community-driven games primarily for PC and console platforms in Scandinavia and internationally. The company operates game studios, including Coffee Stain, Ghost Ship, and Tuxedo Labs. It provides Goat Simulator, Satisfactory, Deep Rock Galactic, Valheim, Teardown, and Welcome to Bloxburg games. The company was founded in 2010 and is headquartered in Karlstad, Sweden.
-
-**Score:** 54.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Coffee Stain Group B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 5/5 | Strong revenue growth of 37.5%. |
-| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 3/5 | High P/E |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/B
-- Net cash balance sheet
-- Small market cap
-- First North listing
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- First North discovery opportunity
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Valuation data available
-- Business description available
-- Adequate liquidity
-
-### Risks
-- High P/E
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (COFFEE-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
