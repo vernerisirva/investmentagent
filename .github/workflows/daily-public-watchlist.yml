@@ -73,11 +73,14 @@ jobs:
           restore-keys: |
             fundamentals-statistics-v1-${{ runner.os }}-
 
-      - name: Restore private market-price cache
+      # Operational cache, not a confidentiality boundary. No complete histories in Git.
+      - name: Restore market-price histories
         if: env.RUN_DAILY_REPORT == 'true'
         uses: actions/cache@v5
         with:
-          path: .investmentagent/market-price-cache.json
+          path: |
+            .investmentagent/market-price-cache.json
+            .investmentagent/market-price-cache.histories-v2.json
           key: market-prices-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             market-prices-${{ runner.os }}-
@@ -226,13 +229,16 @@ jobs:
               --retrieved-at "$retrieved_at"
           fi
 
+          analysis_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
           investmentagent evaluate analyze \
             --evaluation-root "$EVALUATION_ROOT" \
             --outcome-root "$OUTCOME_ROOT" \
             --experiment-root "$EXPERIMENT_ROOT" \
             --output-json "$ANALYSIS_ROOT/performance-v2.json" \
             --output-markdown "$ANALYSIS_ROOT/performance-v2.md" \
-            --generated-at "$retrieved_at"
+            --return-methodology single-response-adjusted-close-v1 \
+            --data-cutoff "$analysis_at" \
+            --generated-at "$analysis_at"
 
       - name: Commit public report
         if: env.RUN_DAILY_REPORT == 'true'

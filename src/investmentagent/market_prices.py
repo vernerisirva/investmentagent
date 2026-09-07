@@ -3,12 +3,13 @@ from __future__ import annotations
 import json
 import math
 import ssl
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Callable, Iterable, Protocol
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
+from uuid import uuid4
 
 import certifi
 
@@ -68,6 +69,9 @@ class HistoricalPriceObservation:
         )
         if self.currency is not None:
             object.__setattr__(self, "currency", self.currency.strip().upper() or None)
+        object.__setattr__(self, "adjusted_close", float(self.adjusted_close))
+        if self.close is not None:
+            object.__setattr__(self, "close", float(self.close))
 
 
 @dataclass(frozen=True)
@@ -78,8 +82,12 @@ class HistoricalPriceHistory:
     market: str
     observations: tuple[HistoricalPriceObservation, ...] = ()
     detail: str | None = None
+    response_id: str | None = None
+    completed_at: datetime | None = None
+    currency_provenance: str | None = None
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, "observations", tuple(self.observations))
         if self.status not in PRICE_HISTORY_STATUSES:
             raise ValueError(f"unsupported price-history status: {self.status}")
         dates = [observation.session_date for observation in self.observations]
@@ -104,6 +112,8 @@ class HistoricalPriceProvider(Protocol):
 
     @property
     def api_call_count(self) -> int: ...
+
+    def calculation_time(self, scheduled_at: datetime) -> datetime: ...
 
     def estimated_api_calls(
         self,
@@ -148,6 +158,9 @@ class FixtureHistoricalPriceProvider:
     @property
     def api_call_count(self) -> int:
         return self._api_call_count
+
+    def calculation_time(self, scheduled_at: datetime) -> datetime:
+        return scheduled_at
 
     def estimated_api_calls(
         self,
@@ -212,7 +225,6 @@ class FixtureHistoricalPriceProvider:
         retrieved_at: datetime,
         symbol: str | None = None,
     ) -> HistoricalPriceHistory:
-        del retrieved_at
         self._api_call_count += 1
         self.requests.append((security.company_id, start_date, end_date, symbol))
         if security.company_id in self._provider_errors:
@@ -253,7 +265,14 @@ class FixtureHistoricalPriceProvider:
                 detail="fixture has no observations in the requested range",
             )
         resolved_symbol = symbol or rows[0].symbol
-        return HistoricalPriceHistory("ok", self.name, resolved_symbol, market, rows)
+        # One fixture call simulates one response, not a cache assembled by date.
+        completed = max(retrieved_at, *(row.retrieved_at for row in rows))
+        return HistoricalPriceHistory(
+            "ok", self.name, resolved_symbol, market,
+            tuple(replace(row, retrieved_at=completed) for row in rows),
+            response_id=str(uuid4()), completed_at=completed,
+            currency_provenance="fixture_declared",
+        )
 
 
 class EodhdHistoricalPriceProvider:
@@ -263,9 +282,12 @@ class EodhdHistoricalPriceProvider:
         self,
         api_key: str | None,
         fetcher: Callable[[str], str] | None = None,
+        *,
+        clock: Callable[[], datetime] | None = None,
     ) -> None:
         self.api_key = api_key.strip() if api_key is not None else None
         self._fetcher = fetcher or _fetch_eodhd_url
+        self._clock = clock or (lambda: datetime.now(timezone.utc))
         self._consecutive_provider_errors = 0
         self._circuit_error: str | None = None
         self._api_call_count = 0
@@ -273,6 +295,10 @@ class EodhdHistoricalPriceProvider:
     @property
     def api_call_count(self) -> int:
         return self._api_call_count
+
+    def calculation_time(self, scheduled_at: datetime) -> datetime:
+        del scheduled_at
+        return self._clock()
 
     def estimated_api_calls(
         self,
@@ -337,12 +363,13 @@ class EodhdHistoricalPriceProvider:
                         end_date=end_date,
                     )
                 )
+                completed_at = self._clock()
                 parsed = _parse_eodhd_history(
                     payload,
                     symbol=candidate,
                     market=market,
                     currency=security.currency,
-                    retrieved_at=retrieved_at,
+                    retrieved_at=completed_at,
                 )
             except Exception as exc:
                 errors.append(_token_safe_error(exc, self.api_key))
@@ -354,7 +381,9 @@ class EodhdHistoricalPriceProvider:
             if parsed:
                 self._clear_error_circuit()
                 return HistoricalPriceHistory(
-                    "ok", self.name, candidate, market, parsed
+                    "ok", self.name, candidate, market, parsed,
+                    response_id=str(uuid4()), completed_at=completed_at,
+                    currency_provenance="security_reference_country_inference",
                 )
         if unsupported_symbols:
             self._clear_error_circuit()

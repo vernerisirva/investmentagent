@@ -14,6 +14,7 @@ from investmentagent.market_prices import (
     ADJUSTED_PRICE_TYPE,
     HistoricalPriceObservation,
 )
+from investmentagent.price_histories import HistoryArchive
 
 
 MARKET_PRICE_CACHE_SCHEMA_VERSION = 1
@@ -122,6 +123,8 @@ class PriceCacheCoverage:
 
 
 class HistoricalPriceCache(Protocol):
+    history_archive: HistoryArchive
+
     def get_observation(
         self,
         company_id: str,
@@ -171,6 +174,8 @@ class FileHistoricalPriceCache:
     def __init__(self, path: Path) -> None:
         self.path = path
         self._records, self._revisions = _load_cache(path)
+        # Never rewrite/promote schema-1 per-session records into response batches.
+        self.history_archive = HistoryArchive(path.with_name(f"{path.stem}.histories-v2.json"))
 
     @property
     def records(self) -> tuple[CachedPriceObservation, ...]:

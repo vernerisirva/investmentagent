@@ -39,6 +39,8 @@ def analyze_outcome_store(
     outcome_root: Path,
     *,
     generated_at: datetime,
+    return_methodology: str | None = None,
+    data_cutoff: datetime | None = None,
     experiment_root: Path | None = None,
     strategy: str | None = None,
     run_id: str | None = None,
@@ -73,6 +75,8 @@ def analyze_outcome_store(
         snapshots,
         stores,
         generated_at=generated_at,
+        return_methodology=return_methodology,
+        data_cutoff=data_cutoff,
         experiment_snapshots=experiments,
         eligibility_criteria=eligibility_criteria,
         country_eligibility_criteria=country_eligibility_criteria,
@@ -84,6 +88,8 @@ def build_performance_v2_analysis(
     outcome_sets: Iterable[EvaluationOutcomeSet],
     *,
     generated_at: datetime,
+    return_methodology: str | None = None,
+    data_cutoff: datetime | None = None,
     experiment_snapshots: Iterable[ChallengerExperimentSnapshot] | None = None,
     eligibility_criteria: AnalysisEligibilityCriteria = DEFAULT_ANALYSIS_ELIGIBILITY,
     country_eligibility_criteria: AnalysisEligibilityCriteria = (
@@ -95,7 +101,11 @@ def build_performance_v2_analysis(
     ordered_snapshots = tuple(
         sorted(snapshots, key=lambda item: (item.decision_at, item.strategy))
     )
-    ordered_stores = tuple(outcome_sets)
+    from investmentagent.evaluation_outcomes import select_outcome_revisions
+
+    ordered_stores, selection = select_outcome_revisions(
+        outcome_sets, return_methodology=return_methodology, data_cutoff=data_cutoff,
+    )
     stores_by_run = {store.evaluation_run_id: store for store in ordered_stores}
     if len(stores_by_run) != len(ordered_stores):
         raise ValueError("duplicate outcome set for evaluation run")
@@ -167,6 +177,7 @@ def build_performance_v2_analysis(
             "Do companies ranked higher subsequently outperform companies ranked lower?"
         ),
         "methodology": {
+            **selection,
             "analysis_key": ["strategy", "scoring_model_version", "horizon"],
             "benchmark": (
                 "equal-weight valid outcomes from the original point-in-time evaluation universe"
@@ -208,6 +219,8 @@ def build_performance_v2_analysis(
             ordered_stores,
             tuple(experiment_snapshots),
             eligibility_criteria=eligibility_criteria,
+            return_methodology=selection["return_methodology"],
+            data_cutoff=data_cutoff,
         )
     return analysis
 
@@ -246,6 +259,9 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         "# Performance v2: Ranking Quality",
         "",
         f"Generated: {analysis['generated_at']}",
+        f"Return methodology: {analysis['methodology'].get('return_methodology', 'legacy/unverified')}",
+        f"Revision policy: {analysis['methodology'].get('outcome_revision_policy', 'legacy/unverified')}",
+        f"Analysis data cutoff: {analysis['methodology'].get('analysis_data_cutoff') or 'all retained data'}",
         "",
         "Gross adjusted-close returns are shown. Spread, commissions, and slippage are excluded.",
         "",

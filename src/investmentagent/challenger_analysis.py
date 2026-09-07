@@ -4,6 +4,7 @@ import hashlib
 import math
 import statistics
 from collections import defaultdict
+from datetime import datetime
 from typing import Any, Iterable
 
 from investmentagent.analysis_eligibility import (
@@ -13,7 +14,7 @@ from investmentagent.analysis_eligibility import (
 )
 from investmentagent.evaluation import EvaluationSnapshot
 from investmentagent.evaluation_analysis import spearman_rank_correlation
-from investmentagent.evaluation_outcomes import EvaluationOutcomeSet, MarketOutcome
+from investmentagent.evaluation_outcomes import EvaluationOutcomeSet, MarketOutcome, select_outcome_revisions
 from investmentagent.experiments import ChallengerExperimentSnapshot
 
 
@@ -26,8 +27,13 @@ def build_challenger_analysis(
     experiments: Iterable[ChallengerExperimentSnapshot],
     *,
     eligibility_criteria: AnalysisEligibilityCriteria = DEFAULT_ANALYSIS_ELIGIBILITY,
+    return_methodology: str | None = None,
+    data_cutoff: datetime | None = None,
 ) -> dict[str, Any]:
     snapshots = tuple(evaluations)
+    outcome_sets, selection = select_outcome_revisions(
+        outcome_sets, return_methodology=return_methodology, data_cutoff=data_cutoff,
+    )
     stores_by_run = {store.evaluation_run_id: store for store in outcome_sets}
     experiment_rows = tuple(experiments)
     experiments_by_key = {
@@ -135,6 +141,7 @@ def build_challenger_analysis(
         warnings.append("Insufficient paired history to judge challenger performance.")
     return {
         "methodology": {
+            **selection,
             "sample": (
                 "champion and challenger use the exact same priced companies from "
                 "the original evaluation run"

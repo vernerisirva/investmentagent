@@ -6,11 +6,13 @@ import os
 import tempfile
 from dataclasses import dataclass, replace
 from datetime import date, datetime, timezone
+from functools import cached_property, lru_cache
 from pathlib import Path
 from typing import Any, Iterable
 
 from investmentagent.evaluation import EvaluationCompanyRow, EvaluationSnapshot, load_evaluation_snapshot
 from investmentagent.market_calendar import (
+    MarketSession,
     advance_market_sessions,
     first_session_closing_after,
     market_for_country,
@@ -24,10 +26,14 @@ from investmentagent.market_prices import (
     SecurityReference,
 )
 from investmentagent.market_price_cache import HistoricalPriceCache
+from investmentagent.price_histories import (
+    COHERENT_RETURN_METHOD, LEGACY_RETURN_METHOD, OUTCOME_REVISION_POLICY,
+    EndpointEvidence, PriceHistoryBatch, HistoryArchive, HistoryMetadata, content_hash,
+)
 
 
-OUTCOME_SCHEMA_VERSION = 1
-OUTCOME_STORE_SCHEMA_VERSION = 1
+OUTCOME_SCHEMA_VERSION = 2
+OUTCOME_STORE_SCHEMA_VERSION = 2
 DEFAULT_MAX_PRICE_API_CALLS = 20
 OUTCOME_STATUSES = {
     "not_due",
@@ -37,10 +43,11 @@ OUTCOME_STATUSES = {
     "symbol_unresolved",
     "provider_error",
     "corporate_action_unsupported",
+    "coherent_history_pending",
 }
 ENTRY_POLICY = "first_market_session_adjusted_close_after_decision"
 ENTRY_REVISION_POLICY = (
-    "freeze established entry; flag provider revisions instead of silently replacing it"
+    "fixed sessions; recalculate both adjusted endpoints from one response; retain revisions"
 )
 
 
@@ -112,10 +119,20 @@ class MarketOutcome:
     exit_retrieved_at: datetime | None
     entry_revision_policy: str
     detail: str | None = None
+    return_methodology: str = LEGACY_RETURN_METHOD
+    calculated_at: datetime | None = None
+    history_evidence: EndpointEvidence | None = None
+    history_metadata: HistoryMetadata | None = None
+    prior_revision_id: str | None = None
+    revision_reason: str | None = None
+    return_difference_pct: float | None = None
 
     def __post_init__(self) -> None:
-        if self.schema_version != OUTCOME_SCHEMA_VERSION:
+        if type(self.schema_version) is not int or self.schema_version not in (1, OUTCOME_SCHEMA_VERSION):
             raise ValueError(f"unsupported market-outcome schema: {self.schema_version}")
+        expected_method = LEGACY_RETURN_METHOD if self.schema_version == 1 else COHERENT_RETURN_METHOD
+        if self.return_methodology != expected_method:
+            raise ValueError("outcome schema and return methodology disagree")
         if self.status not in OUTCOME_STATUSES:
             raise ValueError(f"unsupported market-outcome status: {self.status}")
         if self.strategy not in DEFAULT_STRATEGY_HORIZONS:
@@ -125,7 +142,7 @@ class MarketOutcome:
         if self.decision_at.tzinfo is None:
             raise ValueError("outcome decision timestamp must be timezone-aware")
         object.__setattr__(self, "decision_at", self.decision_at.astimezone(timezone.utc))
-        for field_name in ("retrieved_at", "entry_retrieved_at", "exit_retrieved_at"):
+        for field_name in ("retrieved_at", "entry_retrieved_at", "exit_retrieved_at", "calculated_at"):
             value = getattr(self, field_name)
             if value is not None:
                 if value.tzinfo is None:
@@ -158,13 +175,45 @@ class MarketOutcome:
             raise ValueError("Performance v2 does not substitute a different exit session")
         if self.entry_price is not None and self.entry_retrieved_at is None:
             raise ValueError("established entry prices require retrieval provenance")
+        if self.schema_version == 2:
+            if self.history_metadata is not None:
+                meta = self.history_metadata
+                if (meta.company_id, meta.isin, meta.exchange, meta.provider, meta.symbol, meta.market, meta.currency) != (
+                    self.company_id, self.isin, self.exchange, self.price_provider, self.provider_symbol, self.market, self.currency,
+                ) or self.calculated_at is None or self.calculated_at < meta.completed_at:
+                    raise ValueError("partial outcome history metadata mismatch")
+                if self.history_evidence is not None and meta != self.history_evidence.metadata:
+                    raise ValueError("conflicting outcome history metadata")
+            if self.status != "priced" and self.raw_forward_return_pct is not None:
+                raise ValueError("unresolved coherent outcome cannot contain a return")
+            if self.status == "priced":
+                evidence = self.history_evidence
+                if evidence is None or self.calculated_at is None:
+                    raise ValueError("coherent priced outcomes require endpoint evidence and calculation time")
+                meta = evidence.metadata
+                if (meta.company_id, meta.isin, meta.exchange, meta.provider, meta.symbol, meta.market, meta.currency) != (
+                    self.company_id, self.isin, self.exchange, self.price_provider, self.provider_symbol, self.market, self.currency,
+                ) or (evidence.entry.session_date, evidence.exit.session_date) != (self.entry_session, self.target_exit_session):
+                    raise ValueError("outcome evidence conflicts with fixed security or sessions")
+                if (self.entry_price, self.exit_price, self.entry_retrieved_at, self.exit_retrieved_at) != (
+                    evidence.entry.adjusted_close, evidence.exit.adjusted_close, meta.completed_at, meta.completed_at,
+                ) or self.calculated_at < meta.completed_at:
+                    raise ValueError("outcome evidence values or timestamps disagree")
+                # Only floating-point ratio roundoff, never an economic change, is tolerated.
+                expected = (self.exit_price / self.entry_price - 1) * 100
+                if not math.isclose(self.raw_forward_return_pct, expected, rel_tol=1e-12, abs_tol=1e-10):
+                    raise ValueError("outcome return does not reproduce from evidence")
 
     @property
     def key(self) -> tuple[str, str, str]:
         return self.evaluation_run_id, self.company_id, self.horizon_label
 
-    def as_payload(self) -> dict[str, Any]:
-        return {
+    @cached_property
+    def revision_id(self) -> str:
+        return "outcome-" + content_hash(self.as_payload(include_identity=False))
+
+    def as_payload(self, *, include_identity: bool = True) -> dict[str, Any]:
+        payload = {
             "schema_version": self.schema_version,
             "evaluation_run_id": self.evaluation_run_id,
             "scoring_model_version": self.scoring_model_version,
@@ -205,6 +254,20 @@ class MarketOutcome:
             "entry_revision_policy": self.entry_revision_policy,
             "detail": self.detail,
         }
+        if self.schema_version == 2:
+            payload.update(
+                return_methodology=self.return_methodology,
+                calculated_at=_format_optional_timestamp(self.calculated_at),
+                history_evidence=self.history_evidence.as_payload() if self.history_evidence else None,
+                history_metadata=self.history_metadata.as_payload() if self.history_metadata else None,
+                history_batch_id=(self.history_evidence.metadata.batch_id if self.history_evidence else
+                                  self.history_metadata.batch_id if self.history_metadata else None),
+                prior_revision_id=self.prior_revision_id, revision_reason=self.revision_reason,
+                return_difference_pct=self.return_difference_pct,
+            )
+            if include_identity:
+                payload["outcome_revision_id"] = self.revision_id
+        return payload
 
 
 @dataclass(frozen=True)
@@ -217,9 +280,12 @@ class EvaluationOutcomeSet:
     scoring_model_version: str
     horizon_definitions: tuple[HorizonDefinition, ...]
     outcomes: tuple[MarketOutcome, ...]
+    revisions: tuple[MarketOutcome, ...] = ()
 
     def __post_init__(self) -> None:
-        if self.schema_version != OUTCOME_STORE_SCHEMA_VERSION:
+        object.__setattr__(self, "outcomes", tuple(self.outcomes))
+        object.__setattr__(self, "revisions", tuple(self.revisions))
+        if type(self.schema_version) is not int or self.schema_version not in (1, OUTCOME_STORE_SCHEMA_VERSION):
             raise ValueError(f"unsupported outcome-store schema: {self.schema_version}")
         keys = [outcome.key for outcome in self.outcomes]
         if len(keys) != len(set(keys)):
@@ -243,9 +309,38 @@ class EvaluationOutcomeSet:
         }
         if actual_horizons and actual_horizons != expected_horizons:
             raise ValueError("outcome-store horizon definitions do not match records")
+        if any(outcome.schema_version != self.schema_version for outcome in self.outcomes):
+            raise ValueError("mixed return methodologies in outcome store")
+        records = (*self.revisions, *self.outcomes)
+        by_id = {outcome.revision_id: outcome for outcome in records}
+        current_by_key = {outcome.key: outcome for outcome in self.outcomes}
+        if len(by_id) != len(records):
+            raise ValueError("duplicate outcome revisions")
+        for outcome in records:
+            current = current_by_key.get(outcome.key)
+            immutable = ("evaluation_run_id", "scoring_model_version", "strategy", "company_id", "isin",
+                         "ticker", "country", "exchange", "segment", "original_rank", "horizon_label",
+                         "horizon_sessions", "decision_at", "market", "entry_policy", "entry_reason",
+                         "entry_session", "target_exit_session")
+            if current is None or any(getattr(current, name) != getattr(outcome, name) for name in immutable):
+                raise ValueError("outcome revision changed immutable decision or session metadata")
+            if outcome.prior_revision_id is not None:
+                prior = by_id.get(outcome.prior_revision_id)
+                if prior is None or prior.key != outcome.key:
+                    raise ValueError("missing or mismatched prior outcome revision")
+                if outcome.return_difference_pct is not None:
+                    if prior.raw_forward_return_pct is None or outcome.raw_forward_return_pct is None or not math.isclose(
+                        outcome.return_difference_pct, outcome.raw_forward_return_pct - prior.raw_forward_return_pct,
+                        rel_tol=1e-12, abs_tol=1e-10,
+                    ):
+                        raise ValueError("outcome revision numerical difference mismatch")
+
+    @property
+    def return_methodology(self) -> str:
+        return LEGACY_RETURN_METHOD if self.schema_version == 1 else COHERENT_RETURN_METHOD
 
     def as_payload(self) -> dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "evaluation_run_id": self.evaluation_run_id,
             "evaluation_schema_version": self.evaluation_schema_version,
@@ -266,6 +361,11 @@ class EvaluationOutcomeSet:
                 )
             ],
         }
+        if self.schema_version == 2:
+            payload.update(return_methodology=self.return_methodology,
+                           revision_policy=OUTCOME_REVISION_POLICY,
+                           revisions=[outcome.as_payload() for outcome in self.revisions])
+        return payload
 
 
 @dataclass(frozen=True)
@@ -293,6 +393,11 @@ class OutcomeRefreshSummary:
     deferred_security_ids: tuple[str, ...] = ()
     fetch_plan: tuple[PriceFetchPlanItem, ...] = ()
     cache_coverage: dict[str, Any] | None = None
+    legacy_records_skipped: int = 0
+    coherent_records_reusable: int = 0
+    records_requiring_refetch: int = 0
+    records_missing_metadata: int = 0
+    dry_run: bool = False
 
 
 @dataclass(frozen=True)
@@ -343,6 +448,7 @@ class _PreparedEvaluationOutcomes:
     snapshot: EvaluationSnapshot
     definitions: tuple[HorizonDefinition, ...]
     companies: tuple[_PreparedCompanyOutcomes, ...]
+    existing: EvaluationOutcomeSet | None = None
 
 
 @dataclass
@@ -365,422 +471,262 @@ def refresh_evaluation_outcomes(
     retrieved_at: datetime,
     existing: EvaluationOutcomeSet | None = None,
     horizons: tuple[HorizonDefinition, ...] | None = None,
+    reprice: bool = False,
 ) -> EvaluationOutcomeSet:
     retrieval_time = _utc_timestamp(retrieved_at, "retrieved_at")
+    if existing is not None and existing.schema_version == 1 and not reprice:
+        _validate_existing_store(existing, snapshot, horizons or DEFAULT_STRATEGY_HORIZONS[snapshot.strategy])
+        return existing
     prepared = _prepare_evaluation_outcomes(
-        snapshot,
-        provider_name=provider.name,
-        retrieved_at=retrieval_time,
-        existing=existing,
-        horizons=horizons,
+        snapshot, provider_name=provider.name, retrieved_at=retrieval_time,
+        existing=existing, horizons=horizons, reprice=reprice,
     )
-    outcomes: list[MarketOutcome] = []
+    outcomes = []
     for company in prepared.companies:
-        history: HistoricalPriceHistory | None = None
+        history, batch = None, None
         if company.refreshable:
-            known_symbols = {
-                outcome.provider_symbol
-                for outcome in company.refreshable
-                if outcome.entry_price is not None and outcome.provider_symbol is not None
-            }
-            if len(known_symbols) > 1:
+            start = min(o.entry_session for o in company.refreshable)
+            end = max(o.target_exit_session for o in company.refreshable)
+            known = {o.provider_symbol for o in company.refreshable if o.provider_symbol}
+            if len(known) > 1:
                 raise ValueError("established entries disagree on provider symbol")
-            start_date = min(
-                outcome.entry_session for outcome in company.refreshable
-            )
-            end_date = max(
-                outcome.target_exit_session for outcome in company.refreshable
-            )
-            market = company.refreshable[0].market
-            history = provider.get_history(
-                _security_reference(company.row),
-                start_date=start_date,
-                end_date=end_date,
-                market=market,
-                retrieved_at=retrieval_time,
-                symbol=next(iter(known_symbols), None),
+            history, batch = _fetch_batch(
+                provider, _security_reference(company.row), company.refreshable[0].market,
+                start, end, retrieval_time, next(iter(known), None),
             )
         for outcome in company.outcomes:
-            if history is not None and outcome in company.refreshable:
-                outcomes.append(_outcome_from_history(outcome, history, retrieval_time))
-            else:
-                outcomes.append(outcome)
+            outcomes.append(_outcome_from_history(outcome, history, _calculation_time(provider, retrieval_time), batch=batch)
+                            if history is not None and outcome in company.refreshable else outcome)
     return _build_outcome_set(prepared, outcomes)
 
 
 def refresh_outcome_store(
-    evaluation_root: Path,
-    outcome_root: Path,
-    provider: HistoricalPriceProvider,
-    *,
-    retrieved_at: datetime,
-    strategy: str | None = None,
-    run_id: str | None = None,
-    report_date: date | None = None,
-    price_cache: HistoricalPriceCache | None = None,
-    max_price_api_calls: int | None = None,
+    evaluation_root: Path, outcome_root: Path, provider: HistoricalPriceProvider, *,
+    retrieved_at: datetime, strategy: str | None = None, run_id: str | None = None,
+    report_date: date | None = None, price_cache: HistoricalPriceCache | None = None,
+    max_price_api_calls: int | None = None, reprice: bool = False, dry_run: bool = False,
 ) -> OutcomeRefreshSummary:
     if max_price_api_calls is not None and (
         isinstance(max_price_api_calls, bool) or max_price_api_calls < 0
     ):
         raise ValueError("maximum price API calls must be at least zero")
+    if price_cache is not None and max_price_api_calls is None:
+        raise ValueError("cached outcome refresh requires an explicit API budget")
     snapshots = discover_evaluation_snapshots(
-        evaluation_root,
-        strategy=strategy,
-        run_id=run_id,
-        report_date=report_date,
+        evaluation_root, strategy=strategy, run_id=run_id, report_date=report_date,
     )
-    if price_cache is not None:
-        if max_price_api_calls is None:
-            raise ValueError("cached outcome refresh requires an explicit API budget")
-        return _refresh_outcome_store_with_cache(
-            snapshots,
-            outcome_root,
-            provider,
-            price_cache,
-            retrieved_at=_utc_timestamp(retrieved_at, "retrieved_at"),
-            max_price_api_calls=max_price_api_calls,
-        )
+    return _refresh_outcome_store_with_cache(
+        snapshots, outcome_root, provider, price_cache,
+        retrieved_at=_utc_timestamp(retrieved_at, "retrieved_at"),
+        max_price_api_calls=max_price_api_calls if max_price_api_calls is not None else DEFAULT_MAX_PRICE_API_CALLS,
+        reprice=reprice, dry_run=dry_run,
+    )
 
-    calls_before = _provider_api_call_count(provider)
-    files: list[Path] = []
-    all_outcomes: list[MarketOutcome] = []
-    for snapshot in snapshots:
-        path = outcome_store_path(outcome_root, snapshot)
-        existing = load_outcome_set(path) if path.exists() else None
-        refreshed = refresh_evaluation_outcomes(
-            snapshot,
-            provider,
-            retrieved_at=retrieved_at,
-            existing=existing,
-        )
-        save_outcome_set(path, refreshed)
-        files.append(path)
-        all_outcomes.extend(refreshed.outcomes)
-    unresolved_statuses = OUTCOME_STATUSES - {"priced", "not_due"}
-    return OutcomeRefreshSummary(
-        evaluation_runs=len(snapshots),
-        outcome_records=len(all_outcomes),
-        priced=sum(outcome.status == "priced" for outcome in all_outcomes),
-        not_due=sum(outcome.status == "not_due" for outcome in all_outcomes),
-        unresolved=sum(outcome.status in unresolved_statuses for outcome in all_outcomes),
-        files_written=tuple(files),
-        provider_calls_executed=(
-            _provider_api_call_count(provider) - calls_before
-        ),
+
+def _calculation_time(provider: HistoricalPriceProvider, scheduled_at: datetime) -> datetime:
+    clock = getattr(provider, "calculation_time", None)
+    return _utc_timestamp(clock(scheduled_at) if callable(clock) else datetime.now(timezone.utc), "calculated_at")
+
+
+def _fetch_batch(
+    provider: HistoricalPriceProvider, security: SecurityReference, market: str,
+    start: date, end: date, retrieval_time: datetime, symbol: str | None,
+) -> tuple[HistoricalPriceHistory, PriceHistoryBatch | None]:
+    history = provider.get_history(
+        security, start_date=start, end_date=end, market=market,
+        retrieved_at=retrieval_time, symbol=symbol,
     )
+    if history.status != "ok":
+        return history, None
+    try:
+        if history.provider != provider.name or history.market != market:
+            raise ValueError("response provider or market conflicts with request")
+        if symbol is not None and history.symbol != symbol:
+            raise ValueError("response symbol conflicts with established symbol")
+        batch = PriceHistoryBatch.accept(security, history, start, end)
+    except ValueError as exc:
+        return HistoricalPriceHistory("provider_error", provider.name, symbol, market,
+                                      detail=str(exc)), None
+    return history, batch
 
 
 def _refresh_outcome_store_with_cache(
-    snapshots: tuple[EvaluationSnapshot, ...],
-    outcome_root: Path,
-    provider: HistoricalPriceProvider,
-    price_cache: HistoricalPriceCache,
-    *,
-    retrieved_at: datetime,
-    max_price_api_calls: int,
+    snapshots: tuple[EvaluationSnapshot, ...], outcome_root: Path,
+    provider: HistoricalPriceProvider, price_cache: HistoricalPriceCache | None, *,
+    retrieved_at: datetime, max_price_api_calls: int,
+    reprice: bool = False, dry_run: bool = False,
 ) -> OutcomeRefreshSummary:
-    prepared_runs: list[_PreparedEvaluationOutcomes] = []
-    requirements: dict[tuple[str, str], _SecurityRequirement] = {}
+    archive = price_cache.history_archive if price_cache is not None else HistoryArchive()
+    prepared_runs = []
+    paths = {}
+    requirements = {}
+    hits = {}
+    security_identities = {}
+    legacy_skipped = reusable = refetch = missing_metadata = 0
     for snapshot in snapshots:
         path = outcome_store_path(outcome_root, snapshot)
         existing = load_outcome_set(path) if path.exists() else None
+        if existing is not None and existing.schema_version == 1:
+            repaired_path = path.with_name(f"{path.stem}.coherent-v1.json")
+            if repaired_path.exists():
+                existing = load_outcome_set(repaired_path)
+            elif not reprice:
+                legacy_skipped += len(existing.outcomes)
+                continue
+            path = repaired_path
+        paths[snapshot.run_id] = path
         prepared = _prepare_evaluation_outcomes(
-            snapshot,
-            provider_name=provider.name,
-            retrieved_at=retrieved_at,
-            existing=existing,
-            horizons=None,
+            snapshot, provider_name=provider.name, retrieved_at=retrieved_at,
+            existing=existing, horizons=None, reprice=reprice,
         )
         prepared_runs.append(prepared)
         for company in prepared.companies:
-            if not company.refreshable:
-                continue
-            market = company.refreshable[0].market
-            key = (company.row.company_id, market)
-            known_symbols = {
-                outcome.provider_symbol
-                for outcome in company.refreshable
-                if outcome.entry_price is not None
-                and outcome.provider_symbol is not None
-            }
-            start_date = min(
-                outcome.entry_session for outcome in company.refreshable
-            )
-            end_date = max(
-                outcome.target_exit_session for outcome in company.refreshable
-            )
-            required_dates = {
-                session
-                for outcome in company.refreshable
-                for session in (outcome.entry_session, outcome.target_exit_session)
-            }
-            has_unestablished_entry = any(
-                outcome.entry_price is None for outcome in company.refreshable
-            )
-            shortest_horizon = min(
-                outcome.horizon_sessions for outcome in company.refreshable
-            )
-            requirement = requirements.get(key)
-            if requirement is None:
-                requirements[key] = _SecurityRequirement(
-                    security=_security_reference(company.row),
-                    market=market,
-                    required_dates=set(required_dates),
-                    range_start=start_date,
-                    range_end=end_date,
-                    known_symbols=set(known_symbols),
-                    has_unestablished_entry=has_unestablished_entry,
-                    shortest_due_horizon_sessions=shortest_horizon,
-                    oldest_evaluation_date=prepared.snapshot.report_date,
+            security = _security_reference(company.row)
+            for outcome in company.refreshable:
+                key = (security.company_id, outcome.market)
+                identity = (security.isin, security.country, security.exchange)
+                if key in security_identities and security_identities[key] != identity:
+                    raise ValueError("stable company identity maps to conflicting securities")
+                security_identities[key] = identity
+                batch = archive.find(
+                    security, provider=provider.name, market=outcome.market,
+                    entry=outcome.entry_session, exit=outcome.target_exit_session,
+                    symbol=outcome.provider_symbol, data_cutoff=retrieved_at,
                 )
-                continue
-            if (
-                requirement.security.country != company.row.country
-                or requirement.security.isin != company.row.isin
-            ):
-                raise ValueError(
-                    "stable company identity maps to conflicting securities"
-                )
-            requirement.required_dates.update(required_dates)
-            requirement.range_start = min(requirement.range_start, start_date)
-            requirement.range_end = max(requirement.range_end, end_date)
-            requirement.known_symbols.update(known_symbols)
-            requirement.has_unestablished_entry = (
-                requirement.has_unestablished_entry or has_unestablished_entry
-            )
-            requirement.shortest_due_horizon_sessions = min(
-                requirement.shortest_due_horizon_sessions,
-                shortest_horizon,
-            )
-            requirement.oldest_evaluation_date = min(
-                requirement.oldest_evaluation_date,
-                prepared.snapshot.report_date,
-            )
+                # Repricing explicitly requests a fresh response, not a relabelled cache hit.
+                if batch is not None and not reprice:
+                    hits[outcome.key] = batch
+                    reusable += 1
+                    continue
+                if batch is not None:
+                    reusable += 1
+                else:
+                    refetch += 1
+                if existing is not None and existing.schema_version == 1:
+                    missing_metadata += 1
+                key = (security.company_id, outcome.market)
+                requirement = requirements.get(key)
+                if requirement is None:
+                    requirement = _SecurityRequirement(
+                        security, outcome.market, set(), outcome.entry_session,
+                        outcome.target_exit_session, set(), outcome.entry_price is None,
+                        outcome.horizon_sessions, snapshot.report_date,
+                    )
+                    requirements[key] = requirement
+                if (requirement.security.isin, requirement.security.country, requirement.security.exchange) != (
+                    security.isin, security.country, security.exchange,
+                ):
+                    raise ValueError("stable company identity maps to conflicting securities")
+                requirement.required_dates.update((outcome.entry_session, outcome.target_exit_session))
+                requirement.range_start = min(requirement.range_start, outcome.entry_session)
+                requirement.range_end = max(requirement.range_end, outcome.target_exit_session)
+                if outcome.provider_symbol:
+                    requirement.known_symbols.add(outcome.provider_symbol)
+                requirement.has_unestablished_entry |= outcome.entry_price is None
+                requirement.shortest_due_horizon_sessions = min(requirement.shortest_due_horizon_sessions, outcome.horizon_sessions)
+                requirement.oldest_evaluation_date = min(requirement.oldest_evaluation_date, snapshot.report_date)
 
-    cache_hits = 0
-    cache_misses = 0
-    tasks_with_keys: list[tuple[tuple[str, str], PriceFetchPlanItem]] = []
-    preferred_symbols: dict[tuple[str, str], str | None] = {}
+    tasks = []
     for key, requirement in requirements.items():
         if len(requirement.known_symbols) > 1:
             raise ValueError("established entries disagree on provider symbol")
-        preferred_symbol = next(iter(requirement.known_symbols), None)
-        if preferred_symbol is None:
-            preferred_symbol = price_cache.preferred_symbol(
-                requirement.security.company_id,
-                provider=provider.name,
-                market=requirement.market,
+        symbol = next(iter(requirement.known_symbols), None)
+        if symbol is None:
+            symbol = archive.preferred_symbol(
+                requirement.security, provider=provider.name, market=requirement.market,
+                data_cutoff=retrieved_at,
             )
-        preferred_symbols[key] = preferred_symbol
-        missing_dates = []
-        for session_date in sorted(requirement.required_dates):
-            observation = price_cache.get_observation(
-                requirement.security.company_id,
-                provider=provider.name,
-                market=requirement.market,
-                session_date=session_date,
-                symbol=preferred_symbol,
-            )
-            if observation is None:
-                cache_misses += 1
-                missing_dates.append(session_date)
-            else:
-                cache_hits += 1
-        if not missing_dates:
-            continue
-        estimated_calls = _estimated_provider_api_calls(
-            provider,
-            requirement.security,
-            symbol=preferred_symbol,
+        # Legacy symbol metadata can reduce alternate attempts, but never proves price coherence.
+        if symbol is None and price_cache is not None:
+            symbol = price_cache.preferred_symbol(
+                requirement.security.company_id, provider=provider.name, market=requirement.market)
+        task = PriceFetchPlanItem(
+            requirement.security.company_id, requirement.security.ticker,
+            requirement.security.country, requirement.market, symbol,
+            requirement.range_start, requirement.range_end,
+            tuple(sorted(requirement.required_dates)),
+            _estimated_provider_api_calls(provider, requirement.security, symbol=symbol),
+            requirement.has_unestablished_entry, requirement.shortest_due_horizon_sessions,
+            requirement.oldest_evaluation_date,
         )
-        tasks_with_keys.append(
-            (
-                key,
-                PriceFetchPlanItem(
-                    company_id=requirement.security.company_id,
-                    ticker=requirement.security.ticker,
-                    country=requirement.security.country,
-                    market=requirement.market,
-                    provider_symbol=preferred_symbol,
-                    start_date=min(missing_dates),
-                    end_date=max(missing_dates),
-                    missing_session_dates=tuple(missing_dates),
-                    estimated_api_calls=estimated_calls,
-                    has_unestablished_entry=requirement.has_unestablished_entry,
-                    shortest_due_horizon_sessions=(
-                        requirement.shortest_due_horizon_sessions
-                    ),
-                    oldest_evaluation_date=requirement.oldest_evaluation_date,
-                ),
-            )
-        )
-
-    ordered_tasks = sorted(
-        tasks_with_keys,
-        key=lambda item: (
-            not item[1].has_unestablished_entry,
-            item[1].shortest_due_horizon_sessions,
-            item[1].end_date,
-            item[1].oldest_evaluation_date,
-            item[1].company_id,
-            item[1].market,
-        ),
-    )
-    planned_calls = 0
-    selected: list[tuple[tuple[str, str], PriceFetchPlanItem]] = []
-    deferred: list[tuple[tuple[str, str], PriceFetchPlanItem]] = []
-    final_plan: list[tuple[tuple[str, str], PriceFetchPlanItem]] = []
-    for key, task in ordered_tasks:
+        tasks.append((key, task))
+    tasks.sort(key=lambda item: (
+        not item[1].has_unestablished_entry, item[1].shortest_due_horizon_sessions,
+        item[1].end_date, item[1].oldest_evaluation_date, item[1].company_id, item[1].market,
+    ))
+    plan, planned_calls = [], 0
+    for key, task in tasks:
         if planned_calls + task.estimated_api_calls <= max_price_api_calls:
             planned_calls += task.estimated_api_calls
-            selected.append((key, task))
-            final_plan.append((key, task))
         else:
-            deferred_task = replace(task, deferred_by_budget=True)
-            deferred.append((key, deferred_task))
-            final_plan.append((key, deferred_task))
-
+            task = replace(task, deferred_by_budget=True)
+        plan.append((key, task))
     calls_before = _provider_api_call_count(provider)
-    fetched_histories: dict[tuple[str, str], HistoricalPriceHistory] = {}
-    observations_stored = 0
-    provider_errors = 0
-    unresolved_symbols = 0
-    revisions_detected = 0
-    for key, task in selected:
-        requirement = requirements[key]
-        history = provider.get_history(
-            requirement.security,
-            start_date=task.start_date,
-            end_date=task.end_date,
-            market=requirement.market,
-            retrieved_at=retrieved_at,
-            symbol=task.provider_symbol,
-        )
-        fetched_histories[key] = history
-        if history.status == "ok":
-            stored = price_cache.store(
-                requirement.security.company_id,
-                history.observations,
+    fetched = {}
+    observations_stored = provider_errors = unresolved_symbols = 0
+    if not dry_run:
+        for key, task in plan:
+            if task.deferred_by_budget:
+                continue
+            history, batch = _fetch_batch(
+                provider, requirements[key].security, task.market, task.start_date,
+                task.end_date, retrieved_at, task.provider_symbol,
             )
-            observations_stored += stored.observations_stored
-            revisions_detected += stored.revisions_detected
-        elif history.status == "provider_error":
-            provider_errors += 1
-        elif history.status == "symbol_unresolved":
-            unresolved_symbols += 1
-    calls_executed = _provider_api_call_count(provider) - calls_before
-    if calls_executed > max_price_api_calls:
+            fetched[key] = (history, batch)
+            if batch is not None and archive.store(batch):
+                observations_stored += len(batch.observations)
+            provider_errors += history.status == "provider_error"
+            unresolved_symbols += history.status == "symbol_unresolved"
+    executed = _provider_api_call_count(provider) - calls_before
+    if executed > max_price_api_calls:
         raise RuntimeError("historical-price provider exceeded the API-call budget")
-
-    files: list[Path] = []
-    all_outcomes: list[MarketOutcome] = []
+    files, all_outcomes = [], []
+    revisions_detected = 0
     for prepared in prepared_runs:
-        outcomes: list[MarketOutcome] = []
+        outcomes = []
         for company in prepared.companies:
-            history: HistoricalPriceHistory | None = None
-            if company.refreshable:
-                market = company.refreshable[0].market
-                key = (company.row.company_id, market)
-                requirement = requirements[key]
-                fetched = fetched_histories.get(key)
-                symbol = preferred_symbols[key]
-                if fetched is not None and fetched.symbol is not None:
-                    symbol = fetched.symbol
-                revision_dates = tuple(
-                    value
-                    for value in price_cache.revision_dates(
-                        company.row.company_id,
-                        provider=provider.name,
-                        market=market,
-                        start_date=requirement.range_start,
-                        end_date=requirement.range_end,
-                        symbol=symbol,
-                    )
-                    if value in requirement.required_dates
-                )
-                cached_rows = price_cache.get_range(
-                    company.row.company_id,
-                    provider=provider.name,
-                    market=market,
-                    start_date=requirement.range_start,
-                    end_date=requirement.range_end,
-                    symbol=symbol,
-                )
-                if revision_dates:
-                    history = HistoricalPriceHistory(
-                        "corporate_action_unsupported",
-                        provider.name,
-                        symbol,
-                        market,
-                        detail=(
-                            "provider revised cached adjusted-close observation(s) on "
-                            + ", ".join(day.isoformat() for day in revision_dates)
-                            + "; accepted cache values and established entries were preserved"
-                        ),
-                    )
-                elif (
-                    fetched is not None
-                    and fetched.status == "corporate_action_unsupported"
-                ):
-                    history = fetched
-                elif cached_rows:
-                    history = HistoricalPriceHistory(
-                        "ok",
-                        provider.name,
-                        symbol or cached_rows[0].symbol,
-                        market,
-                        cached_rows,
-                    )
-                elif fetched is not None:
-                    history = fetched
             for outcome in company.outcomes:
-                if history is not None and outcome in company.refreshable:
-                    outcomes.append(
-                        _outcome_from_history(outcome, history, retrieved_at)
-                    )
-                else:
-                    outcomes.append(outcome)
-        refreshed = _build_outcome_set(prepared, outcomes)
-        path = outcome_store_path(outcome_root, prepared.snapshot)
-        save_outcome_set(path, refreshed)
-        files.append(path)
-        all_outcomes.extend(refreshed.outcomes)
-
-    unresolved_statuses = OUTCOME_STATUSES - {"priced", "not_due"}
-    oldest_unresolved = _oldest_unresolved_evaluation_date(
-        prepared_runs,
-        all_outcomes,
-        retrieved_at=retrieved_at,
-    )
+                current = outcome
+                if outcome in company.refreshable and not dry_run:
+                    batch = hits.get(outcome.key)
+                    history = batch.as_history() if batch is not None else None
+                    if history is None:
+                        history, batch = fetched.get((outcome.company_id, outcome.market), (None, None))
+                    if history is None:
+                        current = outcome if outcome.status == "priced" else _pending_outcome(outcome, _calculation_time(provider, retrieved_at))
+                    else:
+                        current = _outcome_from_history(outcome, history, _calculation_time(provider, retrieved_at), batch=batch)
+                    revisions_detected += current.revision_reason == "coherent_endpoint_revision"
+                outcomes.append(current)
+        if not dry_run:
+            refreshed = _build_outcome_set(prepared, outcomes)
+            path = paths[prepared.snapshot.run_id]
+            save_outcome_set(path, refreshed)
+            files.append(path)
+        all_outcomes.extend(outcomes)
+    deferred = [task for _, task in plan if task.deferred_by_budget]
     return OutcomeRefreshSummary(
-        evaluation_runs=len(snapshots),
-        outcome_records=len(all_outcomes),
-        priced=sum(outcome.status == "priced" for outcome in all_outcomes),
-        not_due=sum(outcome.status == "not_due" for outcome in all_outcomes),
-        unresolved=sum(
-            outcome.status in unresolved_statuses for outcome in all_outcomes
-        ),
-        files_written=tuple(files),
-        securities_requiring_prices=len(requirements),
-        required_session_observations=sum(
-            len(requirement.required_dates) for requirement in requirements.values()
-        ),
-        cache_hits=cache_hits,
-        cache_misses=cache_misses,
-        provider_calls_planned=planned_calls,
-        provider_calls_executed=calls_executed,
-        api_budget=max_price_api_calls,
-        work_deferred_by_budget=len(deferred),
-        deferred_api_calls=sum(task.estimated_api_calls for _, task in deferred),
-        observations_stored=observations_stored,
-        provider_errors=provider_errors,
-        unresolved_symbols=unresolved_symbols,
-        revisions_detected=revisions_detected,
-        oldest_unresolved_evaluation_date=oldest_unresolved,
-        deferred_security_ids=tuple(task.company_id for _, task in deferred),
-        fetch_plan=tuple(task for _, task in final_plan),
-        cache_coverage=price_cache.coverage().as_dict(),
+        evaluation_runs=len(prepared_runs), outcome_records=len(all_outcomes),
+        priced=sum(o.status == "priced" for o in all_outcomes),
+        not_due=sum(o.status == "not_due" for o in all_outcomes),
+        unresolved=sum(o.status not in {"priced", "not_due"} for o in all_outcomes),
+        files_written=tuple(files), securities_requiring_prices=len(requirements),
+        required_session_observations=sum(len(r.required_dates) for r in requirements.values()) + 2 * len(hits),
+        cache_hits=2 * len(hits), cache_misses=sum(len(r.required_dates) for r in requirements.values()),
+        provider_calls_planned=planned_calls, provider_calls_executed=executed,
+        api_budget=max_price_api_calls, work_deferred_by_budget=len(deferred),
+        deferred_api_calls=sum(t.estimated_api_calls for t in deferred),
+        observations_stored=observations_stored, provider_errors=provider_errors,
+        unresolved_symbols=unresolved_symbols, revisions_detected=revisions_detected,
+        oldest_unresolved_evaluation_date=_oldest_unresolved_evaluation_date(
+            prepared_runs, all_outcomes, retrieved_at=retrieved_at),
+        deferred_security_ids=tuple(t.company_id for t in deferred),
+        fetch_plan=tuple(t for _, t in plan),
+        cache_coverage={"coherent_histories": len(archive.batches),
+                        "legacy_unverified": price_cache.coverage().as_dict() if price_cache else None},
+        legacy_records_skipped=legacy_skipped, coherent_records_reusable=reusable,
+        records_requiring_refetch=refetch, records_missing_metadata=missing_metadata,
+        dry_run=dry_run,
     )
 
 
@@ -791,6 +737,7 @@ def _prepare_evaluation_outcomes(
     retrieved_at: datetime,
     existing: EvaluationOutcomeSet | None,
     horizons: tuple[HorizonDefinition, ...] | None,
+    reprice: bool = False,
 ) -> _PreparedEvaluationOutcomes:
     definitions = horizons or DEFAULT_STRATEGY_HORIZONS[snapshot.strategy]
     if existing is not None:
@@ -802,8 +749,9 @@ def _prepare_evaluation_outcomes(
     companies = []
     for row in snapshot.rows:
         outcomes = tuple(
-            existing_by_key.get((row.company_id, horizon.label))
-            or _initial_outcome(snapshot, row, horizon, provider_name)
+            _coherent_base(existing_by_key[(row.company_id, horizon.label)])
+            if (row.company_id, horizon.label) in existing_by_key
+            else _initial_outcome(snapshot, row, horizon, provider_name)
             for horizon in definitions
         )
         companies.append(
@@ -813,7 +761,7 @@ def _prepare_evaluation_outcomes(
                 refreshable=tuple(
                     outcome
                     for outcome in outcomes
-                    if _should_refresh(outcome, retrieved_at)
+                    if _should_refresh(outcome, retrieved_at, reprice=reprice)
                 ),
             )
         )
@@ -821,6 +769,7 @@ def _prepare_evaluation_outcomes(
         snapshot=snapshot,
         definitions=tuple(definitions),
         companies=tuple(companies),
+        existing=existing,
     )
 
 
@@ -829,6 +778,13 @@ def _build_outcome_set(
     outcomes: Iterable[MarketOutcome],
 ) -> EvaluationOutcomeSet:
     snapshot = prepared.snapshot
+    outcomes = tuple(outcomes)
+    candidates = list(prepared.existing.revisions) if prepared.existing else []
+    if prepared.existing:
+        candidates.extend(prepared.existing.outcomes)
+    candidates.extend(o for company in prepared.companies for o in company.outcomes)
+    current_ids = {o.revision_id for o in outcomes}
+    revisions = {o.revision_id: o for o in candidates if o.revision_id not in current_ids}
     return EvaluationOutcomeSet(
         schema_version=OUTCOME_STORE_SCHEMA_VERSION,
         evaluation_run_id=snapshot.run_id,
@@ -838,6 +794,7 @@ def _build_outcome_set(
         scoring_model_version=snapshot.scoring_model_version,
         horizon_definitions=prepared.definitions,
         outcomes=tuple(outcomes),
+        revisions=tuple(revisions.values()),
     )
 
 
@@ -913,7 +870,7 @@ def discover_outcome_sets(root: Path) -> tuple[EvaluationOutcomeSet, ...]:
     if not root.exists():
         return ()
     stores = tuple(load_outcome_set(path) for path in sorted(root.rglob("*.json")))
-    run_ids = [store.evaluation_run_id for store in stores]
+    run_ids = [(store.evaluation_run_id, store.return_methodology) for store in stores]
     if len(run_ids) != len(set(run_ids)):
         raise ValueError("duplicate outcome stores discovered")
     return stores
@@ -932,6 +889,14 @@ def save_outcome_set(path: Path, outcome_set: EvaluationOutcomeSet) -> Path:
     content = serialize_outcome_set(outcome_set)
     if path.exists() and path.read_text(encoding="utf-8") == content:
         return path
+    if path.exists():
+        old = load_outcome_set(path)
+        if old.schema_version == 1:
+            raise ValueError("legacy outcome files are read-only; write a separate coherent store")
+        old_ids = {o.revision_id for o in (*old.revisions, *old.outcomes)}
+        new_ids = {o.revision_id for o in (*outcome_set.revisions, *outcome_set.outcomes)}
+        if not old_ids.issubset(new_ids):
+            raise ValueError("cannot overwrite outcome history without retaining prior revisions")
     _atomic_write(path, content)
     return path
 
@@ -956,7 +921,7 @@ def load_outcome_set(path: Path) -> EvaluationOutcomeSet:
     if not isinstance(payload, dict):
         raise ValueError("malformed outcome store payload")
     version = payload.get("schema_version")
-    if version != OUTCOME_STORE_SCHEMA_VERSION:
+    if version not in (1, OUTCOME_STORE_SCHEMA_VERSION):
         raise ValueError(f"unsupported outcome-store schema: {version}")
     raw_definitions = payload.get("horizon_definitions")
     raw_outcomes = payload.get("outcomes")
@@ -964,6 +929,9 @@ def load_outcome_set(path: Path) -> EvaluationOutcomeSet:
         raise ValueError("malformed outcome-store collections")
     definitions = tuple(_horizon_from_payload(item) for item in raw_definitions)
     outcomes = tuple(_outcome_from_payload(item) for item in raw_outcomes)
+    if version == 2 and (payload.get("return_methodology") != COHERENT_RETURN_METHOD
+                         or payload.get("revision_policy") != OUTCOME_REVISION_POLICY):
+        raise ValueError("unsupported outcome store methodology or revision policy")
     return EvaluationOutcomeSet(
         schema_version=version,
         evaluation_run_id=_required_string(payload.get("evaluation_run_id"), "run ID"),
@@ -979,7 +947,18 @@ def load_outcome_set(path: Path) -> EvaluationOutcomeSet:
         ),
         horizon_definitions=definitions,
         outcomes=outcomes,
+        revisions=tuple(_outcome_from_payload(item) for item in payload.get("revisions", [])),
     )
+
+
+@lru_cache(maxsize=4096)
+def _fixed_sessions(
+    decision_at: datetime, market: str, horizon_sessions: int,
+) -> tuple[MarketSession, MarketSession]:
+    # All rows in a market/cohort share these existing execution rules. In particular,
+    # validating a legacy run need not walk a year's calendar again for every row.
+    entry = first_session_closing_after(decision_at, market)
+    return entry, advance_market_sessions(entry.day, horizon_sessions, market)
 
 
 def _initial_outcome(
@@ -989,8 +968,7 @@ def _initial_outcome(
     provider_name: str,
 ) -> MarketOutcome:
     market = market_for_country(row.country)
-    entry = first_session_closing_after(snapshot.decision_at, market)
-    target_exit = advance_market_sessions(entry.day, horizon.sessions, market)
+    entry, target_exit = _fixed_sessions(snapshot.decision_at, market, horizon.sessions)
     return MarketOutcome(
         schema_version=OUTCOME_SCHEMA_VERSION,
         evaluation_run_id=snapshot.run_id,
@@ -1028,11 +1006,12 @@ def _initial_outcome(
         entry_retrieved_at=None,
         exit_retrieved_at=None,
         entry_revision_policy=ENTRY_REVISION_POLICY,
+        return_methodology=COHERENT_RETURN_METHOD,
     )
 
 
-def _should_refresh(outcome: MarketOutcome, retrieved_at: datetime) -> bool:
-    if outcome.status in {"priced", "corporate_action_unsupported"}:
+def _should_refresh(outcome: MarketOutcome, retrieved_at: datetime, *, reprice: bool = False) -> bool:
+    if outcome.status == "priced" and not reprice:
         return False
     target_session = market_session(outcome.target_exit_session, outcome.market)
     if target_session is None:
@@ -1040,109 +1019,89 @@ def _should_refresh(outcome: MarketOutcome, retrieved_at: datetime) -> bool:
     return target_session.closes_at <= retrieved_at
 
 
-def _outcome_from_history(
-    outcome: MarketOutcome,
-    history: HistoricalPriceHistory,
-    retrieved_at: datetime,
-) -> MarketOutcome:
-    if history.status != "ok":
-        status = history.status
-        if status not in OUTCOME_STATUSES:
-            status = "provider_error"
-        return replace(
-            outcome,
-            status=status,
-            price_provider=history.provider,
-            provider_symbol=outcome.provider_symbol or history.symbol,
-            retrieved_at=retrieved_at,
-            detail=history.detail,
-        )
-    entry_observation = history.observation_on(outcome.entry_session)
-    exit_observation = history.observation_on(outcome.target_exit_session)
-    if entry_observation is None:
-        return replace(
-            outcome,
-            status="missing_entry",
-            price_provider=history.provider,
-            provider_symbol=history.symbol,
-            retrieved_at=retrieved_at,
-            detail="no adjusted close exists on the required entry session",
-        )
-    revision = _entry_revision_detail(outcome, entry_observation)
-    if revision is not None:
-        return replace(
-            outcome,
-            status="corporate_action_unsupported",
-            price_provider=history.provider,
-            provider_symbol=outcome.provider_symbol or history.symbol,
-            retrieved_at=retrieved_at,
-            detail=revision,
-        )
-    entry_price = outcome.entry_price or entry_observation.adjusted_close
-    entry_retrieved_at = outcome.entry_retrieved_at or entry_observation.retrieved_at
-    currency = outcome.currency or entry_observation.currency
-    if exit_observation is None:
-        return replace(
-            outcome,
-            status="missing_exit",
-            entry_price=entry_price,
-            currency=currency,
-            price_provider=history.provider,
-            provider_symbol=history.symbol,
-            retrieved_at=retrieved_at,
-            entry_retrieved_at=entry_retrieved_at,
-            detail="no adjusted close exists on the required exit session",
-        )
-    if (
-        currency is not None
-        and exit_observation.currency is not None
-        and currency != exit_observation.currency
-    ):
-        return replace(
-            outcome,
-            status="provider_error",
-            entry_price=entry_price,
-            currency=currency,
-            price_provider=history.provider,
-            provider_symbol=history.symbol,
-            retrieved_at=retrieved_at,
-            entry_retrieved_at=entry_retrieved_at,
-            detail="entry and exit observations use different currencies",
-        )
-    forward_return = ((exit_observation.adjusted_close / entry_price) - 1.0) * 100.0
+def _coherent_base(outcome: MarketOutcome) -> MarketOutcome:
+    if outcome.schema_version == 2:
+        return outcome
     return replace(
-        outcome,
-        actual_exit_session=exit_observation.session_date,
-        entry_price=entry_price,
-        exit_price=exit_observation.adjusted_close,
-        currency=currency or exit_observation.currency,
-        raw_forward_return_pct=forward_return,
-        status="priced",
-        price_provider=history.provider,
-        provider_symbol=history.symbol,
-        retrieved_at=retrieved_at,
-        entry_retrieved_at=entry_retrieved_at,
-        exit_retrieved_at=exit_observation.retrieved_at,
-        detail=None,
+        outcome, schema_version=2, return_methodology=COHERENT_RETURN_METHOD,
+        status="not_due", entry_price=None, exit_price=None, actual_exit_session=None,
+        entry_retrieved_at=None, exit_retrieved_at=None, retrieved_at=None,
+        raw_forward_return_pct=None, detail="legacy adjustment basis unverified; coherent refetch required",
+        entry_revision_policy=ENTRY_REVISION_POLICY, prior_revision_id=outcome.revision_id,
+        revision_reason="explicit_legacy_reprocessing",
     )
 
 
-def _entry_revision_detail(
-    outcome: MarketOutcome, observation: HistoricalPriceObservation
-) -> str | None:
-    if outcome.entry_price is None:
-        return None
-    if math.isclose(
-        outcome.entry_price,
-        observation.adjusted_close,
-        rel_tol=1e-12,
-        abs_tol=1e-12,
+def _derived_outcome(outcome: MarketOutcome, calculation_time: datetime, **changes) -> MarketOutcome:
+    # Clear the derived fields together: an unresolved revision must not retain an old return.
+    values = dict(
+        entry_price=None, exit_price=None, actual_exit_session=None,
+        entry_retrieved_at=None, exit_retrieved_at=None, history_evidence=None,
+        history_metadata=None,
+        raw_forward_return_pct=None, retrieved_at=calculation_time,
+        calculated_at=calculation_time, prior_revision_id=outcome.revision_id,
+        revision_reason="coherent_history_refresh", return_difference_pct=None,
+    )
+    values.update(changes)
+    new_return = values["raw_forward_return_pct"]
+    if new_return is not None and outcome.raw_forward_return_pct is not None:
+        values["return_difference_pct"] = new_return - outcome.raw_forward_return_pct
+    if values["entry_price"] is not None and outcome.entry_price is not None and (
+        values["entry_price"] != outcome.entry_price
+        or (values["exit_price"] is not None and outcome.exit_price is not None
+            and values["exit_price"] != outcome.exit_price)
     ):
-        return None
-    return (
-        "provider revised the established adjusted entry price from "
-        f"{outcome.entry_price:.12g} to {observation.adjusted_close:.12g}; "
-        "the frozen entry was preserved and this outcome was excluded"
+        values["revision_reason"] = "coherent_endpoint_revision"
+    return replace(outcome, **values)
+
+
+def _pending_outcome(outcome: MarketOutcome, calculated_at: datetime) -> MarketOutcome:
+    return _derived_outcome(
+        outcome, calculated_at, status="coherent_history_pending",
+        detail="coherent history pending: API-call budget exhausted",
+    )
+
+
+def _outcome_from_history(
+    outcome: MarketOutcome, history: HistoricalPriceHistory, retrieved_at: datetime, *,
+    batch: PriceHistoryBatch | None = None,
+) -> MarketOutcome:
+    calculation_time = max(retrieved_at, batch.metadata.completed_at) if batch else retrieved_at
+    if (batch is not None and outcome.status == "priced" and outcome.history_evidence is not None
+            and outcome.history_evidence.metadata.batch_id == batch.metadata.batch_id):
+        return outcome
+    if history.status != "ok" or batch is None:
+        return _derived_outcome(
+            outcome, calculation_time,
+            status=history.status if history.status in OUTCOME_STATUSES else "provider_error",
+            price_provider=history.provider,
+            provider_symbol=outcome.provider_symbol or history.symbol,
+            detail=history.detail or "single-response adjustment basis is unverified",
+        )
+    entry = history.observation_on(outcome.entry_session)
+    exit = history.observation_on(outcome.target_exit_session)
+    if entry is None:
+        return _derived_outcome(outcome, calculation_time, status="missing_entry",
+                                history_metadata=batch.metadata, price_provider=history.provider,
+                                provider_symbol=history.symbol,
+                                detail="no adjusted close exists on the required entry session")
+    if exit is None:
+        return _derived_outcome(
+            outcome, calculation_time, status="missing_exit",
+            entry_price=entry.adjusted_close, entry_retrieved_at=entry.retrieved_at,
+            price_provider=history.provider, provider_symbol=history.symbol,
+            history_metadata=batch.metadata,
+            detail="no adjusted close exists on the required exit session; coherent refetch required",
+        )
+    return _derived_outcome(
+        outcome, calculation_time, status="priced",
+        entry_price=entry.adjusted_close, exit_price=exit.adjusted_close,
+        actual_exit_session=exit.session_date, currency=batch.metadata.currency,
+        price_provider=history.provider, provider_symbol=history.symbol,
+        entry_retrieved_at=entry.retrieved_at, exit_retrieved_at=exit.retrieved_at,
+        raw_forward_return_pct=(exit.adjusted_close / entry.adjusted_close - 1) * 100,
+        history_evidence=batch.evidence(outcome.entry_session, outcome.target_exit_session),
+        detail=None,
     )
 
 
@@ -1190,10 +1149,8 @@ def _validate_existing_store(
         row = rows_by_company[company_id]
         definition = next(item for item in definitions if item.label == horizon_label)
         market = market_for_country(row.country)
-        expected_entry = first_session_closing_after(snapshot.decision_at, market).day
-        expected_exit = advance_market_sessions(
-            expected_entry, definition.sessions, market
-        ).day
+        entry, target = _fixed_sessions(snapshot.decision_at, market, definition.sessions)
+        expected_entry, expected_exit = entry.day, target.day
         immutable_metadata = (
             outcome.isin == row.isin,
             outcome.ticker == row.ticker,
@@ -1203,6 +1160,7 @@ def _validate_existing_store(
             outcome.original_rank == row.rank,
             outcome.decision_at == snapshot.decision_at,
             outcome.market == market,
+            outcome.entry_policy == ENTRY_POLICY,
             outcome.entry_session == expected_entry,
             outcome.target_exit_session == expected_exit,
             outcome.horizon_sessions == definition.sessions,
@@ -1226,11 +1184,11 @@ def _outcome_from_payload(value: Any) -> MarketOutcome:
     if not isinstance(value, dict):
         raise ValueError("malformed market-outcome record")
     version = value.get("schema_version")
-    if version != OUTCOME_SCHEMA_VERSION:
+    if version not in (1, OUTCOME_SCHEMA_VERSION):
         raise ValueError(f"unsupported market-outcome schema: {version}")
     horizon = value.get("horizon")
     definition = _horizon_from_payload(horizon)
-    return MarketOutcome(
+    outcome = MarketOutcome(
         schema_version=version,
         evaluation_run_id=_required_string(value.get("evaluation_run_id"), "run ID"),
         scoring_model_version=_required_string(
@@ -1274,7 +1232,19 @@ def _outcome_from_payload(value: Any) -> MarketOutcome:
             value.get("entry_revision_policy"), "entry revision policy"
         ),
         detail=_optional_string(value.get("detail")),
+        return_methodology=value.get("return_methodology", LEGACY_RETURN_METHOD),
+        calculated_at=_parse_optional_timestamp(value.get("calculated_at")),
+        history_evidence=EndpointEvidence.from_payload(value["history_evidence"]) if value.get("history_evidence") else None,
+        history_metadata=HistoryMetadata.from_payload(value["history_metadata"]) if value.get("history_metadata") else None,
+        prior_revision_id=_optional_string(value.get("prior_revision_id")),
+        revision_reason=_optional_string(value.get("revision_reason")),
+        return_difference_pct=_optional_number(value.get("return_difference_pct")),
     )
+    if version == 2 and value.get("outcome_revision_id") != outcome.revision_id:
+        raise ValueError("outcome revision identity mismatch")
+    if version == 2 and value.get("history_batch_id") != outcome.as_payload()["history_batch_id"]:
+        raise ValueError("outcome history batch identity mismatch")
+    return outcome
 
 
 def _atomic_write(path: Path, content: str) -> None:
@@ -1292,6 +1262,67 @@ def _atomic_write(path: Path, content: str) -> None:
         temporary_path = Path(temporary_name)
         if temporary_path.exists():
             temporary_path.unlink()
+
+
+def select_outcome_revisions(
+    stores: Iterable[EvaluationOutcomeSet], *, return_methodology: str | None = None,
+    data_cutoff: datetime | None = None,
+) -> tuple[tuple[EvaluationOutcomeSet, ...], dict[str, Any]]:
+    """One shared selection boundary for normal and paired analysis, before any metrics."""
+    stores = tuple(stores)
+    methods = {store.return_methodology for store in stores}
+    if return_methodology is None:
+        if len(methods) > 1:
+            raise ValueError("mixed return methodologies require an explicit analysis selection")
+        return_methodology = next(iter(methods), COHERENT_RETURN_METHOD)
+    if return_methodology not in {COHERENT_RETURN_METHOD, LEGACY_RETURN_METHOD}:
+        raise ValueError("unknown return methodology")
+    if data_cutoff is not None:
+        data_cutoff = _utc_timestamp(data_cutoff, "analysis data cutoff")
+    selected = []
+    for store in stores:
+        if store.return_methodology != return_methodology:
+            continue
+        records = (*store.revisions, *store.outcomes)
+        by_key: dict[tuple[str, str, str], list[tuple[int, MarketOutcome]]] = {}
+        for index, outcome in enumerate(records):
+            if outcome.return_methodology != return_methodology:
+                continue
+            visible_at = max(value for value in (
+                outcome.decision_at, outcome.calculated_at, outcome.retrieved_at,
+                outcome.entry_retrieved_at, outcome.exit_retrieved_at,
+                outcome.history_evidence.metadata.completed_at if outcome.history_evidence else None,
+            ) if value is not None)
+            if data_cutoff is None or visible_at <= data_cutoff:
+                by_key.setdefault(outcome.key, []).append((index, outcome))
+        if not by_key:
+            continue
+        outcomes = []
+        for current in store.outcomes:
+            candidates = by_key.get(current.key, [])
+            if not candidates:
+                # Legacy data has no retained pre-retrieval revision. Do not backdate it.
+                raise ValueError("analysis cutoff has incomplete revision metadata for this run")
+            _, chosen = max(candidates, key=lambda pair: (
+                pair[1].calculated_at or pair[1].retrieved_at or pair[1].decision_at, pair[0],
+            ))
+            outcomes.append(chosen)
+        ids = {outcome.revision_id for outcome in outcomes}
+        selected.append(replace(store, outcomes=tuple(outcomes),
+                                revisions=tuple(o for o in records if o.revision_id not in ids)))
+    if len({store.evaluation_run_id for store in selected}) != len(selected):
+        raise ValueError("duplicate outcome set for evaluation run and methodology")
+    selection = {
+        "return_methodology": return_methodology,
+        "outcome_revision_policy": OUTCOME_REVISION_POLICY,
+        "analysis_data_cutoff": _format_optional_timestamp(data_cutoff),
+        "adjustment_basis_verified": return_methodology == COHERENT_RETURN_METHOD,
+        "selected_outcomes_hash": content_hash(sorted(
+            (o.key, o.revision_id, o.raw_forward_return_pct)
+            for store in selected for o in store.outcomes
+        )),
+    }
+    return tuple(selected), selection
 
 
 def _utc_timestamp(value: datetime, field_name: str) -> datetime:
