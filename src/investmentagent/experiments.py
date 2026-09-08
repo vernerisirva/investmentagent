@@ -9,15 +9,19 @@ import tempfile
 from dataclasses import dataclass, replace
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 from investmentagent.evaluation import EvaluationSnapshot
 from investmentagent.fundamentals_cache import company_cache_identity
 from investmentagent.long_term_quality import LongTermGateTier, assess_long_term_gate
 from investmentagent.reports import WatchlistBuildResult
+from investmentagent.selection import (
+    SELECTION_POLICY_VERSION, SelectionPolicy, gate_order, rank_and_select,
+)
 
 
-EXPERIMENT_SCHEMA_VERSION = 1
+EXPERIMENT_SCHEMA_VERSION = 2
+ACTIVE_RELATIVE_VALUATION_EXPERIMENT_ID = "relative-valuation-v2"
 RELATIVE_VALUATION_EXPERIMENT_ID = "relative-valuation-v1"
 RELATIVE_VALUATION_EXPERIMENT_VERSION = 1
 RELATIVE_VALUATION_HYPOTHESIS = (
@@ -50,9 +54,10 @@ class ChallengerExperimentDefinition:
     country_minimum_sample: int
     universe_minimum_sample: int
     maximum_adjustment: float
+    selection_policy_version: str | None = None
 
     def as_configuration(self) -> dict[str, Any]:
-        return {
+        configuration = {
             "valuation_metrics": list(self.valuation_metrics),
             "valid_observation": "finite and strictly positive",
             "metric_percentile": (
@@ -76,6 +81,16 @@ class ChallengerExperimentDefinition:
                 "and common eight-to-ten-point components, but can reorder close peers"
             ),
         }
+        if self.selection_policy_version is not None:
+            configuration["ranking_order"] = [
+                "shared production selector with country minima",
+                "production long-term gate tier",
+                "effective score descending",
+                "ticker ascending",
+                "stable decision-time input order",
+            ]
+            configuration["selection_policy_version"] = self.selection_policy_version
+        return configuration
 
 
 RELATIVE_VALUATION_V1 = ChallengerExperimentDefinition(
@@ -89,6 +104,13 @@ RELATIVE_VALUATION_V1 = ChallengerExperimentDefinition(
     country_minimum_sample=MIN_COUNTRY_NORMALIZATION_SAMPLE,
     universe_minimum_sample=MIN_UNIVERSE_NORMALIZATION_SAMPLE,
     maximum_adjustment=MAX_RELATIVE_VALUATION_ADJUSTMENT,
+)
+
+RELATIVE_VALUATION_V2 = replace(
+    RELATIVE_VALUATION_V1,
+    experiment_id=ACTIVE_RELATIVE_VALUATION_EXPERIMENT_ID,
+    experiment_version=2,
+    selection_policy_version=SELECTION_POLICY_VERSION,
 )
 
 
@@ -110,9 +132,12 @@ class ChallengerExperimentRow:
     participating_metrics: tuple[str, ...]
     normalization_scope_by_metric: dict[str, str]
     unavailable_reason_by_metric: dict[str, str]
+    selection_input_order: int | None = None
+    champion_selected: bool | None = None
+    challenger_selected: bool | None = None
 
     def as_payload(self) -> dict[str, Any]:
-        return {
+        payload = {
             "company_id": self.company_id,
             "ticker": self.ticker,
             "country": self.country,
@@ -132,6 +157,13 @@ class ChallengerExperimentRow:
                 "unavailable_reason_by_metric": self.unavailable_reason_by_metric,
             },
         }
+        if self.selection_input_order is not None:
+            payload.update(
+                selection_input_order=self.selection_input_order,
+                champion_selected=self.champion_selected,
+                challenger_selected=self.challenger_selected,
+            )
+        return payload
 
 
 @dataclass(frozen=True)
@@ -151,9 +183,10 @@ class ChallengerExperimentSnapshot:
     universe_size: int
     diagnostics: dict[str, Any]
     rows: tuple[ChallengerExperimentRow, ...]
+    selection_configuration: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
-        if self.schema_version != EXPERIMENT_SCHEMA_VERSION:
+        if self.schema_version not in (1, EXPERIMENT_SCHEMA_VERSION):
             raise ValueError(
                 f"unsupported challenger-experiment schema: {self.schema_version}"
             )
@@ -195,18 +228,45 @@ class ChallengerExperimentSnapshot:
                 raise ValueError("challenger factor score must be within [-1, 1]")
         ordered_by_challenger = sorted(self.rows, key=lambda row: row.challenger_rank)
         gate_orders = [_gate_order(row.long_term_gate_tier) for row in ordered_by_challenger]
-        if gate_orders != sorted(gate_orders):
+        if self.schema_version == 1 and gate_orders != sorted(gate_orders):
             raise ValueError("challenger ranking cannot cross long-term gate tiers")
+        if self.schema_version == 1:
+            if self.selection_configuration is not None or any(
+                row.selection_input_order is not None
+                or row.champion_selected is not None or row.challenger_selected is not None
+                for row in self.rows
+            ):
+                raise ValueError("legacy experiment cannot claim corrected selection evidence")
+            if self.experiment_id == ACTIVE_RELATIVE_VALUATION_EXPERIMENT_ID:
+                raise ValueError("corrected experiment requires schema 2")
+        else:
+            if (self.experiment_id != ACTIVE_RELATIVE_VALUATION_EXPERIMENT_ID
+                    or self.experiment_version != 2
+                    or self.factor_configuration.get("selection_policy_version") != SELECTION_POLICY_VERSION):
+                raise ValueError("schema 2 requires the corrected selection experiment")
+            policy = SelectionPolicy.from_payload(self.selection_configuration)
+            if sorted(row.selection_input_order for row in self.rows
+                      if type(row.selection_input_order) is int) != list(range(1, len(self.rows) + 1)):
+                raise ValueError("selection input order must be a complete permutation")
+            for side in ("champion", "challenger"):
+                ordered, selected = _select_experiment_rows(self.rows, policy, side)
+                selected_ids = {row.company_id for row in selected}
+                for rank, row in enumerate(ordered, 1):
+                    flag = getattr(row, f"{side}_selected")
+                    if (getattr(row, f"{side}_rank") != rank or type(flag) is not bool
+                            or flag != (row.company_id in selected_ids)):
+                        raise ValueError(f"{side} selection evidence differs from shared policy")
         expected_id = experiment_run_id(
             self.base_evaluation_run_id,
             self.experiment_id,
             self.experiment_version,
+            schema_version=self.schema_version,
         )
         if self.experiment_run_id != expected_id:
             raise ValueError("challenger experiment identity does not match metadata")
 
     def as_payload(self) -> dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "experiment_run_id": self.experiment_run_id,
             "experiment_id": self.experiment_id,
@@ -223,13 +283,39 @@ class ChallengerExperimentSnapshot:
             "diagnostics": self.diagnostics,
             "rows": [row.as_payload() for row in self.rows],
         }
+        if self.schema_version == 2:
+            payload["selection_configuration"] = self.selection_configuration
+        return payload
+
+    @property
+    def selection_configuration_id(self) -> str:
+        if self.selection_configuration is None:
+            return "legacy-unverified"
+        canonical = json.dumps(
+            self.selection_configuration, sort_keys=True, separators=(",", ":"),
+        )
+        return hashlib.sha256(canonical.encode()).hexdigest()
+
+
+def _select_experiment_rows(
+    rows: Iterable[ChallengerExperimentRow], policy: SelectionPolicy, side: str,
+) -> tuple[tuple[ChallengerExperimentRow, ...], tuple[ChallengerExperimentRow, ...]]:
+    return rank_and_select(
+        sorted(rows, key=lambda row: row.selection_input_order),
+        policy=policy,
+        rank_key=lambda row: (
+            gate_order(row.long_term_gate_tier), -getattr(row, f"{side}_score"), row.ticker,
+        ),
+        identity=lambda row: (row.ticker, row.country),
+        country=lambda row: row.country,
+    )
 
 
 def build_challenger_experiment_snapshot(
     result: WatchlistBuildResult,
     evaluation: EvaluationSnapshot,
     *,
-    definition: ChallengerExperimentDefinition = RELATIVE_VALUATION_V1,
+    definition: ChallengerExperimentDefinition = RELATIVE_VALUATION_V2,
 ) -> ChallengerExperimentSnapshot:
     if evaluation.strategy != definition.strategy:
         raise ValueError("challenger definition does not support this evaluation strategy")
@@ -244,6 +330,23 @@ def build_challenger_experiment_snapshot(
     }
     if set(item_by_company_id) != set(evaluation_rows):
         raise ValueError("challenger companies differ from production evaluation")
+    corrected = definition.selection_policy_version is not None
+    policy = result.selection_policy if corrected else None
+    input_order = {}
+    if corrected:
+        if policy is None:
+            raise ValueError("corrected challenger requires decision-time selection evidence")
+        if not all(row.eligible_universe_member for row in evaluation.rows):
+            raise ValueError("challenger universe must contain eligible decision-time members only")
+        if (policy.limit != evaluation.configuration.get("public_limit")
+                or dict(policy.minimum_country_counts) != evaluation.configuration.get("minimum_country_counts", {})):
+            raise ValueError("selection configuration differs from immutable evaluation")
+        input_order = {
+            company_cache_identity(item.research.company): index
+            for index, item in enumerate(result.selection_candidates, 1)
+        }
+        if set(input_order) != set(evaluation_rows) or len(input_order) != len(result.selection_candidates):
+            raise ValueError("selection input order differs from immutable evaluation")
     for company_id, item in item_by_company_id.items():
         evaluation_row = evaluation_rows[company_id]
         if (
@@ -283,7 +386,11 @@ def build_challenger_experiment_snapshot(
             if factor_score is not None
             else 0.0
         )
-        challenger_score = round(item.score.total + adjustment, 8)
+        # Neutral challengers must preserve even sub-rounding production score ties.
+        challenger_score = (
+            item.score.total if corrected and adjustment == 0.0
+            else round(item.score.total + adjustment, 8)
+        )
         normalization = {
             metric: normalized_metrics[(company_id, metric)][1]
             for metric in participating
@@ -318,6 +425,7 @@ def build_challenger_experiment_snapshot(
                 participating_metrics=participating,
                 normalization_scope_by_metric=normalization,
                 unavailable_reason_by_metric=unavailable,
+                selection_input_order=input_order.get(company_id),
             )
         )
 
@@ -330,6 +438,23 @@ def build_challenger_experiment_snapshot(
             row.company_id,
         ),
     )
+    champion_selected_ids = challenger_selected_ids = set()
+    if corrected:
+        ranked_champion, champion_selected = _select_experiment_rows(
+            rows_without_challenger_rank, policy, "champion",
+        )
+        ranked_challenger, challenger_selected = _select_experiment_rows(
+            rows_without_challenger_rank, policy, "challenger",
+        )
+        if [row.company_id for row in ranked_champion] != [row.company_id for row in evaluation.rows]:
+            raise ValueError("shared selector does not reproduce recorded champion ranks")
+        recorded_selection = [
+            company_cache_identity(item.research.company) for item in result.selected_items
+        ]
+        if [row.company_id for row in champion_selected] != recorded_selection:
+            raise ValueError("shared selector does not reproduce recorded champion selection")
+        champion_selected_ids = {row.company_id for row in champion_selected}
+        challenger_selected_ids = {row.company_id for row in challenger_selected}
     challenger_rank_by_company = {
         row.company_id: rank for rank, row in enumerate(ranked_challenger, start=1)
     }
@@ -338,16 +463,19 @@ def build_challenger_experiment_snapshot(
             row,
             challenger_rank=challenger_rank_by_company[row.company_id],
             rank_delta=row.champion_rank - challenger_rank_by_company[row.company_id],
+            champion_selected=(row.company_id in champion_selected_ids) if corrected else None,
+            challenger_selected=(row.company_id in challenger_selected_ids) if corrected else None,
         )
         for row in rows_without_challenger_rank
     )
     diagnostics = _factor_diagnostics(rows)
     return ChallengerExperimentSnapshot(
-        schema_version=EXPERIMENT_SCHEMA_VERSION,
+        schema_version=EXPERIMENT_SCHEMA_VERSION if corrected else 1,
         experiment_run_id=experiment_run_id(
             evaluation.run_id,
             definition.experiment_id,
             definition.experiment_version,
+            schema_version=EXPERIMENT_SCHEMA_VERSION if corrected else 1,
         ),
         experiment_id=definition.experiment_id,
         experiment_version=definition.experiment_version,
@@ -362,6 +490,7 @@ def build_challenger_experiment_snapshot(
         universe_size=len(rows),
         diagnostics=diagnostics,
         rows=rows,
+        selection_configuration=policy.as_payload() if policy is not None else None,
     )
 
 
@@ -369,10 +498,12 @@ def experiment_run_id(
     base_evaluation_run_id: str,
     experiment_id: str,
     experiment_version: int,
+    *,
+    schema_version: int = 1,
 ) -> str:
     identity = json.dumps(
         {
-            "schema_version": EXPERIMENT_SCHEMA_VERSION,
+            "schema_version": schema_version,
             "base_evaluation_run_id": base_evaluation_run_id,
             "experiment_id": experiment_id,
             "experiment_version": experiment_version,
@@ -432,7 +563,7 @@ def load_experiment_snapshot(path: Path) -> ChallengerExperimentSnapshot:
     if not isinstance(payload, dict):
         raise ValueError("malformed challenger experiment payload")
     version = payload.get("schema_version")
-    if version != EXPERIMENT_SCHEMA_VERSION:
+    if version not in (1, EXPERIMENT_SCHEMA_VERSION):
         raise ValueError(f"unsupported challenger-experiment schema: {version}")
     raw_rows = payload.get("rows")
     if not isinstance(raw_rows, list):
@@ -461,6 +592,7 @@ def load_experiment_snapshot(path: Path) -> ChallengerExperimentSnapshot:
         universe_size=_required_int(payload.get("universe_size"), "universe size"),
         diagnostics=_required_dict(payload.get("diagnostics"), "diagnostics"),
         rows=tuple(_row_from_payload(row) for row in raw_rows),
+        selection_configuration=payload.get("selection_configuration"),
     )
 
 
@@ -634,6 +766,9 @@ def _row_from_payload(value: Any) -> ChallengerExperimentRow:
         participating_metrics=tuple(participating),
         normalization_scope_by_metric=normalization,
         unavailable_reason_by_metric=unavailable,
+        selection_input_order=value.get("selection_input_order"),
+        champion_selected=value.get("champion_selected"),
+        challenger_selected=value.get("challenger_selected"),
     )
 
 

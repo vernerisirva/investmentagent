@@ -13,7 +13,12 @@ from investmentagent.analysis_eligibility import (
     assess_analysis_eligibility,
 )
 from investmentagent.evaluation import EvaluationSnapshot
-from investmentagent.evaluation_analysis import spearman_rank_correlation
+from investmentagent.evaluation_analysis import spearman_rank_correlation, _validate_store_against_snapshot
+from investmentagent.decision_membership import (
+    ANALYSIS_METHODOLOGY, DecisionCohort, DecisionMembership, aggregate_coverage,
+    cohort_diagnostic, observed_returns, recorded_public_portfolio, top_metrics,
+)
+from investmentagent.selection import SelectionPolicy
 from investmentagent.evaluation_outcomes import EvaluationOutcomeSet, MarketOutcome, select_outcome_revisions
 from investmentagent.experiments import ChallengerExperimentSnapshot
 
@@ -140,11 +145,11 @@ def build_challenger_analysis(
     if experiment_rows and not groups:
         warnings.append("Insufficient paired history to judge challenger performance.")
     return {
+        "analysis_methodology": ANALYSIS_METHODOLOGY,
         "methodology": {
             **selection,
             "sample": (
-                "champion and challenger use the exact same priced companies from "
-                "the original evaluation run"
+                "IC uses common observed pairs with original X denominator; portfolios and cohorts use separately frozen X selections before joining Y"
             ),
             "aggregation": "paired deltas are calculated per run before aggregation",
             "analysis_eligibility": eligibility_criteria.as_dict(),
@@ -177,7 +182,7 @@ def _analyze_paired_run(
     evaluation_by_company = {row.company_id: row for row in evaluation.rows}
     experiment_by_company = {row.company_id: row for row in experiment.rows}
     outcomes_by_company = {outcome.company_id: outcome for outcome in outcomes}
-    if set(outcomes_by_company) != set(evaluation_by_company):
+    if len(outcomes_by_company) != len(outcomes) or set(outcomes_by_company) != set(evaluation_by_company):
         raise ValueError("paired outcome universe differs from evaluation universe")
     paired_company_ids = [
         row.company_id
@@ -209,24 +214,13 @@ def _analyze_paired_run(
     challenger_score_ic = spearman_rank_correlation(challenger_scores, returns)
     challenger_rank_ic = spearman_rank_correlation(challenger_rank_signals, returns)
     universe_return = statistics.fmean(returns) if returns else None
-    champion_top = _top_metrics(
-        paired_company_ids,
-        returns,
-        ranks={
-            company_id: evaluation_by_company[company_id].rank
-            for company_id in paired_company_ids
-        },
-        universe_return=universe_return,
-    )
-    challenger_top = _top_metrics(
-        paired_company_ids,
-        returns,
-        ranks={
-            company_id: experiment_by_company[company_id].challenger_rank
-            for company_id in paired_company_ids
-        },
-        universe_return=universe_return,
-    )
+    by_id_returns = observed_returns(outcomes)
+    champion_membership = DecisionMembership.from_snapshot(evaluation)
+    challenger_membership = DecisionMembership.from_snapshot(evaluation, ranks={
+        row.company_id: row.challenger_rank for row in experiment.rows})
+    champion_top = top_metrics(champion_membership, by_id_returns, universe_return)
+    challenger_top = top_metrics(challenger_membership, by_id_returns, universe_return)
+    portfolios = _selected_portfolios(evaluation, experiment, by_id_returns)
     statuses = {outcome.status for outcome in outcomes}
     is_due = statuses != {"not_due"}
     eligibility = assess_analysis_eligibility(
@@ -237,6 +231,9 @@ def _analyze_paired_run(
     analysis_eligible = is_due and eligibility.eligible
     churn = _ranking_churn(experiment)
     return {
+        "analysis_methodology": ANALYSIS_METHODOLOGY,
+        "selection_configuration_id": experiment.selection_configuration_id,
+        "selection_configuration": experiment.selection_configuration,
         "evaluation_run_id": evaluation.run_id,
         "experiment_run_id": experiment.experiment_run_id,
         "experiment_id": experiment.experiment_id,
@@ -251,6 +248,8 @@ def _analyze_paired_run(
         },
         "is_due": is_due,
         "original_universe_size": evaluation.universe_size,
+        "universe_cohort": champion_membership.universe.observe(by_id_returns),
+        "portfolios": portfolios,
         "paired_company_count": len(paired_company_ids),
         "paired_outcome_coverage_pct": (
             len(paired_company_ids) / evaluation.universe_size * 100
@@ -280,6 +279,7 @@ def _analyze_paired_run(
             **challenger_top,
         },
         "paired_deltas": {
+            "statistic_scope": "paired IC and observed-member fixed-cohort diagnostics; exact portfolio delta reported separately",
             "score_ic": _difference(challenger_score_ic, champion_score_ic),
             "rank_ic": _difference(challenger_rank_ic, champion_rank_ic),
             "top_decile_return_pct": _difference(
@@ -298,8 +298,7 @@ def _analyze_paired_run(
         },
         "ranking_churn": churn,
         "factor_coverage_outcomes": _factor_coverage_outcomes(
-            paired_company_ids,
-            returns,
+            by_id_returns,
             experiment_by_company,
         ),
     }
@@ -308,8 +307,10 @@ def _analyze_paired_run(
 def _aggregate_paired_runs(
     run_metrics: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    grouped: dict[tuple[str, int, str, str, int, str], list[dict[str, Any]]] = defaultdict(list)
+    grouped: dict[tuple[str, int, str, str, int, str, str], list[dict[str, Any]]] = defaultdict(list)
     for metric in run_metrics:
+        if metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+            raise ValueError("cannot mix analysis methodology versions")
         horizon = metric["horizon"]
         grouped[
             (
@@ -319,16 +320,26 @@ def _aggregate_paired_runs(
                 metric["champion_scoring_model_version"],
                 horizon["sessions"],
                 horizon["label"],
+                metric["selection_configuration_id"],
             )
         ].append(metric)
     groups = []
     for key, metrics in sorted(grouped.items()):
-        experiment_id, version, strategy, champion_model, sessions, label = key
+        experiment_id, version, strategy, champion_model, sessions, label, configuration_id = key
         due = [metric for metric in metrics if metric["is_due"]]
         completed = [metric for metric in due if metric["analysis_eligible"]]
         partial = [metric for metric in due if not metric["analysis_eligible"]]
         groups.append(
             {
+                "analysis_methodology": ANALYSIS_METHODOLOGY,
+                "selection_configuration_id": configuration_id,
+                "selection_configuration": metrics[0]["selection_configuration"],
+                "cohort_coverage": {
+                    side: {name: aggregate_coverage(metric[side]["cohorts"][name] for metric in completed)
+                           for name in ("top_10", "top_decile", "bottom_decile")}
+                    for side in ("champion", "challenger")
+                },
+                "portfolio_comparison": _aggregate_portfolios(completed),
                 "experiment_id": experiment_id,
                 "experiment_version": version,
                 "strategy": strategy,
@@ -438,32 +449,45 @@ def _aggregate_paired_runs(
     return groups
 
 
-def _top_metrics(
-    company_ids: list[str],
-    returns: list[float],
-    *,
-    ranks: dict[str, int],
-    universe_return: float | None,
+def _selected_portfolios(
+    evaluation: EvaluationSnapshot, experiment: ChallengerExperimentSnapshot,
+    returns: dict[str, float],
 ) -> dict[str, Any]:
-    by_company = dict(zip(company_ids, returns, strict=True))
-    ordered = sorted(company_ids, key=lambda company_id: ranks[company_id])
-    if not ordered:
+    if experiment.selection_configuration is None:
         return {
-            "top_decile_return_pct": None,
-            "top_decile_minus_universe_pct": None,
-            "top_decile_minus_bottom_decile_pct": None,
+            "selection_policy_status": "legacy/unverified: v1 did not persist a shared selection policy",
+            "champion": recorded_public_portfolio(evaluation, returns),
+            "challenger": {"membership_status": "unavailable", "exact_equal_weight_return_pct": None},
+            "exact_equal_weight_return_delta_pct": None,
         }
-    decile_size = max(1, math.ceil(len(ordered) * 0.1))
-    top_return = statistics.fmean(by_company[item] for item in ordered[:decile_size])
-    bottom_return = statistics.fmean(
-        by_company[item] for item in ordered[-decile_size:]
-    )
+    portfolios = {}
+    for side in ("champion", "challenger"):
+        ordered = sorted(experiment.rows, key=lambda row: getattr(row, f"{side}_rank"))
+        ids = tuple(row.company_id for row in ordered if getattr(row, f"{side}_selected"))
+        portfolios[side] = {
+            "membership_status": "recorded", **DecisionCohort(ids).observe(returns),
+        }
     return {
-        "top_decile_return_pct": top_return,
-        "top_decile_minus_universe_pct": (
-            top_return - universe_return if universe_return is not None else None
+        **portfolios,
+        "selection_policy_status": "shared production policy recorded and validated",
+        "exact_equal_weight_return_delta_pct": _difference(
+            portfolios["challenger"]["exact_equal_weight_return_pct"],
+            portfolios["champion"]["exact_equal_weight_return_pct"]),
+    }
+
+
+def _aggregate_portfolios(metrics: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "exact_paired_return_delta_pct": _aggregate_values(
+            metric["portfolios"]["exact_equal_weight_return_delta_pct"] for metric in metrics
         ),
-        "top_decile_minus_bottom_decile_pct": top_return - bottom_return,
+        "coverage": {
+            side: aggregate_coverage(
+                metric["portfolios"][side] for metric in metrics
+                if metric["portfolios"][side]["membership_status"] == "recorded"
+            )
+            for side in ("champion", "challenger")
+        },
     }
 
 
@@ -527,23 +551,20 @@ def _ranking_churn(experiment: ChallengerExperimentSnapshot) -> dict[str, Any]:
 
 
 def _factor_coverage_outcomes(
-    company_ids: list[str],
-    returns: list[float],
+    returns: dict[str, float],
     experiment_by_company: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    values_by_count: dict[int, list[float]] = defaultdict(list)
-    for company_id, forward_return in zip(company_ids, returns, strict=True):
-        values_by_count[experiment_by_company[company_id].usable_metric_count].append(
-            forward_return
-        )
+    members_by_count: dict[int, list[str]] = defaultdict(list)
+    for company_id, row in experiment_by_company.items():
+        members_by_count[row.usable_metric_count].append(company_id)
     return [
         {
             "usable_metric_count": count,
-            "companies": len(values),
-            "mean_return_pct": statistics.fmean(values),
-            "median_return_pct": statistics.median(values),
+            "companies": observed["priced_count"],
+            **observed,
         }
-        for count, values in sorted(values_by_count.items())
+        for count, members in sorted(members_by_count.items())
+        for observed in (cohort_diagnostic(DecisionCohort(tuple(members)), returns),)
     ]
 
 
@@ -567,6 +588,7 @@ def _validate_experiment(
         evaluation_row = evaluation_by_company[company_id]
         if (
             row.champion_rank != evaluation_row.rank
+            or row.ticker != evaluation_row.ticker or row.country != evaluation_row.country
             or not math.isclose(
                 row.champion_score,
                 evaluation_row.score["total"],
@@ -576,11 +598,19 @@ def _validate_experiment(
             != (evaluation_row.long_term or {}).get("gate_tier")
         ):
             raise ValueError("challenger experiment changed champion metadata")
+    if experiment.selection_configuration is not None:
+        policy = SelectionPolicy.from_payload(experiment.selection_configuration)
+        if (policy.limit != evaluation.configuration.get("public_limit")
+                or dict(policy.minimum_country_counts) != evaluation.configuration.get("minimum_country_counts", {})
+                or not all(row.eligible_universe_member for row in evaluation.rows)
+                or evaluation.diagnostics.get("public_selection_size") != min(policy.limit, evaluation.universe_size)):
+            raise ValueError("challenger selection differs from immutable X configuration")
 
 
 def _validate_outcomes(
     evaluation: EvaluationSnapshot, store: EvaluationOutcomeSet
 ) -> None:
+    _validate_store_against_snapshot(evaluation, store)
     if store.evaluation_run_id != evaluation.run_id:
         raise ValueError("paired outcome store links to another evaluation")
     if store.scoring_model_version != evaluation.scoring_model_version:

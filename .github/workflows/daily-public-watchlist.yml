@@ -234,8 +234,8 @@ jobs:
             --evaluation-root "$EVALUATION_ROOT" \
             --outcome-root "$OUTCOME_ROOT" \
             --experiment-root "$EXPERIMENT_ROOT" \
-            --output-json "$ANALYSIS_ROOT/performance-v2.json" \
-            --output-markdown "$ANALYSIS_ROOT/performance-v2.md" \
+            --output-json "$ANALYSIS_ROOT/fixed-decision-membership-v1/performance-v2.json" \
+            --output-markdown "$ANALYSIS_ROOT/fixed-decision-membership-v1/performance-v2.md" \
             --return-methodology single-response-adjusted-close-v1 \
             --data-cutoff "$analysis_at" \
             --generated-at "$analysis_at"
