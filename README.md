@@ -57,6 +57,15 @@ choosing a repository-backed cache deployment.
 
 ## Performance v2 evaluation snapshots
 
+Current analysis uses [Representative Benchmarks v1](BENCHMARK_METHODOLOGY.md):
+1000 deterministic, production-constraint-matched random portfolios are primary;
+fixed opportunity/gate and exposure/peer comparisons are secondary. New
+evaluations persist immutable X-only benchmark plans automatically. Analysis
+schema 4 writes a separate `representative-benchmarks-v1` output subdirectory.
+Proprietary external passive indices are deferred pending license. Historical
+Performance v1 benchmarks are non-authoritative; the older v2 benchmark fields
+described below remain legacy diagnostics, not the new benchmark definitions.
+
 Trading and long-term watchlists can persist the complete final ranked universe
 from the same scoring run used for the public top N:
 

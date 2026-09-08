@@ -460,6 +460,8 @@ def render_scorecard_markdown(ledger: dict[str, Any], *, generated_at: str) -> s
         "",
         f"> {DISCLAIMER}",
         "",
+        "> LEGACY_NON_AUTHORITATIVE: Performance v1 benchmark values are retained for historical reference, not InvestmentAgent validation evidence. They are not comparable with representative-benchmarks-v1.",
+        "",
         f"Generated: {generated_at}",
         "",
     ]

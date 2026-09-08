@@ -1,0 +1,58 @@
+{
+  "manifest_version": 1,
+  "effective_on": "independently reviewed merge of this benchmark candidate into main",
+  "prospective_start": "first successful natural production evaluation with a prospective representative-benchmarks-v1 plan",
+  "versions": {
+    "scoring": "nordic-ranking-v1",
+    "selection": "production-country-minimum-v1",
+    "challenger": "relative-valuation-v2",
+    "stock_returns": "single-response-adjusted-close-v1",
+    "membership": "fixed-decision-membership-v1",
+    "outcome_status": "cutoff-maturity-v1",
+    "benchmark": "representative-benchmarks-v1",
+    "primary_null": "constraint-matched-random-v1",
+    "benchmark_plan_schema": 1,
+    "analysis_schema": 4
+  },
+  "production": {
+    "top_n": 10,
+    "ordered_country_minima": [["FI", 3]],
+    "trading_horizons_sessions": [1, 5, 20, 60],
+    "long_term_horizons_sessions": [20, 60, 126, 252],
+    "overall_analysis_minimum": {"coverage_pct": 70, "valid_companies": 50},
+    "country_analysis_minimum": {"coverage_pct": 70, "valid_companies": 20},
+    "execution": "first exchange-session close strictly after decision; unchanged market-session horizons",
+    "return_units": "mean local stock returns and local excess; no base-currency wealth claim"
+  },
+  "benchmarks": {
+    "random_draws": 1000,
+    "random_seed": "SHA256 canonical JSON [benchmark version, random version, evaluation ID]",
+    "random_rank": "gate priority, SHA256(seed:draw_index:company_id), ticker; canonical ID input order",
+    "exact_random_null": "100% nonempty eligible-X outcomes, verified shared selector, coherent returns and existing analysis guards",
+    "secondary_order": ["gate-qualified-ew-v1", "opportunity-universe-ew-v1", "exposure-matched-opportunity-v1", "matched-peers-v1"],
+    "matching_hierarchy": ["country+venue+size", "country+venue", "country"],
+    "minimum_alternatives": 5,
+    "exclude_from_alternatives": "entire compared portfolio",
+    "sector": "not used",
+    "exact_returns": "all fixed required members; no imputation or missing-return renormalization",
+    "external_passive_benchmark": "DEFERRED_PENDING_LICENSE"
+  },
+  "preserved_strategy_source_sha256": {
+    "src/investmentagent/scoring.py": "5b97d5a272facb417f84d9c09616efdf5f1ad25ec4a6513b65ab884f0453d7a5",
+    "src/investmentagent/long_term_quality.py": "0601159287cc14f7d51750e8dc343c313c2147bbfa691c4c662179f444c4d5e5",
+    "src/investmentagent/reports.py": "ae46925f027c060fc598e1e19c7442903584ab54ec1938dd46ac7a5f956b2f13",
+    "src/investmentagent/selection.py": "c83568be812a01383cdab53a3c67b5d1003c874e52d5d973a4a46cf8a4f12ad1",
+    "src/investmentagent/experiments.py": "2b3b613410288597f349e1176eab555b7657cfe1f5b86d223d41a1e2ca942539",
+    "src/investmentagent/market_calendar.py": "54960c0a2e55736f00fca0bdae4d6b2e91de281a88a907ad8801496666d3579b",
+    "src/investmentagent/price_histories.py": "54a0c0d3a66f3885236bd6efaf197b66ad751b87072d81ce2030bbe058bbc007",
+    "src/investmentagent/analysis_eligibility.py": "5de282003520e7b6380c90ec3b31ea73ce065c853c6ce397bba0eef19744b0b4"
+  },
+  "observation_window": {
+    "minimum_trading_weeks": "4-5",
+    "preferred_weeks": "8-12",
+    "earliest_60_session_checkpoint_weeks": "12-13",
+    "do_not_tune_on_disappointment": true,
+    "allowed": ["reliability", "monitoring", "dashboards", "logging", "documentation", "provably non-semantic infrastructure fixes"],
+    "measurement_defect_policy": "explicitly document any justified methodology-freeze break"
+  }
+}

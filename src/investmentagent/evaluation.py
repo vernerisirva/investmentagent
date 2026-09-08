@@ -57,9 +57,10 @@ class EvaluationCompanyRow:
     data_quality: str
     cache: dict[str, Any]
     model_inputs: dict[str, Any]
+    nasdaq_size_segment: str | None = None
 
     def as_payload(self) -> dict[str, Any]:
-        return {
+        payload = {
             "record_type": "company",
             "company_id": self.company_id,
             "isin": self.isin,
@@ -77,6 +78,9 @@ class EvaluationCompanyRow:
             "cache": self.cache,
             "model_inputs": self.model_inputs,
         }
+        if self.nasdaq_size_segment is not None:
+            payload["nasdaq_size_segment"] = self.nasdaq_size_segment
+        return payload
 
 
 @dataclass(frozen=True)
@@ -134,6 +138,8 @@ class EvaluationSnapshot:
         _validate_json_value(self.configuration, "configuration")
         _validate_json_value(self.diagnostics, "diagnostics")
         for row in self.rows:
+            if row.nasdaq_size_segment not in (None, "large", "mid", "small"):
+                raise ValueError("invalid decision-time Nasdaq size segment")
             _validate_json_value(row.as_payload(), f"company row {row.rank}")
 
     def header_payload(self) -> dict[str, Any]:
@@ -502,6 +508,7 @@ def _row_from_payload(payload: Any) -> EvaluationCompanyRow:
         data_quality=_required_string(payload.get("data_quality"), "data_quality"),
         cache=_required_dict(payload.get("cache"), "cache"),
         model_inputs=_required_dict(payload.get("model_inputs"), "model_inputs"),
+        nasdaq_size_segment=_optional_string(payload.get("nasdaq_size_segment"), "nasdaq_size_segment"),
     )
 
 
