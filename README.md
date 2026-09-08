@@ -97,8 +97,8 @@ investmentagent evaluate outcomes \
 investmentagent evaluate analyze \
   --evaluation-root data/evaluations \
   --outcome-root data/evaluation-outcomes \
-  --output-json data/evaluation-analysis/fixed-decision-membership-v1/performance-v2.json \
-  --output-markdown data/evaluation-analysis/fixed-decision-membership-v1/performance-v2.md
+  --output-json data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.json \
+  --output-markdown data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.md
 ```
 
 Outcomes are keyed by evaluation run, stable company identity, and horizon.
@@ -182,12 +182,23 @@ V2 uses the same production selector, country minima, gate ordering and stable
 ties on both sides. Sidecars persist the policy configuration, input order,
 ranks and selected flags before outcomes exist. Historical v1 sidecars remain
 unchanged and are analyzed separately with their old selection semantics.
-Performance analysis schema 2 uses `fixed-decision-membership-v1`: X defines
+Performance analysis schema 3 retains `fixed-decision-membership-v1`: X defines
 all cohorts before Y is attached. Missing returns never promote replacements;
 observed-member diagnostics report fixed-denominator coverage, while exact
 equal-weight cohort returns require complete observations. Historical analysis
 files cannot be overwritten by the new methodology at the old paths. See
 [Fixed Decision Membership](FIXED_DECISION_MEMBERSHIP.md) for compatibility rules.
+
+Schema 3 additionally requires `cutoff-maturity-v1` status diagnostics. `not_due`
+means the fixed exit session has not closed at the analysis cutoff; mature but
+unfetched records use `coherent_history_pending`. Missing endpoints, unresolved
+symbols, and provider failures stay distinct from maturity and never count as
+observed returns. The lifecycle table includes evaluations with no Y yet.
+`--data-cutoff` controls both revision visibility and maturity; otherwise the
+report's `--generated-at` is the cutoff. New analysis paths preserve older
+derived files. Recorded X/Y bytes and return methodologies are not migrated.
+See [Outcome Maturity Status](OUTCOME_MATURITY_STATUS.md) for the lifecycle,
+historical compatibility policy, and offline acceptance cases.
 
 Pass `--experiment-root data/evaluation-experiments` to `evaluate analyze` to add
 paired champion-versus-challenger diagnostics. Historical evaluations without a
