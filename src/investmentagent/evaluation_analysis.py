@@ -77,13 +77,24 @@ def analyze_outcome_store(
         if experiment_root is not None
         else None
     )
-    return build_performance_v2_analysis(
+    from investmentagent.benchmarks import load_benchmark_plan
+    from investmentagent.benchmark_analysis import build_benchmark_analysis
+    plans = {
+        snapshot.run_id: load_benchmark_plan(
+            evaluation_root, snapshot,
+            next((e for e in (experiments or ()) if e.base_evaluation_run_id == snapshot.run_id and e.schema_version == 2), None),
+        )
+        for snapshot in snapshots
+        if snapshot.decision_at <= status_cutoff(data_cutoff if data_cutoff is not None else generated_at)
+    }
+    return build_benchmark_analysis(
         snapshots,
         stores,
         generated_at=generated_at,
         return_methodology=return_methodology,
         data_cutoff=data_cutoff,
         experiment_snapshots=experiments,
+        plans=plans,
         eligibility_criteria=eligibility_criteria,
         country_eligibility_criteria=country_eligibility_criteria,
     )
@@ -268,7 +279,10 @@ def spearman_rank_correlation(left: Iterable[float], right: Iterable[float]) -> 
 def save_analysis_json(path: Path, analysis: dict[str, Any]) -> Path:
     _validate_analysis_version(analysis)
     if path.exists():
-        _validate_analysis_version(json.loads(path.read_text(encoding="utf-8")))
+        existing = json.loads(path.read_text(encoding="utf-8"))
+        _validate_analysis_version(existing)
+        if (existing["schema_version"], existing.get("benchmark_methodology")) != (analysis["schema_version"], analysis.get("benchmark_methodology")):
+            raise ValueError("refusing to overwrite historical analysis; use a versioned output path")
     content = json.dumps(
         analysis,
         allow_nan=False,
@@ -282,6 +296,12 @@ def save_analysis_json(path: Path, analysis: dict[str, Any]) -> Path:
 
 def save_analysis_markdown(path: Path, analysis: dict[str, Any]) -> Path:
     _validate_analysis_version(analysis)
+    expected_markers = ([f"Benchmark methodology: {analysis['benchmark_methodology']}"]
+                        if analysis.get("benchmark_methodology") else [])
+    if path.exists():
+        markers = [line for line in path.read_text().splitlines() if line.startswith("Benchmark methodology: ")]
+        if markers != expected_markers:
+            raise ValueError("refusing to overwrite historical analysis; use a versioned output path")
     if path.exists() and any(marker not in path.read_text(encoding="utf-8") for marker in (
         f"Analysis methodology: {ANALYSIS_METHODOLOGY}\n",
         f"Outcome status methodology: {OUTCOME_STATUS_METHODOLOGY}\n",
@@ -292,7 +312,18 @@ def save_analysis_markdown(path: Path, analysis: dict[str, Any]) -> Path:
 
 
 def _validate_analysis_version(analysis: dict[str, Any]) -> None:
-    if (analysis.get("schema_version") != ANALYSIS_SCHEMA_VERSION
+    from investmentagent.benchmark_analysis import BENCHMARK_ANALYSIS_SCHEMA
+    from investmentagent.benchmarks import BENCHMARK_METHODOLOGY
+    if analysis.get("schema_version") == BENCHMARK_ANALYSIS_SCHEMA:
+        if (analysis.get("benchmark_methodology") != BENCHMARK_METHODOLOGY
+                or analysis.get("analysis_methodology") != ANALYSIS_METHODOLOGY
+                or analysis.get("outcome_status_methodology") != OUTCOME_STATUS_METHODOLOGY
+                or any(row.get("benchmark_methodology") != BENCHMARK_METHODOLOGY
+                       for row in [*analysis.get("run_metrics", []), *analysis.get("groups", [])])):
+            raise ValueError("cannot mix benchmark methodology versions")
+        return
+    if (analysis.get("benchmark_methodology") is not None
+            or analysis.get("schema_version") != ANALYSIS_SCHEMA_VERSION
             or analysis.get("analysis_methodology") != ANALYSIS_METHODOLOGY
             or analysis.get("outcome_status_methodology") != OUTCOME_STATUS_METHODOLOGY):
         raise ValueError("refusing to mix or overwrite analysis methodology versions; use a versioned output path")
@@ -307,6 +338,9 @@ def _validate_analysis_version(analysis: dict[str, Any]) -> None:
 
 
 def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
+    if analysis.get("benchmark_methodology"):
+        from investmentagent.benchmark_analysis import render_benchmark_markdown
+        return render_benchmark_markdown(analysis)
     lines = [
         "# Performance v2: Ranking Quality",
         "",

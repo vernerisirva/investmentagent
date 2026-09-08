@@ -10,6 +10,7 @@ from investmentagent.evaluation import (
     build_evaluation_snapshot,
     save_evaluation_snapshot,
 )
+from investmentagent.benchmarks import build_benchmark_plan, save_benchmark_plan
 from investmentagent.evaluation_analysis import (
     analyze_outcome_store,
     save_analysis_json,
@@ -593,6 +594,7 @@ def watchlist(
         }
         if verbose:
             typer.echo(f"evaluation snapshot: {evaluation_path}", err=True)
+        experiment_snapshot = None
         if experiment_dir is not None:
             try:
                 experiment_snapshot = build_challenger_experiment_snapshot(
@@ -603,6 +605,7 @@ def watchlist(
                     Path(experiment_dir), experiment_snapshot
                 )
             except Exception as exc:
+                experiment_snapshot = None
                 typer.echo(
                     f"challenger experiment error: {exc}",
                     err=True,
@@ -613,6 +616,19 @@ def watchlist(
                         f"challenger experiment snapshot: {experiment_path}",
                         err=True,
                     )
+        production_context = None
+        if (normalized_provider_name == "live" and os.environ.get("GITHUB_ACTIONS") == "true"
+                and os.environ.get("GITHUB_EVENT_NAME") == "schedule"):
+            production_context = {
+                "event": "schedule", "run_id": os.environ.get("GITHUB_RUN_ID", ""),
+                "repository": os.environ.get("GITHUB_REPOSITORY", ""),
+                "workflow_sha": os.environ.get("GITHUB_SHA", ""),
+            }
+        benchmark_plan = build_benchmark_plan(
+            evaluation_snapshot, result=build_result, experiment=experiment_snapshot,
+            production_context=production_context,
+        )
+        save_benchmark_plan(Path(evaluation_dir), evaluation_snapshot, benchmark_plan)
     for save_path in save_paths or ():
         _save_watchlist_report(save_path, items, metadata, source_checks)
 
@@ -875,12 +891,12 @@ def evaluate_analyze(
         help="Challenger experiment snapshot root.",
     ),
     output_json: str = typer.Option(
-        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.json",
+        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2.json",
         "--output-json",
         help="Machine-readable Performance v2 analysis path.",
     ),
     output_markdown: str = typer.Option(
-        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.md",
+        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2.md",
         "--output-markdown",
         help="Research-oriented Performance v2 Markdown path.",
     ),
