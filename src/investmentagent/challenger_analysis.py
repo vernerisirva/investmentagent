@@ -19,7 +19,10 @@ from investmentagent.decision_membership import (
     cohort_diagnostic, observed_returns, recorded_public_portfolio, top_metrics,
 )
 from investmentagent.selection import SelectionPolicy
-from investmentagent.evaluation_outcomes import EvaluationOutcomeSet, MarketOutcome, select_outcome_revisions
+from investmentagent.evaluation_outcomes import EvaluationOutcomeSet, MarketOutcome, select_outcome_revisions, analysis_outcome_rows
+from investmentagent.outcome_status import (
+    OUTCOME_STATUS_METHODOLOGY, evidence_visible_at, lifecycle_counts, status_cutoff,
+)
 from investmentagent.experiments import ChallengerExperimentSnapshot
 
 
@@ -36,8 +39,18 @@ def build_challenger_analysis(
     data_cutoff: datetime | None = None,
 ) -> dict[str, Any]:
     snapshots = tuple(evaluations)
+    source_stores = tuple(outcome_sets)
+    if data_cutoff is None:
+        # Standalone callers without a report clock get an explicit, deterministic
+        # latest-recorded-evidence cutoff, never today's wall clock.
+        times = [snapshot.decision_at for snapshot in snapshots]
+        times.extend(evidence_visible_at(o) for store in source_stores for o in (*store.revisions, *store.outcomes))
+        if not times:
+            raise ValueError("standalone empty challenger analysis requires a data cutoff")
+        data_cutoff = max(times)
+    data_cutoff = status_cutoff(data_cutoff)
     outcome_sets, selection = select_outcome_revisions(
-        outcome_sets, return_methodology=return_methodology, data_cutoff=data_cutoff,
+        source_stores, return_methodology=return_methodology, data_cutoff=data_cutoff,
     )
     stores_by_run = {store.evaluation_run_id: store for store in outcome_sets}
     experiment_rows = tuple(experiments)
@@ -61,6 +74,8 @@ def build_challenger_analysis(
         raise ValueError(
             f"challenger experiment has no evaluation snapshot: {sorted(orphaned)[0]}"
         )
+    experiment_rows = tuple(experiment for experiment in experiment_rows
+                            if evaluations_by_run[experiment.base_evaluation_run_id].decision_at <= data_cutoff)
 
     run_statuses: list[dict[str, Any]] = []
     run_metrics: list[dict[str, Any]] = []
@@ -68,7 +83,7 @@ def build_challenger_analysis(
     for experiment in experiment_rows:
         experiments_by_run[experiment.base_evaluation_run_id].append(experiment)
     for evaluation in snapshots:
-        if evaluation.strategy != "long-term":
+        if evaluation.strategy != "long-term" or evaluation.decision_at > data_cutoff:
             continue
         run_experiments = experiments_by_run.get(evaluation.run_id, [])
         if not run_experiments:
@@ -93,21 +108,29 @@ def build_challenger_analysis(
                         "status": "outcomes not recorded",
                     }
                 )
-                continue
-            _validate_outcomes(evaluation, store)
-            run_statuses.append(
-                {
-                    "evaluation_run_id": evaluation.run_id,
-                    "experiment_id": experiment.experiment_id,
-                    "experiment_version": experiment.experiment_version,
-                    "decision_at": _format_timestamp(evaluation.decision_at),
-                    "status": "paired analysis available",
-                }
+            else:
+                _validate_outcomes(evaluation, store)
+                run_statuses.append(
+                    {
+                        "evaluation_run_id": evaluation.run_id,
+                        "experiment_id": experiment.experiment_id,
+                        "experiment_version": experiment.experiment_version,
+                        "decision_at": _format_timestamp(evaluation.decision_at),
+                        "status": "paired analysis available",
+                    }
+                )
+            source = next((item for item in source_stores if item.evaluation_run_id == evaluation.run_id
+                           and item.return_methodology == selection["return_methodology"]), None)
+            if source is not None:
+                _validate_outcomes(evaluation, source)
+            definitions, outcome_rows = analysis_outcome_rows(
+                evaluation, store, cutoff=data_cutoff,
+                definitions=source.horizon_definitions if source else None,
             )
-            for horizon in store.horizon_definitions:
+            for horizon in definitions:
                 outcomes = tuple(
                     outcome
-                    for outcome in store.outcomes
+                    for outcome in outcome_rows
                     if outcome.horizon_label == horizon.label
                 )
                 run_metrics.append(
@@ -117,6 +140,7 @@ def build_challenger_analysis(
                         outcomes,
                         horizon.label,
                         horizon.sessions,
+                        data_cutoff=data_cutoff,
                         eligibility_criteria=eligibility_criteria,
                     )
                 )
@@ -146,6 +170,7 @@ def build_challenger_analysis(
         warnings.append("Insufficient paired history to judge challenger performance.")
     return {
         "analysis_methodology": ANALYSIS_METHODOLOGY,
+        "outcome_status_methodology": OUTCOME_STATUS_METHODOLOGY,
         "methodology": {
             **selection,
             "sample": (
@@ -177,6 +202,7 @@ def _analyze_paired_run(
     horizon_label: str,
     horizon_sessions: int,
     *,
+    data_cutoff: datetime,
     eligibility_criteria: AnalysisEligibilityCriteria,
 ) -> dict[str, Any]:
     evaluation_by_company = {row.company_id: row for row in evaluation.rows}
@@ -221,8 +247,8 @@ def _analyze_paired_run(
     champion_top = top_metrics(champion_membership, by_id_returns, universe_return)
     challenger_top = top_metrics(challenger_membership, by_id_returns, universe_return)
     portfolios = _selected_portfolios(evaluation, experiment, by_id_returns)
-    statuses = {outcome.status for outcome in outcomes}
-    is_due = statuses != {"not_due"}
+    lifecycle = lifecycle_counts(outcomes, data_cutoff)
+    is_due = lifecycle["mature"] > 0
     eligibility = assess_analysis_eligibility(
         len(paired_company_ids),
         evaluation.universe_size,
@@ -232,6 +258,8 @@ def _analyze_paired_run(
     churn = _ranking_churn(experiment)
     return {
         "analysis_methodology": ANALYSIS_METHODOLOGY,
+        "outcome_status_methodology": OUTCOME_STATUS_METHODOLOGY,
+        "lifecycle": lifecycle,
         "selection_configuration_id": experiment.selection_configuration_id,
         "selection_configuration": experiment.selection_configuration,
         "evaluation_run_id": evaluation.run_id,
@@ -309,7 +337,8 @@ def _aggregate_paired_runs(
 ) -> list[dict[str, Any]]:
     grouped: dict[tuple[str, int, str, str, int, str, str], list[dict[str, Any]]] = defaultdict(list)
     for metric in run_metrics:
-        if metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+        if (metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY
+                or metric.get("outcome_status_methodology") != OUTCOME_STATUS_METHODOLOGY):
             raise ValueError("cannot mix analysis methodology versions")
         horizon = metric["horizon"]
         grouped[
@@ -332,6 +361,7 @@ def _aggregate_paired_runs(
         groups.append(
             {
                 "analysis_methodology": ANALYSIS_METHODOLOGY,
+                "outcome_status_methodology": OUTCOME_STATUS_METHODOLOGY,
                 "selection_configuration_id": configuration_id,
                 "selection_configuration": metrics[0]["selection_configuration"],
                 "cohort_coverage": {

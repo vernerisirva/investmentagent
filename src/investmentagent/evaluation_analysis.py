@@ -26,14 +26,16 @@ from investmentagent.evaluation_outcomes import (
     MarketOutcome,
     discover_evaluation_snapshots,
     discover_outcome_sets,
+    analysis_outcome_rows,
 )
+from investmentagent.outcome_status import OUTCOME_STATUS_METHODOLOGY, lifecycle_counts, status_cutoff
 from investmentagent.experiments import (
     ChallengerExperimentSnapshot,
     discover_experiment_snapshots,
 )
 
 
-ANALYSIS_SCHEMA_VERSION = 2
+ANALYSIS_SCHEMA_VERSION = 3
 MIN_RELIABLE_EVALUATION_DATES = 20
 MIN_IC_SAMPLE = 2
 
@@ -102,9 +104,13 @@ def build_performance_v2_analysis(
 ) -> dict[str, Any]:
     if generated_at.tzinfo is None:
         raise ValueError("analysis generated_at must be timezone-aware")
+    data_cutoff = status_cutoff(data_cutoff if data_cutoff is not None else generated_at)
+    input_snapshots = tuple(snapshots)
     ordered_snapshots = tuple(
-        sorted(snapshots, key=lambda item: (item.decision_at, item.strategy))
+        sorted((item for item in input_snapshots if item.decision_at <= data_cutoff),
+               key=lambda item: (item.decision_at, item.strategy))
     )
+    outcome_sets = tuple(outcome_sets)
     from investmentagent.evaluation_outcomes import select_outcome_revisions
 
     ordered_stores, selection = select_outcome_revisions(
@@ -113,8 +119,7 @@ def build_performance_v2_analysis(
     stores_by_run = {store.evaluation_run_id: store for store in ordered_stores}
     if len(stores_by_run) != len(ordered_stores):
         raise ValueError("duplicate outcome set for evaluation run")
-    snapshot_ids = {snapshot.run_id for snapshot in ordered_snapshots}
-    orphaned = set(stores_by_run) - snapshot_ids
+    orphaned = set(stores_by_run) - {item.run_id for item in input_snapshots}
     if orphaned:
         raise ValueError(f"outcome store has no evaluation snapshot: {sorted(orphaned)[0]}")
 
@@ -122,14 +127,19 @@ def build_performance_v2_analysis(
     all_outcomes: list[MarketOutcome] = []
     for snapshot in ordered_snapshots:
         store = stores_by_run.get(snapshot.run_id)
-        if store is None:
-            continue
-        _validate_store_against_snapshot(snapshot, store)
-        all_outcomes.extend(store.outcomes)
-        for definition in store.horizon_definitions:
+        source_store = next((item for item in outcome_sets if item.evaluation_run_id == snapshot.run_id
+                             and item.return_methodology == selection["return_methodology"]), None)
+        if source_store is not None:
+            _validate_store_against_snapshot(snapshot, source_store)
+        definitions, outcome_rows = analysis_outcome_rows(
+            snapshot, store, cutoff=data_cutoff,
+            definitions=source_store.horizon_definitions if source_store else None,
+        )
+        all_outcomes.extend(outcome_rows)
+        for definition in definitions:
             horizon_outcomes = tuple(
                 outcome
-                for outcome in store.outcomes
+                for outcome in outcome_rows
                 if outcome.horizon_label == definition.label
             )
             run_metrics.append(
@@ -138,6 +148,7 @@ def build_performance_v2_analysis(
                     horizon_outcomes,
                     definition.label,
                     definition.sessions,
+                    data_cutoff=data_cutoff,
                     eligibility_criteria=eligibility_criteria,
                     country_eligibility_criteria=country_eligibility_criteria,
                 )
@@ -175,6 +186,7 @@ def build_performance_v2_analysis(
     analysis = {
         "schema_version": ANALYSIS_SCHEMA_VERSION,
         "analysis_methodology": ANALYSIS_METHODOLOGY,
+        "outcome_status_methodology": OUTCOME_STATUS_METHODOLOGY,
         "generated_at": _format_timestamp(generated_at),
         "return_basis": "gross adjusted-close total-return-compatible prices",
         "costs_excluded": ["spread", "commissions", "slippage"],
@@ -206,6 +218,15 @@ def build_performance_v2_analysis(
             "country_benchmark_minimum": 2,
         },
         "warnings": warnings,
+        "lifecycle": {
+            **lifecycle_counts(all_outcomes, data_cutoff),
+            "evaluation_runs": len(ordered_snapshots),
+            "evaluations_with_selected_outcomes": sum(snapshot.run_id in stores_by_run for snapshot in ordered_snapshots),
+            "horizon_runs": len(run_metrics),
+            "mature_horizon_runs": sum(metric["is_due"] for metric in run_metrics),
+            "analysis_eligible_horizon_runs": sum(metric["analysis_eligible"] for metric in run_metrics),
+            "partial_horizon_runs": sum(metric["is_due"] and not metric["analysis_eligible"] for metric in run_metrics),
+        },
         "run_metrics": run_metrics,
         "groups": groups,
         "missingness": _missingness_diagnostics(all_outcomes),
@@ -222,8 +243,8 @@ def build_performance_v2_analysis(
         from investmentagent.challenger_analysis import build_challenger_analysis
 
         analysis["challenger_analysis"] = build_challenger_analysis(
-            ordered_snapshots,
-            ordered_stores,
+            input_snapshots,
+            outcome_sets,
             tuple(experiment_snapshots),
             eligibility_criteria=eligibility_criteria,
             return_methodology=selection["return_methodology"],
@@ -261,18 +282,27 @@ def save_analysis_json(path: Path, analysis: dict[str, Any]) -> Path:
 
 def save_analysis_markdown(path: Path, analysis: dict[str, Any]) -> Path:
     _validate_analysis_version(analysis)
-    if path.exists() and f"Analysis methodology: {ANALYSIS_METHODOLOGY}\n" not in path.read_text(encoding="utf-8"):
+    if path.exists() and any(marker not in path.read_text(encoding="utf-8") for marker in (
+        f"Analysis methodology: {ANALYSIS_METHODOLOGY}\n",
+        f"Outcome status methodology: {OUTCOME_STATUS_METHODOLOGY}\n",
+    )):
         raise ValueError("refusing to overwrite historical analysis; use a versioned output path")
     _atomic_write_if_changed(path, render_performance_v2_markdown(analysis) + "\n")
     return path
 
 
 def _validate_analysis_version(analysis: dict[str, Any]) -> None:
-    if analysis.get("schema_version") != ANALYSIS_SCHEMA_VERSION or analysis.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+    if (analysis.get("schema_version") != ANALYSIS_SCHEMA_VERSION
+            or analysis.get("analysis_methodology") != ANALYSIS_METHODOLOGY
+            or analysis.get("outcome_status_methodology") != OUTCOME_STATUS_METHODOLOGY):
         raise ValueError("refusing to mix or overwrite analysis methodology versions; use a versioned output path")
     for section in (analysis, analysis.get("challenger_analysis", {})):
+        if section and (section.get("analysis_methodology") != ANALYSIS_METHODOLOGY
+                        or section.get("outcome_status_methodology") != OUTCOME_STATUS_METHODOLOGY):
+            raise ValueError("cannot mix analysis methodology versions")
         for metric in [*section.get("run_metrics", []), *section.get("groups", [])]:
-            if metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+            if (metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY
+                    or metric.get("outcome_status_methodology") != OUTCOME_STATUS_METHODOLOGY):
                 raise ValueError("cannot mix analysis methodology versions")
 
 
@@ -282,6 +312,7 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         "",
         f"Generated: {analysis['generated_at']}",
         f"Analysis methodology: {analysis['analysis_methodology']}",
+        f"Outcome status methodology: {analysis['outcome_status_methodology']}",
         f"Return methodology: {analysis['methodology'].get('return_methodology', 'legacy/unverified')}",
         f"Revision policy: {analysis['methodology'].get('outcome_revision_policy', 'legacy/unverified')}",
         f"Analysis data cutoff: {analysis['methodology'].get('analysis_data_cutoff') or 'all retained data'}",
@@ -290,6 +321,15 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         "Cohorts are frozen from X before attaching Y. Ranking summaries use observed-member diagnostics, not exact portfolio returns. JSON includes fixed membership and coverage for each cohort; exact equal-weight returns are unavailable until every member is observed.",
         "",
     ]
+    lifecycle = analysis["lifecycle"]
+    lines.extend([
+        "## Outcome Lifecycle", "",
+        f"As of {lifecycle['status_cutoff']}; counts below are company-horizon records.", "",
+        "| Evaluations | Not mature | Mature | Priced | Pending retrieval | Budget deferred (subset) | Unavailable | Failed |",
+        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        f"| {lifecycle['evaluation_runs']} | {lifecycle['not_mature']} | {lifecycle['mature']} | {lifecycle['mature_priced']} | {lifecycle['mature_pending']} | {lifecycle['mature_budget_deferred']} | {lifecycle['mature_unavailable']} | {lifecycle['mature_failed']} |",
+        "", "Maturity does not imply price availability. Pending/unavailable members remain missing in fixed-X coverage.", "",
+    ])
     for warning in analysis.get("warnings", []):
         lines.append(f"> **Warning:** {warning}")
         lines.append("")
@@ -485,6 +525,7 @@ def _analyze_run_horizon(
     horizon_label: str,
     horizon_sessions: int,
     *,
+    data_cutoff: datetime,
     eligibility_criteria: AnalysisEligibilityCriteria,
     country_eligibility_criteria: AnalysisEligibilityCriteria,
 ) -> dict[str, Any]:
@@ -566,8 +607,9 @@ def _analyze_run_horizon(
         )
         for country, original_count in sorted(original_country_counts.items())
     ]
+    lifecycle = lifecycle_counts(outcomes, data_cutoff)
     statuses = Counter(outcome.status for outcome in outcomes)
-    is_due = statuses.get("not_due", 0) != len(outcomes)
+    is_due = lifecycle["mature"] > 0
     eligibility = assess_analysis_eligibility(
         len(priced_pairs),
         snapshot.universe_size,
@@ -579,6 +621,8 @@ def _analyze_run_horizon(
     )
     return {
         "analysis_methodology": ANALYSIS_METHODOLOGY,
+        "outcome_status_methodology": OUTCOME_STATUS_METHODOLOGY,
+        "lifecycle": lifecycle,
         "evaluation_run_id": snapshot.run_id,
         "report_date": snapshot.report_date.isoformat(),
         "decision_at": _format_timestamp(snapshot.decision_at),
@@ -630,7 +674,8 @@ def _analyze_run_horizon(
 def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
     grouped: dict[tuple[str, str, int, str], list[dict[str, Any]]] = defaultdict(list)
     for metric in run_metrics:
-        if metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+        if (metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY
+                or metric.get("outcome_status_methodology") != OUTCOME_STATUS_METHODOLOGY):
             raise ValueError("cannot mix analysis methodology versions")
         horizon = metric["horizon"]
         grouped[
@@ -670,6 +715,7 @@ def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, 
         results.append(
             {
                 "analysis_methodology": ANALYSIS_METHODOLOGY,
+                "outcome_status_methodology": OUTCOME_STATUS_METHODOLOGY,
                 "strategy": strategy,
                 "scoring_model_version": model_version,
                 "horizon": {

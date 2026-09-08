@@ -566,7 +566,7 @@ def test_paired_analysis_uses_exact_same_priced_company_sample():
     analysis = build_performance_v2_analysis(
         (snapshot,),
         (outcomes,),
-        generated_at=datetime(2026, 8, 30, tzinfo=UTC),
+        generated_at=datetime(2026, 8, 31, tzinfo=UTC),
         experiment_snapshots=(experiment,),
     )
     paired = analysis["challenger_analysis"]["run_metrics"][0]
@@ -645,7 +645,7 @@ def test_incremental_relative_value_signal_beats_imperfect_champion():
     analysis = build_performance_v2_analysis(
         (snapshot,),
         (outcomes,),
-        generated_at=datetime(2026, 8, 30, tzinfo=UTC),
+        generated_at=datetime(2026, 8, 31, tzinfo=UTC),
         experiment_snapshots=(experiment,),
     )
     paired = analysis["challenger_analysis"]["run_metrics"][0]
@@ -682,7 +682,7 @@ def test_two_of_nine_hundred_paired_outcomes_are_descriptive_only():
     analysis = build_performance_v2_analysis(
         (snapshot,),
         (outcomes,),
-        generated_at=datetime(2026, 8, 30, tzinfo=UTC),
+        generated_at=datetime(2026, 8, 31, tzinfo=UTC),
         experiment_snapshots=(experiment,),
     )["challenger_analysis"]
     paired = analysis["run_metrics"][0]
@@ -712,7 +712,7 @@ def test_misleading_relative_value_signal_loses_to_champion():
     analysis = build_performance_v2_analysis(
         (snapshot,),
         (outcomes,),
-        generated_at=datetime(2026, 8, 30, tzinfo=UTC),
+        generated_at=datetime(2026, 8, 31, tzinfo=UTC),
         experiment_snapshots=(experiment,),
     )
     paired = analysis["challenger_analysis"]["run_metrics"][0]
@@ -728,7 +728,7 @@ def test_rank_churn_and_top_10_overlap_are_reported():
     analysis = build_performance_v2_analysis(
         (snapshot,),
         (outcomes,),
-        generated_at=datetime(2026, 8, 30, tzinfo=UTC),
+        generated_at=datetime(2026, 8, 31, tzinfo=UTC),
         experiment_snapshots=(experiment,),
     )
     churn = analysis["challenger_analysis"]["run_metrics"][0]["ranking_churn"]

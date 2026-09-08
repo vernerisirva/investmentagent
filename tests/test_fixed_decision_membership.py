@@ -299,7 +299,7 @@ def test_old_analysis_cannot_be_silently_overwritten(tmp_path, kind):
 
 def test_analysis_versions_cannot_be_mixed():
     analysis, metric = analyze(_snapshot(100))
-    assert analysis["schema_version"] == ANALYSIS_SCHEMA_VERSION == 2
+    assert analysis["schema_version"] == ANALYSIS_SCHEMA_VERSION == 3
     assert analysis["analysis_methodology"] == ANALYSIS_METHODOLOGY
     with pytest.raises(ValueError, match="methodology"):
         _aggregate_run_metrics([metric, {**metric, "analysis_methodology": "legacy"}])

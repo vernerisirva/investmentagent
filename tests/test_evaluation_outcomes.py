@@ -556,7 +556,7 @@ def test_central_positive_signal_and_inverted_signal_regression():
     positive = build_performance_v2_analysis(
         (snapshot,),
         (_priced_store(snapshot, positive_returns),),
-        generated_at=_timestamp(20),
+        generated_at=_timestamp(31, 18),
     )
     positive_run = positive["run_metrics"][0]
     positive_group = positive["groups"][0]
@@ -572,7 +572,7 @@ def test_central_positive_signal_and_inverted_signal_regression():
     inverted = build_performance_v2_analysis(
         (snapshot,),
         (_priced_store(snapshot, inverted_returns),),
-        generated_at=_timestamp(20),
+        generated_at=_timestamp(31, 18),
     )
     inverted_run = inverted["run_metrics"][0]
     assert inverted_run["score_return_spearman_ic"] == pytest.approx(-1.0)
@@ -600,7 +600,7 @@ def test_benchmark_uses_valid_members_of_original_evaluation_universe():
     )
 
     analysis = build_performance_v2_analysis(
-        (snapshot,), (store,), generated_at=_timestamp(20)
+        (snapshot,), (store,), generated_at=_timestamp(31, 18)
     )
     run = analysis["run_metrics"][0]
 
@@ -615,7 +615,7 @@ def test_same_country_benchmarks_and_country_specific_ic_are_reported():
     store = _priced_store(snapshot, [8.0, 4.0, 2.0, 0.0])
 
     analysis = build_performance_v2_analysis(
-        (snapshot,), (store,), generated_at=_timestamp(20)
+        (snapshot,), (store,), generated_at=_timestamp(31, 18)
     )
     run = analysis["run_metrics"][0]
     company = run["company_benchmarks"][0]
@@ -633,7 +633,7 @@ def test_long_term_gate_tier_statistics_keep_sample_sizes():
     analysis = build_performance_v2_analysis(
         (snapshot,),
         (store,),
-        generated_at=_timestamp(20),
+        generated_at=_timestamp(31, 18),
         eligibility_criteria=TEST_ANALYSIS_ELIGIBILITY,
     )
     tiers = analysis["groups"][0]["gate_tiers"]
@@ -658,7 +658,7 @@ def test_model_versions_are_never_aggregated_together():
     analysis = build_performance_v2_analysis(
         (first, second),
         (_priced_store(first, [4, 3, 2, 1]), _priced_store(second, [4, 3, 2, 1])),
-        generated_at=_timestamp(25),
+        generated_at=_timestamp(31, 18),
     )
 
     assert len(analysis["groups"]) == 2
@@ -675,7 +675,7 @@ def test_repeated_companies_aggregate_ic_by_run_before_summary():
     small_store = _priced_store(small, [0.0, 1.0])
 
     analysis = build_performance_v2_analysis(
-        (large, small), (large_store, small_store), generated_at=_timestamp(25)
+        (large, small), (large_store, small_store), generated_at=_timestamp(31, 18)
     )
     group = analysis["groups"][0]
 
@@ -718,7 +718,7 @@ def test_two_of_nine_hundred_run_is_retained_as_descriptive_only():
     )
 
     analysis = build_performance_v2_analysis(
-        (snapshot,), (store,), generated_at=_timestamp(20)
+        (snapshot,), (store,), generated_at=_timestamp(31, 18)
     )
     run = analysis["run_metrics"][0]
     group = analysis["groups"][0]
@@ -749,7 +749,7 @@ def test_artificial_perfect_partial_ic_is_descriptive_until_coverage_is_sufficie
     )
 
     partial = build_performance_v2_analysis(
-        (snapshot,), (partial_store,), generated_at=_timestamp(20)
+        (snapshot,), (partial_store,), generated_at=_timestamp(31, 18)
     )
     partial_run = partial["run_metrics"][0]
     partial_group = partial["groups"][0]
@@ -774,7 +774,7 @@ def test_artificial_perfect_partial_ic_is_descriptive_until_coverage_is_sufficie
         [float(70 - index) for index in range(70)],
     )
     eligible = build_performance_v2_analysis(
-        (snapshot,), (eligible_store,), generated_at=_timestamp(20)
+        (snapshot,), (eligible_store,), generated_at=_timestamp(31, 18)
     )
 
     assert eligible["run_metrics"][0]["analysis_eligible"] is True
@@ -797,7 +797,7 @@ def test_country_partial_ic_requires_country_level_coverage_and_sample():
     analysis = build_performance_v2_analysis(
         (snapshot,),
         (store,),
-        generated_at=_timestamp(20),
+        generated_at=_timestamp(31, 18),
         eligibility_criteria=AnalysisEligibilityCriteria(50.0, 50),
     )
     run_countries = {
@@ -829,7 +829,7 @@ def test_sufficiently_covered_sweden_and_finland_contribute_to_country_aggregate
     )
 
     analysis = build_performance_v2_analysis(
-        (snapshot,), (store,), generated_at=_timestamp(20)
+        (snapshot,), (store,), generated_at=_timestamp(31, 18)
     )
     countries = {row["country"]: row for row in analysis["groups"][0]["countries"]}
 
@@ -848,7 +848,7 @@ def test_markdown_makes_partial_coverage_and_absent_headline_ic_explicit():
         [float(10 - index) for index in range(10)],
     )
     analysis = build_performance_v2_analysis(
-        (snapshot,), (store,), generated_at=_timestamp(20)
+        (snapshot,), (store,), generated_at=_timestamp(31, 18)
     )
 
     markdown = render_performance_v2_markdown(analysis)
@@ -873,7 +873,7 @@ def test_missing_outcome_diagnostics_cover_country_segment_and_rank_bucket():
     )
 
     analysis = build_performance_v2_analysis(
-        (snapshot,), (store,), generated_at=_timestamp(20)
+        (snapshot,), (store,), generated_at=_timestamp(31, 18)
     )
 
     assert analysis["missingness"]["by_country"]

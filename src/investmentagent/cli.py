@@ -854,6 +854,7 @@ def evaluate_outcomes(
                 "records_requiring_refetch": summary.records_requiring_refetch,
                 "records_missing_metadata": summary.records_missing_metadata,
                 "dry_run": summary.dry_run,
+                "lifecycle": summary.lifecycle,
             },
             sort_keys=True,
         )
@@ -874,12 +875,12 @@ def evaluate_analyze(
         help="Challenger experiment snapshot root.",
     ),
     output_json: str = typer.Option(
-        "data/evaluation-analysis/fixed-decision-membership-v1/performance-v2.json",
+        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.json",
         "--output-json",
         help="Machine-readable Performance v2 analysis path.",
     ),
     output_markdown: str = typer.Option(
-        "data/evaluation-analysis/fixed-decision-membership-v1/performance-v2.md",
+        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.md",
         "--output-markdown",
         help="Research-oriented Performance v2 Markdown path.",
     ),

@@ -6,15 +6,12 @@ import os
 import tempfile
 from dataclasses import dataclass, replace
 from datetime import date, datetime, timezone
-from functools import cached_property, lru_cache
+from functools import cached_property
 from pathlib import Path
 from typing import Any, Iterable
 
 from investmentagent.evaluation import EvaluationCompanyRow, EvaluationSnapshot, load_evaluation_snapshot
 from investmentagent.market_calendar import (
-    MarketSession,
-    advance_market_sessions,
-    first_session_closing_after,
     market_for_country,
     market_session,
 )
@@ -26,6 +23,10 @@ from investmentagent.market_prices import (
     SecurityReference,
 )
 from investmentagent.market_price_cache import HistoricalPriceCache
+from investmentagent.outcome_status import (
+    BUDGET_DEFERRED_DETAIL, evidence_visible_at, fixed_sessions as _fixed_sessions,
+    analysis_view, is_mature, lifecycle_counts,
+)
 from investmentagent.price_histories import (
     COHERENT_RETURN_METHOD, LEGACY_RETURN_METHOD, OUTCOME_REVISION_POLICY,
     EndpointEvidence, PriceHistoryBatch, HistoryArchive, HistoryMetadata, content_hash,
@@ -398,6 +399,7 @@ class OutcomeRefreshSummary:
     records_requiring_refetch: int = 0
     records_missing_metadata: int = 0
     dry_run: bool = False
+    lifecycle: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -682,12 +684,17 @@ def _refresh_outcome_store_with_cache(
         raise RuntimeError("historical-price provider exceeded the API-call budget")
     files, all_outcomes = [], []
     revisions_detected = 0
+    deferred_keys = {key for key, task in plan if task.deferred_by_budget}
     for prepared in prepared_runs:
         outcomes = []
         for company in prepared.companies:
             for outcome in company.outcomes:
                 current = outcome
-                if outcome in company.refreshable and not dry_run:
+                if outcome in company.refreshable and dry_run:
+                    if outcome.status == "not_due":
+                        current = _pending_outcome(outcome, retrieved_at,
+                            deferred_by_budget=(outcome.company_id, outcome.market) in deferred_keys)
+                elif outcome in company.refreshable:
                     batch = hits.get(outcome.key)
                     history = batch.as_history() if batch is not None else None
                     if history is None:
@@ -705,11 +712,15 @@ def _refresh_outcome_store_with_cache(
             files.append(path)
         all_outcomes.extend(outcomes)
     deferred = [task for _, task in plan if task.deferred_by_budget]
+    # Scheduling remains bounded by retrieved_at; final diagnostics include only
+    # evidence actually available by completion, not the current wall clock.
+    completed_at = retrieved_at if dry_run else max([retrieved_at, *(evidence_visible_at(o) for o in all_outcomes)])
+    lifecycle = lifecycle_counts(all_outcomes, completed_at)
     return OutcomeRefreshSummary(
         evaluation_runs=len(prepared_runs), outcome_records=len(all_outcomes),
-        priced=sum(o.status == "priced" for o in all_outcomes),
-        not_due=sum(o.status == "not_due" for o in all_outcomes),
-        unresolved=sum(o.status not in {"priced", "not_due"} for o in all_outcomes),
+        priced=lifecycle["mature_priced"],
+        not_due=lifecycle["not_mature"],
+        unresolved=lifecycle["mature"] - lifecycle["mature_priced"],
         files_written=tuple(files), securities_requiring_prices=len(requirements),
         required_session_observations=sum(len(r.required_dates) for r in requirements.values()) + 2 * len(hits),
         cache_hits=2 * len(hits), cache_misses=sum(len(r.required_dates) for r in requirements.values()),
@@ -727,6 +738,7 @@ def _refresh_outcome_store_with_cache(
         legacy_records_skipped=legacy_skipped, coherent_records_reusable=reusable,
         records_requiring_refetch=refetch, records_missing_metadata=missing_metadata,
         dry_run=dry_run,
+        lifecycle=lifecycle,
     )
 
 
@@ -951,16 +963,6 @@ def load_outcome_set(path: Path) -> EvaluationOutcomeSet:
     )
 
 
-@lru_cache(maxsize=4096)
-def _fixed_sessions(
-    decision_at: datetime, market: str, horizon_sessions: int,
-) -> tuple[MarketSession, MarketSession]:
-    # All rows in a market/cohort share these existing execution rules. In particular,
-    # validating a legacy run need not walk a year's calendar again for every row.
-    entry = first_session_closing_after(decision_at, market)
-    return entry, advance_market_sessions(entry.day, horizon_sessions, market)
-
-
 def _initial_outcome(
     snapshot: EvaluationSnapshot,
     row: EvaluationCompanyRow,
@@ -1010,13 +1012,25 @@ def _initial_outcome(
     )
 
 
+def analysis_outcome_rows(
+    snapshot: EvaluationSnapshot, store: EvaluationOutcomeSet | None, *,
+    cutoff: datetime, definitions: tuple[HorizonDefinition, ...] | None = None,
+) -> tuple[tuple[HorizonDefinition, ...], tuple[MarketOutcome, ...]]:
+    """Fill an unfetched X population with explicit missing views, never persisted Y."""
+    definitions = definitions or (store.horizon_definitions if store else DEFAULT_STRATEGY_HORIZONS[snapshot.strategy])
+    if store is not None:
+        _validate_existing_store(store, snapshot, definitions)
+        rows = store.outcomes
+    else:
+        rows = tuple(_initial_outcome(snapshot, row, definition, "unretrieved")
+                     for row in snapshot.rows for definition in definitions)
+    return tuple(definitions), tuple(analysis_view(row, cutoff) for row in rows)
+
+
 def _should_refresh(outcome: MarketOutcome, retrieved_at: datetime, *, reprice: bool = False) -> bool:
     if outcome.status == "priced" and not reprice:
         return False
-    target_session = market_session(outcome.target_exit_session, outcome.market)
-    if target_session is None:
-        raise ValueError("stored target exit is not a valid market session")
-    return target_session.closes_at <= retrieved_at
+    return is_mature(outcome, retrieved_at)
 
 
 def _coherent_base(outcome: MarketOutcome) -> MarketOutcome:
@@ -1055,10 +1069,10 @@ def _derived_outcome(outcome: MarketOutcome, calculation_time: datetime, **chang
     return replace(outcome, **values)
 
 
-def _pending_outcome(outcome: MarketOutcome, calculated_at: datetime) -> MarketOutcome:
+def _pending_outcome(outcome: MarketOutcome, calculated_at: datetime, *, deferred_by_budget: bool = True) -> MarketOutcome:
     return _derived_outcome(
         outcome, calculated_at, status="coherent_history_pending",
-        detail="coherent history pending: API-call budget exhausted",
+        detail=BUDGET_DEFERRED_DETAIL if deferred_by_budget else "coherent history pending: awaiting retrieval",
     )
 
 
