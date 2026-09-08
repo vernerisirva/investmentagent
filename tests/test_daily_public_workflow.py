@@ -109,8 +109,11 @@ def test_daily_workflow_refreshes_performance_v2_without_blocking_publication():
     assert "investmentagent evaluate outcomes" in performance_v2_block
     assert "investmentagent evaluate analyze" in performance_v2_block
     assert "Skipping Performance v2 outcome refresh" in performance_v2_block
-    assert "Restore private market-price cache" in workflow
-    assert "path: .investmentagent/market-price-cache.json" in workflow
+    assert "Restore market-price histories" in workflow
+    assert ".investmentagent/market-price-cache.histories-v2.json" in workflow
+    assert "--return-methodology single-response-adjusted-close-v1" in performance_v2_block
+    assert '--data-cutoff "$analysis_at"' in performance_v2_block
+    assert "--reprice" not in performance_v2_block
     assert "market-prices-${{ runner.os }}-" in workflow
     assert "--price-cache .investmentagent/market-price-cache.json" in performance_v2_block
     assert "--max-price-api-calls 20" in performance_v2_block

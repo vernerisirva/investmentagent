@@ -744,7 +744,7 @@ def evaluate_outcomes(
     price_cache: str = typer.Option(
         ".investmentagent/market-price-cache.json",
         "--price-cache",
-        help="Private normalized adjusted-close cache file.",
+        help="Operational cache path; complete response histories use an adjacent histories-v2 file.",
     ),
     max_price_api_calls: int = typer.Option(
         DEFAULT_MAX_PRICE_API_CALLS,
@@ -760,12 +760,18 @@ def evaluate_outcomes(
         None, "--report-date", help="Optional evaluation report date YYYY-MM-DD."
     ),
     retrieved_at: str | None = typer.Option(
-        None, "--retrieved-at", help="Timezone-aware market-data retrieval timestamp."
+        None, "--retrieved-at", help="Scheduling cutoff; actual response completion is recorded separately."
     ),
+    reprice: bool = typer.Option(False, "--reprice", help="Explicitly refetch coherent histories and append outcome revisions."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Inspect coherence and budget needs without writes or API calls."),
 ) -> None:
     evaluation_path = Path(evaluation_root)
     outcome_path = Path(outcome_root)
     price_cache_path = Path(price_cache)
+    if price_cache_path.resolve().is_relative_to((Path.cwd() / "data").resolve()):
+        raise typer.BadParameter("complete vendor histories must not be stored under public data/")
+    if reprice and not dry_run and run_id is None and report_date_raw is None:
+        raise typer.BadParameter("--reprice requires --run-id or --report-date; preview all runs with --dry-run")
     if any(
         _is_under_docs(path)
         for path in (evaluation_path, outcome_path, price_cache_path)
@@ -788,7 +794,7 @@ def evaluate_outcomes(
             raise typer.BadParameter(str(exc)) from exc
     elif normalized_provider == "eodhd":
         api_key = _api_key_from_environment("EODHD_API_KEY")
-        if api_key is None:
+        if api_key is None and not dry_run:
             raise typer.BadParameter("EODHD_API_KEY is required for Performance v2 outcomes")
         provider = EodhdHistoricalPriceProvider(api_key)
     else:
@@ -811,6 +817,8 @@ def evaluate_outcomes(
         report_date=selected_date,
         price_cache=cache,
         max_price_api_calls=max_price_api_calls,
+        reprice=reprice,
+        dry_run=dry_run,
     )
     typer.echo(
         json.dumps(
@@ -841,6 +849,11 @@ def evaluate_outcomes(
                 "deferred_security_ids": list(summary.deferred_security_ids),
                 "fetch_plan": [item.as_dict() for item in summary.fetch_plan],
                 "cache_coverage": summary.cache_coverage,
+                "legacy_records_skipped": summary.legacy_records_skipped,
+                "coherent_records_reusable": summary.coherent_records_reusable,
+                "records_requiring_refetch": summary.records_requiring_refetch,
+                "records_missing_metadata": summary.records_missing_metadata,
+                "dry_run": summary.dry_run,
             },
             sort_keys=True,
         )
@@ -880,6 +893,12 @@ def evaluate_analyze(
     generated_at: str | None = typer.Option(
         None, "--generated-at", help="Timezone-aware analysis generation timestamp."
     ),
+    return_methodology: str = typer.Option(
+        "single-response-adjusted-close-v1", "--return-methodology", help="One return methodology, never a pooled series."
+    ),
+    data_cutoff: str | None = typer.Option(
+        None, "--data-cutoff", help="Exclude outcome revisions or price histories recorded after this time; defaults to generated-at."
+    ),
 ) -> None:
     paths = tuple(
         Path(value)
@@ -905,6 +924,8 @@ def evaluate_analyze(
         Path(evaluation_root),
         Path(outcome_root),
         generated_at=analysis_time,
+        return_methodology=return_methodology,
+        data_cutoff=_parse_aware_timestamp(data_cutoff) if data_cutoff else analysis_time,
         experiment_root=Path(experiment_root),
         strategy=_optional_evaluation_strategy(strategy),
         run_id=run_id,

@@ -438,11 +438,12 @@ def test_missing_exit_preserves_a_valid_entry_for_later_refresh():
     outcome = second.outcomes[0]
     assert outcome.status == "priced"
     assert outcome.entry_price == 100.0
-    assert outcome.entry_retrieved_at == first_retrieval
+    assert outcome.entry_retrieved_at == second_retrieval
+    assert first.outcomes[0] in second.revisions
     assert outcome.raw_forward_return_pct == pytest.approx(10.0)
 
 
-def test_provider_revision_never_replaces_established_entry():
+def test_provider_revision_replaces_numeric_entry_but_not_entry_session():
     snapshot = _snapshot(1)
     row = snapshot.rows[0]
     entry = first_session_closing_after(snapshot.decision_at, "stockholm").day
@@ -472,9 +473,11 @@ def test_provider_revision_never_replaces_established_entry():
         horizons=ONE_SESSION,
     ).outcomes[0]
 
-    assert revised.status == "corporate_action_unsupported"
-    assert revised.entry_price == 100.0
-    assert "revised" in revised.detail
+    assert revised.status == "priced"
+    assert revised.entry_price == 50.0
+    assert revised.entry_session == entry
+    assert revised.raw_forward_return_pct == pytest.approx(10.0)
+    assert revised.revision_reason == "coherent_endpoint_revision"
 
 
 def test_unresolved_symbol_and_provider_error_are_visible():
@@ -935,7 +938,7 @@ def test_fixture_cli_outcomes_and_analysis_are_fully_offline(tmp_path):
     assert outcome_diagnostics["provider_calls_executed"] == 2
     assert outcome_diagnostics["api_budget"] == 20
     assert outcome_diagnostics["work_deferred_by_budget"] == 0
-    assert outcome_diagnostics["cache_coverage"]["observations"] == 10
+    assert outcome_diagnostics["cache_coverage"]["coherent_histories"] == 2
 
     analysis_result = RUNNER.invoke(
         app,
@@ -1082,7 +1085,7 @@ def test_complete_cache_hit_makes_zero_provider_calls(tmp_path):
     retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
     histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
     cache = FileHistoricalPriceCache(tmp_path / "prices.json")
-    cache.store(snapshot.rows[0].company_id, histories[snapshot.rows[0].company_id])
+    _store_coherent_fixture(cache, snapshot.rows[0], histories[snapshot.rows[0].company_id], retrieved_at)
     evaluation_root = tmp_path / "evaluations"
     _save_snapshots(evaluation_root, (snapshot,))
     provider = FixtureHistoricalPriceProvider({})
@@ -1097,20 +1100,21 @@ def test_complete_cache_hit_makes_zero_provider_calls(tmp_path):
     )
 
     assert summary.provider_calls_executed == 0
-    assert summary.cache_hits == 5
+    assert summary.coherent_records_reusable == 4
+    assert summary.cache_hits == 8
     assert summary.cache_misses == 0
     assert summary.priced == 4
     assert provider.api_call_count == 0
 
 
-def test_partial_cache_fetches_only_smallest_missing_range(tmp_path):
+def test_partial_coherent_cache_fetches_entry_through_missing_exit(tmp_path):
     snapshot = _snapshot(1)
     retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
     histories = _observations_for_snapshots((snapshot,), retrieved_at=retrieved_at)
     company_id = snapshot.rows[0].company_id
     rows = histories[company_id]
     cache = FileHistoricalPriceCache(tmp_path / "prices.json")
-    cache.store(company_id, rows[:-1])
+    _store_coherent_fixture(cache, snapshot.rows[0], rows[:-1], retrieved_at)
     evaluation_root = tmp_path / "evaluations"
     _save_snapshots(evaluation_root, (snapshot,))
     provider = FixtureHistoricalPriceProvider(histories)
@@ -1124,9 +1128,9 @@ def test_partial_cache_fetches_only_smallest_missing_range(tmp_path):
         max_price_api_calls=20,
     )
 
-    assert summary.cache_hits == 4
-    assert summary.cache_misses == 1
-    assert provider.requests == [(company_id, rows[-1].session_date, rows[-1].session_date, rows[0].symbol)]
+    assert summary.cache_hits == 6
+    assert summary.cache_misses == 2
+    assert provider.requests == [(company_id, rows[0].session_date, rows[-1].session_date, rows[0].symbol)]
     assert summary.priced == 4
 
 
@@ -1320,7 +1324,7 @@ def test_provider_failure_preserves_cached_observations(tmp_path):
     assert summary.oldest_unresolved_evaluation_date == snapshot.report_date
 
 
-def test_cached_provider_revision_preserves_established_entry(tmp_path):
+def test_legacy_cached_revisions_do_not_prove_coherence_or_permanently_exclude(tmp_path):
     snapshot = _snapshot(1)
     row = snapshot.rows[0]
     retrieved_at = datetime(2028, 1, 1, 18, tzinfo=UTC)
@@ -1358,11 +1362,12 @@ def test_cached_provider_revision_preserves_established_entry(tmp_path):
 
     assert summary.provider_calls_executed == 0
     assert all(
-        outcome.status == "corporate_action_unsupported"
+        outcome.status == "coherent_history_pending"
         for outcome in refreshed.outcomes
     )
-    assert all(outcome.entry_price == entry.adjusted_close for outcome in refreshed.outcomes)
-    assert all("revised cached adjusted-close" in outcome.detail for outcome in refreshed.outcomes)
+    assert all(outcome.raw_forward_return_pct is None for outcome in refreshed.outcomes)
+    assert all("coherent history pending" in outcome.detail for outcome in refreshed.outcomes)
+    assert all(outcome in refreshed.revisions for outcome in existing.outcomes)
 
 
 def test_cache_loss_changes_calls_but_not_calculated_outcomes(tmp_path):
@@ -1388,7 +1393,15 @@ def test_cache_loss_changes_calls_but_not_calculated_outcomes(tmp_path):
     )
     cached = discover_outcome_sets(outcome_root)[0]
 
-    assert cached.as_payload() == naive.as_payload()
+    assert _economic_outcomes(cached) == _economic_outcomes(naive)
+    original_bytes = outcome_store_path(outcome_root, snapshot).read_bytes()
+    summary = refresh_outcome_store(
+        evaluation_root, outcome_root, FixtureHistoricalPriceProvider({}),
+        retrieved_at=retrieved_at, price_cache=FileHistoricalPriceCache(tmp_path / "lost-cache.json"),
+        max_price_api_calls=4,
+    )
+    assert summary.provider_calls_executed == 0
+    assert outcome_store_path(outcome_root, snapshot).read_bytes() == original_bytes
 
 
 def test_twenty_overlapping_runs_reduce_two_thousand_calls_to_one_hundred(tmp_path):
@@ -1411,7 +1424,7 @@ def test_twenty_overlapping_runs_reduce_two_thousand_calls_to_one_hundred(tmp_pa
             snapshot,
             naive_provider,
             retrieved_at=retrieved_at,
-        ).as_payload()
+        )
         for snapshot in snapshots
     }
     evaluation_root = tmp_path / "evaluations"
@@ -1428,7 +1441,7 @@ def test_twenty_overlapping_runs_reduce_two_thousand_calls_to_one_hundred(tmp_pa
         max_price_api_calls=100,
     )
     cached = {
-        store.evaluation_run_id: store.as_payload()
+        store.evaluation_run_id: store
         for store in discover_outcome_sets(outcome_root)
     }
 
@@ -1436,4 +1449,25 @@ def test_twenty_overlapping_runs_reduce_two_thousand_calls_to_one_hundred(tmp_pa
     assert summary.provider_calls_executed == 100
     assert summary.provider_calls_executed <= summary.api_budget
     assert summary.work_deferred_by_budget == 0
-    assert cached == naive
+    assert {key: _economic_outcomes(store) for key, store in cached.items()} == {
+        key: _economic_outcomes(store) for key, store in naive.items()
+    }
+
+
+def _economic_outcomes(store):
+    # Separate calls have distinct immutable provenance, even with identical prices.
+    return [(o.key, o.entry_session, o.target_exit_session, o.entry_price, o.exit_price,
+             o.raw_forward_return_pct, o.status) for o in store.outcomes]
+
+
+def _store_coherent_fixture(cache, row, observations, retrieved_at):
+    from investmentagent.price_histories import PriceHistoryBatch
+    security = SecurityReference(row.company_id, row.isin, row.ticker, row.country,
+                                 row.exchange, "SEK" if row.country == "SE" else "EUR")
+    provider = FixtureHistoricalPriceProvider({row.company_id: observations})
+    start, end = observations[0].session_date, observations[-1].session_date
+    history = provider.get_history(security, start_date=start, end_date=end,
+                                   market=market_for_country(row.country), retrieved_at=retrieved_at)
+    batch = PriceHistoryBatch.accept(security, history, start, end)
+    cache.history_archive.store(batch)
+    return batch
