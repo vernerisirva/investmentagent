@@ -17,6 +17,10 @@ from investmentagent.analysis_eligibility import (
     assess_analysis_eligibility,
 )
 from investmentagent.evaluation import EvaluationCompanyRow, EvaluationSnapshot
+from investmentagent.decision_membership import (
+    ANALYSIS_METHODOLOGY, DecisionCohort, DecisionMembership, aggregate_coverage,
+    cohort_diagnostic, observed_returns, recorded_public_portfolio, top_metrics,
+)
 from investmentagent.evaluation_outcomes import (
     EvaluationOutcomeSet,
     MarketOutcome,
@@ -29,7 +33,7 @@ from investmentagent.experiments import (
 )
 
 
-ANALYSIS_SCHEMA_VERSION = 1
+ANALYSIS_SCHEMA_VERSION = 2
 MIN_RELIABLE_EVALUATION_DATES = 20
 MIN_IC_SAMPLE = 2
 
@@ -170,6 +174,7 @@ def build_performance_v2_analysis(
         warnings.append("No stored market outcomes are available for analysis.")
     analysis = {
         "schema_version": ANALYSIS_SCHEMA_VERSION,
+        "analysis_methodology": ANALYSIS_METHODOLOGY,
         "generated_at": _format_timestamp(generated_at),
         "return_basis": "gross adjusted-close total-return-compatible prices",
         "costs_excluded": ["spread", "commissions", "slippage"],
@@ -178,6 +183,8 @@ def build_performance_v2_analysis(
         ),
         "methodology": {
             **selection,
+            "membership": "immutable X population first; attach Y afterward without replacements",
+            "cohort_returns": "observed-member diagnostics with fixed denominators; exact equal-weight returns require complete cohorts",
             "analysis_key": ["strategy", "scoring_model_version", "horizon"],
             "benchmark": (
                 "equal-weight valid outcomes from the original point-in-time evaluation universe"
@@ -190,7 +197,7 @@ def build_performance_v2_analysis(
                 "cross-sectional metrics are computed for every run; only analysis-eligible runs are aggregated"
             ),
             "buckets": (
-                "rank quantiles; 10 buckets at n>=50, 5 at n>=25, 2 at n>=10, otherwise 1"
+                "original X rank quantiles; 10 buckets at n>=50, 5 at n>=25, 2 at n>=10, otherwise 1; floor(index * buckets / n)"
             ),
             "analysis_eligibility": eligibility_criteria.as_dict(),
             "country_analysis_eligibility": (
@@ -238,6 +245,9 @@ def spearman_rank_correlation(left: Iterable[float], right: Iterable[float]) -> 
 
 
 def save_analysis_json(path: Path, analysis: dict[str, Any]) -> Path:
+    _validate_analysis_version(analysis)
+    if path.exists():
+        _validate_analysis_version(json.loads(path.read_text(encoding="utf-8")))
     content = json.dumps(
         analysis,
         allow_nan=False,
@@ -250,8 +260,20 @@ def save_analysis_json(path: Path, analysis: dict[str, Any]) -> Path:
 
 
 def save_analysis_markdown(path: Path, analysis: dict[str, Any]) -> Path:
+    _validate_analysis_version(analysis)
+    if path.exists() and f"Analysis methodology: {ANALYSIS_METHODOLOGY}\n" not in path.read_text(encoding="utf-8"):
+        raise ValueError("refusing to overwrite historical analysis; use a versioned output path")
     _atomic_write_if_changed(path, render_performance_v2_markdown(analysis) + "\n")
     return path
+
+
+def _validate_analysis_version(analysis: dict[str, Any]) -> None:
+    if analysis.get("schema_version") != ANALYSIS_SCHEMA_VERSION or analysis.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+        raise ValueError("refusing to mix or overwrite analysis methodology versions; use a versioned output path")
+    for section in (analysis, analysis.get("challenger_analysis", {})):
+        for metric in [*section.get("run_metrics", []), *section.get("groups", [])]:
+            if metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+                raise ValueError("cannot mix analysis methodology versions")
 
 
 def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
@@ -259,11 +281,13 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         "# Performance v2: Ranking Quality",
         "",
         f"Generated: {analysis['generated_at']}",
+        f"Analysis methodology: {analysis['analysis_methodology']}",
         f"Return methodology: {analysis['methodology'].get('return_methodology', 'legacy/unverified')}",
         f"Revision policy: {analysis['methodology'].get('outcome_revision_policy', 'legacy/unverified')}",
         f"Analysis data cutoff: {analysis['methodology'].get('analysis_data_cutoff') or 'all retained data'}",
         "",
         "Gross adjusted-close returns are shown. Spread, commissions, and slippage are excluded.",
+        "Cohorts are frozen from X before attaching Y. Ranking summaries use observed-member diagnostics, not exact portfolio returns. JSON includes fixed membership and coverage for each cohort; exact equal-weight returns are unavailable until every member is observed.",
         "",
     ]
     for warning in analysis.get("warnings", []):
@@ -278,13 +302,13 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         [
             "## Run-Level Summary",
             "",
-            "| Strategy | Model | Horizon | Evaluations | Due | Eligible | Partial | Avg n | Avg due coverage | Required coverage | Mean score IC | Median score IC | Mean final-rank IC | IC hit rate | Top decile - universe |",
-            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+            "| Strategy | Model | Horizon | Evaluations | Due | Eligible | Partial | Avg n | Avg due coverage | Required coverage | Mean score IC | Median score IC | Mean final-rank IC | IC hit rate | Observed top decile - universe | Top-decile coverage |",
+            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
         ]
     )
     for group in groups:
         lines.append(
-            "| {strategy} | {model} | {horizon} | {runs} | {due} | {eligible} | {partial} | {size} | {coverage} | {required} | {mean_ic} | {median_ic} | {rank_ic} | {hit_rate} | {spread} |".format(
+            "| {strategy} | {model} | {horizon} | {runs} | {due} | {eligible} | {partial} | {size} | {coverage} | {required} | {mean_ic} | {median_ic} | {rank_ic} | {hit_rate} | {spread} | {top_coverage} |".format(
                 strategy=group["strategy"],
                 model=group["scoring_model_version"],
                 horizon=group["horizon"]["label"],
@@ -304,6 +328,7 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
                 spread=_format_return(
                     group["top_vs_universe"]["mean_top_decile_minus_universe_pct"]
                 ),
+                top_coverage=_format_percent(group["top_vs_universe"]["cohort_coverage"]["top_decile"]["coverage_pct"]),
             )
         )
     lines.extend(["", "## Rank Buckets", ""])
@@ -330,7 +355,9 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
                     f"- Bucket {bucket['bucket']} (best rank first): "
                     f"{_format_return(bucket['mean_return_pct'])}; "
                     f"{bucket['observations']} observations across "
-                    f"{bucket['evaluation_dates']} dates"
+                    f"{bucket['evaluation_dates']} dates; "
+                    f"{bucket['priced_member_observations']}/{bucket['decision_time_member_observations']} "
+                    f"fixed member-date observations ({_format_percent(bucket['coverage_pct'])})"
                 )
         lines.append("")
     long_term_groups = [
@@ -346,7 +373,9 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
                 lines.append(
                     f"- {tier['tier']}: {_format_return(tier['mean_return_pct'])}; "
                     f"{tier['observations']} observations across "
-                    f"{tier['evaluation_dates']} dates"
+                    f"{tier['evaluation_dates']} dates; "
+                    f"{tier['priced_member_observations']}/{tier['decision_time_member_observations']} "
+                    f"fixed member-date observations ({_format_percent(tier['coverage_pct'])})"
                 )
             lines.append("")
     lines.extend(["## Country Breakdown", ""])
@@ -361,7 +390,7 @@ def render_performance_v2_markdown(analysis: dict[str, Any]) -> str:
         for country in group["countries"]:
             lines.append(
                 f"- {country['country']}: "
-                f"{_format_return(country['mean_equal_weight_return_pct'])}; "
+                f"observed-member mean {_format_return(country['mean_observed_member_return_pct'])}; "
                 f"mean score IC {_format_number(country['score_ic']['mean'], 3)}; "
                 f"{country['analysis_eligible_run_count']}/{country['due_evaluation_dates']} "
                 f"eligible dates; {_format_percent(country['average_outcome_coverage_pct'])} "
@@ -393,6 +422,7 @@ def _append_challenger_report(
     lines.append(
         f"Challenger sidecars recorded: {challenger.get('recorded_sidecar_count', 0)}."
     )
+    lines.append("V1 ranking diagnostics retain legacy selection semantics; its challenger portfolio is unverified. V2 records the shared production policy. Portfolio returns and ranking diagnostics are separate.")
     lines.append("")
     for warning in challenger.get("warnings", []):
         lines.append(f"> **Warning:** {warning}")
@@ -427,6 +457,16 @@ def _append_challenger_report(
                 )
             )
         lines.append("")
+    for group in groups:
+        coverage = group["cohort_coverage"]
+        lines.append(
+            f"- {group['experiment_id']} / {group['horizon']['label']} / "
+            f"selection {group['selection_configuration_id']}: eligible-date fixed top-decile "
+            f"coverage champion {_format_percent(coverage['champion']['top_decile']['coverage_pct'])}, "
+            f"challenger {_format_percent(coverage['challenger']['top_decile']['coverage_pct'])}."
+        )
+    if groups:
+        lines.append("")
     statuses = challenger.get("run_statuses", [])
     missing = [status for status in statuses if status["status"] == "challenger not recorded"]
     if missing:
@@ -456,6 +496,8 @@ def _analyze_run_horizon(
     rows_by_company = {row.company_id: row for row in snapshot.rows}
     if set(outcomes_by_company) != set(rows_by_company):
         raise ValueError("outcome companies do not match the original evaluation universe")
+    membership = DecisionMembership.from_snapshot(snapshot)
+    by_id_returns = observed_returns(outcomes)
     priced_pairs = [
         (row, outcomes_by_company[row.company_id])
         for row in snapshot.rows
@@ -475,15 +517,11 @@ def _analyze_run_horizon(
         ]
         if len(values) >= 2:
             country_returns[country] = statistics.fmean(values)
-    bucket_count = _bucket_count(len(priced_pairs))
+    bucket_count = len(membership.buckets)
     bucket_by_company = {
-        row.company_id: min(
-            bucket_count,
-            (index * bucket_count // len(priced_pairs)) + 1,
-        )
-        for index, (row, _) in enumerate(
-            sorted(priced_pairs, key=lambda pair: pair[0].rank)
-        )
+        company_id: index
+        for index, cohort in enumerate(membership.buckets, 1)
+        for company_id in cohort.company_ids
     }
     company_metrics = [
         {
@@ -509,19 +547,22 @@ def _analyze_run_horizon(
                 else None
             ),
         }
-        for row, outcome in priced_pairs
+        for row in snapshot.rows
+        for outcome in (outcomes_by_company[row.company_id],)
     ]
     scores = [row.score["total"] for row, _ in priced_pairs]
     negative_ranks = [-float(row.rank) for row, _ in priced_pairs]
-    bucket_metrics = _run_bucket_metrics(priced_pairs, bucket_count, universe_return)
-    top_metrics = _top_metrics(priced_pairs, universe_return)
+    bucket_metrics = _run_bucket_metrics(membership, by_id_returns, universe_return)
+    top = top_metrics(membership, by_id_returns, universe_return)
     original_country_counts = Counter(row.country for row in snapshot.rows)
+    country_cohorts = membership.groups("country")
     country_metrics = [
         _country_run_metric(
             country,
             [pair for pair in priced_pairs if pair[0].country == country],
             original_company_count=original_count,
             eligibility_criteria=country_eligibility_criteria,
+            cohort=country_cohorts[country],
         )
         for country, original_count in sorted(original_country_counts.items())
     ]
@@ -537,6 +578,7 @@ def _analyze_run_horizon(
         list(eligibility.reasons) if is_due else ["horizon is not due"]
     )
     return {
+        "analysis_methodology": ANALYSIS_METHODOLOGY,
         "evaluation_run_id": snapshot.run_id,
         "report_date": snapshot.report_date.isoformat(),
         "decision_at": _format_timestamp(snapshot.decision_at),
@@ -563,6 +605,9 @@ def _analyze_run_horizon(
             "analysis_eligible" if analysis_eligible else "descriptive_partial"
         ),
         "status_counts": dict(sorted(statuses.items())),
+        "universe_cohort": membership.universe.observe(by_id_returns),
+        "public_portfolio": recorded_public_portfolio(snapshot, by_id_returns),
+        "return_statistic_scope": "observed-member diagnostics; see cohort coverage and separate exact returns",
         "universe_equal_weight_return_pct": universe_return,
         "score_return_spearman_ic": spearman_rank_correlation(scores, numeric_returns),
         "final_rank_return_spearman_ic": spearman_rank_correlation(
@@ -573,9 +618,11 @@ def _analyze_run_horizon(
         "bucket_count": bucket_count,
         "buckets": bucket_metrics,
         "bucket_returns_monotonic": _bucket_returns_monotonic(bucket_metrics),
-        "top_vs_universe": top_metrics,
+        "top_vs_universe": top,
         "long_term_gate_tiers": (
-            _run_gate_metrics(priced_pairs) if snapshot.strategy == "long-term" else []
+            [{"tier": tier, **cohort_diagnostic(cohort, by_id_returns)}
+             for tier, cohort in membership.groups("gate_tier").items()]
+            if snapshot.strategy == "long-term" else []
         ),
     }
 
@@ -583,6 +630,8 @@ def _analyze_run_horizon(
 def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
     grouped: dict[tuple[str, str, int, str], list[dict[str, Any]]] = defaultdict(list)
     for metric in run_metrics:
+        if metric.get("analysis_methodology") != ANALYSIS_METHODOLOGY:
+            raise ValueError("cannot mix analysis methodology versions")
         horizon = metric["horizon"]
         grouped[
             (
@@ -616,9 +665,11 @@ def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, 
             company["company_id"]
             for metric in due_metrics
             for company in metric["company_benchmarks"]
+            if company["return_pct"] is not None
         }
         results.append(
             {
+                "analysis_methodology": ANALYSIS_METHODOLOGY,
                 "strategy": strategy,
                 "scoring_model_version": model_version,
                 "horizon": {
@@ -668,62 +719,23 @@ def _aggregate_run_metrics(run_metrics: list[dict[str, Any]]) -> list[dict[str, 
 
 
 def _run_bucket_metrics(
-    priced_pairs: list[tuple[EvaluationCompanyRow, MarketOutcome]],
-    bucket_count: int,
+    membership: DecisionMembership,
+    returns: dict[str, float],
     universe_return: float | None,
 ) -> list[dict[str, Any]]:
-    if bucket_count == 0:
-        return []
-    ordered = sorted(priced_pairs, key=lambda pair: pair[0].rank)
-    bucket_values: dict[int, list[float]] = defaultdict(list)
-    for index, (_, outcome) in enumerate(ordered):
-        bucket = min(bucket_count, (index * bucket_count // len(ordered)) + 1)
-        if outcome.raw_forward_return_pct is not None:
-            bucket_values[bucket].append(outcome.raw_forward_return_pct)
     return [
         {
             "bucket": bucket,
-            "observations": len(values),
-            "mean_return_pct": statistics.fmean(values),
-            "median_return_pct": statistics.median(values),
+            **observed,
             "mean_excess_vs_universe_pct": (
-                statistics.fmean(values) - universe_return
-                if universe_return is not None
+                observed["mean_return_pct"] - universe_return
+                if universe_return is not None and observed["mean_return_pct"] is not None
                 else None
             ),
         }
-        for bucket, values in sorted(bucket_values.items())
+        for bucket, cohort in enumerate(membership.buckets, 1)
+        for observed in (cohort_diagnostic(cohort, returns),)
     ]
-
-
-def _top_metrics(
-    priced_pairs: list[tuple[EvaluationCompanyRow, MarketOutcome]],
-    universe_return: float | None,
-) -> dict[str, Any]:
-    ordered = sorted(priced_pairs, key=lambda pair: pair[0].rank)
-    if not ordered:
-        return {
-            "top_10_average_return_pct": None,
-            "top_decile_count": 0,
-            "top_decile_average_return_pct": None,
-            "universe_average_return_pct": None,
-            "top_decile_minus_universe_pct": None,
-            "top_decile_minus_bottom_decile_pct": None,
-        }
-    values = [float(outcome.raw_forward_return_pct) for _, outcome in ordered]
-    decile_size = max(1, math.ceil(len(values) * 0.1))
-    top_decile = statistics.fmean(values[:decile_size])
-    bottom_decile = statistics.fmean(values[-decile_size:])
-    return {
-        "top_10_average_return_pct": statistics.fmean(values[: min(10, len(values))]),
-        "top_decile_count": decile_size,
-        "top_decile_average_return_pct": top_decile,
-        "universe_average_return_pct": universe_return,
-        "top_decile_minus_universe_pct": (
-            top_decile - universe_return if universe_return is not None else None
-        ),
-        "top_decile_minus_bottom_decile_pct": top_decile - bottom_decile,
-    }
 
 
 def _country_run_metric(
@@ -732,6 +744,7 @@ def _country_run_metric(
     *,
     original_company_count: int,
     eligibility_criteria: AnalysisEligibilityCriteria,
+    cohort: DecisionCohort,
 ) -> dict[str, Any]:
     scores = [row.score["total"] for row, _ in pairs]
     negative_ranks = [-float(row.rank) for row, _ in pairs]
@@ -741,8 +754,11 @@ def _country_run_metric(
         original_company_count,
         criteria=eligibility_criteria,
     )
+    observed = cohort.observe({row.company_id: float(outcome.raw_forward_return_pct)
+                               for row, outcome in pairs})
     return {
         "country": country,
+        **observed,
         "original_company_count": original_company_count,
         "valid_company_count": len(pairs),
         "outcome_coverage_pct": eligibility.coverage_pct,
@@ -754,32 +770,12 @@ def _country_run_metric(
             if eligibility.eligible
             else "descriptive_partial"
         ),
-        "equal_weight_return_pct": (
-            statistics.fmean(returns) if returns else None
-        ),
+        "equal_weight_return_pct": observed["exact_equal_weight_return_pct"],
         "score_return_spearman_ic": spearman_rank_correlation(scores, returns),
         "final_rank_return_spearman_ic": spearman_rank_correlation(
             negative_ranks, returns
         ),
     }
-
-
-def _run_gate_metrics(
-    priced_pairs: list[tuple[EvaluationCompanyRow, MarketOutcome]],
-) -> list[dict[str, Any]]:
-    tiers: dict[str, list[float]] = defaultdict(list)
-    for row, outcome in priced_pairs:
-        tier = str((row.long_term or {}).get("gate_tier") or "Unknown")
-        tiers[tier].append(float(outcome.raw_forward_return_pct))
-    return [
-        {
-            "tier": tier,
-            "observations": len(values),
-            "mean_return_pct": statistics.fmean(values),
-            "median_return_pct": statistics.median(values),
-        }
-        for tier, values in sorted(tiers.items())
-    ]
 
 
 def _aggregate_ic(values: list[float]) -> dict[str, Any]:
@@ -816,6 +812,9 @@ def _aggregate_top_metrics(metrics: list[dict[str, Any]]) -> dict[str, Any]:
         if row["top_decile_minus_universe_pct"] is not None
     ]
     return {
+        "statistic_scope": "run-level observed-member ranking diagnostics; not exact portfolio returns",
+        "cohort_coverage": {name: aggregate_coverage(row["cohorts"][name] for row in top_rows)
+                            for name in ("top_10", "top_decile", "bottom_decile")},
         "mean_top_10_return_pct": _mean_present(
             row["top_10_average_return_pct"] for row in top_rows
         ),
@@ -853,14 +852,16 @@ def _aggregate_bucket_schemes(metrics: list[dict[str, Any]]) -> list[dict[str, A
                 if row["bucket"] == bucket
             ]
             run_returns = [row["mean_return_pct"] for row in rows]
+            medians = [row["median_return_pct"] for row in rows if row["median_return_pct"] is not None]
             run_excess = [row["mean_excess_vs_universe_pct"] for row in rows]
             buckets.append(
                 {
                     "bucket": bucket,
-                    "mean_return_pct": _mean_or_none(run_returns),
+                    **aggregate_coverage(rows),
+                    "mean_return_pct": _mean_present(run_returns),
                     "median_return_pct": (
-                        statistics.median(row["median_return_pct"] for row in rows)
-                        if rows
+                        statistics.median(medians)
+                        if medians
                         else None
                     ),
                     "mean_excess_return_pct": _mean_present(run_excess),
@@ -890,16 +891,16 @@ def _aggregate_gate_tiers(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]
     return [
         {
             "tier": tier,
-            "mean_return_pct": statistics.fmean(
+            **aggregate_coverage(rows),
+            "mean_return_pct": _mean_present(
                 row["mean_return_pct"] for row in rows
             ),
-            "median_of_run_medians_pct": statistics.median(
-                row["median_return_pct"] for row in rows
-            ),
+            "median_of_run_medians_pct": statistics.median(medians) if medians else None,
             "observations": sum(row["observations"] for row in rows),
             "evaluation_dates": len(rows),
         }
         for tier, rows in sorted(rows_by_tier.items())
+        for medians in ([row["median_return_pct"] for row in rows if row["median_return_pct"] is not None],)
     ]
 
 
@@ -930,6 +931,9 @@ def _aggregate_country_metrics(metrics: list[dict[str, Any]]) -> list[dict[str, 
         results.append(
             {
                 "country": country,
+                "due_cohort_coverage": aggregate_coverage(rows),
+                "eligible_cohort_coverage": aggregate_coverage(eligible_rows),
+                "mean_observed_member_return_pct": _mean_present(row["observed_mean_return_pct"] for row in eligible_rows),
                 "due_evaluation_dates": len(rows),
                 "evaluation_dates": len(eligible_rows),
                 "analysis_eligible_run_count": len(eligible_rows),
@@ -1014,6 +1018,14 @@ def _validate_store_against_snapshot(
         raise ValueError("outcome store strategy does not match evaluation snapshot")
     if store.scoring_model_version != snapshot.scoring_model_version:
         raise ValueError("outcome store model version does not match evaluation snapshot")
+    rows = {row.company_id: row for row in snapshot.rows}
+    for outcome in store.outcomes:
+        row = rows.get(outcome.company_id)
+        if (row is None or outcome.original_rank != row.rank
+                or outcome.decision_at != snapshot.decision_at
+                or any(getattr(outcome, field) != getattr(row, field)
+                       for field in ("isin", "ticker", "country", "exchange", "segment"))):
+            raise ValueError("outcome decision-time identity differs from immutable X")
 
 
 def _average_tied_ranks(values: tuple[float, ...]) -> tuple[float, ...]:
@@ -1045,20 +1057,12 @@ def _pearson_correlation(left: tuple[float, ...], right: tuple[float, ...]) -> f
     return sum(a * b for a, b in zip(left_delta, right_delta, strict=True)) / denominator
 
 
-def _bucket_count(sample_size: int) -> int:
-    if sample_size >= 50:
-        return 10
-    if sample_size >= 25:
-        return 5
-    if sample_size >= 10:
-        return 2
-    return 1 if sample_size else 0
-
-
 def _bucket_returns_monotonic(buckets: list[dict[str, Any]]) -> bool | None:
     if len(buckets) < 2:
         return None
     values = [bucket["mean_return_pct"] for bucket in buckets]
+    if any(value is None for value in values):
+        return None
     return all(left >= right for left, right in zip(values, values[1:], strict=False))
 
 

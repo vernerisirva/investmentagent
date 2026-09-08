@@ -20,7 +20,7 @@ from investmentagent.evaluation_outcomes import (
     refresh_outcome_store,
 )
 from investmentagent.experiments import (
-    RELATIVE_VALUATION_EXPERIMENT_ID,
+    ACTIVE_RELATIVE_VALUATION_EXPERIMENT_ID,
     build_challenger_experiment_snapshot,
     discover_experiment_snapshots,
     save_experiment_snapshot,
@@ -667,7 +667,7 @@ def evaluate_experiments(
         help="Challenger experiment snapshot root.",
     ),
     experiment_id: str = typer.Option(
-        RELATIVE_VALUATION_EXPERIMENT_ID,
+        ACTIVE_RELATIVE_VALUATION_EXPERIMENT_ID,
         "--experiment-id",
         help="Experiment ID to inspect.",
     ),
@@ -874,12 +874,12 @@ def evaluate_analyze(
         help="Challenger experiment snapshot root.",
     ),
     output_json: str = typer.Option(
-        "data/evaluation-analysis/performance-v2.json",
+        "data/evaluation-analysis/fixed-decision-membership-v1/performance-v2.json",
         "--output-json",
         help="Machine-readable Performance v2 analysis path.",
     ),
     output_markdown: str = typer.Option(
-        "data/evaluation-analysis/performance-v2.md",
+        "data/evaluation-analysis/fixed-decision-membership-v1/performance-v2.md",
         "--output-markdown",
         help="Research-oriented Performance v2 Markdown path.",
     ),

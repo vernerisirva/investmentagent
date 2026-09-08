@@ -20,6 +20,7 @@ from investmentagent.long_term_quality import (
 )
 from investmentagent.providers import ResearchProvider
 from investmentagent.scoring import score_research
+from investmentagent.selection import SelectionPolicy, gate_order, rank_and_select, select_ranked
 
 
 WATCHLIST_STRATEGIES = ("balanced", "long-term", "trading", "momentum", "discovery")
@@ -50,6 +51,8 @@ class WatchlistBuildResult:
     ranked_items: tuple[WatchlistItem, ...]
     selected_items: tuple[WatchlistItem, ...]
     diagnostics: WatchlistBuildDiagnostics
+    selection_policy: SelectionPolicy | None = None
+    selection_candidates: tuple[WatchlistItem, ...] = ()
 
 
 def normalize_watchlist_strategy(strategy: str) -> str:
@@ -183,25 +186,11 @@ def build_watchlist_result(
     duplicate_count = len(scored_items) - len(deduplicated_items)
     if duplicate_count:
         exclusion_counts["duplicate_company"] = duplicate_count
-    ranked_candidates = _rank_watchlist_items(
-        deduplicated_items,
-        rank_key=rank_key,
+    selection_policy = SelectionPolicy(limit, tuple((min_country_counts or {}).items()))
+    constrained_full_order, selected_candidates = rank_and_select(
+        deduplicated_items, policy=selection_policy, rank_key=rank_key,
+        identity=_watchlist_item_key, country=lambda item: item.research.company.country,
     )
-    selected_candidates = _apply_min_country_counts(
-        ranked_candidates,
-        limit=limit,
-        min_country_counts=min_country_counts or {},
-        rank_key=rank_key,
-    )
-    selected_item_ids = {id(item) for item in selected_candidates}
-    constrained_full_order = [
-        *selected_candidates,
-        *(
-            item
-            for item in ranked_candidates
-            if id(item) not in selected_item_ids
-        ),
-    ]
     ranked_items = tuple(
         WatchlistItem(rank=rank, research=item.research, score=item.score)
         for rank, item in enumerate(constrained_full_order, start=1)
@@ -221,6 +210,8 @@ def build_watchlist_result(
         ranked_items=ranked_items,
         selected_items=selected_items,
         diagnostics=diagnostics,
+        selection_policy=selection_policy,
+        selection_candidates=tuple(deduplicated_items),
     )
 
 
@@ -232,54 +223,9 @@ def _apply_min_country_counts(
 ) -> list[WatchlistItem]:
     if rank_key is None:
         rank_key = _watchlist_rank_key
-    selected = list(ranked_items[:limit])
-    selected_keys = {_watchlist_item_key(item) for item in selected}
-
-    for country, required_count in min_country_counts.items():
-        normalized_country = country.upper()
-        if required_count <= 0:
-            continue
-        current_count = sum(
-            item.research.company.country == normalized_country for item in selected
-        )
-        missing_count = required_count - current_count
-        if missing_count <= 0:
-            continue
-
-        replacements = [
-            item
-            for item in ranked_items[limit:]
-            if item.research.company.country == normalized_country
-            and _watchlist_item_key(item) not in selected_keys
-        ][:missing_count]
-        for replacement in replacements:
-            removable_index = _lowest_ranked_removable_index(
-                selected, min_country_counts
-            )
-            if removable_index is None:
-                break
-            removed = selected.pop(removable_index)
-            selected_keys.remove(_watchlist_item_key(removed))
-            selected.append(replacement)
-            selected_keys.add(_watchlist_item_key(replacement))
-
-    return _rank_watchlist_items(selected, rank_key=rank_key)
-
-
-def _lowest_ranked_removable_index(
-    selected: list[WatchlistItem], min_country_counts: dict[str, int]
-) -> int | None:
-    protected_counts = {country.upper(): count for country, count in min_country_counts.items()}
-    country_counts: dict[str, int] = {}
-    for item in selected:
-        country = item.research.company.country
-        country_counts[country] = country_counts.get(country, 0) + 1
-
-    for index in range(len(selected) - 1, -1, -1):
-        country = selected[index].research.company.country
-        if country_counts[country] > protected_counts.get(country, 0):
-            return index
-    return None
+    return select_ranked(ranked_items, limit=limit, minimum_country_counts=min_country_counts,
+                         rank_key=rank_key, identity=_watchlist_item_key,
+                         country=lambda item: item.research.company.country)
 
 
 def _watchlist_item_key(item: WatchlistItem) -> tuple[str, str]:
@@ -346,13 +292,7 @@ def _watchlist_rank_key(item: WatchlistItem) -> tuple[float, str]:
 def _long_term_watchlist_rank_key(item: WatchlistItem) -> tuple[int, float, str]:
     company = item.research.company
     gate = assess_long_term_gate(item.research)
-    gate_order = {
-        LongTermGateTier.HIGH_CONVICTION: 0,
-        LongTermGateTier.FUNDAMENTAL_WATCHLIST: 1,
-        LongTermGateTier.SPECULATIVE_MONITOR: 2,
-        LongTermGateTier.INSUFFICIENT_EVIDENCE: 3,
-    }
-    return (gate_order[gate.tier], -item.score.total, company.ticker)
+    return (gate_order(gate.tier.value), -item.score.total, company.ticker)
 
 
 def _get_company_research(provider: ResearchProvider, company: Company) -> CompanyResearch:

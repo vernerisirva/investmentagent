@@ -20,7 +20,6 @@ from investmentagent.evaluation_outcomes import (
     refresh_evaluation_outcomes,
 )
 from investmentagent.experiments import (
-    EXPERIMENT_SCHEMA_VERSION,
     MAX_RELATIVE_VALUATION_ADJUSTMENT,
     RELATIVE_VALUATION_EXPERIMENT_ID,
     RELATIVE_VALUATION_V1,
@@ -56,6 +55,7 @@ from investmentagent.reports import (
     build_watchlist_result,
 )
 from investmentagent.scoring import SCORING_MODEL_VERSION
+from investmentagent.selection import SelectionPolicy
 
 
 UTC = timezone.utc
@@ -155,6 +155,8 @@ def _manual_run(
     result = WatchlistBuildResult(
         ranked_items=items,
         selected_items=items[: min(public_limit, len(items))],
+        selection_policy=SelectionPolicy(public_limit),
+        selection_candidates=items,
         diagnostics=WatchlistBuildDiagnostics(
             source_universe_size=len(items),
             filtered_universe_size=len(items),
@@ -279,7 +281,7 @@ def test_experiment_does_not_modify_champion_or_public_selection():
         decision_at=datetime(2026, 8, 10, 8, tzinfo=UTC),
         report_date=date(2026, 8, 10),
         countries=("SE",),
-        configuration={"provider": "fixture"},
+        configuration={"provider": "fixture", "public_limit": 3},
         source_checks=provider.source_checks(),
     )
     champion_before = [(item.rank, item.score.total) for item in result.ranked_items]
@@ -418,7 +420,7 @@ def test_experiment_snapshot_round_trip_links_to_production_and_omits_raw_values
     restored = load_experiment_snapshot(path)
 
     assert restored == experiment
-    assert restored.schema_version == EXPERIMENT_SCHEMA_VERSION
+    assert restored.schema_version == 1  # Historical v1 sidecars keep their schema.
     assert restored.base_evaluation_run_id == snapshot.run_id
     assert restored.decision_at == snapshot.decision_at
     row_payload = restored.rows[0].as_payload()
