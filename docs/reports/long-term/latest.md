@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-09T05:08:46.038627+00:00
+- generated_at: 2026-09-10T05:01:48.175551+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 23, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 381, 'cache_misses': 546, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 404, 'fresh_companies': 404, 'stale_companies': 0, 'missing_companies': 523, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-09T05:08:45.896250Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 211, 'fresh': 211, 'stale': 0, 'missing': 522}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 404, 'cache_misses': 523, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 433, 'fresh_companies': 433, 'stale_companies': 0, 'missing_companies': 494, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-10T05:01:48.050508Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 240, 'fresh': 240, 'stale': 0, 'missing': 493}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,16 +19,16 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-48931e4017a6d7e52b4e8bd5', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-09T05:08:46.038627Z'}
+- evaluation: {'run_id': 'evaluation-a0d27438a20d2f176079021c', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-10T05:01:48.175551Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=935, SE=741, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=330, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=23; cache coverage=404/927 (fresh=404, stale=0, missing=523); cache hits=381; cache misses=546; cutoff ties=1 (0 excluded)
-- finimpulse fundamentals: warning - 23/34 Finimpulse lookups parsed; valuation support 23/23; direct valuation 22/23; proxy inputs 22/23; missing valuation support 0/23
+- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=433/927 (fresh=433, stale=0, missing=494); cache hits=404; cache misses=523; cutoff ties=1 (0 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
-- valuation fallback: warning - 0/7 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/11 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/7 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/11 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
+- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
 
 ## Watchlist
 
@@ -121,7 +121,51 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (TRAC-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #3 Surgical Science Sweden (SUS)
+## #3 Avtech Sweden B (AVT B)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** AVTECH Sweden AB (publ) engages in the development and sale of products and services for digital air traffic management systems. The company provides ClearPath Safety, a real-time flight path optimization service with high-resolution weather and real aircraft parameters, such as weight, cost Index, and routing; Clearpath Optimization that offers automatic real-time trajectory optimization, vertical, lateral, speed, and on-time performance calculations; and Aventus, a service that delivers accurate wind and temperature data to the aircraft's computer to enhance the aircraft's calculations during the climb, cruise, and descent phases. It also offers SIGMA, an automatic service that presents precise turbulence data and weather hazards to the pilots in real time during the flight; and proFLIGHT, a unique visual flight weather and optimization tool for use by the professional pilot. In addition, the company offers ClearPath Vertical, ClearPath Dashboard, ClearPath App, ClearPath Dispatch, Weather Data, AMP, and Air Traffic Management services. The company serves airlines, airports, aviation and technology companies, and aircraft manufacturers. AVTECH Sweden AB (publ) was founded in 1988 and is headquartered in Kista, Sweden.
+
+**Score:** 70.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Avtech Sweden B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 4/5 | Healthy revenue growth of 6.8%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (10.0333)
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (AVT-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #4 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -166,7 +210,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #4 Industrivärden A (INDU A)
+## #5 Industrivärden A (INDU A)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -208,7 +252,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (INDU-A.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Industrivärden C (INDU C)
+## #6 Industrivärden C (INDU C)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -250,7 +294,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (INDU-C.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Lundbergföretagen B (LUND B)
+## #7 Lundbergföretagen B (LUND B)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -292,7 +336,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (LUND-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Outokumpu Oyj (OUT1V)
+## #8 Outokumpu Oyj (OUT1V)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -334,7 +378,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (OUT1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #8 Ratos B (RATO B)
+## #9 Ratos B (RATO B)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -375,48 +419,6 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (RATO-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #9 Bure Equity (BURE)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Bure Equity AB (publ) is a private equity and venture capital firm specializing in secondary direct, later stage, middle market, mature, buyouts, mid venture, late venture, PIPES, bridge, industry consolidation, recapitalizations, growth capital, special situation and turnarounds. It primarily invests in education service companies, communication services, telecommunication services, medtech, consumer staples, financials, industrials, healthcare and information technology sectors. The firm prefers to invest in the Nordics and European developed markets. It invests between $5 million to $100 million. The firm seeks to be a principal shareholder with a controlling influence in the portfolio company. The firm takes majority stakes. Bure Equity AB (publ) was founded on November 23, 1992 and is based in Stockholm, Sweden.
-
-**Score:** 59
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Fundamental watchlist candidate
-**Thesis:** Bure Equity has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 1/5 | Revenue growth is not available. |
-| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 3/5 | No growth signal |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (4.59387)
-- Low P/B
-- Net cash balance sheet
-- Gate tier: High-conviction candidate
-- Fundamental watchlist candidate
-- Positive operating margin
-- Conservative balance sheet
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- No growth signal
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (BURE.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #10 Citycon Oyj (CTY1S)
 
