@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-10T05:01:48.175551+00:00
+- generated_at: 2026-09-11T05:02:03.811988+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 404, 'cache_misses': 523, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 433, 'fresh_companies': 433, 'stale_companies': 0, 'missing_companies': 494, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-10T05:01:48.050508Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 240, 'fresh': 240, 'stale': 0, 'missing': 493}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 433, 'cache_misses': 494, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 462, 'fresh_companies': 462, 'stale_companies': 0, 'missing_companies': 465, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-11T05:02:03.655001Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 269, 'fresh': 269, 'stale': 0, 'missing': 464}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,11 +19,11 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-a0d27438a20d2f176079021c', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-10T05:01:48.175551Z'}
+- evaluation: {'run_id': 'evaluation-a9bb708a3b811600e888b9b0', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-11T05:02:03.811988Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=935, SE=741, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=330, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=433/927 (fresh=433, stale=0, missing=494); cache hits=404; cache misses=523; cutoff ties=1 (0 excluded)
+- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=462/927 (fresh=462, stale=0, missing=465); cache hits=433; cache misses=494; cutoff ties=2 (0 excluded)
 - finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
@@ -210,7 +210,91 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Industrivärden A (INDU A)
+## #5 Dustin Group (DUST)
+
+`SE` | Nasdaq Stockholm | `main_market`
+
+**What the company does:** Dustin Group AB (publ) engages in online information technology business in Sweden, Finland, Denmark, the Netherlands, Norway, and Belgium. The company offers various hardware, software, financing solutions, subscription services, and other related services and solutions. It serves large companies and the public sector. The company was founded in 1984 and is headquartered in Nacka, Sweden. Dustin Group AB (publ) operates as a subsidiary of AxMedia AB.
+
+**Score:** 60.25
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Dustin Group has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 3/5 | Modest revenue growth of 2.7%. |
+| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (7.46582)
+- Low P/B
+- Small market cap
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (DUST.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #6 Humble Group (HUMBLE)
+
+`SE` | Nasdaq Stockholm | `main_market`
+
+**What the company does:** Humble Group AB (publ) develops, produces, and distributes fast-moving consumer goods in Sweden and internationally. It operates through four segments: Future Snacking, Sustainable Care, Quality Nutrition, and Nordic Distribution. The Future Snacking segment offers food, snack, and confectionery products. The Sustainable Care segment provides personal care and household products, such as skincare, oral care, hair care, and personal care products. The Quality Nutrition segment offers sports nutrition products and ingredients, as well as supplements for athletes and consumers. The Nordic Distribution segment provides a range of fast-moving consumer goods through a network of wholesalers and distributors. The company also sells ingredients and other raw materials. The company offers its products through grocery retailers, distributors, and online. The company was formerly known as Bayn Group AB (publ) and changed its name to Humble Group AB (publ) in April 2021. Humble Group AB (publ) was incorporated in 2009 and is based in Stockholm, Sweden.
+
+**Score:** 60.25
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Humble Group has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 3/5 | Modest revenue growth of 1.1%. |
+| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (7.4)
+- Low P/B
+- Small market cap
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (HUMBLE.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #7 Industrivärden A (INDU A)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -252,7 +336,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (INDU-A.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Industrivärden C (INDU C)
+## #8 Industrivärden C (INDU C)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -294,49 +378,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (INDU-C.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Lundbergföretagen B (LUND B)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** L E Lundbergföretagen AB (publ) engages in the manufacture and sale of paperboard, paper, and sawn timber products worldwide. The company operates through Lundberg's Real Estate Operations, Equity Management, Holmen, and Hufvudstaden segments. It is involved in the real estate, forest, and power operations; and provision of equity management services, including securities trading. The company also owns and manages office and retail properties. The company was founded in 1944 and is headquartered in Stockholm, Sweden.
-
-**Score:** 60
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Lundbergföretagen B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 10.4%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (10.332)
-- Low P/B
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (LUND-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #8 Outokumpu Oyj (OUT1V)
+## #9 Outokumpu Oyj (OUT1V)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -377,48 +419,6 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (OUT1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #9 Ratos B (RATO B)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Ratos AB (publ) is a private equity firm specializing in buyouts, turnarounds, add on acquisitions, small and middle market transactions. The firm does not invest in early stages and in companies that operate in the arms industry, pornography, or are detrimental to the environment. It seeks to invest in unlisted medium sized companies. The firm invests in industry and technology (including aftermarket information and training solutions, sustainable core material development, product and digital service development at the intersection between business strategy and technological development, secondary optics, camping and outdoor equipment, third-party logistics, and contract research for biotech and pharmaceutical companies,) construction and services (including electrification of rail infrastructure, maintenance of critical transportation infrastructure, technology and design of complex sustainable energy solutions, and Construction of commercial properties, public buildings and housing), consumer (including plants, flowers and related products) sectors. The firm typically invests in the Nordic region, with focus on Sweden, Finland, Denmark, and Norway. It seeks to invest in companies with equity investments between SEK250 million ($27.20 million) and SEK5000 million ($543.99 million), sales value between SEK300 million ($32.64 million) and SEK5000 million ($543.99million) and EBITDA greater than SEK50 million ($5.43 million). The firm takes both minority and majority stakes. The firm prefers to be the principal owner with a minimum holding of at least 20 percent and also seeks a board seat. It prefers to hold its investment between five to ten years. Ratos AB (publ) was founded in 1866 and is based in Stockholm, Sweden with additional office in Stockholm, Sweden.
-
-**Score:** 60
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Ratos B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 1.9%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (9.72128)
-- Low P/B
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (RATO-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #10 Citycon Oyj (CTY1S)
 
