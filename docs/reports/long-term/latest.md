@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-11T05:02:03.811988+00:00
+- generated_at: 2026-09-14T05:01:52.057930+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 433, 'cache_misses': 494, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 462, 'fresh_companies': 462, 'stale_companies': 0, 'missing_companies': 465, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-11T05:02:03.655001Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 269, 'fresh': 269, 'stale': 0, 'missing': 464}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 462, 'cache_misses': 465, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 491, 'fresh_companies': 491, 'stale_companies': 0, 'missing_companies': 436, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-14T05:01:51.896830Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 298, 'fresh': 298, 'stale': 0, 'missing': 435}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,12 +19,12 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-a9bb708a3b811600e888b9b0', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-11T05:02:03.811988Z'}
+- evaluation: {'run_id': 'evaluation-f68f1b28c4dc4ff12b36e887', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-14T05:01:52.057930Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=935, SE=741, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=330, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=462/927 (fresh=462, stale=0, missing=465); cache hits=433; cache misses=494; cutoff ties=2 (0 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
+- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=491/927 (fresh=491, stale=0, missing=436); cache hits=462; cache misses=465; cutoff ties=1 (0 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 27/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
 - free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
