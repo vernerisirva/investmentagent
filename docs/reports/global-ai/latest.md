@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-09-16 08:00 EEST
+- generated_at: 2026-09-17 08:00 EEST
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -49,7 +49,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Large-scale AI infrastructure, recommendation systems, open model strategy, and advertising optimization.
 **Score:** 66
-**Valuation:** P/E 23.1327; P/B 5.984
+**Valuation:** P/E 25.0651; P/B 6.53765
 **Quality:** Operating margin 34.8%; debt/equity 0.43
 **Growth:** Revenue growth 28.0%
 **Data quality:** partial
@@ -72,7 +72,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths.
 **Score:** 64
-**Valuation:** P/E 27.423; P/B 8.25476
+**Valuation:** P/E 28.1654; P/B 8.34584
 **Quality:** Operating margin 45.1%; debt/equity 0.2912
 **Growth:** Revenue growth 17.7%
 **Data quality:** partial
@@ -95,7 +95,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
 **Score:** 59
-**Valuation:** P/E 32.1346; P/B 88.9087
+**Valuation:** P/E 30.9733; P/B 85.5652
 **Quality:** Operating margin 60.3%; debt/equity 0.165
 **Growth:** Revenue growth 36.0%
 **Data quality:** partial
@@ -118,9 +118,9 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Creative Cloud and Document Cloud integrate generative AI into established professional workflows.
 **Score:** 57
-**Valuation:** P/E 14.5884; P/B 8.82877
-**Quality:** Operating margin 35.3%; debt/equity 0.6144
-**Growth:** Revenue growth 12.7%
+**Valuation:** P/E 14.3883; P/B 8.41112
+**Quality:** Operating margin 34.8%; debt/equity 0.5748
+**Growth:** Revenue growth 12.9%
 **Data quality:** partial
 
 #### Reasons
