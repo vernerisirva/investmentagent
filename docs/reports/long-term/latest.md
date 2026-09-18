@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-17T05:07:12.523328+00:00
+- generated_at: 2026-09-18T05:01:54.645304+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 549, 'cache_misses': 378, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 578, 'fresh_companies': 578, 'stale_companies': 0, 'missing_companies': 349, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-17T05:07:12.362066Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 385, 'fresh': 385, 'stale': 0, 'missing': 348}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 578, 'cache_misses': 349, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 607, 'fresh_companies': 607, 'stale_companies': 0, 'missing_companies': 320, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-18T05:01:54.492840Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 414, 'fresh': 414, 'stale': 0, 'missing': 319}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,12 +19,12 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-258a58a33bc1451525ba9ea8', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-17T05:07:12.523328Z'}
+- evaluation: {'run_id': 'evaluation-226879fb5a3a9e765d8f76b6', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-18T05:01:54.645304Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=935, SE=741, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=330, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=578/927 (fresh=578, stale=0, missing=349); cache hits=549; cache misses=378; cutoff ties=1 (0 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 27/29; proxy inputs 28/29; missing valuation support 0/29
+- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=607/927 (fresh=607, stale=0, missing=320); cache hits=578; cache misses=349; cutoff ties=1 (0 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 27/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
 - free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
@@ -252,7 +252,49 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (DUST.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Humble Group (HUMBLE)
+## #6 Green Landscaping Group (GREEN)
+
+`SE` | Nasdaq Stockholm | `main_market`
+
+**What the company does:** Green Landscaping Group AB (publ), together with its subsidiaries, engages in the green space management business in Sweden, Norway, Germany, and Europe. The company offers grounds maintenance services, including waste collection, lawn mowing, pruning, planting, leaf removal, and road maintenance; snow and ice removal services; and gravel and sand collection services. It also provides landscaping and construction services, such as landscaping architecture, ground design, plant technology, project management, inspection, and construction; and water, wastewater, and arborist services. In addition, the company engages in the maintenance of green spaces, parks, and outdoor environments; and construction of playgrounds, sports facilities, and other functional urban environments. It serves municipalities, public-sector clients, property owners, and private-sector companies. The company was formerly known as Green Landscaping Holding AB (publ) and changed its name to Green Landscaping Group AB (publ) in May 2019. Green Landscaping Group AB (publ) was incorporated in 2008 and is based in Stockholm, Sweden.
+
+**Score:** 60.25
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Green Landscaping Group has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 4/5 | Healthy revenue growth of 14.7%. |
+| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (8.94958)
+- Low P/B
+- Small market cap
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (GREEN.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #7 Humble Group (HUMBLE)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -294,37 +336,37 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (HUMBLE.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Industrivärden A (INDU A)
+## #8 KlaraBo Sverige B (KLARA B)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
-**What the company does:** AB Industrivärden is a publicly owned investment manager. The firm invests in the public equity markets of Nordic region. It employs fundamental analysis, with a focus on factors like long term return potential, proven business model, balance between risk and return, and attractive valuation to create its portfolio. AB Industrivärden was founded in 1944 and is based in Stockholm, Sweden.
+**What the company does:** KlaraBo Sverige AB (publ) create value by acquiring, developing, refining and managing housing with a long-term focus. Since the start, they have grown all over Sweden and continue to grow where people want to live and work. By taking care of and renovating existing houses, building new ones when the conditions are right and managing the properties in-house, they create value for their tenants, investors and the locations where they operate. KlaraBo Sverige AB (publ) was founded in 2015 and is incorporated in Sweden.
 
-**Score:** 60
+**Score:** 60.25
 **Data quality:** partial
 
 ### Long-Term Conviction
 **Bucket:** Quality small-cap candidate
-**Thesis:** Industrivärden A has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+**Thesis:** KlaraBo Sverige B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
 
 | Component | Score | View |
 | --- | --- | --- |
 | Business quality | 5/5 | Strong - profitable business with a clear profile. |
 | Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 12.0%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Growth | 3/5 | Modest revenue growth of 4.7%. |
+| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
 | Risk | 4/5 | No specific risk flag surfaced in the current screen. |
 | Data confidence | 4/5 | Several fundamentals plus profile text are available. |
 
 ### Reasons
-- Low P/E (3.64136)
+- Low P/E (6.87234)
 - Low P/B
+- Small market cap
 - Gate tier: High-conviction candidate
 - Quality small-cap candidate
 - Positive operating margin
 - Revenue growth
-- Conservative balance sheet
 - Attractive valuation support
 - Business description available
 - Adequate liquidity
@@ -334,49 +376,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (INDU-A.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #8 Industrivärden C (INDU C)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** AB Industrivärden is a publicly owned investment manager. The firm invests in the public equity markets of Nordic region. It employs fundamental analysis, with a focus on factors like long term return potential, proven business model, balance between risk and return, and attractive valuation to create its portfolio. AB Industrivärden was founded in 1944 and is based in Stockholm, Sweden.
-
-**Score:** 60
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Industrivärden C has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 12.0%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (3.69683)
-- Low P/B
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Conservative balance sheet
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (INDU-C.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (KLARA-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #9 Outokumpu Oyj (OUT1V)
 
