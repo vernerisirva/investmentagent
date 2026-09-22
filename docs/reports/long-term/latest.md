@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-21T05:06:48.286630+00:00
+- generated_at: 2026-09-22T05:07:28.003577+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 4, 'cutoff_tie_excluded': 2, 'cache_enabled': True, 'cache_hits': 607, 'cache_misses': 321, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 636, 'fresh_companies': 636, 'stale_companies': 0, 'missing_companies': 292, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-21T05:06:48.081458Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 443, 'fresh': 443, 'stale': 0, 'missing': 291}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 4, 'cutoff_tie_excluded': 3, 'cache_enabled': True, 'cache_hits': 636, 'cache_misses': 292, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 665, 'fresh_companies': 665, 'stale_companies': 0, 'missing_companies': 263, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-22T05:07:27.785108Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 472, 'fresh': 472, 'stale': 0, 'missing': 262}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,11 +19,11 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-29d8efa649ed107e6c7df92a', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-21T05:06:48.286630Z'}
+- evaluation: {'run_id': 'evaluation-fb353a663517142d9521d2d0', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-22T05:07:28.003577Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=936, SE=742, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=331, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=636/928 (fresh=636, stale=0, missing=292); cache hits=607; cache misses=321; cutoff ties=4 (2 excluded)
+- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=665/928 (fresh=665, stale=0, missing=263); cache hits=636; cache misses=292; cutoff ties=4 (3 excluded)
 - finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
