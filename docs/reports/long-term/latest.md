@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-22T05:07:28.003577+00:00
+- generated_at: 2026-09-23T05:07:16.550867+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 4, 'cutoff_tie_excluded': 3, 'cache_enabled': True, 'cache_hits': 636, 'cache_misses': 292, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 665, 'fresh_companies': 665, 'stale_companies': 0, 'missing_companies': 263, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-22T05:07:27.785108Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 472, 'fresh': 472, 'stale': 0, 'missing': 262}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 665, 'cache_misses': 263, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 694, 'fresh_companies': 694, 'stale_companies': 0, 'missing_companies': 234, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-23T05:07:16.319698Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 501, 'fresh': 501, 'stale': 0, 'missing': 233}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,16 +19,16 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-fb353a663517142d9521d2d0', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-22T05:07:28.003577Z'}
+- evaluation: {'run_id': 'evaluation-7b1ffcd5210c551857f861f8', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-23T05:07:16.550867Z'}
 
 ## Source Checks
-- nasdaq nordic live data: ok - universe coverage: total=936, SE=742, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=331, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=665/928 (fresh=665, stale=0, missing=263); cache hits=636; cache misses=292; cutoff ties=4 (3 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
+- nasdaq nordic live data: ok - universe coverage: total=936, SE=742, FI=194; STO/main_market=410, HEL/main_market=147, STO/first_north=332, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
+- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=694/928 (fresh=694, stale=0, missing=234); cache hits=665; cache misses=263; cutoff ties=1 (0 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 28/29; direct valuation 28/29; proxy inputs 28/29; missing valuation support 1/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
-- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/2 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
+- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/2 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/2 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/2 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
 
 ## Watchlist
 
@@ -121,7 +121,50 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (TRAC-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #3 Avtech Sweden B (AVT B)
+## #3 Creades A (CRED A)
+
+`SE` | Nasdaq Stockholm | `main_market`
+
+**What the company does:** Creades AB is a private equity and venture capital investment firm specializing in early, mid & late venture, emerging growth, middle market, growth capital and buyout investments. The firm typically invests in small and medium-sized public and private companies. It focuses on Swedish companies. The firm seeks to invest between SEK50 million ($4.78 million) and SEK500 million ($47.91 million). The firm can take both majority and minority stakes and also a seat on the board of directors of its portfolio companies. The firm uses personal and balance sheet capital for making investments. Creades AB was founded in 2011 and is based in Stockholm, Sweden.
+
+**Score:** 77
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Creades A has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 3/5 | Modest revenue growth of 2.9%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (5.34203)
+- Low P/B
+- Net cash balance sheet
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- None provided.
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (CRED-A.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #4 Avtech Sweden B (AVT B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -165,7 +208,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (AVT-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #4 Surgical Science Sweden (SUS)
+## #5 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -210,7 +253,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Dustin Group (DUST)
+## #6 Dustin Group (DUST)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -252,7 +295,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (DUST.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Green Landscaping Group (GREEN)
+## #7 Green Landscaping Group (GREEN)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -294,7 +337,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (GREEN.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Humble Group (HUMBLE)
+## #8 Humble Group (HUMBLE)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -335,48 +378,6 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (HUMBLE.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #8 John Mattson Fastighetsföret. (JOMA)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** John Mattson Fastighetsföretagen AB (publ) operates as a residential property company in Sweden. The company owns, develops, and manages rental apartments, as well as commercial premises and leasehold properties in municipalities, including Lidingö, Sollentuna, Stockholm, Nacka, and Upplands Väsby. John Mattson Fastighetsföretagen AB (publ) was founded in 1944 and is headquartered in Lidingö, Sweden.
-
-**Score:** 60.25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** John Mattson Fastighetsföret. has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 4.1%. |
-| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (7.95804)
-- Low P/B
-- Small market cap
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (JOMA.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #9 Outokumpu Oyj (OUT1V)
 
