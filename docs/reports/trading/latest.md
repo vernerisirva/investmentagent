@@ -5,13 +5,13 @@
 _Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ## Metadata
-- generated_at: 2026-09-23T05:06:22.064051+00:00
+- generated_at: 2026-09-24T05:05:54.059026+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 0, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 0, 'attempts': 0, 'successful_enrichments': 0, 'cutoff_tie_count': 0, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 665, 'cache_misses': 263, 'cache_max_age_days': 45, 'eligible_companies': 0, 'cached_companies': 0, 'fresh_companies': 0, 'stale_companies': 0, 'missing_companies': 0, 'oldest_retrieved_at': None, 'newest_retrieved_at': None, 'country_coverage': {}}
+- enrichment: {'eligible_universe_size': 0, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 0, 'attempts': 0, 'successful_enrichments': 0, 'cutoff_tie_count': 0, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 694, 'cache_misses': 235, 'cache_max_age_days': 45, 'eligible_companies': 0, 'cached_companies': 0, 'fresh_companies': 0, 'stale_companies': 0, 'missing_companies': 0, 'oldest_retrieved_at': None, 'newest_retrieved_at': None, 'country_coverage': {}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,11 +19,11 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 - sector: None
 - strategy: trading
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-c8879734e47d4182dda8cf2e', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-23T05:06:22.064051Z'}
+- evaluation: {'run_id': 'evaluation-079fe8109449fa09829cc158', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-24T05:05:54.059026Z'}
 
 ## Source Checks
-- nasdaq nordic live data: ok - universe coverage: total=936, SE=742, FI=194; STO/main_market=410, HEL/main_market=147, STO/first_north=332, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=0; budget=30; selected=0; attempts=0; successful=0; cache coverage=0/0 (fresh=0, stale=0, missing=0); cache hits=665; cache misses=263; cutoff ties=0 (0 excluded)
+- nasdaq nordic live data: ok - universe coverage: total=937, SE=743, FI=194; STO/main_market=410, HEL/main_market=147, STO/first_north=333, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
+- fundamentals enrichment: ok - eligible=0; budget=30; selected=0; attempts=0; successful=0; cache coverage=0/0 (fresh=0, stale=0, missing=0); cache hits=694; cache misses=235; cutoff ties=0 (0 excluded)
 - finimpulse fundamentals: warning - No lookups attempted for Finimpulse fundamentals
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0 fallback valuation enrichments; no fallback lookups attempted
