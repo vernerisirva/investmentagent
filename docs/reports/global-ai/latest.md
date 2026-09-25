@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-09-24 08:00 EEST
+- generated_at: 2026-09-25 08:00 EEST
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -118,7 +118,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Creative Cloud and Document Cloud integrate generative AI into established professional workflows.
 **Score:** 57
-**Valuation:** P/E 14.3883; P/B 8.41112
+**Valuation:** P/E 13.2978; P/B 8.08173
 **Quality:** Operating margin 34.8%; debt/equity 0.5748
 **Growth:** Revenue growth 12.9%
 **Data quality:** partial
