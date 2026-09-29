@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-28T05:11:23.030757+00:00
+- generated_at: 2026-09-29T05:34:16.249904+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 930, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 4, 'cutoff_tie_excluded': 3, 'cache_enabled': True, 'cache_hits': 752, 'cache_misses': 178, 'cache_max_age_days': 45, 'eligible_companies': 930, 'cached_companies': 781, 'fresh_companies': 781, 'stale_companies': 0, 'missing_companies': 149, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-28T05:11:22.785959Z', 'country_coverage': {'SE': {'eligible': 736, 'cached': 588, 'fresh': 588, 'stale': 0, 'missing': 148}, 'FI': {'eligible': 194, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 929, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 28, 'cutoff_tie_count': 8, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 780, 'cache_misses': 149, 'cache_max_age_days': 45, 'eligible_companies': 929, 'cached_companies': 808, 'fresh_companies': 808, 'stale_companies': 0, 'missing_companies': 121, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-29T05:34:15.988881Z', 'country_coverage': {'SE': {'eligible': 734, 'cached': 615, 'fresh': 615, 'stale': 0, 'missing': 119}, 'FI': {'eligible': 195, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 2}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,16 +19,16 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-255a47044c5aaa6be010ae7b', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-28T05:11:23.030757Z'}
+- evaluation: {'run_id': 'evaluation-df3fddc5d2782d234ef661f5', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-29T05:34:16.249904Z'}
 
 ## Source Checks
-- nasdaq nordic live data: ok - universe coverage: total=938, SE=744, FI=194; STO/main_market=411, HEL/main_market=147, STO/first_north=333, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=930; budget=30; selected=30; attempts=30; successful=29; cache coverage=781/930 (fresh=781, stale=0, missing=149); cache hits=752; cache misses=178; cutoff ties=4 (3 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 28/29; proxy inputs 28/29; missing valuation support 0/29
+- nasdaq nordic live data: ok - universe coverage: total=937, SE=742, FI=195; STO/main_market=410, HEL/main_market=148, STO/first_north=332, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
+- fundamentals enrichment: ok - eligible=929; budget=30; selected=30; attempts=30; successful=28; cache coverage=808/929 (fresh=808, stale=0, missing=121); cache hits=780; cache misses=149; cutoff ties=8 (1 excluded)
+- finimpulse fundamentals: warning - 28/30 Finimpulse lookups parsed; valuation support 27/28; direct valuation 27/28; proxy inputs 26/28; missing valuation support 1/28
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
-- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/3 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
+- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/3 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/3 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/3 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
 
 ## Watchlist
 
@@ -337,31 +337,31 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (GREEN.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #8 Humble Group (HUMBLE)
+## #8 HEBA B (HEBA B)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
-**What the company does:** Humble Group AB (publ) develops, produces, and distributes fast-moving consumer goods in Sweden and internationally. It operates through four segments: Future Snacking, Sustainable Care, Quality Nutrition, and Nordic Distribution. The Future Snacking segment offers food, snack, and confectionery products. The Sustainable Care segment provides personal care and household products, such as skincare, oral care, hair care, and personal care products. The Quality Nutrition segment offers sports nutrition products and ingredients, as well as supplements for athletes and consumers. The Nordic Distribution segment provides a range of fast-moving consumer goods through a network of wholesalers and distributors. The company also sells ingredients and other raw materials. The company offers its products through grocery retailers, distributors, and online. The company was formerly known as Bayn Group AB (publ) and changed its name to Humble Group AB (publ) in April 2021. Humble Group AB (publ) was incorporated in 2009 and is based in Stockholm, Sweden.
+**What the company does:** Heba Fastighets AB (publ), together with its subsidiaries, engages in the real estate business in Sweden. It also develops, owns, manages, and leases youth housing, rental housing, nursing homes, and community properties in the Stockholm region and Mälardalen Valley. The company was incorporated in 1952 and is headquartered in Stockholm, Sweden.
 
 **Score:** 60.25
 **Data quality:** partial
 
 ### Long-Term Conviction
 **Bucket:** Quality small-cap candidate
-**Thesis:** Humble Group has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+**Thesis:** HEBA B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
 
 | Component | Score | View |
 | --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
 | Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 1.1%. |
+| Growth | 3/5 | Modest revenue growth of 3.8%. |
 | Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
 | Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
 | Risk | 4/5 | No specific risk flag surfaced in the current screen. |
 | Data confidence | 4/5 | Several fundamentals plus profile text are available. |
 
 ### Reasons
-- Low P/E (7.4)
+- Low P/E (10.3205)
 - Low P/B
 - Small market cap
 - Gate tier: High-conviction candidate
@@ -377,7 +377,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (HUMBLE.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (HEBA-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #9 Outokumpu Oyj (OUT1V)
 

@@ -1,0 +1,86 @@
+{
+  "benchmark_methodology": "representative-benchmarks-v1",
+  "challenger_identity": null,
+  "decision_at": "2026-09-29T05:33:26.775988Z",
+  "evaluation_run_id": "evaluation-6585751ca38a7d7a01240059",
+  "gate_boundary": "X is post-hard-eligibility; long-term gate tiers are priorities, not exclusions",
+  "gate_qualified_member_ids": [],
+  "hierarchy": {
+    "external_passive_benchmark": {
+      "status": "deferred_pending_license"
+    },
+    "primary": "constraint-matched-random-v1",
+    "secondary": [
+      "gate-qualified-ew-v1",
+      "opportunity-universe-ew-v1",
+      "exposure-matched-opportunity-v1",
+      "matched-peers-v1"
+    ]
+  },
+  "matching": {
+    "exclude": "entire compared portfolio",
+    "fallback": "X-only missing fields or insufficient alternatives",
+    "hierarchy": [
+      "country+venue+size",
+      "country+venue",
+      "country"
+    ],
+    "minimum_alternatives": 5,
+    "sector": "not used"
+  },
+  "opportunity_member_ids": [],
+  "plan_id": "badc26faf66bb94599fbe4161712ef8dfb62301f8fb8059ff3654c9faf0b0d49",
+  "portfolios": {
+    "challenger": {
+      "reason": "decision-time selection evidence unavailable",
+      "status": "unverified"
+    },
+    "champion": {
+      "country_counts": {},
+      "excluded_from_alternatives": [],
+      "exposure_strata": [],
+      "exposures": {},
+      "member_ids": [],
+      "peers": {},
+      "status": "recorded"
+    }
+  },
+  "production_context": {
+    "event": "schedule",
+    "repository": "vernerisirva/investmentagent",
+    "run_id": "36526678258",
+    "workflow_sha": "135d460ae9ba8caf17b3b47c1a1ebab447176a20"
+  },
+  "provenance": "prospective",
+  "random": {
+    "draw_count": 1000,
+    "exact_eligibility": "complete nonempty underlying eligible X universe plus existing analysis guards",
+    "membership_sha256": "a8640fe9b04c0bd4be773cb0b6615ef3f81ced7ed280652c2c8331a56d0837c9",
+    "methodology": "constraint-matched-random-v1",
+    "ordering": "gate priority, SHA256(seed:draw_index:company_id), ticker; canonical ID input order",
+    "seed": "e3507d45eb9be0e83563e23bdc17337e5e0c6e71943e98bfcdbd5a919fd8e555",
+    "seed_derivation": "SHA256 canonical JSON [benchmark version, random version, evaluation ID]",
+    "status": "verified"
+  },
+  "return_label": "mean_local_return_pct",
+  "schema_version": 1,
+  "selection_evidence": {
+    "champion_ids": [],
+    "input_order": [],
+    "policy": {
+      "full_ranking": "constrained selection first, then remaining base-ranked members",
+      "limit": 10,
+      "minimum_country_counts": [
+        [
+          "FI",
+          3
+        ]
+      ],
+      "ordering": "gate (long-term), score descending, ticker ascending, stable input order",
+      "version": "production-country-minimum-v1",
+      "weighting": "equal decision-time weights; missing returns do not renormalize"
+    }
+  },
+  "weighting": "equal selected-security weights; equal within each fixed alternative pool; no missing-Y renormalization",
+  "x_sha256": "bd414ad603a7b150f43cfd1f5aaf434177a901b38c29d280f6af245cc9c981cb"
+}
