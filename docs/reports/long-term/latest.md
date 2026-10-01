@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-09-30T05:22:22.447624+00:00
+- generated_at: 2026-10-01T05:37:37.694215+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 930, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 28, 'cutoff_tie_count': 11, 'cutoff_tie_excluded': 6, 'cache_enabled': True, 'cache_hits': 808, 'cache_misses': 122, 'cache_max_age_days': 45, 'eligible_companies': 930, 'cached_companies': 836, 'fresh_companies': 836, 'stale_companies': 0, 'missing_companies': 94, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-09-30T05:22:22.179637Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 643, 'fresh': 643, 'stale': 0, 'missing': 92}, 'FI': {'eligible': 195, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 2}}}
+- enrichment: {'eligible_universe_size': 930, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 28, 'cutoff_tie_count': 11, 'cutoff_tie_excluded': 7, 'cache_enabled': True, 'cache_hits': 836, 'cache_misses': 94, 'cache_max_age_days': 45, 'eligible_companies': 930, 'cached_companies': 864, 'fresh_companies': 864, 'stale_companies': 0, 'missing_companies': 66, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-10-01T05:37:37.420522Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 671, 'fresh': 671, 'stale': 0, 'missing': 64}, 'FI': {'eligible': 195, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 2}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,12 +19,12 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-052b0645d0e975911a561e97', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-09-30T05:22:22.447624Z'}
+- evaluation: {'run_id': 'evaluation-44c0ff03d6ff8f6f1e595c12', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-01T05:37:37.694215Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=938, SE=743, FI=195; STO/main_market=410, HEL/main_market=148, STO/first_north=333, HEL/first_north=47; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=930; budget=30; selected=30; attempts=30; successful=28; cache coverage=836/930 (fresh=836, stale=0, missing=94); cache hits=808; cache misses=122; cutoff ties=11 (6 excluded)
-- finimpulse fundamentals: warning - 28/30 Finimpulse lookups parsed; valuation support 27/28; direct valuation 24/28; proxy inputs 27/28; missing valuation support 1/28
+- fundamentals enrichment: ok - eligible=930; budget=30; selected=30; attempts=30; successful=28; cache coverage=864/930 (fresh=864, stale=0, missing=66); cache hits=836; cache misses=94; cutoff ties=11 (7 excluded)
+- finimpulse fundamentals: warning - 28/30 Finimpulse lookups parsed; valuation support 27/28; direct valuation 27/28; proxy inputs 27/28; missing valuation support 1/28
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/3 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
 - free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/3 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
@@ -208,7 +208,51 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (AVT-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Surgical Science Sweden (SUS)
+## #5 Lea Bank (LEA)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Lea Bank AB (publ) provides various banking products and services in Norway, Sweden, Finland, and Spain. It provides savings and deposit accounts; loan products, including personal, collect, kitchen, and car without collateral loans; insurance products; and credit cards. Lea Bank AB (publ) was founded in 2016 and is headquartered in Gothenburg, Sweden.
+
+**Score:** 64.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Lea Bank has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 4/5 | Healthy revenue growth of 14.1%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (10.8413)
+- Low P/B
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Fundamental watchlist candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+
+### Risks
+- Thin liquidity
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (LEA.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #6 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -253,7 +297,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Dustin Group (DUST)
+## #7 Dustin Group (DUST)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -295,7 +339,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (DUST.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Green Landscaping Group (GREEN)
+## #8 Green Landscaping Group (GREEN)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -336,48 +380,6 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (GREEN.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #8 HEBA B (HEBA B)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Heba Fastighets AB (publ), together with its subsidiaries, engages in the real estate business in Sweden. It also develops, owns, manages, and leases youth housing, rental housing, nursing homes, and community properties in the Stockholm region and Mälardalen Valley. The company was incorporated in 1952 and is headquartered in Stockholm, Sweden.
-
-**Score:** 60.25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** HEBA B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 3.8%. |
-| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (10.3205)
-- Low P/B
-- Small market cap
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (HEBA-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #9 Outokumpu Oyj (OUT1V)
 

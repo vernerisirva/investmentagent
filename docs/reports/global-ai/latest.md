@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-09-30 08:21 EEST
+- generated_at: 2026-10-01 08:36 EEST
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -49,7 +49,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Large-scale AI infrastructure, recommendation systems, open model strategy, and advertising optimization.
 **Score:** 66
-**Valuation:** P/E 27.9331; P/B 7.18489
+**Valuation:** P/E 26.9533; P/B 7.2063
 **Quality:** Operating margin 34.8%; debt/equity 0.43
 **Growth:** Revenue growth 28.0%
 **Data quality:** partial
@@ -72,7 +72,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths.
 **Score:** 64
-**Valuation:** P/E 27.9305; P/B 8.36061
+**Valuation:** P/E 28.6219; P/B 8.63007
 **Quality:** Operating margin 45.1%; debt/equity 0.2912
 **Growth:** Revenue growth 17.7%
 **Data quality:** partial
@@ -90,12 +90,34 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 #### Evidence
 - [Finimpulse fundamentals lookup (MSFT)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-### #4 Taiwan Semiconductor Manufacturing (TSM)
+### #4 Amazon (AMZN)
+`US` | NASDAQ | `Cloud AI platform`
+
+**AI thesis:** AWS infrastructure, Trainium/Inferentia chips, and AI services provide platform-level AI exposure.
+**Score:** 61
+**Valuation:** P/E 19.8447; P/B 4.82192
+**Quality:** Operating margin 13.7%; debt/equity 0.4562
+**Growth:** Revenue growth 19.6%
+**Data quality:** partial
+
+#### Reasons
+- reasonable P/E
+- conservative balance sheet
+- strong revenue growth
+- direct AI infrastructure exposure
+
+#### Risks
+- None provided.
+
+#### Evidence
+- [Finimpulse fundamentals lookup (AMZN)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+### #5 Taiwan Semiconductor Manufacturing (TSM)
 `TW` | NYSE | `AI compute manufacturing`
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
 **Score:** 59
-**Valuation:** P/E 33.2869; P/B 91.4156
+**Valuation:** P/E 34.0391; P/B 93.8756
 **Quality:** Operating margin 60.3%; debt/equity 0.165
 **Growth:** Revenue growth 36.0%
 **Data quality:** partial
@@ -112,24 +134,3 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 #### Evidence
 - [Finimpulse fundamentals lookup (TSM)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-### #5 Adobe (ADBE)
-`US` | NASDAQ | `Enterprise AI software`
-
-**AI thesis:** Creative Cloud and Document Cloud integrate generative AI into established professional workflows.
-**Score:** 57
-**Valuation:** P/E 13.2978; P/B 8.08173
-**Quality:** Operating margin 34.8%; debt/equity 0.5748
-**Growth:** Revenue growth 12.9%
-**Data quality:** partial
-
-#### Reasons
-- reasonable P/E
-- profitable AI-exposed business
-- enterprise AI software exposure
-
-#### Risks
-- None provided.
-
-#### Evidence
-- [Finimpulse fundamentals lookup (ADBE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
