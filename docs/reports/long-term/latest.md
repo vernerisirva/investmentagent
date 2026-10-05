@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-10-02T05:24:10.605749+00:00
+- generated_at: 2026-10-05T05:24:01.374858+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 931, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 27, 'cutoff_tie_count': 11, 'cutoff_tie_excluded': 9, 'cache_enabled': True, 'cache_hits': 864, 'cache_misses': 67, 'cache_max_age_days': 45, 'eligible_companies': 931, 'cached_companies': 891, 'fresh_companies': 891, 'stale_companies': 0, 'missing_companies': 40, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-10-02T05:24:09.672304Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 698, 'fresh': 698, 'stale': 0, 'missing': 37}, 'FI': {'eligible': 196, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 3}}}
+- enrichment: {'eligible_universe_size': 931, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 27, 'cutoff_tie_count': 11, 'cutoff_tie_excluded': 9, 'cache_enabled': True, 'cache_hits': 890, 'cache_misses': 41, 'cache_max_age_days': 45, 'eligible_companies': 931, 'cached_companies': 917, 'fresh_companies': 917, 'stale_companies': 0, 'missing_companies': 14, 'oldest_retrieved_at': '2026-08-25T05:06:26.802539Z', 'newest_retrieved_at': '2026-10-05T05:24:00.363770Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 724, 'fresh': 724, 'stale': 0, 'missing': 11}, 'FI': {'eligible': 196, 'cached': 193, 'fresh': 193, 'stale': 0, 'missing': 3}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,16 +19,16 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-409f8cfd1eaed7722895e810', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-02T05:24:10.605749Z'}
+- evaluation: {'run_id': 'evaluation-8bbd7b13d652c1d248620530', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-05T05:24:01.374858Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=939, SE=743, FI=196; STO/main_market=410, HEL/main_market=148, STO/first_north=333, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=931; budget=30; selected=30; attempts=30; successful=27; cache coverage=891/931 (fresh=891, stale=0, missing=40); cache hits=864; cache misses=67; cutoff ties=11 (9 excluded)
-- finimpulse fundamentals: warning - 27/30 Finimpulse lookups parsed; valuation support 26/27; direct valuation 23/27; proxy inputs 26/27; missing valuation support 1/27
+- fundamentals enrichment: ok - eligible=931; budget=30; selected=30; attempts=30; successful=27; cache coverage=917/931 (fresh=917, stale=0, missing=14); cache hits=890; cache misses=41; cutoff ties=11 (9 excluded)
+- finimpulse fundamentals: warning - 27/30 Finimpulse lookups parsed; valuation support 27/27; direct valuation 27/27; proxy inputs 27/27; missing valuation support 0/27
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
-- valuation fallback: warning - 0/4 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/4 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/4 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/4 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/3 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
+- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/3 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/3 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/3 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
 
 ## Watchlist
 
@@ -297,7 +297,51 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Dustin Group (DUST)
+## #7 Guldbrev Holding (GULD)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Guldbrev Holding AB (publ) purchases and recycles gold and jewelry from private individuals primarily in Sweden, Norway, and Finland. It offers a digitalized process for consumers to sell their gold by mail. The company was founded in 2009 and is based in Stockholm, Sweden.
+
+**Score:** 62.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Guldbrev Holding has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 5/5 | Strong revenue growth of 24.9%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 3/5 | High P/B |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (4.23833)
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- High P/B
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (GULD.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #8 Dustin Group (DUST)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -338,48 +382,6 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (DUST.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #8 Green Landscaping Group (GREEN)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Green Landscaping Group AB (publ), together with its subsidiaries, engages in the green space management business in Sweden, Norway, Germany, and Europe. The company offers grounds maintenance services, including waste collection, lawn mowing, pruning, planting, leaf removal, and road maintenance; snow and ice removal services; and gravel and sand collection services. It also provides landscaping and construction services, such as landscaping architecture, ground design, plant technology, project management, inspection, and construction; and water, wastewater, and arborist services. In addition, the company engages in the maintenance of green spaces, parks, and outdoor environments; and construction of playgrounds, sports facilities, and other functional urban environments. It serves municipalities, public-sector clients, property owners, and private-sector companies. The company was formerly known as Green Landscaping Holding AB (publ) and changed its name to Green Landscaping Group AB (publ) in May 2019. Green Landscaping Group AB (publ) was incorporated in 2008 and is based in Stockholm, Sweden.
-
-**Score:** 60.25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Green Landscaping Group has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 14.7%. |
-| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (8.94958)
-- Low P/B
-- Small market cap
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (GREEN.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #9 Outokumpu Oyj (OUT1V)
 
