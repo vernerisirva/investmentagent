@@ -1,6 +1,6 @@
 # InvestmentAgent Daily Ideas
 
-Generated: 2026-10-08 08:50 EEST
+Generated: 2026-10-09 08:54 EEST
 
 ## Nordic Ideas
 
@@ -18,8 +18,8 @@ Generated: 2026-10-08 08:50 EEST
 
 ## Dated Reports
 
-- [Trading Ideas 2026-10-08](reports/trading/2026-10-08.html)
-- [Long-Term Investment Ideas 2026-10-08](reports/long-term/2026-10-08.html)
-- [Global AI Top 5 2026-10-08](reports/global-ai/2026-10-08.html)
+- [Trading Ideas 2026-10-09](reports/trading/2026-10-09.html)
+- [Long-Term Investment Ideas 2026-10-09](reports/long-term/2026-10-09.html)
+- [Global AI Top 5 2026-10-09](reports/global-ai/2026-10-09.html)
 
 Reports are research triage only. Not financial advice.
