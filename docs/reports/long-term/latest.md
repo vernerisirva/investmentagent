@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-10-12T05:44:40.668441+00:00
+- generated_at: 2026-10-13T06:39:36.696603+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 931, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 11, 'cutoff_tie_excluded': 10, 'cache_enabled': True, 'cache_hits': 930, 'cache_misses': 1, 'cache_max_age_days': 45, 'eligible_companies': 931, 'cached_companies': 930, 'fresh_companies': 870, 'stale_companies': 60, 'missing_companies': 1, 'oldest_retrieved_at': '2026-08-27T09:23:56.756337Z', 'newest_retrieved_at': '2026-10-12T05:44:40.486618Z', 'country_coverage': {'SE': {'eligible': 735, 'cached': 735, 'fresh': 709, 'stale': 26, 'missing': 0}, 'FI': {'eligible': 196, 'cached': 195, 'fresh': 161, 'stale': 34, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 930, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 11, 'cutoff_tie_excluded': 10, 'cache_enabled': True, 'cache_hits': 928, 'cache_misses': 2, 'cache_max_age_days': 45, 'eligible_companies': 930, 'cached_companies': 929, 'fresh_companies': 837, 'stale_companies': 92, 'missing_companies': 1, 'oldest_retrieved_at': '2026-08-27T09:24:30.087983Z', 'newest_retrieved_at': '2026-10-13T06:39:36.504727Z', 'country_coverage': {'SE': {'eligible': 733, 'cached': 733, 'fresh': 711, 'stale': 22, 'missing': 0}, 'FI': {'eligible': 197, 'cached': 196, 'fresh': 126, 'stale': 70, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,12 +19,12 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-c0a1dced0189e31107294879', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-12T05:44:40.668441Z'}
+- evaluation: {'run_id': 'evaluation-5ef85febb910604752ae6c4b', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-13T06:39:36.696603Z'}
 
 ## Source Checks
-- nasdaq nordic live data: ok - universe coverage: total=939, SE=743, FI=196; STO/main_market=410, HEL/main_market=148, STO/first_north=333, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=931; budget=30; selected=30; attempts=30; successful=29; cache coverage=930/931 (fresh=870, stale=60, missing=1); cache hits=930; cache misses=1; cutoff ties=11 (10 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
+- nasdaq nordic live data: ok - universe coverage: total=938, SE=741, FI=197; STO/main_market=410, HEL/main_market=149, STO/first_north=331, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
+- fundamentals enrichment: ok - eligible=930; budget=30; selected=30; attempts=30; successful=29; cache coverage=929/930 (fresh=837, stale=92, missing=1); cache hits=928; cache misses=2; cutoff ties=11 (10 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 28/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
 - free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
@@ -164,7 +164,52 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CRED-A.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #4 Avtech Sweden B (AVT B)
+## #4 CombinedX (CX)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** CombinedX AB (publ) operates as an IT consulting company in Sweden and internationally. It offers digital business development and transformation, service design and customer experience, business systems and business processes, data analysis and decision support, automation and robotization, application development and life cycle management, digital workplace and identity management, managed infrastructure services and security, Internet of Things and AI, and customer relationship management services. The company was incorporated in 2013 and is headquartered in Karlstad, Sweden.
+
+**Score:** 72.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** CombinedX has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 1/5 | Revenue declined 5.1%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 3/5 | No growth signal |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (3.42355)
+- Low P/B
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Fundamental watchlist candidate
+- First North discovery opportunity
+- Positive operating margin
+- Conservative balance sheet
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- No growth signal
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (CX.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #5 Avtech Sweden B (AVT B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -208,7 +253,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (AVT-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Lea Bank (LEA)
+## #6 Lea Bank (LEA)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -252,7 +297,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (LEA.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Surgical Science Sweden (SUS)
+## #7 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -297,7 +342,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Guldbrev Holding (GULD)
+## #8 Guldbrev Holding (GULD)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -340,48 +385,6 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (GULD.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #8 Dustin Group (DUST)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** Dustin Group AB (publ) engages in online information technology business in Sweden, Finland, Denmark, the Netherlands, Norway, and Belgium. The company offers various hardware, software, financing solutions, subscription services, and other related services and solutions. It serves large companies and the public sector. The company was founded in 1984 and is headquartered in Nacka, Sweden. Dustin Group AB (publ) operates as a subsidiary of AxMedia AB.
-
-**Score:** 60.25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Dustin Group has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 4/5 | Good - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 2.7%. |
-| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (7.46582)
-- Low P/B
-- Small market cap
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (DUST.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #9 Outokumpu Oyj (OUT1V)
 
