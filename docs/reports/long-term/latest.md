@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-10-15T05:02:03.085381+00:00
+- generated_at: 2026-10-16T05:07:01.557300+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 929, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 927, 'cache_misses': 2, 'cache_max_age_days': 45, 'eligible_companies': 929, 'cached_companies': 928, 'fresh_companies': 893, 'stale_companies': 35, 'missing_companies': 1, 'oldest_retrieved_at': '2026-08-28T11:12:07.721500Z', 'newest_retrieved_at': '2026-10-15T05:02:02.789684Z', 'country_coverage': {'SE': {'eligible': 732, 'cached': 732, 'fresh': 729, 'stale': 3, 'missing': 0}, 'FI': {'eligible': 197, 'cached': 196, 'fresh': 164, 'stale': 32, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 929, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 1, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 928, 'cache_misses': 1, 'cache_max_age_days': 45, 'eligible_companies': 929, 'cached_companies': 928, 'fresh_companies': 864, 'stale_companies': 64, 'missing_companies': 1, 'oldest_retrieved_at': '2026-08-28T11:12:47.331413Z', 'newest_retrieved_at': '2026-10-16T05:07:01.204886Z', 'country_coverage': {'SE': {'eligible': 732, 'cached': 732, 'fresh': 730, 'stale': 2, 'missing': 0}, 'FI': {'eligible': 197, 'cached': 196, 'fresh': 134, 'stale': 62, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,11 +19,11 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-6cb586c217e6bbec1dd1f169', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-15T05:02:03.085381Z'}
+- evaluation: {'run_id': 'evaluation-c4067bef9bfe73fb244ffda0', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-16T05:07:01.557300Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=937, SE=740, FI=197; STO/main_market=410, HEL/main_market=149, STO/first_north=330, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=929; budget=30; selected=30; attempts=30; successful=29; cache coverage=928/929 (fresh=893, stale=35, missing=1); cache hits=927; cache misses=2; cutoff ties=2 (0 excluded)
+- fundamentals enrichment: ok - eligible=929; budget=30; selected=30; attempts=30; successful=29; cache coverage=928/929 (fresh=864, stale=64, missing=1); cache hits=928; cache misses=1; cutoff ties=1 (0 excluded)
 - finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
@@ -58,7 +58,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 | Data confidence | 4/5 | Several fundamentals plus profile text are available. |
 
 ### Reasons
-- Low P/E (11.375)
+- Low P/E (11.5692)
 - Low P/B
 - Net cash balance sheet
 - Small market cap
@@ -386,7 +386,50 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #9 Outokumpu Oyj (OUT1V)
+## #9 Saga Furs Oyj C (SAGCV)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** Saga Furs Oyj operates an auction house furs in Finland. The company provides finnraccoon, fox, and mink furs on a global scale. It serves fur breeders and suppliers, clothing designers, manufacturers, and fashion houses. The company was formerly known as Turkistuottajat Oyj and changed its name to Saga Furs Oyj in October 2011. Saga Furs Oyj was incorporated in 1938 and is headquartered in Vantaa, Finland.
+
+**Score:** 61.25
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Saga Furs Oyj C has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 4/5 | Good - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 5/5 | Strong revenue growth of 55.7%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (7.11111)
+- Low P/B
+- Net cash balance sheet
+- Small market cap
+- Gate tier: High-conviction candidate
+- Fundamental watchlist candidate
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Attractive valuation support
+- Business description available
+
+### Risks
+- Thin liquidity
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (SAGCV.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #10 Outokumpu Oyj (OUT1V)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -427,44 +470,3 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (OUT1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #10 Citycon Oyj (CTY1S)
-
-`FI` | Nasdaq Helsinki | `main_market`
-
-**What the company does:** Citycon Oyj, a real estate investment company, owns and develops mixed-use centers in Finland, Norway, Sweden, Denmark, and Estonia. It develops mixed-use centers that include retail, offices, hotels, and housing, as well as for food and beverage, healthcare, culture, and leisure services. Citycon Oyj was incorporated in 1988 and is headquartered in Espoo, Finland. As of March 6, 2026, Citycon Oyj operates as a subsidiary of G City Ltd.
-
-**Score:** 55
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Citycon Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 3/5 | Modest revenue growth of 3.9%. |
-| Balance sheet | 3/5 | Debt/equity looks manageable on available data. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (2.33871)
-- Low P/B
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (CTY1S.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
