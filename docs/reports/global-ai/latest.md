@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-10-21 08:00 EEST
+- generated_at: 2026-10-22 08:00 EEST
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -49,7 +49,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Large-scale AI infrastructure, recommendation systems, open model strategy, and advertising optimization.
 **Score:** 66
-**Valuation:** P/E 28.7302; P/B 7.43757
+**Valuation:** P/E 26.1586; P/B 6.77185
 **Quality:** Operating margin 34.8%; debt/equity 0.43
 **Growth:** Revenue growth 28.0%
 **Data quality:** partial
@@ -72,7 +72,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths.
 **Score:** 64
-**Valuation:** P/E 30.2262; P/B 9.10871
+**Valuation:** P/E 29.4788; P/B 8.88349
 **Quality:** Operating margin 45.1%; debt/equity 0.2912
 **Growth:** Revenue growth 17.7%
 **Data quality:** partial
@@ -95,9 +95,9 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
 **Score:** 59
-**Valuation:** P/E 31.2558; P/B 88.6565
-**Quality:** Operating margin 60.3%; debt/equity 0.165
-**Growth:** Revenue growth 36.0%
+**Valuation:** P/E 28.0211; P/B 82.8034
+**Quality:** Operating margin 58.7%; debt/equity 0.1162
+**Growth:** Revenue growth 50.9%
 **Data quality:** partial
 
 #### Reasons
