@@ -1,11 +1,11 @@
 # Performance v2: Internal Benchmarks
 
-Generated: 2026-10-23T05:08:37Z
+Generated: 2026-10-26T06:08:21Z
 Analysis methodology: fixed-decision-membership-v1
 Outcome status methodology: cutoff-maturity-v1
 Benchmark methodology: representative-benchmarks-v1
 Return methodology: single-response-adjusted-close-v1
-Analysis data cutoff: 2026-10-23T05:08:37Z
+Analysis data cutoff: 2026-10-26T06:08:21Z
 
 Gross adjusted-close returns use the existing coherent stock outcomes; spread, commissions and slippage are excluded.
 Primary: constraint-matched random selection, 1000 fixed draws.
@@ -51,21 +51,21 @@ Performance v1: LEGACY_NON_AUTHORITATIVE. Old v2 survivor benchmarks are not val
 
 | Strategy | Horizon | Evidence | Evaluations | Ranking eligible | Exact primary dates | Champion mean local excess vs random (%) | Challenger mean local excess (%) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| long-term | 20_sessions | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| long-term | 20_sessions | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | long-term | 20_sessions | retrospective | 24 | 0 | 0 | unavailable | unavailable |
-| long-term | 60_sessions | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| long-term | 60_sessions | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | long-term | 60_sessions | retrospective | 24 | 0 | 0 | unavailable | unavailable |
-| long-term | 126_sessions | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| long-term | 126_sessions | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | long-term | 126_sessions | retrospective | 24 | 0 | 0 | unavailable | unavailable |
-| long-term | 252_sessions | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| long-term | 252_sessions | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | long-term | 252_sessions | retrospective | 24 | 0 | 0 | unavailable | unavailable |
-| trading | 1_session | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| trading | 1_session | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | trading | 1_session | retrospective | 24 | 0 | 0 | unavailable | unavailable |
-| trading | 5_sessions | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| trading | 5_sessions | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | trading | 5_sessions | retrospective | 24 | 0 | 0 | unavailable | unavailable |
-| trading | 20_sessions | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| trading | 20_sessions | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | trading | 20_sessions | retrospective | 24 | 0 | 0 | unavailable | unavailable |
-| trading | 60_sessions | prospective | 33 | 0 | 0 | unavailable | unavailable |
+| trading | 60_sessions | prospective | 34 | 0 | 0 | unavailable | unavailable |
 | trading | 60_sessions | retrospective | 24 | 0 | 0 | unavailable | unavailable |
 
 ## Fixed Portfolios and Coverage
@@ -2032,8 +2032,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-48931e4017a6d7e52b4e8bd5 / 20_sessions / prospective
 
-Score IC: 0.00; rank IC: 0.03. Ranking eligible: False.
-Random complete draws: 3/1000; underlying coverage: 21.80%. Primary eligible: False.
+Score IC: 0.02; rank IC: 0.05. Ranking eligible: False.
+Random complete draws: 3/1000; underlying coverage: 23.26%. Primary eligible: False.
 - champion: 3/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic -3.98%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2124,8 +2124,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-a0d27438a20d2f176079021c / 20_sessions / prospective
 
-Score IC: 0.05; rank IC: 0.08. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 19.33%. Primary eligible: False.
+Score IC: 0.07; rank IC: 0.10. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 20.79%. Primary eligible: False.
 - champion: 3/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic -2.60%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2216,8 +2216,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-a9bb708a3b811600e888b9b0 / 20_sessions / prospective
 
-Score IC: 0.09; rank IC: 0.11. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 17.64%. Primary eligible: False.
+Score IC: 0.08; rank IC: 0.10. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 19.10%. Primary eligible: False.
 - champion: 2/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic 0.72%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2308,8 +2308,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-f68f1b28c4dc4ff12b36e887 / 20_sessions / prospective
 
-Score IC: 0.15; rank IC: 0.19. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 15.51%. Primary eligible: False.
+Score IC: 0.06; rank IC: 0.09. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 16.97%. Primary eligible: False.
 - champion: 2/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic 2.27%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2400,8 +2400,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-d738c9d7b584c14b2661ef3f / 20_sessions / prospective
 
-Score IC: 0.16; rank IC: 0.15. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 13.26%. Primary eligible: False.
+Score IC: 0.04; rank IC: 0.03. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 14.72%. Primary eligible: False.
 - champion: 2/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic 2.07%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2492,8 +2492,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-604a6deec973b3e7678399d9 / 20_sessions / prospective
 
-Score IC: 0.20; rank IC: 0.18. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 11.46%. Primary eligible: False.
+Score IC: 0.08; rank IC: 0.06. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 12.92%. Primary eligible: False.
 - champion: 2/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic 2.41%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2584,8 +2584,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-258a58a33bc1451525ba9ea8 / 20_sessions / prospective
 
-Score IC: 0.07; rank IC: 0.10. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 9.66%. Primary eligible: False.
+Score IC: 0.07; rank IC: 0.08. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 11.12%. Primary eligible: False.
 - champion: 1/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic -3.27%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2676,8 +2676,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-226879fb5a3a9e765d8f76b6 / 20_sessions / prospective
 
-Score IC: 0.01; rank IC: 0.03. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 7.87%. Primary eligible: False.
+Score IC: -0.04; rank IC: -0.02. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 9.33%. Primary eligible: False.
 - champion: 1/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic -1.00%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2768,8 +2768,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-29d8efa649ed107e6c7df92a / 20_sessions / prospective
 
-Score IC: 0.08; rank IC: 0.12. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 6.51%. Primary eligible: False.
+Score IC: 0.05; rank IC: 0.08. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 7.97%. Primary eligible: False.
 - champion: 1/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic -1.00%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2860,8 +2860,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-fb353a663517142d9521d2d0 / 20_sessions / prospective
 
-Score IC: 0.27; rank IC: 0.31. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 4.83%. Primary eligible: False.
+Score IC: 0.10; rank IC: 0.11. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 6.29%. Primary eligible: False.
 - champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -2952,8 +2952,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-7b1ffcd5210c551857f861f8 / 20_sessions / prospective
 
-Score IC: 0.28; rank IC: 0.34. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 3.37%. Primary eligible: False.
+Score IC: 0.06; rank IC: 0.11. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 4.83%. Primary eligible: False.
 - champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -3044,8 +3044,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-6d571d30fdd53990ebbb64e0 / 20_sessions / prospective
 
-Score IC: 0.15; rank IC: 0.20. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 1.68%. Primary eligible: False.
+Score IC: 0.04; rank IC: 0.05. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 3.14%. Primary eligible: False.
 - champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -3136,8 +3136,8 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 
 ### evaluation-d81fc48de3b84ec8427b6fed / 20_sessions / prospective
 
-Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
-Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+Score IC: -0.12; rank IC: -0.07. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 1.23%. Primary eligible: False.
 - champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
 - champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
 - champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
@@ -5014,6 +5014,98 @@ Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: Fal
 - challenger vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
 
 ### evaluation-f21140b99ebc0821c6832082 / 252_sessions / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- challenger vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+
+### evaluation-2a96101cb6786862f8a23174 / 1_session / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/0 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: selection unverified.
+
+### evaluation-2a96101cb6786862f8a23174 / 5_sessions / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/0 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: selection unverified.
+
+### evaluation-2a96101cb6786862f8a23174 / 20_sessions / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/0 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: selection unverified.
+
+### evaluation-2a96101cb6786862f8a23174 / 60_sessions / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/0 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: selection unverified.
+
+### evaluation-5e041484dbbf6162b1d49c4b / 20_sessions / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- challenger vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+
+### evaluation-5e041484dbbf6162b1d49c4b / 60_sessions / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- challenger vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+
+### evaluation-5e041484dbbf6162b1d49c4b / 126_sessions / prospective
+
+Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
+Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.
+- champion: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- champion vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- champion vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+- challenger: 0/10 fixed members observed; exact mean local return unavailable%; partial observed-member diagnostic unavailable%; random percentile unavailable.
+- challenger vs gate_qualified: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs opportunity: exact local excess unavailable%; eligible headline unavailable%.
+- challenger vs exposure_matched: exact local excess unavailable%; eligible headline unavailable%.
+
+### evaluation-5e041484dbbf6162b1d49c4b / 252_sessions / prospective
 
 Score IC: unavailable; rank IC: unavailable. Ranking eligible: False.
 Random complete draws: 0/1000; underlying coverage: 0.00%. Primary eligible: False.

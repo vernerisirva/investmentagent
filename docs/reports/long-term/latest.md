@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-10-23T05:07:15.539071+00:00
+- generated_at: 2026-10-26T06:07:00.015072+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 28, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 926, 'cache_misses': 2, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 926, 'fresh_companies': 861, 'stale_companies': 65, 'missing_companies': 2, 'oldest_retrieved_at': '2026-09-04T05:06:51.622190Z', 'newest_retrieved_at': '2026-10-23T05:07:15.145686Z', 'country_coverage': {'SE': {'eligible': 732, 'cached': 731, 'fresh': 669, 'stale': 62, 'missing': 1}, 'FI': {'eligible': 196, 'cached': 195, 'fresh': 192, 'stale': 3, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 928, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 926, 'cache_misses': 2, 'cache_max_age_days': 45, 'eligible_companies': 928, 'cached_companies': 927, 'fresh_companies': 809, 'stale_companies': 118, 'missing_companies': 1, 'oldest_retrieved_at': '2026-09-07T05:07:22.043796Z', 'newest_retrieved_at': '2026-10-26T06:06:59.598580Z', 'country_coverage': {'SE': {'eligible': 732, 'cached': 732, 'fresh': 616, 'stale': 116, 'missing': 0}, 'FI': {'eligible': 196, 'cached': 195, 'fresh': 193, 'stale': 2, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,16 +19,16 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-f21140b99ebc0821c6832082', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-23T05:07:15.539071Z'}
+- evaluation: {'run_id': 'evaluation-5e041484dbbf6162b1d49c4b', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-26T06:07:00.015072Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=936, SE=740, FI=196; STO/main_market=410, HEL/main_market=148, STO/first_north=330, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=28; cache coverage=926/928 (fresh=861, stale=65, missing=2); cache hits=926; cache misses=2; cutoff ties=2 (1 excluded)
-- finimpulse fundamentals: warning - 28/30 Finimpulse lookups parsed; valuation support 28/28; direct valuation 28/28; proxy inputs 28/28; missing valuation support 0/28
+- fundamentals enrichment: ok - eligible=928; budget=30; selected=30; attempts=30; successful=29; cache coverage=927/928 (fresh=809, stale=118, missing=1); cache hits=926; cache misses=2; cutoff ties=2 (0 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 28/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
-- valuation fallback: warning - 0/2 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/2 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/2 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/2 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
+- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
 
 ## Watchlist
 
@@ -78,50 +78,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (TAALA.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #2 Traction  B (TRAC B)
-
-`SE` | Nasdaq Stockholm | `main_market`
-
-**What the company does:** AB Traction is a private equity firm specializing in distressed, middle market, later stage, mature, bridge, recapitalization, buyouts and PIPES investments. It invests in public and private companies. In private companies, the firm invests in turnaround projects, reconstructions, management buy-outs, and buy-ins. In public companies, it underwrites new share issues in companies. It does not focus on any specific industry and invests across all sectors. The firm typically invests in Sweden. The firm exits its investments through sale of equity. The firm makes balance sheet investments. AB Traction was founded in 1974 and is based in Stockholm, Sweden.
-
-**Score:** 77.25
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Traction  B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 6.8%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (11.6095)
-- Low P/B
-- Net cash balance sheet
-- Small market cap
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- Positive operating margin
-- Revenue growth
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (TRAC-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #3 Creades A (CRED A)
+## #2 Creades A (CRED A)
 
 `SE` | Nasdaq Stockholm | `main_market`
 
@@ -164,7 +121,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CRED-A.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #4 Cityvarasto Oyj (CITYVA)
+## #3 Cityvarasto Oyj (CITYVA)
 
 `FI` | Nasdaq First North Growth Market Finland | `first_north`
 
@@ -209,7 +166,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CITYVA.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 CombinedX (CX)
+## #4 CombinedX (CX)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -254,7 +211,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CX.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #6 Avtech Sweden B (AVT B)
+## #5 Avtech Sweden B (AVT B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -298,7 +255,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (AVT-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Zinzino B (ZZ B)
+## #6 Zinzino B (ZZ B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -342,7 +299,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ZZ-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #8 Lea Bank (LEA)
+## #7 Lea Bank (LEA)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -386,7 +343,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (LEA.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #9 Surgical Science Sweden (SUS)
+## #8 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -430,6 +387,50 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #9 Guldbrev Holding (GULD)
+
+`SE` | Nasdaq First North Growth Market Sweden | `first_north`
+
+**What the company does:** Guldbrev Holding AB (publ) purchases and recycles gold and jewelry from private individuals primarily in Sweden, Norway, and Finland. It offers a digitalized process for consumers to sell their gold by mail. The company was founded in 2009 and is based in Stockholm, Sweden.
+
+**Score:** 62.75
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Quality small-cap candidate
+**Thesis:** Guldbrev Holding has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 5/5 | Strong revenue growth of 24.9%. |
+| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 3/5 | High P/B |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (4.23833)
+- Net cash balance sheet
+- Small market cap
+- First North listing
+- Gate tier: High-conviction candidate
+- Quality small-cap candidate
+- First North discovery opportunity
+- Positive operating margin
+- Revenue growth
+- Attractive valuation support
+- Business description available
+- Adequate liquidity
+
+### Risks
+- High P/B
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (GULD.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
 ## #10 Saga Furs Oyj C (SAGCV)
 
