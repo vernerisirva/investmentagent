@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-10-28T06:06:53.953219+00:00
+- generated_at: 2026-10-29T06:07:02.559642+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 926, 'cache_misses': 1, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 926, 'fresh_companies': 866, 'stale_companies': 60, 'missing_companies': 1, 'oldest_retrieved_at': '2026-09-09T05:08:41.039724Z', 'newest_retrieved_at': '2026-10-28T06:06:53.620345Z', 'country_coverage': {'SE': {'eligible': 731, 'cached': 731, 'fresh': 671, 'stale': 60, 'missing': 0}, 'FI': {'eligible': 196, 'cached': 195, 'fresh': 195, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 1, 'cache_enabled': True, 'cache_hits': 926, 'cache_misses': 1, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 926, 'fresh_companies': 867, 'stale_companies': 59, 'missing_companies': 1, 'oldest_retrieved_at': '2026-09-10T05:01:46.907667Z', 'newest_retrieved_at': '2026-10-29T06:07:02.185105Z', 'country_coverage': {'SE': {'eligible': 731, 'cached': 731, 'fresh': 672, 'stale': 59, 'missing': 0}, 'FI': {'eligible': 196, 'cached': 195, 'fresh': 195, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,12 +19,12 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-3888551ab273bb68d47a2003', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-28T06:06:53.953219Z'}
+- evaluation: {'run_id': 'evaluation-1248341bf6b5c3b2b26ef5c3', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-29T06:07:02.559642Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=935, SE=739, FI=196; STO/main_market=409, HEL/main_market=148, STO/first_north=330, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=926/927 (fresh=866, stale=60, missing=1); cache hits=926; cache misses=1; cutoff ties=2 (1 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 28/29; proxy inputs 28/29; missing valuation support 0/29
+- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=926/927 (fresh=867, stale=59, missing=1); cache hits=926; cache misses=1; cutoff ties=2 (1 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 29/29; proxy inputs 29/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
 - valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
 - free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
@@ -211,51 +211,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (CX.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #5 Avtech Sweden B (AVT B)
-
-`SE` | Nasdaq First North Growth Market Sweden | `first_north`
-
-**What the company does:** AVTECH Sweden AB (publ) engages in the development and sale of products and services for digital air traffic management systems. The company provides ClearPath Safety, a real-time flight path optimization service with high-resolution weather and real aircraft parameters, such as weight, cost Index, and routing; Clearpath Optimization that offers automatic real-time trajectory optimization, vertical, lateral, speed, and on-time performance calculations; and Aventus, a service that delivers accurate wind and temperature data to the aircraft's computer to enhance the aircraft's calculations during the climb, cruise, and descent phases. It also offers SIGMA, an automatic service that presents precise turbulence data and weather hazards to the pilots in real time during the flight; and proFLIGHT, a unique visual flight weather and optimization tool for use by the professional pilot. In addition, the company offers ClearPath Vertical, ClearPath Dashboard, ClearPath App, ClearPath Dispatch, Weather Data, AMP, and Air Traffic Management services. The company serves airlines, airports, aviation and technology companies, and aircraft manufacturers. AVTECH Sweden AB (publ) was founded in 1988 and is headquartered in Kista, Sweden.
-
-**Score:** 70.75
-**Data quality:** partial
-
-### Long-Term Conviction
-**Bucket:** Quality small-cap candidate
-**Thesis:** Avtech Sweden B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting.
-
-| Component | Score | View |
-| --- | --- | --- |
-| Business quality | 5/5 | Strong - profitable business with a clear profile. |
-| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
-| Growth | 4/5 | Healthy revenue growth of 6.8%. |
-| Balance sheet | 4/5 | Balance sheet looks conservative on available metrics. |
-| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
-| Risk | 4/5 | No specific risk flag surfaced in the current screen. |
-| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
-
-### Reasons
-- Low P/E (10.0333)
-- Net cash balance sheet
-- Small market cap
-- First North listing
-- Gate tier: High-conviction candidate
-- Quality small-cap candidate
-- First North discovery opportunity
-- Positive operating margin
-- Revenue growth
-- Attractive valuation support
-- Business description available
-- Adequate liquidity
-
-### Risks
-- None provided.
-
-### Evidence
-- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
-- [Finimpulse fundamentals lookup (AVT-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-## #6 Zinzino B (ZZ B)
+## #5 Zinzino B (ZZ B)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -299,7 +255,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (ZZ-B.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #7 Lea Bank (LEA)
+## #6 Lea Bank (LEA)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -343,7 +299,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (LEA.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #8 Surgical Science Sweden (SUS)
+## #7 Surgical Science Sweden (SUS)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -388,7 +344,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SUS.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #9 Guldbrev Holding (GULD)
+## #8 Guldbrev Holding (GULD)
 
 `SE` | Nasdaq First North Growth Market Sweden | `first_north`
 
@@ -432,7 +388,7 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (GULD.ST)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-## #10 Saga Furs Oyj C (SAGCV)
+## #9 Saga Furs Oyj C (SAGCV)
 
 `FI` | Nasdaq Helsinki | `main_market`
 
@@ -474,3 +430,46 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 ### Evidence
 - [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
 - [Finimpulse fundamentals lookup (SAGCV.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+## #10 Tecnotree Oyj (TEM1V)
+
+`FI` | Nasdaq Helsinki | `main_market`
+
+**What the company does:** Tecnotree Oyj provides telecommunication IT solutions for charging, billing, customer care, and messaging and content services in Europe, the Americas, the Middle East, Africa, and the Asia Pacific. The company offers digital products, including digital customer lifecycle manager, digital enterprise manager, digital task management, digital mylife dashboard, digital voice of the customer, digital loyalty manager, digital order management, digital resource management, stock distribution management, digital catalogue management, digital online charging system, digital wholesale billing system, digital accelerator platform, digital business and operations dashboard, artificial intelligence and machine learning engine, digital partner management system, and digital subscription management system. It also provides business solutions, such as DiWa, a financial services platform which allows the launch of payment features like P2P transfer, automatic top-ups, and bill payments. In addition, the company offers services, such as configuration, installation, and testing services, as well as maintenance and management services. Tecnotree Oyj was founded in 1978 and is headquartered in Espoo, Finland.
+
+**Score:** 61.25
+**Data quality:** partial
+
+### Long-Term Conviction
+**Bucket:** Fundamental watchlist candidate
+**Thesis:** Tecnotree Oyj has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea.
+
+| Component | Score | View |
+| --- | --- | --- |
+| Business quality | 5/5 | Strong - profitable business with a clear profile. |
+| Valuation | 5/5 | Attractive valuation on available P/E or P/B metrics. |
+| Growth | 4/5 | Healthy revenue growth of 15.0%. |
+| Balance sheet | 5/5 | Net cash and conservative debt/equity. |
+| Momentum | 1/5 | Intraday move is not enough for a long-term thesis. |
+| Risk | 2/5 | Liquidity risk could make entry and exit difficult. |
+| Data confidence | 4/5 | Several fundamentals plus profile text are available. |
+
+### Reasons
+- Low P/E (10.5254)
+- Low P/B
+- Net cash balance sheet
+- Small market cap
+- Gate tier: High-conviction candidate
+- Fundamental watchlist candidate
+- Positive operating margin
+- Revenue growth
+- Conservative balance sheet
+- Attractive valuation support
+- Business description available
+
+### Risks
+- Thin liquidity
+
+### Evidence
+- [Nasdaq Nordic listing source](https://api.nasdaq.com/api/nordic/screener/shares) (nasdaq)
+- [Finimpulse fundamentals lookup (TEM1V.HE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
