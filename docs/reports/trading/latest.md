@@ -5,7 +5,7 @@
 _Short-term setup candidates based on momentum, liquidity, and catalysts._
 
 ## Metadata
-- generated_at: 2026-10-29T06:06:01.923872+00:00
+- generated_at: 2026-10-30T06:01:09.240484+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
@@ -19,7 +19,7 @@ _Short-term setup candidates based on momentum, liquidity, and catalysts._
 - sector: None
 - strategy: trading
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-9cf2a11b4b8e921a8715baa8', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-29T06:06:01.923872Z'}
+- evaluation: {'run_id': 'evaluation-65c00944da80c35b49c60f38', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-10-30T06:01:09.240484Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=935, SE=739, FI=196; STO/main_market=409, HEL/main_market=148, STO/first_north=330, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
