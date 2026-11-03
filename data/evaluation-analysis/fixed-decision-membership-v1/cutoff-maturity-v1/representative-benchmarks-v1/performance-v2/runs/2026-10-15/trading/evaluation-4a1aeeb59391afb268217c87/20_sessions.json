@@ -1,0 +1,181 @@
+{
+  "analysis_storage_layout": "run-horizon-partitions-v1",
+  "evaluation_run_id": "evaluation-4a1aeeb59391afb268217c87",
+  "horizon_label": "20_sessions",
+  "run_metric": {
+    "analysis_eligibility": {
+      "coverage_pct": 0.0,
+      "eligible": false,
+      "minimum_coverage_pct": 70.0,
+      "minimum_valid_companies": 50,
+      "original_company_count": 0,
+      "reasons": [
+        "outcome coverage 0.0% is below 70%",
+        "valid company count 0 is below 50"
+      ],
+      "valid_company_count": 0
+    },
+    "analysis_eligible": false,
+    "analysis_ineligibility_reasons": [
+      "horizon is not due"
+    ],
+    "benchmark_methodology": "representative-benchmarks-v1",
+    "coherent_return_basis": true,
+    "country_ranking_diagnostics": [],
+    "decision_at": "2026-10-15T05:01:14.312424Z",
+    "evaluation_run_id": "evaluation-4a1aeeb59391afb268217c87",
+    "final_rank_return_spearman_ic": null,
+    "gate_boundary": "X is post-hard-eligibility; long-term gate tiers are priorities, not exclusions",
+    "gate_qualified": {
+      "coverage_pct": 0.0,
+      "decision_time_member_count": 0,
+      "exact_mean_local_return_pct": null,
+      "member_ids": [],
+      "missing_count": 0,
+      "observed_member_mean_local_return_pct": null,
+      "observed_weight": 0.0,
+      "priced_count": 0,
+      "return_status": "empty",
+      "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
+      "weight_per_member": null
+    },
+    "horizon": {
+      "label": "20_sessions",
+      "sessions": 20,
+      "unit": "market_sessions"
+    },
+    "is_due": false,
+    "lifecycle": {
+      "mature": 0,
+      "mature_awaiting_retrieval": 0,
+      "mature_budget_deferred": 0,
+      "mature_failed": 0,
+      "mature_pending": 0,
+      "mature_priced": 0,
+      "mature_unavailable": 0,
+      "not_mature": 0,
+      "outcome_status_methodology": "cutoff-maturity-v1",
+      "status_counts": {},
+      "total": 0
+    },
+    "opportunity_universe": {
+      "coverage_pct": 0.0,
+      "decision_time_member_count": 0,
+      "exact_mean_local_return_pct": null,
+      "member_ids": [],
+      "missing_count": 0,
+      "observed_member_mean_local_return_pct": null,
+      "observed_weight": 0.0,
+      "priced_count": 0,
+      "return_status": "empty",
+      "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
+      "weight_per_member": null
+    },
+    "outcome_coverage_pct": 0.0,
+    "plan_id": "bc152a30fed80954423f0e6e8ac69dd35746d50cf3799b8ff78a78d31df2219c",
+    "portfolios": {
+      "challenger": {
+        "reason": "decision-time selection evidence unavailable",
+        "status": "unverified"
+      },
+      "champion": {
+        "comparisons": {
+          "exposure_matched": {
+            "exact_local_excess_pct": null,
+            "headline_local_excess_pct": null
+          },
+          "gate_qualified": {
+            "exact_local_excess_pct": null,
+            "headline_local_excess_pct": null
+          },
+          "opportunity": {
+            "exact_local_excess_pct": null,
+            "headline_local_excess_pct": null
+          }
+        },
+        "country_counts": {},
+        "coverage_pct": 0.0,
+        "decision_time_member_count": 0,
+        "exact_mean_local_return_pct": null,
+        "exposure_matched": {
+          "coverage_pct": 0.0,
+          "decision_time_member_count": 0,
+          "exact_mean_local_return_pct": null,
+          "missing_count": 0,
+          "observed_count": 0,
+          "observed_fixed_weight_contribution_pct": null,
+          "observed_weight": 0.0,
+          "return_status": "incomplete",
+          "security_weights": {},
+          "statistic_scope": "fixed exposure weights; partial contribution is not a full return or a zero-imputed estimate",
+          "strata": [],
+          "unavailable_exposure_weight": 0.0
+        },
+        "exposures": {},
+        "matched_peers": {},
+        "member_ids": [],
+        "missing_count": 0,
+        "observed_member_mean_local_return_pct": null,
+        "observed_weight": 0.0,
+        "peer_portfolio_note": "equal selected-security weighted peer return equals exposure-matched mixture under the same frozen fallback rule",
+        "priced_count": 0,
+        "random_comparison": {
+          "exact_local_excess_vs_mean_pct": null,
+          "exact_local_excess_vs_median_pct": null,
+          "percentile_pct": null,
+          "percentile_rule": "100 * (draws strictly below + half ties) / all 1000 draws"
+        },
+        "return_status": "empty",
+        "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
+        "status": "recorded",
+        "weight_per_member": null
+      }
+    },
+    "provenance": "prospective",
+    "random_null": {
+      "complete_draw_diagnostic": {
+        "mean_local_return_pct": null,
+        "median_local_return_pct": null,
+        "p05_local_return_pct": null,
+        "p95_local_return_pct": null,
+        "scope": "non-headline; complete draws may be a survivor-selected subset"
+      },
+      "complete_draw_fraction": 0.0,
+      "draw_count": 1000,
+      "exact_distribution": null,
+      "exact_eligibility": "complete nonempty underlying eligible X universe plus existing analysis guards",
+      "fully_observed_draws": 0,
+      "headline_eligible": false,
+      "incomplete_draws": 1000,
+      "ineligibility_reasons": [
+        "requires verified policy, complete nonempty eligible X outcomes, coherent returns, and existing analysis eligibility"
+      ],
+      "membership_sha256": "a8640fe9b04c0bd4be773cb0b6615ef3f81ced7ed280652c2c8331a56d0837c9",
+      "methodology": "constraint-matched-random-v1",
+      "ordering": "gate priority, SHA256(seed:draw_index:company_id), ticker; canonical ID input order",
+      "seed": "ae8dd0989d7000014fb85d38d16669e55863f93c2d163694b130093c25f9b717",
+      "seed_derivation": "SHA256 canonical JSON [benchmark version, random version, evaluation ID]",
+      "status": "verified",
+      "total_draws": 1000,
+      "underlying_universe": {
+        "coverage_pct": 0.0,
+        "decision_time_member_count": 0,
+        "exact_mean_local_return_pct": null,
+        "member_ids": [],
+        "missing_count": 0,
+        "observed_member_mean_local_return_pct": null,
+        "observed_weight": 0.0,
+        "priced_count": 0,
+        "return_status": "empty",
+        "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
+        "weight_per_member": null
+      }
+    },
+    "return_label": "mean_local_return_pct",
+    "score_return_spearman_ic": null,
+    "scoring_model_version": "nordic-ranking-v1",
+    "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+    "strategy": "trading"
+  },
+  "schema_version": 4
+}

@@ -1,0 +1,3700 @@
+{
+  "analysis_methodology": "fixed-decision-membership-v1",
+  "analysis_storage": {
+    "factored_run_metric_fields": [
+      "lifecycle.status_cutoff"
+    ],
+    "layout": "run-horizon-partitions-v1",
+    "reconstructed_sha256": "1705a0d94196aa8ef04dfb383302b3cf4916e91ff8e17b9b1c7223135a5c577e",
+    "reconstruction": "run_metrics are the partitions' run_metric objects in listed order, each with lifecycle.status_cutoff restored from this index's lifecycle.status_cutoff",
+    "run_metric_count": 504,
+    "run_metric_partitions": [
+      {
+        "evaluation_run_id": "evaluation-168eecb567bd90cb623f05b0",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-10/trading/evaluation-168eecb567bd90cb623f05b0/1_session.json",
+        "sha256": "0c98838ca07c03684a1a0b5cf8a6f146368ce28d86fe0c3a0c328fdc5a349912"
+      },
+      {
+        "evaluation_run_id": "evaluation-168eecb567bd90cb623f05b0",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-10/trading/evaluation-168eecb567bd90cb623f05b0/5_sessions.json",
+        "sha256": "c42912b859feda723f61ac3c66de9ce43ba0f46d122191976ee275adc79780ed"
+      },
+      {
+        "evaluation_run_id": "evaluation-168eecb567bd90cb623f05b0",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-10/trading/evaluation-168eecb567bd90cb623f05b0/20_sessions.json",
+        "sha256": "8bfb06302698dd94be1ae773775e1c642129e6b5af6c2594c64ef4556877bc9c"
+      },
+      {
+        "evaluation_run_id": "evaluation-168eecb567bd90cb623f05b0",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-10/trading/evaluation-168eecb567bd90cb623f05b0/60_sessions.json",
+        "sha256": "b82f73dac840b37fecc92df5a5740aa0704888dc06984fa713c12a1a85492756"
+      },
+      {
+        "evaluation_run_id": "evaluation-4850c4a75f98ad229cae24a3",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-10/long-term/evaluation-4850c4a75f98ad229cae24a3/20_sessions.json",
+        "sha256": "8d1d5694a7ef7b4dcba983e215db49fb2d9b844c5793a8d9e1d9d79ba143b8cf"
+      },
+      {
+        "evaluation_run_id": "evaluation-4850c4a75f98ad229cae24a3",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-10/long-term/evaluation-4850c4a75f98ad229cae24a3/60_sessions.json",
+        "sha256": "f7a18b8476d13ea0d00b89bfe74856d5151c8391cfa7e8105b2fb39eeb3ed335"
+      },
+      {
+        "evaluation_run_id": "evaluation-4850c4a75f98ad229cae24a3",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-10/long-term/evaluation-4850c4a75f98ad229cae24a3/126_sessions.json",
+        "sha256": "6d958fb7177cda4025ea20d1b5d9e52355a6cb4cecc2f5925f91466e703f364b"
+      },
+      {
+        "evaluation_run_id": "evaluation-4850c4a75f98ad229cae24a3",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-10/long-term/evaluation-4850c4a75f98ad229cae24a3/252_sessions.json",
+        "sha256": "f7b6e1be42c2a4cdcdf286c5f2000e366cb52720814b1b0d60ee80098832e95f"
+      },
+      {
+        "evaluation_run_id": "evaluation-0605d379c0bb61c6607325ce",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-11/trading/evaluation-0605d379c0bb61c6607325ce/1_session.json",
+        "sha256": "f386f636faea67e49f0e2a221424316badecb2ed6ef1d1ce14653125ec38c83a"
+      },
+      {
+        "evaluation_run_id": "evaluation-0605d379c0bb61c6607325ce",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-11/trading/evaluation-0605d379c0bb61c6607325ce/5_sessions.json",
+        "sha256": "5a9f79a14a34aba4688647073c25009b33424da0be86c3497b0102b05c17cb72"
+      },
+      {
+        "evaluation_run_id": "evaluation-0605d379c0bb61c6607325ce",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-11/trading/evaluation-0605d379c0bb61c6607325ce/20_sessions.json",
+        "sha256": "fc706281e447e6dacc442b9075f3f34be03b4bc5aada15e8b1bd0bf29734e98f"
+      },
+      {
+        "evaluation_run_id": "evaluation-0605d379c0bb61c6607325ce",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-11/trading/evaluation-0605d379c0bb61c6607325ce/60_sessions.json",
+        "sha256": "d0f9390127e5997ea0d1e40780799c83173320fe10f75498470403fbe9aa18c4"
+      },
+      {
+        "evaluation_run_id": "evaluation-874ac63373c0910b7697cfd4",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-11/long-term/evaluation-874ac63373c0910b7697cfd4/20_sessions.json",
+        "sha256": "6ca98448b964f56d7c084fe52e05f88ff60f125942c72e178109118bd722686e"
+      },
+      {
+        "evaluation_run_id": "evaluation-874ac63373c0910b7697cfd4",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-11/long-term/evaluation-874ac63373c0910b7697cfd4/60_sessions.json",
+        "sha256": "eecb27803f8cd65b7959b51b8866594938e2a621ccd0b9885b5dbde89bb077d4"
+      },
+      {
+        "evaluation_run_id": "evaluation-874ac63373c0910b7697cfd4",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-11/long-term/evaluation-874ac63373c0910b7697cfd4/126_sessions.json",
+        "sha256": "748b2ced96e48603ed2760160243e036d7e0a899cc09c01d40ac67edb93cdb1a"
+      },
+      {
+        "evaluation_run_id": "evaluation-874ac63373c0910b7697cfd4",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-11/long-term/evaluation-874ac63373c0910b7697cfd4/252_sessions.json",
+        "sha256": "afa50b8b5f9753ab03f9e6ed48a70dc2b7c6a25f1e097de369f63be862131aeb"
+      },
+      {
+        "evaluation_run_id": "evaluation-0a96cd59652f11946bcd09c2",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-12/trading/evaluation-0a96cd59652f11946bcd09c2/1_session.json",
+        "sha256": "4777d4b962f7d5fc180157635bbe6ffb1c57e8c7170b6dce5e6e15f60b932a1e"
+      },
+      {
+        "evaluation_run_id": "evaluation-0a96cd59652f11946bcd09c2",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-12/trading/evaluation-0a96cd59652f11946bcd09c2/5_sessions.json",
+        "sha256": "cb03127d5ac54837bb1f8a074ce26aab064c4dd6e214864715e33fa80602f899"
+      },
+      {
+        "evaluation_run_id": "evaluation-0a96cd59652f11946bcd09c2",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-12/trading/evaluation-0a96cd59652f11946bcd09c2/20_sessions.json",
+        "sha256": "9e490a89191a8c22b885fd2ba90701af47f0c6089509e10474acdb5ef63b7d13"
+      },
+      {
+        "evaluation_run_id": "evaluation-0a96cd59652f11946bcd09c2",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-12/trading/evaluation-0a96cd59652f11946bcd09c2/60_sessions.json",
+        "sha256": "4be7d6f206f038eddea628df537389cad0e1b0b43fc941a2f83f1545ef3e2e3f"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d5dab0a06f3c4c00e94002c",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-12/long-term/evaluation-3d5dab0a06f3c4c00e94002c/20_sessions.json",
+        "sha256": "2ea6a855b06f20ffce0539a127be5e1c1258ab7c6cde7d1cd417943909755f99"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d5dab0a06f3c4c00e94002c",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-12/long-term/evaluation-3d5dab0a06f3c4c00e94002c/60_sessions.json",
+        "sha256": "497689982faa1c7e110f38716be8fcadd6015c849f231d34afecc751f017d874"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d5dab0a06f3c4c00e94002c",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-12/long-term/evaluation-3d5dab0a06f3c4c00e94002c/126_sessions.json",
+        "sha256": "d288ad33f833ece402f2474e33e703870b34c4d79daf1611a262be3b52eb28b8"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d5dab0a06f3c4c00e94002c",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-12/long-term/evaluation-3d5dab0a06f3c4c00e94002c/252_sessions.json",
+        "sha256": "1b83187223e6ed3c03ce7916cc226d2f94dee08eba02e1fd11fe839302bc39b7"
+      },
+      {
+        "evaluation_run_id": "evaluation-9686f389d07a49ab6e056331",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-13/trading/evaluation-9686f389d07a49ab6e056331/1_session.json",
+        "sha256": "00522861c8d453b47531164eea40a942b16289ce3256b0126121125756563fc4"
+      },
+      {
+        "evaluation_run_id": "evaluation-9686f389d07a49ab6e056331",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-13/trading/evaluation-9686f389d07a49ab6e056331/5_sessions.json",
+        "sha256": "bba1d1d06093c2b3b868ad2fea52d6714a27ef0b8f9206e0146eda58652950ab"
+      },
+      {
+        "evaluation_run_id": "evaluation-9686f389d07a49ab6e056331",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-13/trading/evaluation-9686f389d07a49ab6e056331/20_sessions.json",
+        "sha256": "86972468546e4646420c2f21b5d61460df15e54871d5f417ced2ac7e5a53ce8e"
+      },
+      {
+        "evaluation_run_id": "evaluation-9686f389d07a49ab6e056331",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-13/trading/evaluation-9686f389d07a49ab6e056331/60_sessions.json",
+        "sha256": "edc0e11c5ab3496f4061593d04327bfec372a81107e554b0b701731632b3c7d4"
+      },
+      {
+        "evaluation_run_id": "evaluation-d6a15674a03c14bb0bfa4945",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-13/long-term/evaluation-d6a15674a03c14bb0bfa4945/20_sessions.json",
+        "sha256": "054e964f74317c2838b05b5ae6c8dc7b90d581f7eced244bfc9cbcc4030039f0"
+      },
+      {
+        "evaluation_run_id": "evaluation-d6a15674a03c14bb0bfa4945",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-13/long-term/evaluation-d6a15674a03c14bb0bfa4945/60_sessions.json",
+        "sha256": "511c18ca6763cb3714ef2260cafbe21352ae9243c678326d664b9ad4775035d3"
+      },
+      {
+        "evaluation_run_id": "evaluation-d6a15674a03c14bb0bfa4945",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-13/long-term/evaluation-d6a15674a03c14bb0bfa4945/126_sessions.json",
+        "sha256": "895e1f830b7fb163e55f35082bccad15bf3851741ee9b32b95bf6284094cf49a"
+      },
+      {
+        "evaluation_run_id": "evaluation-d6a15674a03c14bb0bfa4945",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-13/long-term/evaluation-d6a15674a03c14bb0bfa4945/252_sessions.json",
+        "sha256": "4be3544700b2edb02f609ae9b0d30b7575fbe67c537c39e61da2dccc61bb79c8"
+      },
+      {
+        "evaluation_run_id": "evaluation-e6807ad7dc25ee30eb603ea4",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-14/trading/evaluation-e6807ad7dc25ee30eb603ea4/1_session.json",
+        "sha256": "4e1236a679e6f3782c2b1d8b2e2976feaef4b60ed36edacfea924d0801b885f5"
+      },
+      {
+        "evaluation_run_id": "evaluation-e6807ad7dc25ee30eb603ea4",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-14/trading/evaluation-e6807ad7dc25ee30eb603ea4/5_sessions.json",
+        "sha256": "f7c6726f0c9595f333ae75d4c6743eeb832dc52f6e1a2f8861f7340a6ab8fba5"
+      },
+      {
+        "evaluation_run_id": "evaluation-e6807ad7dc25ee30eb603ea4",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-14/trading/evaluation-e6807ad7dc25ee30eb603ea4/20_sessions.json",
+        "sha256": "618b4495564787316b07b4b2b490855b2ca920f52e0becef7feb9744ee6c6474"
+      },
+      {
+        "evaluation_run_id": "evaluation-e6807ad7dc25ee30eb603ea4",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-14/trading/evaluation-e6807ad7dc25ee30eb603ea4/60_sessions.json",
+        "sha256": "62cb94ee64b0889251d2d04eed7513e0f6b915d1992a151893d61f6084cd86a9"
+      },
+      {
+        "evaluation_run_id": "evaluation-030283115f7c19e3bd950cb3",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-14/long-term/evaluation-030283115f7c19e3bd950cb3/20_sessions.json",
+        "sha256": "d197f3022cdb7974889578efe7671e692aa7464292634e403033a0e5c3e9ad55"
+      },
+      {
+        "evaluation_run_id": "evaluation-030283115f7c19e3bd950cb3",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-14/long-term/evaluation-030283115f7c19e3bd950cb3/60_sessions.json",
+        "sha256": "e8a8ad9ccaa14b48cc0adb084027c7d1735d53f2b8d5fdfcab4396f3486f4913"
+      },
+      {
+        "evaluation_run_id": "evaluation-030283115f7c19e3bd950cb3",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-14/long-term/evaluation-030283115f7c19e3bd950cb3/126_sessions.json",
+        "sha256": "e87ed34d77902992330a7295debe895b33b08477432d9192d6d99e9eb3eb2076"
+      },
+      {
+        "evaluation_run_id": "evaluation-030283115f7c19e3bd950cb3",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-14/long-term/evaluation-030283115f7c19e3bd950cb3/252_sessions.json",
+        "sha256": "1d31ff260392e41dd740b617c2f5b74fe0840557271b84ba12c671571a462537"
+      },
+      {
+        "evaluation_run_id": "evaluation-701577070a99715a924503b8",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-17/trading/evaluation-701577070a99715a924503b8/1_session.json",
+        "sha256": "08959083a89412c2fcc7d58b32c83347eb3e933e0976e0f306f24306c09e48ac"
+      },
+      {
+        "evaluation_run_id": "evaluation-701577070a99715a924503b8",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-17/trading/evaluation-701577070a99715a924503b8/5_sessions.json",
+        "sha256": "7dc17445254c9d046a7b8f0e508d95f9d000d8124faaa34cf39384f5a063b5c0"
+      },
+      {
+        "evaluation_run_id": "evaluation-701577070a99715a924503b8",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-17/trading/evaluation-701577070a99715a924503b8/20_sessions.json",
+        "sha256": "feec65b1b67ccdeb99598e935a1fe86b65950295a481297f7f7f1f2dd2fbf5e2"
+      },
+      {
+        "evaluation_run_id": "evaluation-701577070a99715a924503b8",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-17/trading/evaluation-701577070a99715a924503b8/60_sessions.json",
+        "sha256": "1a09710acea13f02d69f404695dfb53a31057f519bc8631ac7f1e9b3909e6629"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e9398b90d5ae94e314f412d",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-5e9398b90d5ae94e314f412d/20_sessions.json",
+        "sha256": "4b717f18980bf98208c0acac7fe395a31bd875c992cf1c172db731cc60ccb8b7"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e9398b90d5ae94e314f412d",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-5e9398b90d5ae94e314f412d/60_sessions.json",
+        "sha256": "c727f1357b28331bc91e69ead6999a1bc072938f8920499fd8f2e6d1694e98eb"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e9398b90d5ae94e314f412d",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-5e9398b90d5ae94e314f412d/126_sessions.json",
+        "sha256": "e832771e82cf9427cf643804720530a42396d02e4f0d538e482f3031f9496f47"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e9398b90d5ae94e314f412d",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-5e9398b90d5ae94e314f412d/252_sessions.json",
+        "sha256": "07bfaa3483074bbe8ff869a8e2aae66a7b3c6ab0171690977b2940902b192f00"
+      },
+      {
+        "evaluation_run_id": "evaluation-ddd320b233ac87c0ee9e00db",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-17/trading/evaluation-ddd320b233ac87c0ee9e00db/1_session.json",
+        "sha256": "692294bd7420b2f83efd476fea9bf40a9ed623a6f962100caa45b55654a2c7f3"
+      },
+      {
+        "evaluation_run_id": "evaluation-ddd320b233ac87c0ee9e00db",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-17/trading/evaluation-ddd320b233ac87c0ee9e00db/5_sessions.json",
+        "sha256": "80975bdd1c743c4df3d737c5737f9b2452f8ea5bbb4adf531e0c8413c122dccc"
+      },
+      {
+        "evaluation_run_id": "evaluation-ddd320b233ac87c0ee9e00db",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-17/trading/evaluation-ddd320b233ac87c0ee9e00db/20_sessions.json",
+        "sha256": "faec69563e08b0c4f7e8af6f13871227509de04d1af920b063b950f141350caa"
+      },
+      {
+        "evaluation_run_id": "evaluation-ddd320b233ac87c0ee9e00db",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-17/trading/evaluation-ddd320b233ac87c0ee9e00db/60_sessions.json",
+        "sha256": "e8e5b086eb4266d51ace6e286043f805c2445ff05de17e7520bbf49d15f061a3"
+      },
+      {
+        "evaluation_run_id": "evaluation-15bd213b00f884f44cbdc6d7",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-15bd213b00f884f44cbdc6d7/20_sessions.json",
+        "sha256": "c6fbe9cbeabb2a4c4d099d5825589e1fa997a64cae1645a3762a84343ceabe66"
+      },
+      {
+        "evaluation_run_id": "evaluation-15bd213b00f884f44cbdc6d7",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-15bd213b00f884f44cbdc6d7/60_sessions.json",
+        "sha256": "f369063333a6f113221e1a160599d9cf61b48d0f43b962f807ecceb748a06e8d"
+      },
+      {
+        "evaluation_run_id": "evaluation-15bd213b00f884f44cbdc6d7",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-15bd213b00f884f44cbdc6d7/126_sessions.json",
+        "sha256": "e8e663c31a5d20d67f2d18123bd4ff8b36fe4c646682b6a914f6505ed9382682"
+      },
+      {
+        "evaluation_run_id": "evaluation-15bd213b00f884f44cbdc6d7",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-17/long-term/evaluation-15bd213b00f884f44cbdc6d7/252_sessions.json",
+        "sha256": "733aba6c8f63b7c1de4687cf182e6df9814c0d2d0c8c48fe70349799c73e4a3e"
+      },
+      {
+        "evaluation_run_id": "evaluation-50bdf4a0deef8e576c70bc14",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-18/trading/evaluation-50bdf4a0deef8e576c70bc14/1_session.json",
+        "sha256": "998f19d9bcca5c0e664f8e24835eec917c6bb77fae2d0e9287257e5088ad0054"
+      },
+      {
+        "evaluation_run_id": "evaluation-50bdf4a0deef8e576c70bc14",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-18/trading/evaluation-50bdf4a0deef8e576c70bc14/5_sessions.json",
+        "sha256": "949aa14a5adbea8b5cd47af512ca20edaa1869aa5c05054b865f7663787804b3"
+      },
+      {
+        "evaluation_run_id": "evaluation-50bdf4a0deef8e576c70bc14",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-18/trading/evaluation-50bdf4a0deef8e576c70bc14/20_sessions.json",
+        "sha256": "2f6dab20bde3a2d502554e36e51ce3d0e5161a83419a7e7c42091943c54bfbd3"
+      },
+      {
+        "evaluation_run_id": "evaluation-50bdf4a0deef8e576c70bc14",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-18/trading/evaluation-50bdf4a0deef8e576c70bc14/60_sessions.json",
+        "sha256": "59bfed3e5a0c40e1b42d9b476cc82a913ae36df89d9693f5c633636c206594ee"
+      },
+      {
+        "evaluation_run_id": "evaluation-a4560fe8f8eeb647a562d9da",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-18/long-term/evaluation-a4560fe8f8eeb647a562d9da/20_sessions.json",
+        "sha256": "faa2b629b64aa2f50337293213848ebb7b7b1353002ed22d3a50910b9cae363d"
+      },
+      {
+        "evaluation_run_id": "evaluation-a4560fe8f8eeb647a562d9da",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-18/long-term/evaluation-a4560fe8f8eeb647a562d9da/60_sessions.json",
+        "sha256": "067c86289fd656d76f05dc78116e3f75a54699c8b09a406e98a9a11d257b0bda"
+      },
+      {
+        "evaluation_run_id": "evaluation-a4560fe8f8eeb647a562d9da",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-18/long-term/evaluation-a4560fe8f8eeb647a562d9da/126_sessions.json",
+        "sha256": "2a6aaa9a868162fe5340dff7d64c2bc64d841b4e7362e4782476320a27e063b6"
+      },
+      {
+        "evaluation_run_id": "evaluation-a4560fe8f8eeb647a562d9da",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-18/long-term/evaluation-a4560fe8f8eeb647a562d9da/252_sessions.json",
+        "sha256": "6623bc92038e0c6865c2385c1b4c063e2c7192129711a5b269f9ba05565adb61"
+      },
+      {
+        "evaluation_run_id": "evaluation-2d5df56e89a3cc1a351f2ad2",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-19/trading/evaluation-2d5df56e89a3cc1a351f2ad2/1_session.json",
+        "sha256": "91d9e42f5b6b9a3b792888718783c1db240f095dc33335006feb28d173b38346"
+      },
+      {
+        "evaluation_run_id": "evaluation-2d5df56e89a3cc1a351f2ad2",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-19/trading/evaluation-2d5df56e89a3cc1a351f2ad2/5_sessions.json",
+        "sha256": "90362e8f5d295ad4dff09a627319e71d96652b8ab01e29947b88a977f6e5e717"
+      },
+      {
+        "evaluation_run_id": "evaluation-2d5df56e89a3cc1a351f2ad2",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-19/trading/evaluation-2d5df56e89a3cc1a351f2ad2/20_sessions.json",
+        "sha256": "bb7f234ee38b94f764d11c12fe2d54641f0bc01249d9a6279e95d268af207918"
+      },
+      {
+        "evaluation_run_id": "evaluation-2d5df56e89a3cc1a351f2ad2",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-19/trading/evaluation-2d5df56e89a3cc1a351f2ad2/60_sessions.json",
+        "sha256": "8ec97aa531e3e01f8e0328c2a7eb15883d2f3e24b6d91ced2048b5193afec8e4"
+      },
+      {
+        "evaluation_run_id": "evaluation-99e335b73fd73ac7fa58a131",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-19/long-term/evaluation-99e335b73fd73ac7fa58a131/20_sessions.json",
+        "sha256": "7d492de353cc2133db2d0d90ef90432148d8e7b6b4b0d61a0454eef187f08786"
+      },
+      {
+        "evaluation_run_id": "evaluation-99e335b73fd73ac7fa58a131",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-19/long-term/evaluation-99e335b73fd73ac7fa58a131/60_sessions.json",
+        "sha256": "31535e87e0a4c1bd7c270be80edce6f527a8ffb86aa14ec42689fb7c4020f36e"
+      },
+      {
+        "evaluation_run_id": "evaluation-99e335b73fd73ac7fa58a131",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-19/long-term/evaluation-99e335b73fd73ac7fa58a131/126_sessions.json",
+        "sha256": "d09cd617a2295d8a2089326603ebd0b51cecd218b6cdd386902552919ef85cb9"
+      },
+      {
+        "evaluation_run_id": "evaluation-99e335b73fd73ac7fa58a131",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-19/long-term/evaluation-99e335b73fd73ac7fa58a131/252_sessions.json",
+        "sha256": "b505fab51dd580edf41067144ec2b0e727ecff38ae124269a278c6875600b92b"
+      },
+      {
+        "evaluation_run_id": "evaluation-be5e8c438913bdd3b331fd06",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-20/trading/evaluation-be5e8c438913bdd3b331fd06/1_session.json",
+        "sha256": "d2fbb65848fa21a8fd5f33fd38bff17cf6b98de2eb27f0ca438145bbcd40ca51"
+      },
+      {
+        "evaluation_run_id": "evaluation-be5e8c438913bdd3b331fd06",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-20/trading/evaluation-be5e8c438913bdd3b331fd06/5_sessions.json",
+        "sha256": "77112f74a6544e8a3c5325f228687bd199fa59bec3b90f34a6a22dc1223c92da"
+      },
+      {
+        "evaluation_run_id": "evaluation-be5e8c438913bdd3b331fd06",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-20/trading/evaluation-be5e8c438913bdd3b331fd06/20_sessions.json",
+        "sha256": "81dcf140d5fc30ed7d3298cc1c8bc750d28033b80619a3fb3141bf00140eaf1b"
+      },
+      {
+        "evaluation_run_id": "evaluation-be5e8c438913bdd3b331fd06",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-20/trading/evaluation-be5e8c438913bdd3b331fd06/60_sessions.json",
+        "sha256": "7a728b183079dd0ee7716e284bf6dcdaced083497872be84c8c39ce77abb5a6f"
+      },
+      {
+        "evaluation_run_id": "evaluation-7529f60f6f4bb562b01d2c24",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-20/long-term/evaluation-7529f60f6f4bb562b01d2c24/20_sessions.json",
+        "sha256": "82c32b3e2c46fe19fe42df984317be8b326a07ce7b6bd300027eb5567fe9198b"
+      },
+      {
+        "evaluation_run_id": "evaluation-7529f60f6f4bb562b01d2c24",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-20/long-term/evaluation-7529f60f6f4bb562b01d2c24/60_sessions.json",
+        "sha256": "a140c1c606e5afbd437d61ec70262283938523eb7dddefee5df15c530aa8cc62"
+      },
+      {
+        "evaluation_run_id": "evaluation-7529f60f6f4bb562b01d2c24",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-20/long-term/evaluation-7529f60f6f4bb562b01d2c24/126_sessions.json",
+        "sha256": "1381eddd30a76471ce21ae93e9ea2eb1cabcd0f060444fedc833de7f767531a4"
+      },
+      {
+        "evaluation_run_id": "evaluation-7529f60f6f4bb562b01d2c24",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-20/long-term/evaluation-7529f60f6f4bb562b01d2c24/252_sessions.json",
+        "sha256": "8f7efb0caf6344324b83cb3f3c578f2baa362d487bb97bd5c41af2c5f033136f"
+      },
+      {
+        "evaluation_run_id": "evaluation-c25d2a16b91bbc0e6a283508",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-21/trading/evaluation-c25d2a16b91bbc0e6a283508/1_session.json",
+        "sha256": "404a24034477c96395c8b61ee3df723bd12ca526892ec7cd612a4361a0045279"
+      },
+      {
+        "evaluation_run_id": "evaluation-c25d2a16b91bbc0e6a283508",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-21/trading/evaluation-c25d2a16b91bbc0e6a283508/5_sessions.json",
+        "sha256": "fcc1396675fd995196271ce5b01ead60df0f845bedd46560589e05daef40959f"
+      },
+      {
+        "evaluation_run_id": "evaluation-c25d2a16b91bbc0e6a283508",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-21/trading/evaluation-c25d2a16b91bbc0e6a283508/20_sessions.json",
+        "sha256": "3b096d91395c176f5a5d1c18f7f98bff9db7ac3ef643e25cf378fc3837c98602"
+      },
+      {
+        "evaluation_run_id": "evaluation-c25d2a16b91bbc0e6a283508",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-21/trading/evaluation-c25d2a16b91bbc0e6a283508/60_sessions.json",
+        "sha256": "e62a1ad5c1eb4d53da5d67dc763c3447a088a0a33072341c5ec40f66dcda7e33"
+      },
+      {
+        "evaluation_run_id": "evaluation-adb62a0b46d04c9745f01434",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-21/long-term/evaluation-adb62a0b46d04c9745f01434/20_sessions.json",
+        "sha256": "eced33db1d4473f6a3b2185e5cc6e54e4b19630b58aee6b370d38de750aed297"
+      },
+      {
+        "evaluation_run_id": "evaluation-adb62a0b46d04c9745f01434",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-21/long-term/evaluation-adb62a0b46d04c9745f01434/60_sessions.json",
+        "sha256": "ea7545412ba642aebf753e3b6a62918e79a58c3dac9f86ea5bcb506ec1c492cc"
+      },
+      {
+        "evaluation_run_id": "evaluation-adb62a0b46d04c9745f01434",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-21/long-term/evaluation-adb62a0b46d04c9745f01434/126_sessions.json",
+        "sha256": "80caa4e33cf0f649a7402a17747d069c4b7a01819270a582bee858b15893c59f"
+      },
+      {
+        "evaluation_run_id": "evaluation-adb62a0b46d04c9745f01434",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-21/long-term/evaluation-adb62a0b46d04c9745f01434/252_sessions.json",
+        "sha256": "129db5b0456bf5dfd181a43882ad4cc88d38b2e495f6b6cc6139e1a040e0a3cf"
+      },
+      {
+        "evaluation_run_id": "evaluation-da204d57ff58dd38328bd6fc",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-24/trading/evaluation-da204d57ff58dd38328bd6fc/1_session.json",
+        "sha256": "f43e9bfabf1f3a800e24639a0b7dfb0578d90e945655d2714beeebe8db782cde"
+      },
+      {
+        "evaluation_run_id": "evaluation-da204d57ff58dd38328bd6fc",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-24/trading/evaluation-da204d57ff58dd38328bd6fc/5_sessions.json",
+        "sha256": "e9e3fb33ea9543b19934dd5e84cdabd65604f0d389a2945e523bfb4de8f559e2"
+      },
+      {
+        "evaluation_run_id": "evaluation-da204d57ff58dd38328bd6fc",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-24/trading/evaluation-da204d57ff58dd38328bd6fc/20_sessions.json",
+        "sha256": "6279af7b67acdd26fcb4266a9833e6f0897289207a375e0ed1dee832f959d576"
+      },
+      {
+        "evaluation_run_id": "evaluation-da204d57ff58dd38328bd6fc",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-24/trading/evaluation-da204d57ff58dd38328bd6fc/60_sessions.json",
+        "sha256": "8462b984c9c867cb391144e91e352fa27a46270563fcaaf3363a87584793dfcd"
+      },
+      {
+        "evaluation_run_id": "evaluation-4db28f0e17f4e096b75dac81",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-4db28f0e17f4e096b75dac81/20_sessions.json",
+        "sha256": "84851dd7f11dd7503ca334d665c56fea8d8f0244a27a88f2bacb5b87952100fb"
+      },
+      {
+        "evaluation_run_id": "evaluation-4db28f0e17f4e096b75dac81",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-4db28f0e17f4e096b75dac81/60_sessions.json",
+        "sha256": "002d2ad0bd3b4beb684d9b31635d61f151bf62551044e702a242b283e88714ff"
+      },
+      {
+        "evaluation_run_id": "evaluation-4db28f0e17f4e096b75dac81",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-4db28f0e17f4e096b75dac81/126_sessions.json",
+        "sha256": "4ab4215f839a0cc556df4b123f9cd5f5ee105f9746c8e9fbddc5c3f0a515d170"
+      },
+      {
+        "evaluation_run_id": "evaluation-4db28f0e17f4e096b75dac81",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-4db28f0e17f4e096b75dac81/252_sessions.json",
+        "sha256": "c79ab7085280c403a1fd8fef6575191e0f7191c24d737e0e5ad51f24ee24da5b"
+      },
+      {
+        "evaluation_run_id": "evaluation-386d52d6101679f8de62dfbb",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-24/trading/evaluation-386d52d6101679f8de62dfbb/1_session.json",
+        "sha256": "45cf5407339450bf0b96f523d87070e12240238c573551473d5d708cae0c0455"
+      },
+      {
+        "evaluation_run_id": "evaluation-386d52d6101679f8de62dfbb",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-24/trading/evaluation-386d52d6101679f8de62dfbb/5_sessions.json",
+        "sha256": "7a5a62807b3354b6130430ed4d66b3cc3e0d5aef0fe497e08fbc2d5da9c1e0c7"
+      },
+      {
+        "evaluation_run_id": "evaluation-386d52d6101679f8de62dfbb",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-24/trading/evaluation-386d52d6101679f8de62dfbb/20_sessions.json",
+        "sha256": "75a711ecfa231ed1f7350ba4b78d246ff8d20e4d9709b5e0df72dc12796c3e67"
+      },
+      {
+        "evaluation_run_id": "evaluation-386d52d6101679f8de62dfbb",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-24/trading/evaluation-386d52d6101679f8de62dfbb/60_sessions.json",
+        "sha256": "39d2236ed9e6291b6d85f2bd4c2abfee42c478a63210412d6d2d0e071c8ceacb"
+      },
+      {
+        "evaluation_run_id": "evaluation-f0ec98f658ca1d65e758461a",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-f0ec98f658ca1d65e758461a/20_sessions.json",
+        "sha256": "8dd967c6f388c25d9d904d488e0a68052168e3ca93d09477610e907ffdd0ba70"
+      },
+      {
+        "evaluation_run_id": "evaluation-f0ec98f658ca1d65e758461a",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-f0ec98f658ca1d65e758461a/60_sessions.json",
+        "sha256": "19f43ee7bc320d5196da8655b69f7a026aaa0b0077e187a6f11f63bf01b9833b"
+      },
+      {
+        "evaluation_run_id": "evaluation-f0ec98f658ca1d65e758461a",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-f0ec98f658ca1d65e758461a/126_sessions.json",
+        "sha256": "23bd3416618682088b7600f74b139fc6b109610e280e56e878b6a86ef9476921"
+      },
+      {
+        "evaluation_run_id": "evaluation-f0ec98f658ca1d65e758461a",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-24/long-term/evaluation-f0ec98f658ca1d65e758461a/252_sessions.json",
+        "sha256": "eb1f4b822b86a5ab9f4f6871cf0824d3d4ca44ad52631d84e430c7d36d273d56"
+      },
+      {
+        "evaluation_run_id": "evaluation-576c234a74594d622087657a",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-25/trading/evaluation-576c234a74594d622087657a/1_session.json",
+        "sha256": "634e40f168f20fe03be613fe50f5a92aab24fefb611f9f0b3abdc147080b820a"
+      },
+      {
+        "evaluation_run_id": "evaluation-576c234a74594d622087657a",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-25/trading/evaluation-576c234a74594d622087657a/5_sessions.json",
+        "sha256": "419629716f78a467b6f1ac53040911d681b172813642b02a5aad5cf5555e5c79"
+      },
+      {
+        "evaluation_run_id": "evaluation-576c234a74594d622087657a",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-25/trading/evaluation-576c234a74594d622087657a/20_sessions.json",
+        "sha256": "fd49183062dfe35ecf814473e528d743e91f2f1c520e23f582af71a114e43112"
+      },
+      {
+        "evaluation_run_id": "evaluation-576c234a74594d622087657a",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-25/trading/evaluation-576c234a74594d622087657a/60_sessions.json",
+        "sha256": "5e792797b6a66f0d300b14bf94c84db783d2668b3beecb523e6e9b28d95b9f89"
+      },
+      {
+        "evaluation_run_id": "evaluation-6751b427c9747062e5a0a45a",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-25/long-term/evaluation-6751b427c9747062e5a0a45a/20_sessions.json",
+        "sha256": "1f8d27185d0f1691f36df324cc5ed8f6bc3a71a46ee52842124386ed261f20eb"
+      },
+      {
+        "evaluation_run_id": "evaluation-6751b427c9747062e5a0a45a",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-25/long-term/evaluation-6751b427c9747062e5a0a45a/60_sessions.json",
+        "sha256": "a69aeb149cdbbee68493ab14c3af0a3813396838f97ce06278edbd2a5852910e"
+      },
+      {
+        "evaluation_run_id": "evaluation-6751b427c9747062e5a0a45a",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-25/long-term/evaluation-6751b427c9747062e5a0a45a/126_sessions.json",
+        "sha256": "6dedb1053ab2e3ea72e964cd8613f16a221e00ec82b98d25e1a3843581a03f83"
+      },
+      {
+        "evaluation_run_id": "evaluation-6751b427c9747062e5a0a45a",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-25/long-term/evaluation-6751b427c9747062e5a0a45a/252_sessions.json",
+        "sha256": "9837beedd938799138bdd4f3ebd2d5be0c777953036cee2a8da6d59f2a4763c1"
+      },
+      {
+        "evaluation_run_id": "evaluation-46cf84e35296d16c3cbf8c59",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-26/trading/evaluation-46cf84e35296d16c3cbf8c59/1_session.json",
+        "sha256": "0aad36ea430513c0361f654143205103d298880a488ee6b0b76f273371a9c003"
+      },
+      {
+        "evaluation_run_id": "evaluation-46cf84e35296d16c3cbf8c59",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-26/trading/evaluation-46cf84e35296d16c3cbf8c59/5_sessions.json",
+        "sha256": "6152a35023e52c7638e343b3da85fa61c917fed8c0687f38ae154c7f5b8132a4"
+      },
+      {
+        "evaluation_run_id": "evaluation-46cf84e35296d16c3cbf8c59",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-26/trading/evaluation-46cf84e35296d16c3cbf8c59/20_sessions.json",
+        "sha256": "297372689f18a800570268270cb2c59d579c6a32471eb64901e4de59bc1d2750"
+      },
+      {
+        "evaluation_run_id": "evaluation-46cf84e35296d16c3cbf8c59",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-26/trading/evaluation-46cf84e35296d16c3cbf8c59/60_sessions.json",
+        "sha256": "448a1e90d412fc035742d7fc9658d3e703246e7dbe45963d11aa1af628d75b5a"
+      },
+      {
+        "evaluation_run_id": "evaluation-b7ab0e7f56bd284f74571152",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-26/long-term/evaluation-b7ab0e7f56bd284f74571152/20_sessions.json",
+        "sha256": "7329070b6b56983fd44e3b5fad6363689885078bb1aa9f32eb35af8ba8f8f7ae"
+      },
+      {
+        "evaluation_run_id": "evaluation-b7ab0e7f56bd284f74571152",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-26/long-term/evaluation-b7ab0e7f56bd284f74571152/60_sessions.json",
+        "sha256": "8c9047bc0e1a99016bd22f4df9c5f279b03649fa7821414138e0189d66962d6b"
+      },
+      {
+        "evaluation_run_id": "evaluation-b7ab0e7f56bd284f74571152",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-26/long-term/evaluation-b7ab0e7f56bd284f74571152/126_sessions.json",
+        "sha256": "0c02a18b2389a36e1966d8dbf3a393405442dac12f975993f7dadb78e8ed133e"
+      },
+      {
+        "evaluation_run_id": "evaluation-b7ab0e7f56bd284f74571152",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-26/long-term/evaluation-b7ab0e7f56bd284f74571152/252_sessions.json",
+        "sha256": "a755de8dfe2b08b8acc0e127534e2772a950a94eeac05e56f2112d761437ace9"
+      },
+      {
+        "evaluation_run_id": "evaluation-b929bca1f9d8abc5c4fcc207",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-27/trading/evaluation-b929bca1f9d8abc5c4fcc207/1_session.json",
+        "sha256": "da325ff8472a6d91fffce498d65e911466fe18c0c5ebca3dc9de5498598c7718"
+      },
+      {
+        "evaluation_run_id": "evaluation-b929bca1f9d8abc5c4fcc207",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-27/trading/evaluation-b929bca1f9d8abc5c4fcc207/5_sessions.json",
+        "sha256": "0e734edc660dbefc5078e42f268380b2305fbd817bf65f272320d2e74269e6f8"
+      },
+      {
+        "evaluation_run_id": "evaluation-b929bca1f9d8abc5c4fcc207",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-27/trading/evaluation-b929bca1f9d8abc5c4fcc207/20_sessions.json",
+        "sha256": "396287234e83d52404f44fa8be436b8876c4bbc56f61bdb7e4f9d7cbedce6875"
+      },
+      {
+        "evaluation_run_id": "evaluation-b929bca1f9d8abc5c4fcc207",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-27/trading/evaluation-b929bca1f9d8abc5c4fcc207/60_sessions.json",
+        "sha256": "d4112ad94a8e19045d8264183749b8b68fc62c911fd688cd239e582156a1d062"
+      },
+      {
+        "evaluation_run_id": "evaluation-b91a7a62772a5f5ba693a7bc",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-27/long-term/evaluation-b91a7a62772a5f5ba693a7bc/20_sessions.json",
+        "sha256": "e218fd3660df8a13ef53b84e1738563e7283cd1e1157ab87c5217a3217b3972f"
+      },
+      {
+        "evaluation_run_id": "evaluation-b91a7a62772a5f5ba693a7bc",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-27/long-term/evaluation-b91a7a62772a5f5ba693a7bc/60_sessions.json",
+        "sha256": "de411756fc1509c4c2e9a61644199f7b1d411be62cf592e2741f2d0b152fe624"
+      },
+      {
+        "evaluation_run_id": "evaluation-b91a7a62772a5f5ba693a7bc",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-27/long-term/evaluation-b91a7a62772a5f5ba693a7bc/126_sessions.json",
+        "sha256": "4f6af6953791639f5a6a9704c18bde4d4160f9d2e3b6b3c8abf5d772cd28d15d"
+      },
+      {
+        "evaluation_run_id": "evaluation-b91a7a62772a5f5ba693a7bc",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-27/long-term/evaluation-b91a7a62772a5f5ba693a7bc/252_sessions.json",
+        "sha256": "32924045e70c1b28ea0db3d01081387aca73bb4780bdca191a66d78609684f94"
+      },
+      {
+        "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-28/trading/evaluation-730efc6dbe71501d3b071627/1_session.json",
+        "sha256": "cc5cb63d2eca14cafa3a2fb222a0b755adc03292dedb233f4c0d61613d041985"
+      },
+      {
+        "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-28/trading/evaluation-730efc6dbe71501d3b071627/5_sessions.json",
+        "sha256": "c309f2dabf67dae223119fb5a6cdd658f47ba8bb5df7b681cb58c7c95f67e099"
+      },
+      {
+        "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-28/trading/evaluation-730efc6dbe71501d3b071627/20_sessions.json",
+        "sha256": "302f5ca0394e792969d21e2b3f37bc9aca3a5a73f763f9f8225e976112860c05"
+      },
+      {
+        "evaluation_run_id": "evaluation-730efc6dbe71501d3b071627",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-28/trading/evaluation-730efc6dbe71501d3b071627/60_sessions.json",
+        "sha256": "5c7541afe39e090c480694bcc4d35b487e1e104b560ab05fc9277a99c5ffb295"
+      },
+      {
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-28/long-term/evaluation-48257226b9eb9af5f8df600d/20_sessions.json",
+        "sha256": "caaad43f87d6b5b74f69bff00230cf1e5a88dcf4b748dd8232c0e4e0e63fab46"
+      },
+      {
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-28/long-term/evaluation-48257226b9eb9af5f8df600d/60_sessions.json",
+        "sha256": "07a0f069061ce1c4c451c536eef471dd0b6c67d3d00cc877e9ace237b20c1ad9"
+      },
+      {
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-28/long-term/evaluation-48257226b9eb9af5f8df600d/126_sessions.json",
+        "sha256": "f1f062717bb6002041569178a782f870e919ff8d4367fabf7601e1d303eb80d5"
+      },
+      {
+        "evaluation_run_id": "evaluation-48257226b9eb9af5f8df600d",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-28/long-term/evaluation-48257226b9eb9af5f8df600d/252_sessions.json",
+        "sha256": "881f7b011ec78b3ddb5cb4382a9cb0ae669f993e10a4d0bf7f8a54b7eeb7326d"
+      },
+      {
+        "evaluation_run_id": "evaluation-9dfb53032a4e044adb86efcc",
+        "horizon_label": "1_session",
+        "path": "runs/2026-08-31/trading/evaluation-9dfb53032a4e044adb86efcc/1_session.json",
+        "sha256": "b952afc225b68ef0355dcf7f910e4a06a065b29c094e43ee599e731fa951126a"
+      },
+      {
+        "evaluation_run_id": "evaluation-9dfb53032a4e044adb86efcc",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-08-31/trading/evaluation-9dfb53032a4e044adb86efcc/5_sessions.json",
+        "sha256": "3328d0c6242da47f60359ad7d483f84f675c6e3cebfe8826d5af20e9a6f45005"
+      },
+      {
+        "evaluation_run_id": "evaluation-9dfb53032a4e044adb86efcc",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-31/trading/evaluation-9dfb53032a4e044adb86efcc/20_sessions.json",
+        "sha256": "f90869b4c986c599204327a1525e64f5f8bf148d42f8fba5b477fad34b00aa5d"
+      },
+      {
+        "evaluation_run_id": "evaluation-9dfb53032a4e044adb86efcc",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-31/trading/evaluation-9dfb53032a4e044adb86efcc/60_sessions.json",
+        "sha256": "482092974ed3104a67a65d1fc9f22ff952f842c990e5cb182a54036bee4dc33a"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb670ae7dd82f755419acda2",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-08-31/long-term/evaluation-fb670ae7dd82f755419acda2/20_sessions.json",
+        "sha256": "b957d4eb721fc708d328e25ee67067c56e6b078031b57ea4a3327e9903d09362"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb670ae7dd82f755419acda2",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-08-31/long-term/evaluation-fb670ae7dd82f755419acda2/60_sessions.json",
+        "sha256": "e6572b63fc930d33d445bf7f1183ad623e2f2a7ec1ff46e7c099bde7324a6556"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb670ae7dd82f755419acda2",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-08-31/long-term/evaluation-fb670ae7dd82f755419acda2/126_sessions.json",
+        "sha256": "a8ab6106daacc804b994174e0c8a18565b21a86f5b82a9fda5242cf1ec76ce83"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb670ae7dd82f755419acda2",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-08-31/long-term/evaluation-fb670ae7dd82f755419acda2/252_sessions.json",
+        "sha256": "b462f5257fe0af21673a81f1efee0271ece0ae346399238354194f652a0a7524"
+      },
+      {
+        "evaluation_run_id": "evaluation-f98706c858a1d322111c1898",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-01/trading/evaluation-f98706c858a1d322111c1898/1_session.json",
+        "sha256": "9a579d3ef01d96b3544b75ae78fdd9ff696d83cf435c14011a9861e38ba40fea"
+      },
+      {
+        "evaluation_run_id": "evaluation-f98706c858a1d322111c1898",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-01/trading/evaluation-f98706c858a1d322111c1898/5_sessions.json",
+        "sha256": "b50a7a8c54aad24664a1afe443d1cf51c106e687665ce19c2a921fcf8691d6d6"
+      },
+      {
+        "evaluation_run_id": "evaluation-f98706c858a1d322111c1898",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-01/trading/evaluation-f98706c858a1d322111c1898/20_sessions.json",
+        "sha256": "b9f6cc78dd79de26c79e63a8b4a3578bd7c16761ea58f6d18f26e54f4eb09ed9"
+      },
+      {
+        "evaluation_run_id": "evaluation-f98706c858a1d322111c1898",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-01/trading/evaluation-f98706c858a1d322111c1898/60_sessions.json",
+        "sha256": "5f7245f63eded154708b0e1df6a285aa0a5f728b0fb6c74ef837cfbfdcb4dca3"
+      },
+      {
+        "evaluation_run_id": "evaluation-96ba48232ea6980741b6a056",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-01/long-term/evaluation-96ba48232ea6980741b6a056/20_sessions.json",
+        "sha256": "53731dde23af06832923f046c25f90c6a28ad425b2d67e24e8057c75ce184237"
+      },
+      {
+        "evaluation_run_id": "evaluation-96ba48232ea6980741b6a056",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-01/long-term/evaluation-96ba48232ea6980741b6a056/60_sessions.json",
+        "sha256": "cbdd7184f8e58ba804a0aef5da4b711d7c21aa28c8e73a27a8a8874b7748f9fe"
+      },
+      {
+        "evaluation_run_id": "evaluation-96ba48232ea6980741b6a056",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-01/long-term/evaluation-96ba48232ea6980741b6a056/126_sessions.json",
+        "sha256": "c3c7b6f70b24c97a7fe9f50796f8fac23b948049b19004da35e28cdb72b54b08"
+      },
+      {
+        "evaluation_run_id": "evaluation-96ba48232ea6980741b6a056",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-01/long-term/evaluation-96ba48232ea6980741b6a056/252_sessions.json",
+        "sha256": "d92488a3f360e81ff7e3fe4cb594019ba0c5ed3cfa34150f6ae395b8d32b46f3"
+      },
+      {
+        "evaluation_run_id": "evaluation-81cc0dde37c163648f78533c",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-02/trading/evaluation-81cc0dde37c163648f78533c/1_session.json",
+        "sha256": "b3606615d7ff6c347ef5c7bb12815cc668cec7f0a1f459db2af38684f5adb241"
+      },
+      {
+        "evaluation_run_id": "evaluation-81cc0dde37c163648f78533c",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-02/trading/evaluation-81cc0dde37c163648f78533c/5_sessions.json",
+        "sha256": "5297bb2f7b322f57dda537041994473ba6a7a4d52b9e2c4621f144d3758ebfa4"
+      },
+      {
+        "evaluation_run_id": "evaluation-81cc0dde37c163648f78533c",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-02/trading/evaluation-81cc0dde37c163648f78533c/20_sessions.json",
+        "sha256": "7710ac15792236acceff6d5dd7130ba7e5869999268c5e80bdf32767b43bfb5e"
+      },
+      {
+        "evaluation_run_id": "evaluation-81cc0dde37c163648f78533c",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-02/trading/evaluation-81cc0dde37c163648f78533c/60_sessions.json",
+        "sha256": "b5941f9b3efb799177e90533ae050e36deb5aa07a05e47dcae3975e90ff53b40"
+      },
+      {
+        "evaluation_run_id": "evaluation-aeb91ec75694f177485f3889",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-02/long-term/evaluation-aeb91ec75694f177485f3889/20_sessions.json",
+        "sha256": "14b90f326f1a66c75e3c1a872b9b8f49faf870b900060eae7ac28339e2326ff4"
+      },
+      {
+        "evaluation_run_id": "evaluation-aeb91ec75694f177485f3889",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-02/long-term/evaluation-aeb91ec75694f177485f3889/60_sessions.json",
+        "sha256": "961fd68c1a339ee7cd788974c579deecaa09b6c37d9e4e25a8ff9ecc3ad0b221"
+      },
+      {
+        "evaluation_run_id": "evaluation-aeb91ec75694f177485f3889",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-02/long-term/evaluation-aeb91ec75694f177485f3889/126_sessions.json",
+        "sha256": "4685f8bd41de32723d7918079844cd91d41c49e42b9c8b2075bda227ef27e993"
+      },
+      {
+        "evaluation_run_id": "evaluation-aeb91ec75694f177485f3889",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-02/long-term/evaluation-aeb91ec75694f177485f3889/252_sessions.json",
+        "sha256": "0028881534e11594a249070f363aec070626abe5fc7e9118fcf1430fef80deea"
+      },
+      {
+        "evaluation_run_id": "evaluation-963cbcc737ead8d7d40fc807",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-03/trading/evaluation-963cbcc737ead8d7d40fc807/1_session.json",
+        "sha256": "ac51b32076dfc11cf29a31407d2fe6082a0bad0126f5b3e524b480f08f7bc0e0"
+      },
+      {
+        "evaluation_run_id": "evaluation-963cbcc737ead8d7d40fc807",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-03/trading/evaluation-963cbcc737ead8d7d40fc807/5_sessions.json",
+        "sha256": "914bda4c0bd9087ba8b386fc123101b1d89c01785ae3a0bd4450ddb55d8ad0c7"
+      },
+      {
+        "evaluation_run_id": "evaluation-963cbcc737ead8d7d40fc807",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-03/trading/evaluation-963cbcc737ead8d7d40fc807/20_sessions.json",
+        "sha256": "018f6ee04ce24cc5ff66e57173d0b5a5d7d7e7ef95df49cc150efadcb9c0f3ab"
+      },
+      {
+        "evaluation_run_id": "evaluation-963cbcc737ead8d7d40fc807",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-03/trading/evaluation-963cbcc737ead8d7d40fc807/60_sessions.json",
+        "sha256": "6042480521b98ba48f383f47df5410d2481c1f5de2ab4733823cf54bd1f46a71"
+      },
+      {
+        "evaluation_run_id": "evaluation-468b0054e0e8f0859b24247a",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-03/long-term/evaluation-468b0054e0e8f0859b24247a/20_sessions.json",
+        "sha256": "fd62f4040094b3e8da3652f0a9fe57932f3cf65ea587be2de98d6425466ae0ed"
+      },
+      {
+        "evaluation_run_id": "evaluation-468b0054e0e8f0859b24247a",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-03/long-term/evaluation-468b0054e0e8f0859b24247a/60_sessions.json",
+        "sha256": "cf26d38b649a7d0636f3bf88ef90fa76cab31074e75acbcb0cc3c7beb53bd4bd"
+      },
+      {
+        "evaluation_run_id": "evaluation-468b0054e0e8f0859b24247a",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-03/long-term/evaluation-468b0054e0e8f0859b24247a/126_sessions.json",
+        "sha256": "56ab2ad34988b6fbf9ecf7321fccb98525f373bd8b5a0efedfe985ba2c25ca77"
+      },
+      {
+        "evaluation_run_id": "evaluation-468b0054e0e8f0859b24247a",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-03/long-term/evaluation-468b0054e0e8f0859b24247a/252_sessions.json",
+        "sha256": "ede0f13fbd9ef77de5dd5192366aa8f07ccb05d9eaab1960cac1796582d9b858"
+      },
+      {
+        "evaluation_run_id": "evaluation-ff314cd1ba15d53015813a01",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-04/trading/evaluation-ff314cd1ba15d53015813a01/1_session.json",
+        "sha256": "ff3c5f8ec23481368745f31065fa7c45eb82c5c512b9ca4bfdb59bb7c9aa45fe"
+      },
+      {
+        "evaluation_run_id": "evaluation-ff314cd1ba15d53015813a01",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-04/trading/evaluation-ff314cd1ba15d53015813a01/5_sessions.json",
+        "sha256": "1652b28ef3e84f0dc310bbccf13ad8bf6e8bb771f3152d336dfb92138e4a858e"
+      },
+      {
+        "evaluation_run_id": "evaluation-ff314cd1ba15d53015813a01",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-04/trading/evaluation-ff314cd1ba15d53015813a01/20_sessions.json",
+        "sha256": "81820655e6e8e7767c840d6c2766e7b7d9de1e6b5c338de31a3c21caba11041e"
+      },
+      {
+        "evaluation_run_id": "evaluation-ff314cd1ba15d53015813a01",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-04/trading/evaluation-ff314cd1ba15d53015813a01/60_sessions.json",
+        "sha256": "c187c4af394ba8b7fdc73416065f4df1a28c5e1854e9b36d588a3cc5088b35f9"
+      },
+      {
+        "evaluation_run_id": "evaluation-eced9df903d710751c56da13",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-04/long-term/evaluation-eced9df903d710751c56da13/20_sessions.json",
+        "sha256": "e745927ddf1abb160e2ae0d439f2eb7d810cf37f67e0b6e94f382076e9dea76e"
+      },
+      {
+        "evaluation_run_id": "evaluation-eced9df903d710751c56da13",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-04/long-term/evaluation-eced9df903d710751c56da13/60_sessions.json",
+        "sha256": "0c36821c670ea55dc488af94e7e0f6c91882f29decef4bc167b3e93c3048f039"
+      },
+      {
+        "evaluation_run_id": "evaluation-eced9df903d710751c56da13",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-04/long-term/evaluation-eced9df903d710751c56da13/126_sessions.json",
+        "sha256": "2b193679d8dd8707885679b554ddc4b736131743b16cddd85384e290f533cc3c"
+      },
+      {
+        "evaluation_run_id": "evaluation-eced9df903d710751c56da13",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-04/long-term/evaluation-eced9df903d710751c56da13/252_sessions.json",
+        "sha256": "696599750fa88cce78951b5ae0e4a1ddde0941860b49f786e03b04c8e4e912dd"
+      },
+      {
+        "evaluation_run_id": "evaluation-12eaffe31b0161ec0ad5dffc",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-07/trading/evaluation-12eaffe31b0161ec0ad5dffc/1_session.json",
+        "sha256": "7edd95885ae977225f9ca1c39aca1ecab14c239441b3f2d021fc727b4678580f"
+      },
+      {
+        "evaluation_run_id": "evaluation-12eaffe31b0161ec0ad5dffc",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-07/trading/evaluation-12eaffe31b0161ec0ad5dffc/5_sessions.json",
+        "sha256": "dc7da8925f839978651aa2feb882dbedf0808131eb402a1512155ed23b196783"
+      },
+      {
+        "evaluation_run_id": "evaluation-12eaffe31b0161ec0ad5dffc",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-07/trading/evaluation-12eaffe31b0161ec0ad5dffc/20_sessions.json",
+        "sha256": "e765a64d446339fadf048613d50b3867a937fd176e1f1e1f92f4e70a6700a7d5"
+      },
+      {
+        "evaluation_run_id": "evaluation-12eaffe31b0161ec0ad5dffc",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-07/trading/evaluation-12eaffe31b0161ec0ad5dffc/60_sessions.json",
+        "sha256": "740449de1cfc3f34e750ae90270410302c591b896912e749f679341ea44685f4"
+      },
+      {
+        "evaluation_run_id": "evaluation-b49d69780a1480d35733884a",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-07/long-term/evaluation-b49d69780a1480d35733884a/20_sessions.json",
+        "sha256": "11ad2299c803453251f320aeb37d4617bbc38b0ba960c11c7810b3c7a1c42cb4"
+      },
+      {
+        "evaluation_run_id": "evaluation-b49d69780a1480d35733884a",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-07/long-term/evaluation-b49d69780a1480d35733884a/60_sessions.json",
+        "sha256": "b2ea8e8e4741f571148d043f381bb3864375a1bab7987831666da8ebd10ebb1a"
+      },
+      {
+        "evaluation_run_id": "evaluation-b49d69780a1480d35733884a",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-07/long-term/evaluation-b49d69780a1480d35733884a/126_sessions.json",
+        "sha256": "af3d598926142e2f58ed87fb95981b9f9f28cecb80a0a78f744496bfd952a1bd"
+      },
+      {
+        "evaluation_run_id": "evaluation-b49d69780a1480d35733884a",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-07/long-term/evaluation-b49d69780a1480d35733884a/252_sessions.json",
+        "sha256": "0931eb376833f7aa39e461e9ca30032a2bd6f070e278a1c925c71e99e82d5260"
+      },
+      {
+        "evaluation_run_id": "evaluation-bef385daff7325b38026ff24",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-08/trading/evaluation-bef385daff7325b38026ff24/1_session.json",
+        "sha256": "a5fefd8044805e9ee191e66c6727aa0ace0cde3e9194c270f973295b006aacbc"
+      },
+      {
+        "evaluation_run_id": "evaluation-bef385daff7325b38026ff24",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-08/trading/evaluation-bef385daff7325b38026ff24/5_sessions.json",
+        "sha256": "8a2cff01a13e79fd4cca3dbd34f9120521c0d4cfede00d824c38e73d2345c39a"
+      },
+      {
+        "evaluation_run_id": "evaluation-bef385daff7325b38026ff24",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-08/trading/evaluation-bef385daff7325b38026ff24/20_sessions.json",
+        "sha256": "a7f8adc98bda8a75680dd7ab7c70de65a56c45cddb6a361d010efb4b527111dc"
+      },
+      {
+        "evaluation_run_id": "evaluation-bef385daff7325b38026ff24",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-08/trading/evaluation-bef385daff7325b38026ff24/60_sessions.json",
+        "sha256": "ea254be2d2eb519e0f041ac803e604e8599b0c80d409660921f7a6213fdf8c26"
+      },
+      {
+        "evaluation_run_id": "evaluation-60b0ab72dd885f6f610da77f",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-08/long-term/evaluation-60b0ab72dd885f6f610da77f/20_sessions.json",
+        "sha256": "29cfcbd4578a22883fcaacb268398561f10c424fb6d76927f335e46c34a3b106"
+      },
+      {
+        "evaluation_run_id": "evaluation-60b0ab72dd885f6f610da77f",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-08/long-term/evaluation-60b0ab72dd885f6f610da77f/60_sessions.json",
+        "sha256": "6719e71c4bfd6c259a03d4bff5c4c057e2a6e8b7cb2fc415999729c232bff13a"
+      },
+      {
+        "evaluation_run_id": "evaluation-60b0ab72dd885f6f610da77f",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-08/long-term/evaluation-60b0ab72dd885f6f610da77f/126_sessions.json",
+        "sha256": "4153ebb8b8f05fa6e09547f1183971fa0ce73ba05e50160c0eb2b8fefaa60e10"
+      },
+      {
+        "evaluation_run_id": "evaluation-60b0ab72dd885f6f610da77f",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-08/long-term/evaluation-60b0ab72dd885f6f610da77f/252_sessions.json",
+        "sha256": "684ec0eb1bf1c16a6161a595b2c4d6e4d29cfd3ef7bb3b62528518e22fc61062"
+      },
+      {
+        "evaluation_run_id": "evaluation-b8f0d7bbdd5fe674c4d1e076",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-09/trading/evaluation-b8f0d7bbdd5fe674c4d1e076/1_session.json",
+        "sha256": "2d246031639bae902b16a6e652c67e64a569135b76850cc70bda15e6345953a3"
+      },
+      {
+        "evaluation_run_id": "evaluation-b8f0d7bbdd5fe674c4d1e076",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-09/trading/evaluation-b8f0d7bbdd5fe674c4d1e076/5_sessions.json",
+        "sha256": "7e6afc0fedab557bf762558da56a18005058dc5b2b66df1b59f2ec46a8c08ca7"
+      },
+      {
+        "evaluation_run_id": "evaluation-b8f0d7bbdd5fe674c4d1e076",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-09/trading/evaluation-b8f0d7bbdd5fe674c4d1e076/20_sessions.json",
+        "sha256": "1077f40c13a0b2951b99bc945b4cbfb73c6b5ec1cd981b89c4334eeca91c6c10"
+      },
+      {
+        "evaluation_run_id": "evaluation-b8f0d7bbdd5fe674c4d1e076",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-09/trading/evaluation-b8f0d7bbdd5fe674c4d1e076/60_sessions.json",
+        "sha256": "e5a233481f2cd82114bb747ec9ffd98eaa41f78f967e878f26eb5a339b6e0dad"
+      },
+      {
+        "evaluation_run_id": "evaluation-48931e4017a6d7e52b4e8bd5",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-09/long-term/evaluation-48931e4017a6d7e52b4e8bd5/20_sessions.json",
+        "sha256": "4663fdcf09e3f69b74fc897b00e3de06682f58db0290bfb16ecdae77e5d49221"
+      },
+      {
+        "evaluation_run_id": "evaluation-48931e4017a6d7e52b4e8bd5",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-09/long-term/evaluation-48931e4017a6d7e52b4e8bd5/60_sessions.json",
+        "sha256": "9aaadc0fec47cbd41c63630ab87cef968c7f511dda57932ff4d48ed8ef4de8e8"
+      },
+      {
+        "evaluation_run_id": "evaluation-48931e4017a6d7e52b4e8bd5",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-09/long-term/evaluation-48931e4017a6d7e52b4e8bd5/126_sessions.json",
+        "sha256": "d1ff2af31c5121349094cfb8c460fcce5b9b3a91b9558401b39c015d0aef41d0"
+      },
+      {
+        "evaluation_run_id": "evaluation-48931e4017a6d7e52b4e8bd5",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-09/long-term/evaluation-48931e4017a6d7e52b4e8bd5/252_sessions.json",
+        "sha256": "136298880a52c259328c30124d0ee32a6581700304cbbe0a598eecab2ee46ea6"
+      },
+      {
+        "evaluation_run_id": "evaluation-d67fc4b818adbe23db867380",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-10/trading/evaluation-d67fc4b818adbe23db867380/1_session.json",
+        "sha256": "bcd71d34a078e3e3e0b9493013198db3d507ac760458858dd231b2a8814b3049"
+      },
+      {
+        "evaluation_run_id": "evaluation-d67fc4b818adbe23db867380",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-10/trading/evaluation-d67fc4b818adbe23db867380/5_sessions.json",
+        "sha256": "05fd8c75757e72d618b7ffb900fae7b03bb3f518b19fc413499e5caa2d3aa068"
+      },
+      {
+        "evaluation_run_id": "evaluation-d67fc4b818adbe23db867380",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-10/trading/evaluation-d67fc4b818adbe23db867380/20_sessions.json",
+        "sha256": "79585193310769d81dd8de708865ff81a44098881465285b9976fd9255dd069f"
+      },
+      {
+        "evaluation_run_id": "evaluation-d67fc4b818adbe23db867380",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-10/trading/evaluation-d67fc4b818adbe23db867380/60_sessions.json",
+        "sha256": "0bf49c52b6da8e84b9ec155c581d193696bd60cf94427c235752f8be8ce41a66"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0d27438a20d2f176079021c",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-10/long-term/evaluation-a0d27438a20d2f176079021c/20_sessions.json",
+        "sha256": "8ea83dd26beb2a1c40805346839a0990634f56079aea0b0133757878072c6925"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0d27438a20d2f176079021c",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-10/long-term/evaluation-a0d27438a20d2f176079021c/60_sessions.json",
+        "sha256": "89615d9f2fd5362278f5e7c0db3b2cc2585840ac5385f8de431b6330aa9b7231"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0d27438a20d2f176079021c",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-10/long-term/evaluation-a0d27438a20d2f176079021c/126_sessions.json",
+        "sha256": "d835cae1dfabab89b88715eeccc82c7f7f76d333d9ffdc6135145cf576c6f385"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0d27438a20d2f176079021c",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-10/long-term/evaluation-a0d27438a20d2f176079021c/252_sessions.json",
+        "sha256": "735aeed412b60544b7f45fb93eb5ec8440a249185270d893d6d822079d4128c4"
+      },
+      {
+        "evaluation_run_id": "evaluation-b442d1537ed58356f65f3c5c",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-11/trading/evaluation-b442d1537ed58356f65f3c5c/1_session.json",
+        "sha256": "8560ee952023748924f0be2371f2acca1e6bb0b8bd247e7d4747ec22d7556523"
+      },
+      {
+        "evaluation_run_id": "evaluation-b442d1537ed58356f65f3c5c",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-11/trading/evaluation-b442d1537ed58356f65f3c5c/5_sessions.json",
+        "sha256": "fc75aca3aa158d3725562be23020d03c90f9d9ec267f9681c937941bb9cfab96"
+      },
+      {
+        "evaluation_run_id": "evaluation-b442d1537ed58356f65f3c5c",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-11/trading/evaluation-b442d1537ed58356f65f3c5c/20_sessions.json",
+        "sha256": "eb92870c71f03e2dfa4d95ee705410727a6978e36a8f77acb0860cfa988e9d98"
+      },
+      {
+        "evaluation_run_id": "evaluation-b442d1537ed58356f65f3c5c",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-11/trading/evaluation-b442d1537ed58356f65f3c5c/60_sessions.json",
+        "sha256": "3fa9555a307529d2b3d9b154ea4a50cb6bf3cc155db12891cb03b8daeea18224"
+      },
+      {
+        "evaluation_run_id": "evaluation-a9bb708a3b811600e888b9b0",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-11/long-term/evaluation-a9bb708a3b811600e888b9b0/20_sessions.json",
+        "sha256": "45c2cfa2e2d8c6f70da86001d39da5b18947ade9f5c472852e29394588681623"
+      },
+      {
+        "evaluation_run_id": "evaluation-a9bb708a3b811600e888b9b0",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-11/long-term/evaluation-a9bb708a3b811600e888b9b0/60_sessions.json",
+        "sha256": "22d228a6f45d3006cc3f575606c35e60939b4aa5cf991ca15e81160a7e853c6f"
+      },
+      {
+        "evaluation_run_id": "evaluation-a9bb708a3b811600e888b9b0",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-11/long-term/evaluation-a9bb708a3b811600e888b9b0/126_sessions.json",
+        "sha256": "c016bf5e51f042ed4d27f19ae30f8c89eb790af4552f87a19a7fd0ebd2156156"
+      },
+      {
+        "evaluation_run_id": "evaluation-a9bb708a3b811600e888b9b0",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-11/long-term/evaluation-a9bb708a3b811600e888b9b0/252_sessions.json",
+        "sha256": "ffac499b8736d79a5b6dc924ecd9e9a9746cd70ed2678266076ed6d09f330b9e"
+      },
+      {
+        "evaluation_run_id": "evaluation-27a245341909b53537e1d934",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-14/trading/evaluation-27a245341909b53537e1d934/1_session.json",
+        "sha256": "4df3a77f460e98c3c3fa076e13c8e9585eee5de26505fc1bd0e14550dd2458d1"
+      },
+      {
+        "evaluation_run_id": "evaluation-27a245341909b53537e1d934",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-14/trading/evaluation-27a245341909b53537e1d934/5_sessions.json",
+        "sha256": "8b7ad2cee85d8ec018d6be4b8299d49b476e99e942ae8dcb3600d49835472c6f"
+      },
+      {
+        "evaluation_run_id": "evaluation-27a245341909b53537e1d934",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-14/trading/evaluation-27a245341909b53537e1d934/20_sessions.json",
+        "sha256": "1f0cdffd58c2c18539270c71b91d387026fc33cf3b0f6c0a5de48327e98df141"
+      },
+      {
+        "evaluation_run_id": "evaluation-27a245341909b53537e1d934",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-14/trading/evaluation-27a245341909b53537e1d934/60_sessions.json",
+        "sha256": "c80ddd9024ca7707a2176cc88b7260c10b61fb808e556027e8f373089e15ea7f"
+      },
+      {
+        "evaluation_run_id": "evaluation-f68f1b28c4dc4ff12b36e887",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-14/long-term/evaluation-f68f1b28c4dc4ff12b36e887/20_sessions.json",
+        "sha256": "0aecee21fcf1820c0a3e3504266df97e477fd82e737cc9f63c137b2608a26869"
+      },
+      {
+        "evaluation_run_id": "evaluation-f68f1b28c4dc4ff12b36e887",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-14/long-term/evaluation-f68f1b28c4dc4ff12b36e887/60_sessions.json",
+        "sha256": "5d225949f7bf24a32b09e1a5003a53668cbe7fbe69ddbee163149d76a0a8ce3b"
+      },
+      {
+        "evaluation_run_id": "evaluation-f68f1b28c4dc4ff12b36e887",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-14/long-term/evaluation-f68f1b28c4dc4ff12b36e887/126_sessions.json",
+        "sha256": "65810c14ab6260572beb88ae056f67307808369873612ed9bfc8a899462b0813"
+      },
+      {
+        "evaluation_run_id": "evaluation-f68f1b28c4dc4ff12b36e887",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-14/long-term/evaluation-f68f1b28c4dc4ff12b36e887/252_sessions.json",
+        "sha256": "d08514a676beebe3562bb2691313ed26487c7449a1049f6e1b49230a9464b79a"
+      },
+      {
+        "evaluation_run_id": "evaluation-3ed330cbe7900de74f42ad3a",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-15/trading/evaluation-3ed330cbe7900de74f42ad3a/1_session.json",
+        "sha256": "00fbd3cb8c468eb0bf571f0a1123f6abe3f24fc03de1e39b18bc229c5cad66cf"
+      },
+      {
+        "evaluation_run_id": "evaluation-3ed330cbe7900de74f42ad3a",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-15/trading/evaluation-3ed330cbe7900de74f42ad3a/5_sessions.json",
+        "sha256": "3772fe294328675854334d705125823321d4bd54ac0e01515dabf3d54a356a1d"
+      },
+      {
+        "evaluation_run_id": "evaluation-3ed330cbe7900de74f42ad3a",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-15/trading/evaluation-3ed330cbe7900de74f42ad3a/20_sessions.json",
+        "sha256": "fd728e37a6a12283f673485ae3cece38040500e81f6b100f252f342739dad38d"
+      },
+      {
+        "evaluation_run_id": "evaluation-3ed330cbe7900de74f42ad3a",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-15/trading/evaluation-3ed330cbe7900de74f42ad3a/60_sessions.json",
+        "sha256": "688e303cc9e03fdb18994f12287a18bc6cb4273b695055a4ff640d871bff34f6"
+      },
+      {
+        "evaluation_run_id": "evaluation-d738c9d7b584c14b2661ef3f",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-15/long-term/evaluation-d738c9d7b584c14b2661ef3f/20_sessions.json",
+        "sha256": "d4560e30ea5b57a41531add95771f5e8d7bb9e1a22ad0ada2b27b4e64de1a171"
+      },
+      {
+        "evaluation_run_id": "evaluation-d738c9d7b584c14b2661ef3f",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-15/long-term/evaluation-d738c9d7b584c14b2661ef3f/60_sessions.json",
+        "sha256": "2368931a21ba7f1c31da464763fa06589a28dd7fa86ca24cc0b0aa699e1d0aa6"
+      },
+      {
+        "evaluation_run_id": "evaluation-d738c9d7b584c14b2661ef3f",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-15/long-term/evaluation-d738c9d7b584c14b2661ef3f/126_sessions.json",
+        "sha256": "bf6924ea7edeaad13ffb51494a01b99a0fef6211d07f59d846e9e61f864224a7"
+      },
+      {
+        "evaluation_run_id": "evaluation-d738c9d7b584c14b2661ef3f",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-15/long-term/evaluation-d738c9d7b584c14b2661ef3f/252_sessions.json",
+        "sha256": "f0354f80f5c44a7c67edfaba297620fffdb9c1a56dd5b8754a2fc878e8cbe417"
+      },
+      {
+        "evaluation_run_id": "evaluation-39d4c70231da1770c5d798fc",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-16/trading/evaluation-39d4c70231da1770c5d798fc/1_session.json",
+        "sha256": "043a0ec63e2230b20ffa5f0ac5de2e2bd155f0334093b980d11e3421828302c4"
+      },
+      {
+        "evaluation_run_id": "evaluation-39d4c70231da1770c5d798fc",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-16/trading/evaluation-39d4c70231da1770c5d798fc/5_sessions.json",
+        "sha256": "07988d996efaa2ebbb8190c6a8a57c79d46574c93bf19c9b952b491b17af43c1"
+      },
+      {
+        "evaluation_run_id": "evaluation-39d4c70231da1770c5d798fc",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-16/trading/evaluation-39d4c70231da1770c5d798fc/20_sessions.json",
+        "sha256": "0b0441a2443deaeb3751498811adfdd8521fd45db2a7420674504c638091219c"
+      },
+      {
+        "evaluation_run_id": "evaluation-39d4c70231da1770c5d798fc",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-16/trading/evaluation-39d4c70231da1770c5d798fc/60_sessions.json",
+        "sha256": "d12730efc0c4a91cd922b5e089b1c53d7f6193c0c45ac51ab4e8fd81b68bba3d"
+      },
+      {
+        "evaluation_run_id": "evaluation-604a6deec973b3e7678399d9",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-16/long-term/evaluation-604a6deec973b3e7678399d9/20_sessions.json",
+        "sha256": "a15a57087e87f7f2b9cc4b752201754935f632aade7ca071ddbb824853873715"
+      },
+      {
+        "evaluation_run_id": "evaluation-604a6deec973b3e7678399d9",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-16/long-term/evaluation-604a6deec973b3e7678399d9/60_sessions.json",
+        "sha256": "0676c8e8ace35695051d5626f23c3ecd38ace58829faf0345c54994b7084ca6e"
+      },
+      {
+        "evaluation_run_id": "evaluation-604a6deec973b3e7678399d9",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-16/long-term/evaluation-604a6deec973b3e7678399d9/126_sessions.json",
+        "sha256": "36198872e9f9b0b363e09107256651f97c4fa1df8ed121c270aeb97305efcfbc"
+      },
+      {
+        "evaluation_run_id": "evaluation-604a6deec973b3e7678399d9",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-16/long-term/evaluation-604a6deec973b3e7678399d9/252_sessions.json",
+        "sha256": "025b360996d25d156192e8520a0ad07131d0db3b707092a6afc6cf49ec69a010"
+      },
+      {
+        "evaluation_run_id": "evaluation-a29eaa5fe5f4650f34edc96b",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-17/trading/evaluation-a29eaa5fe5f4650f34edc96b/1_session.json",
+        "sha256": "4172059ebf24dab7f9376be67c46941fbc97f250ae3d20ecc67fc7fa5ee4010d"
+      },
+      {
+        "evaluation_run_id": "evaluation-a29eaa5fe5f4650f34edc96b",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-17/trading/evaluation-a29eaa5fe5f4650f34edc96b/5_sessions.json",
+        "sha256": "4c730c002daca7399dde4418263f07ef369fca612d88f9490c8083782df0fdf0"
+      },
+      {
+        "evaluation_run_id": "evaluation-a29eaa5fe5f4650f34edc96b",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-17/trading/evaluation-a29eaa5fe5f4650f34edc96b/20_sessions.json",
+        "sha256": "3079c823e7312e0c2955e25bbac018c1b26c92af9931e8b56da103a86e007f43"
+      },
+      {
+        "evaluation_run_id": "evaluation-a29eaa5fe5f4650f34edc96b",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-17/trading/evaluation-a29eaa5fe5f4650f34edc96b/60_sessions.json",
+        "sha256": "3bfa607e300d16f2900842af2b63e70285ee800d64302ae4aaba8feeb8e46411"
+      },
+      {
+        "evaluation_run_id": "evaluation-258a58a33bc1451525ba9ea8",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-17/long-term/evaluation-258a58a33bc1451525ba9ea8/20_sessions.json",
+        "sha256": "2f84b00a099c04fe230615b05167bcdee26ee71e0243854f2df419094f09dc0d"
+      },
+      {
+        "evaluation_run_id": "evaluation-258a58a33bc1451525ba9ea8",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-17/long-term/evaluation-258a58a33bc1451525ba9ea8/60_sessions.json",
+        "sha256": "2a7c32c12faeca0e05170dd169e2b57d1fbf148f371ae1a30c482c52eefdd4c3"
+      },
+      {
+        "evaluation_run_id": "evaluation-258a58a33bc1451525ba9ea8",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-17/long-term/evaluation-258a58a33bc1451525ba9ea8/126_sessions.json",
+        "sha256": "016c91081426fa81941572217815fef750dd70bbd3705a770ef8214c27ba7f26"
+      },
+      {
+        "evaluation_run_id": "evaluation-258a58a33bc1451525ba9ea8",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-17/long-term/evaluation-258a58a33bc1451525ba9ea8/252_sessions.json",
+        "sha256": "8d935401db5cdb484e33a222f78355087afcd7bc769fa8105f075009b977eb92"
+      },
+      {
+        "evaluation_run_id": "evaluation-856907e8fcc273fbbe71ee4c",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-18/trading/evaluation-856907e8fcc273fbbe71ee4c/1_session.json",
+        "sha256": "eda77acdc2611353bb55174c42912dc973f97e9cb47383e3ea60e23c03ed8e4c"
+      },
+      {
+        "evaluation_run_id": "evaluation-856907e8fcc273fbbe71ee4c",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-18/trading/evaluation-856907e8fcc273fbbe71ee4c/5_sessions.json",
+        "sha256": "8664828876cc14d8d2c5cc7b3fe3fe3d0a5591e9a7f98e13d2bd54211432015a"
+      },
+      {
+        "evaluation_run_id": "evaluation-856907e8fcc273fbbe71ee4c",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-18/trading/evaluation-856907e8fcc273fbbe71ee4c/20_sessions.json",
+        "sha256": "b04652babd805fc1227d72f408ddb0261acca3fe77b4683218af195aafcc8b98"
+      },
+      {
+        "evaluation_run_id": "evaluation-856907e8fcc273fbbe71ee4c",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-18/trading/evaluation-856907e8fcc273fbbe71ee4c/60_sessions.json",
+        "sha256": "14487ede0851307861d58a6b9ec90bf3ba8f3931b5853ff9c6826a444a6ef4c8"
+      },
+      {
+        "evaluation_run_id": "evaluation-226879fb5a3a9e765d8f76b6",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-18/long-term/evaluation-226879fb5a3a9e765d8f76b6/20_sessions.json",
+        "sha256": "e65b4f85e30f1c8938458ce403faaa1c64ff8a43b8dbdad6d6090d3a187fb0ed"
+      },
+      {
+        "evaluation_run_id": "evaluation-226879fb5a3a9e765d8f76b6",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-18/long-term/evaluation-226879fb5a3a9e765d8f76b6/60_sessions.json",
+        "sha256": "e298baf0b31756cd70d884b93904e3332e24b5bea192fd3583630c321a1bc894"
+      },
+      {
+        "evaluation_run_id": "evaluation-226879fb5a3a9e765d8f76b6",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-18/long-term/evaluation-226879fb5a3a9e765d8f76b6/126_sessions.json",
+        "sha256": "02cfa7ce0fe8123a0c7a1af5d0c6203398a70815121e6285be963836028ba5c7"
+      },
+      {
+        "evaluation_run_id": "evaluation-226879fb5a3a9e765d8f76b6",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-18/long-term/evaluation-226879fb5a3a9e765d8f76b6/252_sessions.json",
+        "sha256": "f0113ed782e1731893035a84eb6aaa7b0e014cb888366e85fa71341960b3fc0b"
+      },
+      {
+        "evaluation_run_id": "evaluation-0ba362d11c5e199398198f36",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-21/trading/evaluation-0ba362d11c5e199398198f36/1_session.json",
+        "sha256": "4992c36c5e38d38b06c28bcafa0b2508c818e601f4033f63ac3702210f8294dc"
+      },
+      {
+        "evaluation_run_id": "evaluation-0ba362d11c5e199398198f36",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-21/trading/evaluation-0ba362d11c5e199398198f36/5_sessions.json",
+        "sha256": "390b3e97c3221b91483a199fb4b37b1a21b69ec816ac6776c9150538bce7666e"
+      },
+      {
+        "evaluation_run_id": "evaluation-0ba362d11c5e199398198f36",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-21/trading/evaluation-0ba362d11c5e199398198f36/20_sessions.json",
+        "sha256": "516c8f5d33efc0b0303391dea647a56fcb53209ec0e5ecbcbd94b346b99dd9b2"
+      },
+      {
+        "evaluation_run_id": "evaluation-0ba362d11c5e199398198f36",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-21/trading/evaluation-0ba362d11c5e199398198f36/60_sessions.json",
+        "sha256": "9107167ccbafefdd634fb6c44872006819b369f634f12fff66f4ea2301ce8428"
+      },
+      {
+        "evaluation_run_id": "evaluation-29d8efa649ed107e6c7df92a",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-21/long-term/evaluation-29d8efa649ed107e6c7df92a/20_sessions.json",
+        "sha256": "3d32991d15e7a9e35451aaeeca897b06e960a80dd2953d859482af9cffd0eb38"
+      },
+      {
+        "evaluation_run_id": "evaluation-29d8efa649ed107e6c7df92a",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-21/long-term/evaluation-29d8efa649ed107e6c7df92a/60_sessions.json",
+        "sha256": "687da9a75a08783df9b8d823520bc4ffe3790416aee68fb977dc05af140c6d90"
+      },
+      {
+        "evaluation_run_id": "evaluation-29d8efa649ed107e6c7df92a",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-21/long-term/evaluation-29d8efa649ed107e6c7df92a/126_sessions.json",
+        "sha256": "e96cbd23d61c36281ee45acccbc29364564e917c6ab01f88e9b0c4c59898afa1"
+      },
+      {
+        "evaluation_run_id": "evaluation-29d8efa649ed107e6c7df92a",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-21/long-term/evaluation-29d8efa649ed107e6c7df92a/252_sessions.json",
+        "sha256": "2420444eaa73d7a724b25dca88c6610743d8225b8399f3e98f7ccedc60912206"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cab0214d85836a5648290a2",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-22/trading/evaluation-9cab0214d85836a5648290a2/1_session.json",
+        "sha256": "430e90111a7a8f7c6c9b4e89ee29b22fedc1bb51b272139e23219c23ddfdaf05"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cab0214d85836a5648290a2",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-22/trading/evaluation-9cab0214d85836a5648290a2/5_sessions.json",
+        "sha256": "97ca7327232f336498fbb71a7fc410d9fa5b9cde5377d161514616d7e3803941"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cab0214d85836a5648290a2",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-22/trading/evaluation-9cab0214d85836a5648290a2/20_sessions.json",
+        "sha256": "3e523f38472917e3bf15af7ff8ee381a20a1703a6c8196366df458632239ffcf"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cab0214d85836a5648290a2",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-22/trading/evaluation-9cab0214d85836a5648290a2/60_sessions.json",
+        "sha256": "684b7711b24b9677856ae2110b7b079bbbf1bd83efa80eb3eeb55dca547917fe"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb353a663517142d9521d2d0",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-22/long-term/evaluation-fb353a663517142d9521d2d0/20_sessions.json",
+        "sha256": "d43b4265bb73f16651587ee4a195c8df477c05ec06c070f49b00cd96f42287d7"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb353a663517142d9521d2d0",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-22/long-term/evaluation-fb353a663517142d9521d2d0/60_sessions.json",
+        "sha256": "941733f3816adce43c587ccf564a72cb247bf8af349182e479f92e11983140b0"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb353a663517142d9521d2d0",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-22/long-term/evaluation-fb353a663517142d9521d2d0/126_sessions.json",
+        "sha256": "31e571dae61f4b947fc38c8935d9557180960d6bcdce26005e694e842a88fe59"
+      },
+      {
+        "evaluation_run_id": "evaluation-fb353a663517142d9521d2d0",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-22/long-term/evaluation-fb353a663517142d9521d2d0/252_sessions.json",
+        "sha256": "0b905bf5faf731c822b4b52de94b2e6528fab2b9f33f97c57c12644d9d425b63"
+      },
+      {
+        "evaluation_run_id": "evaluation-c8879734e47d4182dda8cf2e",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-23/trading/evaluation-c8879734e47d4182dda8cf2e/1_session.json",
+        "sha256": "1cfc5e120381325c71076d1be33135469412466eb0fa724fe4625ae39e20d1c5"
+      },
+      {
+        "evaluation_run_id": "evaluation-c8879734e47d4182dda8cf2e",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-23/trading/evaluation-c8879734e47d4182dda8cf2e/5_sessions.json",
+        "sha256": "5bd0d5457a8d25448d29aea5e58f47b5110097dc98dfcb3fb6b7a16de6a876be"
+      },
+      {
+        "evaluation_run_id": "evaluation-c8879734e47d4182dda8cf2e",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-23/trading/evaluation-c8879734e47d4182dda8cf2e/20_sessions.json",
+        "sha256": "9c36a43657d2b4595aa86a06225a44d6edb61945f6c76b27ccd5bfdd66a90d51"
+      },
+      {
+        "evaluation_run_id": "evaluation-c8879734e47d4182dda8cf2e",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-23/trading/evaluation-c8879734e47d4182dda8cf2e/60_sessions.json",
+        "sha256": "570d8b41f5699d5cd60ecc672005f375d0f86cff77677ad3018a2dc4bebfaa3d"
+      },
+      {
+        "evaluation_run_id": "evaluation-7b1ffcd5210c551857f861f8",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-23/long-term/evaluation-7b1ffcd5210c551857f861f8/20_sessions.json",
+        "sha256": "00f02ec4ea7c569b2dee5b40e818fe44143ebfa0301c5f7da1988751507dcf99"
+      },
+      {
+        "evaluation_run_id": "evaluation-7b1ffcd5210c551857f861f8",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-23/long-term/evaluation-7b1ffcd5210c551857f861f8/60_sessions.json",
+        "sha256": "0eb5c18061df5adacdc5fbf08f671d35c4923e1a154ba5663ed360c1a5b4b4d8"
+      },
+      {
+        "evaluation_run_id": "evaluation-7b1ffcd5210c551857f861f8",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-23/long-term/evaluation-7b1ffcd5210c551857f861f8/126_sessions.json",
+        "sha256": "4d7a1c0a1b3acbe10b9d762015c4e7b868f5344dfe5664228b950b87becce30f"
+      },
+      {
+        "evaluation_run_id": "evaluation-7b1ffcd5210c551857f861f8",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-23/long-term/evaluation-7b1ffcd5210c551857f861f8/252_sessions.json",
+        "sha256": "e9d8259cf4bafc18c9e7be5b26735d600c630f87cff038af3c0d9b4df6ae13fb"
+      },
+      {
+        "evaluation_run_id": "evaluation-079fe8109449fa09829cc158",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-24/trading/evaluation-079fe8109449fa09829cc158/1_session.json",
+        "sha256": "764e2d580d5a476678f1fada06ed6a4ac4bc9271a2d5373331714b8c5e84facc"
+      },
+      {
+        "evaluation_run_id": "evaluation-079fe8109449fa09829cc158",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-24/trading/evaluation-079fe8109449fa09829cc158/5_sessions.json",
+        "sha256": "738fdce8d704f94655c722a923ce900f50c8f7a176e40f8910eb9bd28ad6054f"
+      },
+      {
+        "evaluation_run_id": "evaluation-079fe8109449fa09829cc158",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-24/trading/evaluation-079fe8109449fa09829cc158/20_sessions.json",
+        "sha256": "99aee5d2e6559c865634e5d58b7abf0c693472c756968e9cd7f5efdb632e37a9"
+      },
+      {
+        "evaluation_run_id": "evaluation-079fe8109449fa09829cc158",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-24/trading/evaluation-079fe8109449fa09829cc158/60_sessions.json",
+        "sha256": "6cdbaf213881be76d21eda48a4537b9ffce7ee71daa4b7b2ebe64f4c15d81a6e"
+      },
+      {
+        "evaluation_run_id": "evaluation-6d571d30fdd53990ebbb64e0",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-24/long-term/evaluation-6d571d30fdd53990ebbb64e0/20_sessions.json",
+        "sha256": "70fcda3309563b48f875ff77975159284effba3d3ebcff1bf4659a044aff1d75"
+      },
+      {
+        "evaluation_run_id": "evaluation-6d571d30fdd53990ebbb64e0",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-24/long-term/evaluation-6d571d30fdd53990ebbb64e0/60_sessions.json",
+        "sha256": "fedf21d1fe28a97f917d3424edd7ce4a96a2745c516b1cff46e33c55778a88ad"
+      },
+      {
+        "evaluation_run_id": "evaluation-6d571d30fdd53990ebbb64e0",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-24/long-term/evaluation-6d571d30fdd53990ebbb64e0/126_sessions.json",
+        "sha256": "bba62c03999bb396cd1ad59691691e81a484c0974639cca7c9bc4a9ad158314e"
+      },
+      {
+        "evaluation_run_id": "evaluation-6d571d30fdd53990ebbb64e0",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-24/long-term/evaluation-6d571d30fdd53990ebbb64e0/252_sessions.json",
+        "sha256": "977bff369d5e13cb4c72a0b23eddf4a307ae97873128d5e989b2f2600fa8716b"
+      },
+      {
+        "evaluation_run_id": "evaluation-88670cab799c0d255d6b25a0",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-25/trading/evaluation-88670cab799c0d255d6b25a0/1_session.json",
+        "sha256": "0e80ee885149510080245427383ba11292ab75898dc7d61f8f618689a046043b"
+      },
+      {
+        "evaluation_run_id": "evaluation-88670cab799c0d255d6b25a0",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-25/trading/evaluation-88670cab799c0d255d6b25a0/5_sessions.json",
+        "sha256": "0081efb14b17de2059e2d90b2bb48a538e003876f0282f49500fe8c62d8a97c6"
+      },
+      {
+        "evaluation_run_id": "evaluation-88670cab799c0d255d6b25a0",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-25/trading/evaluation-88670cab799c0d255d6b25a0/20_sessions.json",
+        "sha256": "fedda7f9298e7b08823b0b3b668b148a7db44fb2a9328f21a37b28332b926367"
+      },
+      {
+        "evaluation_run_id": "evaluation-88670cab799c0d255d6b25a0",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-25/trading/evaluation-88670cab799c0d255d6b25a0/60_sessions.json",
+        "sha256": "c785d8a81badfe99a0cc622a38fe1aafb98c4db32b97366f98cb294114010818"
+      },
+      {
+        "evaluation_run_id": "evaluation-d81fc48de3b84ec8427b6fed",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-25/long-term/evaluation-d81fc48de3b84ec8427b6fed/20_sessions.json",
+        "sha256": "31ed4f3ffa167c4b5dd6dd2fd9a189e26e63aa609e3d0eb5061aafea167e9116"
+      },
+      {
+        "evaluation_run_id": "evaluation-d81fc48de3b84ec8427b6fed",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-25/long-term/evaluation-d81fc48de3b84ec8427b6fed/60_sessions.json",
+        "sha256": "d13043c35a046de284e54bc9bf8191befdf45eac2283db23f24fe69f966b6182"
+      },
+      {
+        "evaluation_run_id": "evaluation-d81fc48de3b84ec8427b6fed",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-25/long-term/evaluation-d81fc48de3b84ec8427b6fed/126_sessions.json",
+        "sha256": "1ab26e5a82240f0fc224d83d4f7e1da7fd08751a04291f4e194f6ebfe2aaf861"
+      },
+      {
+        "evaluation_run_id": "evaluation-d81fc48de3b84ec8427b6fed",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-25/long-term/evaluation-d81fc48de3b84ec8427b6fed/252_sessions.json",
+        "sha256": "9804618861da7eb7046cf608c982c7fc1d824c20c0f174e5231aa45c6fad4e8e"
+      },
+      {
+        "evaluation_run_id": "evaluation-636d651a2335442e4b8cd50c",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-28/trading/evaluation-636d651a2335442e4b8cd50c/1_session.json",
+        "sha256": "8cf564f747c82b11e5973727e48f5b0c2d49ec9fe51994f93eb819038025bd63"
+      },
+      {
+        "evaluation_run_id": "evaluation-636d651a2335442e4b8cd50c",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-28/trading/evaluation-636d651a2335442e4b8cd50c/5_sessions.json",
+        "sha256": "f3a0433820f63438c187458a799d3baa9cb4faaf2baf58f343b9257edfa42285"
+      },
+      {
+        "evaluation_run_id": "evaluation-636d651a2335442e4b8cd50c",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-28/trading/evaluation-636d651a2335442e4b8cd50c/20_sessions.json",
+        "sha256": "8e9336938ddaf8a880f7253289c17fba0b5397b6fefb33c9c063254b6e349866"
+      },
+      {
+        "evaluation_run_id": "evaluation-636d651a2335442e4b8cd50c",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-28/trading/evaluation-636d651a2335442e4b8cd50c/60_sessions.json",
+        "sha256": "c684d5a543d651c40bbaee96b39fb8b084d6485164b864273c3f6ee8b641ff0c"
+      },
+      {
+        "evaluation_run_id": "evaluation-255a47044c5aaa6be010ae7b",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-28/long-term/evaluation-255a47044c5aaa6be010ae7b/20_sessions.json",
+        "sha256": "b64982b135ef22e8dcec1e411b88c2f0e7dda2dc2d430e4ecce35892521c3259"
+      },
+      {
+        "evaluation_run_id": "evaluation-255a47044c5aaa6be010ae7b",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-28/long-term/evaluation-255a47044c5aaa6be010ae7b/60_sessions.json",
+        "sha256": "7b04a61bf5fb724bdf1d7fbe29a89930de4c2d5fab25500930b1d518311ec859"
+      },
+      {
+        "evaluation_run_id": "evaluation-255a47044c5aaa6be010ae7b",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-28/long-term/evaluation-255a47044c5aaa6be010ae7b/126_sessions.json",
+        "sha256": "a7c0bb33eb47db5ce5e2a1abffc0dbf762607de1f1d325f522b161168d1c31da"
+      },
+      {
+        "evaluation_run_id": "evaluation-255a47044c5aaa6be010ae7b",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-28/long-term/evaluation-255a47044c5aaa6be010ae7b/252_sessions.json",
+        "sha256": "fc6474be7e0e11d2f20c342b7955150d01ca72ab30275a293c0c71431655a02b"
+      },
+      {
+        "evaluation_run_id": "evaluation-6585751ca38a7d7a01240059",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-29/trading/evaluation-6585751ca38a7d7a01240059/1_session.json",
+        "sha256": "59c00db7c3fa8e48a656fdd50c02af1c11ac3d8dd0b3ebe7f3e55381ec8f1933"
+      },
+      {
+        "evaluation_run_id": "evaluation-6585751ca38a7d7a01240059",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-29/trading/evaluation-6585751ca38a7d7a01240059/5_sessions.json",
+        "sha256": "2cee949ed0be872263271cb1a362855666a1c0141ef0e76c8ad980b5a70356c2"
+      },
+      {
+        "evaluation_run_id": "evaluation-6585751ca38a7d7a01240059",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-29/trading/evaluation-6585751ca38a7d7a01240059/20_sessions.json",
+        "sha256": "0493f6a4b831231e106183b22cc03d86b3e7d7b4915c2dfded0e4fd80921c629"
+      },
+      {
+        "evaluation_run_id": "evaluation-6585751ca38a7d7a01240059",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-29/trading/evaluation-6585751ca38a7d7a01240059/60_sessions.json",
+        "sha256": "fb2849c44caf0a16aa82529556367f76df8ce2ac41bda13feb64abe693ccb14d"
+      },
+      {
+        "evaluation_run_id": "evaluation-df3fddc5d2782d234ef661f5",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-29/long-term/evaluation-df3fddc5d2782d234ef661f5/20_sessions.json",
+        "sha256": "85b525df992cb9fb44954edf5c04602d8da8e8d2efa53440994bfe1a02570bfd"
+      },
+      {
+        "evaluation_run_id": "evaluation-df3fddc5d2782d234ef661f5",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-29/long-term/evaluation-df3fddc5d2782d234ef661f5/60_sessions.json",
+        "sha256": "eb6d79edd9c2e6eefd71289440055d266ebbc3528c53369efe4589d60851af6b"
+      },
+      {
+        "evaluation_run_id": "evaluation-df3fddc5d2782d234ef661f5",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-29/long-term/evaluation-df3fddc5d2782d234ef661f5/126_sessions.json",
+        "sha256": "f86f77380738f0ee0e7f11b02013a3636da0134d9e00ed05b16bbf141bc4b390"
+      },
+      {
+        "evaluation_run_id": "evaluation-df3fddc5d2782d234ef661f5",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-29/long-term/evaluation-df3fddc5d2782d234ef661f5/252_sessions.json",
+        "sha256": "e8a530d74ab8e5b6f4cd72c1016feefebf0294403f020d0f90c1a53772920ea9"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a14c7615eb42ce3ed59a680",
+        "horizon_label": "1_session",
+        "path": "runs/2026-09-30/trading/evaluation-4a14c7615eb42ce3ed59a680/1_session.json",
+        "sha256": "59e374e972bdc96ad7ff750ec623352513d0f1bf7b1c39e2be095c31fd80d438"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a14c7615eb42ce3ed59a680",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-09-30/trading/evaluation-4a14c7615eb42ce3ed59a680/5_sessions.json",
+        "sha256": "f6039fb655c817114af1a871c91ee91cf0adfae2959db88dc57eeb01d3785f61"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a14c7615eb42ce3ed59a680",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-30/trading/evaluation-4a14c7615eb42ce3ed59a680/20_sessions.json",
+        "sha256": "0f9fa24bd7738718cbb6b492767b609422d36f42839c83082d0a2eb3c2cd3d74"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a14c7615eb42ce3ed59a680",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-30/trading/evaluation-4a14c7615eb42ce3ed59a680/60_sessions.json",
+        "sha256": "a937654f72db550cb8878e80fed1c4520d105456e8b186083d81da4d5b94af2e"
+      },
+      {
+        "evaluation_run_id": "evaluation-052b0645d0e975911a561e97",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-09-30/long-term/evaluation-052b0645d0e975911a561e97/20_sessions.json",
+        "sha256": "24146f5038b81facdd3a45f00fc319a2423688f0111f2abc87b81b25a6ba45ca"
+      },
+      {
+        "evaluation_run_id": "evaluation-052b0645d0e975911a561e97",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-09-30/long-term/evaluation-052b0645d0e975911a561e97/60_sessions.json",
+        "sha256": "1969fe3dfcd312129579f583b8e9a124bff5cf05682fae5f4ca24232f525ac0a"
+      },
+      {
+        "evaluation_run_id": "evaluation-052b0645d0e975911a561e97",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-09-30/long-term/evaluation-052b0645d0e975911a561e97/126_sessions.json",
+        "sha256": "e0e1e92947751ecf1e663c9a69b6a7db2df0964e40b8eabb17dba2711615102c"
+      },
+      {
+        "evaluation_run_id": "evaluation-052b0645d0e975911a561e97",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-09-30/long-term/evaluation-052b0645d0e975911a561e97/252_sessions.json",
+        "sha256": "4b71dceabb57f168b346abd1e2f4c6ebc0498b39bd875232f700b001334855a0"
+      },
+      {
+        "evaluation_run_id": "evaluation-f5f469046335730a23d30b39",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-01/trading/evaluation-f5f469046335730a23d30b39/1_session.json",
+        "sha256": "d12b4646509914b5ee69c067b7741f26056e7cca8fe1aa8fce0287691ad7d0c6"
+      },
+      {
+        "evaluation_run_id": "evaluation-f5f469046335730a23d30b39",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-01/trading/evaluation-f5f469046335730a23d30b39/5_sessions.json",
+        "sha256": "719d3e5c7e474899e7d21317436a1d4ec9832f82e81208be98fb78ca1e1c23be"
+      },
+      {
+        "evaluation_run_id": "evaluation-f5f469046335730a23d30b39",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-01/trading/evaluation-f5f469046335730a23d30b39/20_sessions.json",
+        "sha256": "ab9b2a5394e5bbeb7db39de6578de48fa2685513eebe3a183e554f7ac4b7df22"
+      },
+      {
+        "evaluation_run_id": "evaluation-f5f469046335730a23d30b39",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-01/trading/evaluation-f5f469046335730a23d30b39/60_sessions.json",
+        "sha256": "4bacaf8820c0e00017c20a0261a93d17780d3b72ae9c3bea10ceebc75d762efd"
+      },
+      {
+        "evaluation_run_id": "evaluation-44c0ff03d6ff8f6f1e595c12",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-01/long-term/evaluation-44c0ff03d6ff8f6f1e595c12/20_sessions.json",
+        "sha256": "52f620835ee75f18cc58dd79f2743dcba09681800fc59a23d9df7044d0037d95"
+      },
+      {
+        "evaluation_run_id": "evaluation-44c0ff03d6ff8f6f1e595c12",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-01/long-term/evaluation-44c0ff03d6ff8f6f1e595c12/60_sessions.json",
+        "sha256": "f3a8332315c6d851d3fa614755e908877df5bf5c9ffac405e7e78602136d0f82"
+      },
+      {
+        "evaluation_run_id": "evaluation-44c0ff03d6ff8f6f1e595c12",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-01/long-term/evaluation-44c0ff03d6ff8f6f1e595c12/126_sessions.json",
+        "sha256": "ee7403be7c103004ff2cb29be66f55e8591f28a166354821d4d0c988785d922e"
+      },
+      {
+        "evaluation_run_id": "evaluation-44c0ff03d6ff8f6f1e595c12",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-01/long-term/evaluation-44c0ff03d6ff8f6f1e595c12/252_sessions.json",
+        "sha256": "146d517648b17e21a969133b6afc56315cf389ac33d62630228989160f2d96da"
+      },
+      {
+        "evaluation_run_id": "evaluation-10acb40e833d8ae8fca2ee67",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-02/trading/evaluation-10acb40e833d8ae8fca2ee67/1_session.json",
+        "sha256": "b943f66e69a38ce9b5031c03a82d200420ddbc82d614420029133f962a973550"
+      },
+      {
+        "evaluation_run_id": "evaluation-10acb40e833d8ae8fca2ee67",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-02/trading/evaluation-10acb40e833d8ae8fca2ee67/5_sessions.json",
+        "sha256": "51365f358da77920d2fbbed3674f22dd6ab450ca682f7574e63c65f9f5fc2d52"
+      },
+      {
+        "evaluation_run_id": "evaluation-10acb40e833d8ae8fca2ee67",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-02/trading/evaluation-10acb40e833d8ae8fca2ee67/20_sessions.json",
+        "sha256": "b15c14b2cc95e994d41b702f755da0666512a6cd498e2e60da635a32e5f8f2a8"
+      },
+      {
+        "evaluation_run_id": "evaluation-10acb40e833d8ae8fca2ee67",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-02/trading/evaluation-10acb40e833d8ae8fca2ee67/60_sessions.json",
+        "sha256": "728658841c98b7648410e4508e5d4a36277db8660d5798d29f1bceb53d14761e"
+      },
+      {
+        "evaluation_run_id": "evaluation-409f8cfd1eaed7722895e810",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-02/long-term/evaluation-409f8cfd1eaed7722895e810/20_sessions.json",
+        "sha256": "cca4bb6f93cb91c270946fb2446e3abb84ac99c044c77d23f31967acce9a8102"
+      },
+      {
+        "evaluation_run_id": "evaluation-409f8cfd1eaed7722895e810",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-02/long-term/evaluation-409f8cfd1eaed7722895e810/60_sessions.json",
+        "sha256": "71b9edc0b2e1b693fcbf440a001bfcd42b7c88fb3d4eef53ebc3a0e493f7fd1b"
+      },
+      {
+        "evaluation_run_id": "evaluation-409f8cfd1eaed7722895e810",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-02/long-term/evaluation-409f8cfd1eaed7722895e810/126_sessions.json",
+        "sha256": "55fe4b5820289a2c356aa150bafbce0fe8751b324ad588ac72f9477a2d94e396"
+      },
+      {
+        "evaluation_run_id": "evaluation-409f8cfd1eaed7722895e810",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-02/long-term/evaluation-409f8cfd1eaed7722895e810/252_sessions.json",
+        "sha256": "5caf9db380b9e0c6bb28474f30b5bd14cf9d9feb6e7ceb5c7d9a6416e5e391b3"
+      },
+      {
+        "evaluation_run_id": "evaluation-259474fd2c45c8a97eb16118",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-05/trading/evaluation-259474fd2c45c8a97eb16118/1_session.json",
+        "sha256": "0f6df0ff4ed470e2566e7045406aff835396a0f6d96e904f754f7f104db396ef"
+      },
+      {
+        "evaluation_run_id": "evaluation-259474fd2c45c8a97eb16118",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-05/trading/evaluation-259474fd2c45c8a97eb16118/5_sessions.json",
+        "sha256": "5a98c1659f2622c0c45935a814f2036c0e3e5785430c478db8a0588f7e1a415e"
+      },
+      {
+        "evaluation_run_id": "evaluation-259474fd2c45c8a97eb16118",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-05/trading/evaluation-259474fd2c45c8a97eb16118/20_sessions.json",
+        "sha256": "eb886b5bed8950f1f977049d9f987fee25a8433592487eedc71408e481b57c55"
+      },
+      {
+        "evaluation_run_id": "evaluation-259474fd2c45c8a97eb16118",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-05/trading/evaluation-259474fd2c45c8a97eb16118/60_sessions.json",
+        "sha256": "590b3e1d9ec8932975b64c57b4afb9e196ae5c7acacc94d7d5bc8facd267448b"
+      },
+      {
+        "evaluation_run_id": "evaluation-8bbd7b13d652c1d248620530",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-05/long-term/evaluation-8bbd7b13d652c1d248620530/20_sessions.json",
+        "sha256": "17aec8b47880ad4ace13479da348fcfa7c465e6bc72bbb318661b8c411463dd3"
+      },
+      {
+        "evaluation_run_id": "evaluation-8bbd7b13d652c1d248620530",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-05/long-term/evaluation-8bbd7b13d652c1d248620530/60_sessions.json",
+        "sha256": "752bf97ca113966fbd3c793aea0f02032077a6e1105aba8345e29ec93356412c"
+      },
+      {
+        "evaluation_run_id": "evaluation-8bbd7b13d652c1d248620530",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-05/long-term/evaluation-8bbd7b13d652c1d248620530/126_sessions.json",
+        "sha256": "6361643778b1f1e79c8bc7e388510a96c72932c6be27cafbdd4340b23d38ea42"
+      },
+      {
+        "evaluation_run_id": "evaluation-8bbd7b13d652c1d248620530",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-05/long-term/evaluation-8bbd7b13d652c1d248620530/252_sessions.json",
+        "sha256": "f4b3e9240ee7bf4650528ac97473cee535031ef692328dbdb9aa83d1050e81f1"
+      },
+      {
+        "evaluation_run_id": "evaluation-159a80fa100b8ee322330167",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-06/trading/evaluation-159a80fa100b8ee322330167/1_session.json",
+        "sha256": "fa409fd128213fe3e65061fe5bf7d36adffac697f23c19cd021a8081a7b1880c"
+      },
+      {
+        "evaluation_run_id": "evaluation-159a80fa100b8ee322330167",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-06/trading/evaluation-159a80fa100b8ee322330167/5_sessions.json",
+        "sha256": "e310b1e66adc1ec61b0e8e3fd8e915c47190f42e1e8f87f83c87db7efeb37233"
+      },
+      {
+        "evaluation_run_id": "evaluation-159a80fa100b8ee322330167",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-06/trading/evaluation-159a80fa100b8ee322330167/20_sessions.json",
+        "sha256": "74d499a288ed46a48687edfff636b03db8b6c5b1cdde2749bd0c7e5fbcc03ab5"
+      },
+      {
+        "evaluation_run_id": "evaluation-159a80fa100b8ee322330167",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-06/trading/evaluation-159a80fa100b8ee322330167/60_sessions.json",
+        "sha256": "94c611e36287dffe7a6cf7a89abb882bb116cc7587cb17a91aba65c77a5c14a6"
+      },
+      {
+        "evaluation_run_id": "evaluation-968c69239a544b5ca566ace6",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-06/long-term/evaluation-968c69239a544b5ca566ace6/20_sessions.json",
+        "sha256": "e376eb9852ba123bdb8a08e385d7cb246d41e80ccd7b61e3395d41ef056cf203"
+      },
+      {
+        "evaluation_run_id": "evaluation-968c69239a544b5ca566ace6",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-06/long-term/evaluation-968c69239a544b5ca566ace6/60_sessions.json",
+        "sha256": "1e10a164029577cff6f5e38d289474328b79b0b2cbea68e672f5f7a307771639"
+      },
+      {
+        "evaluation_run_id": "evaluation-968c69239a544b5ca566ace6",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-06/long-term/evaluation-968c69239a544b5ca566ace6/126_sessions.json",
+        "sha256": "2749a42f03a2e0317ece5fb8e9640126c20318b20eddaa21cde1e37431803912"
+      },
+      {
+        "evaluation_run_id": "evaluation-968c69239a544b5ca566ace6",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-06/long-term/evaluation-968c69239a544b5ca566ace6/252_sessions.json",
+        "sha256": "cb249630389ac9a89ac1aecf1795088f5d1d89583c098645b557ed2794eec1f5"
+      },
+      {
+        "evaluation_run_id": "evaluation-b4584f1e327c039820866060",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-07/trading/evaluation-b4584f1e327c039820866060/1_session.json",
+        "sha256": "4d9d68bdffa70479942d61c29fc02116ee156aed4422892d6aae4e14209a75d7"
+      },
+      {
+        "evaluation_run_id": "evaluation-b4584f1e327c039820866060",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-07/trading/evaluation-b4584f1e327c039820866060/5_sessions.json",
+        "sha256": "1d8e69620b8ae2429e9a4c054fa9734e97b3e52c4597e38c8a4f796edf1c5f1a"
+      },
+      {
+        "evaluation_run_id": "evaluation-b4584f1e327c039820866060",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-07/trading/evaluation-b4584f1e327c039820866060/20_sessions.json",
+        "sha256": "44b745fbefbb847a0495d276211fcc2bf5109fde2d00dbec991e19bc25b72596"
+      },
+      {
+        "evaluation_run_id": "evaluation-b4584f1e327c039820866060",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-07/trading/evaluation-b4584f1e327c039820866060/60_sessions.json",
+        "sha256": "3a29583dced7c93dc932927140bf4ba9463465b276ce81e974e0bcea3c1a79f8"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5eff75eb1ecd5f3af1bcf07",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-07/long-term/evaluation-d5eff75eb1ecd5f3af1bcf07/20_sessions.json",
+        "sha256": "6d7fb1afcec7b4259af9520e65af69f45e5f3cc8d7d832d3e5fb1d06b1a68894"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5eff75eb1ecd5f3af1bcf07",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-07/long-term/evaluation-d5eff75eb1ecd5f3af1bcf07/60_sessions.json",
+        "sha256": "3523def9455041cf3be90f879eb4856b999f99bf5a423e100e35ebdc80050d20"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5eff75eb1ecd5f3af1bcf07",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-07/long-term/evaluation-d5eff75eb1ecd5f3af1bcf07/126_sessions.json",
+        "sha256": "f72f9f4b311660ffa1a0ff159d267bb1cb00635aada11d0e99b2b171d995602a"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5eff75eb1ecd5f3af1bcf07",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-07/long-term/evaluation-d5eff75eb1ecd5f3af1bcf07/252_sessions.json",
+        "sha256": "19a629a28b80ff751b09fb395ef701a2cc16e61feda9a0c73ecb302a3b5520eb"
+      },
+      {
+        "evaluation_run_id": "evaluation-4757e6000517b201f0125442",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-08/trading/evaluation-4757e6000517b201f0125442/1_session.json",
+        "sha256": "b7c0a43e35cb48fb08b76f417438653c31b7602e7c5d1eeefcf53249ab8e2622"
+      },
+      {
+        "evaluation_run_id": "evaluation-4757e6000517b201f0125442",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-08/trading/evaluation-4757e6000517b201f0125442/5_sessions.json",
+        "sha256": "f13a69ac4522d83f39a12a3f97cc38ee9b7a69a8c81777d697a0fd6e3c56da53"
+      },
+      {
+        "evaluation_run_id": "evaluation-4757e6000517b201f0125442",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-08/trading/evaluation-4757e6000517b201f0125442/20_sessions.json",
+        "sha256": "f7584d29f4341613fd382193eb7a651bc2ee37ba9df6f991200406e62a90c164"
+      },
+      {
+        "evaluation_run_id": "evaluation-4757e6000517b201f0125442",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-08/trading/evaluation-4757e6000517b201f0125442/60_sessions.json",
+        "sha256": "bad9af6de99fd76e96ca795d0e7e6b101a0a7dcee610583ae2271a6a61f7901a"
+      },
+      {
+        "evaluation_run_id": "evaluation-d29902fb915462b5367682f0",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-08/long-term/evaluation-d29902fb915462b5367682f0/20_sessions.json",
+        "sha256": "68e9af89aad1d04a3b83d59fc70ad2d42f27843582fac80a55170b11f71e7443"
+      },
+      {
+        "evaluation_run_id": "evaluation-d29902fb915462b5367682f0",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-08/long-term/evaluation-d29902fb915462b5367682f0/60_sessions.json",
+        "sha256": "3baf071f14c6131c219679bc8e42abc696b3123d2bf377305653d1dddef23105"
+      },
+      {
+        "evaluation_run_id": "evaluation-d29902fb915462b5367682f0",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-08/long-term/evaluation-d29902fb915462b5367682f0/126_sessions.json",
+        "sha256": "4a64d09ed903853a0f105029442029d3e5985d80b3314dc8968ae96c77622511"
+      },
+      {
+        "evaluation_run_id": "evaluation-d29902fb915462b5367682f0",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-08/long-term/evaluation-d29902fb915462b5367682f0/252_sessions.json",
+        "sha256": "e4f1ab012af203db45ef191b89a2052ee0f6e49bfc2a9302db5d1e6445a716a0"
+      },
+      {
+        "evaluation_run_id": "evaluation-27fdc7423c1f4917727b3930",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-09/trading/evaluation-27fdc7423c1f4917727b3930/1_session.json",
+        "sha256": "2051be02d8c44fbd7e4e62dd5cd38b791e2384db010454abb9c47c4cc18ddff7"
+      },
+      {
+        "evaluation_run_id": "evaluation-27fdc7423c1f4917727b3930",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-09/trading/evaluation-27fdc7423c1f4917727b3930/5_sessions.json",
+        "sha256": "36816f026d4788b273b779c7af913268a6f4e376126491407d217c42bae64823"
+      },
+      {
+        "evaluation_run_id": "evaluation-27fdc7423c1f4917727b3930",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-09/trading/evaluation-27fdc7423c1f4917727b3930/20_sessions.json",
+        "sha256": "4a1c8da867d95e9f91e4094a32933aea7bcd33f3f2d9bde4d69e4d2338c8c050"
+      },
+      {
+        "evaluation_run_id": "evaluation-27fdc7423c1f4917727b3930",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-09/trading/evaluation-27fdc7423c1f4917727b3930/60_sessions.json",
+        "sha256": "d274eba5294d3b07a972659299b82f692c8c55d2823ee19934a47da0abd75e43"
+      },
+      {
+        "evaluation_run_id": "evaluation-68c3cb99568df5e436f08c52",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-09/long-term/evaluation-68c3cb99568df5e436f08c52/20_sessions.json",
+        "sha256": "14e4c3e43ce8bb786aa3ba0d1fef03172211fa1c78f1f47cca5f7b70a0280d36"
+      },
+      {
+        "evaluation_run_id": "evaluation-68c3cb99568df5e436f08c52",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-09/long-term/evaluation-68c3cb99568df5e436f08c52/60_sessions.json",
+        "sha256": "897064bb309273214f7a943e25c74f16ac5d90403811701729e44a44146e6dd0"
+      },
+      {
+        "evaluation_run_id": "evaluation-68c3cb99568df5e436f08c52",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-09/long-term/evaluation-68c3cb99568df5e436f08c52/126_sessions.json",
+        "sha256": "e3b1a636c9009c6f6aa397f4b0ad83b9b62e0ca9d743acbafb515c850c9bb558"
+      },
+      {
+        "evaluation_run_id": "evaluation-68c3cb99568df5e436f08c52",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-09/long-term/evaluation-68c3cb99568df5e436f08c52/252_sessions.json",
+        "sha256": "583ef50e7855f0793e3d1477333b4b9299ecd238e83c28ad05abdc631ccf6cc4"
+      },
+      {
+        "evaluation_run_id": "evaluation-7683a7b6a8b0ae2dc1634bb1",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-12/trading/evaluation-7683a7b6a8b0ae2dc1634bb1/1_session.json",
+        "sha256": "55610f7a6ec1320860df7004c16f43a5fab961aa5d950dd9059e526163292e29"
+      },
+      {
+        "evaluation_run_id": "evaluation-7683a7b6a8b0ae2dc1634bb1",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-12/trading/evaluation-7683a7b6a8b0ae2dc1634bb1/5_sessions.json",
+        "sha256": "5ee9951ae802eeb965756091083c4a542382f9f9dc86a12e8222e7dc31874e2a"
+      },
+      {
+        "evaluation_run_id": "evaluation-7683a7b6a8b0ae2dc1634bb1",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-12/trading/evaluation-7683a7b6a8b0ae2dc1634bb1/20_sessions.json",
+        "sha256": "95c7642adb0e35a2ee1fd9dfb83bbaa1d1cfdc762f1459e72f64c564f6030526"
+      },
+      {
+        "evaluation_run_id": "evaluation-7683a7b6a8b0ae2dc1634bb1",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-12/trading/evaluation-7683a7b6a8b0ae2dc1634bb1/60_sessions.json",
+        "sha256": "db9d73f2d713b103546222fdab6349bf4e3d1a078fb22b1b52e8bf0223871c50"
+      },
+      {
+        "evaluation_run_id": "evaluation-c0a1dced0189e31107294879",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-12/long-term/evaluation-c0a1dced0189e31107294879/20_sessions.json",
+        "sha256": "b31aaa44d8e6f93e0872b5c7ed2efcff7206d8430795c47c85b5709deb27eed2"
+      },
+      {
+        "evaluation_run_id": "evaluation-c0a1dced0189e31107294879",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-12/long-term/evaluation-c0a1dced0189e31107294879/60_sessions.json",
+        "sha256": "37006928a99be8b145f1e791616eab8f465f1237d51f03d07b6d3da6396a5599"
+      },
+      {
+        "evaluation_run_id": "evaluation-c0a1dced0189e31107294879",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-12/long-term/evaluation-c0a1dced0189e31107294879/126_sessions.json",
+        "sha256": "c61a1e809fb414e5c16cbddf934ad731ec69e2862b823f639a086c200f25287f"
+      },
+      {
+        "evaluation_run_id": "evaluation-c0a1dced0189e31107294879",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-12/long-term/evaluation-c0a1dced0189e31107294879/252_sessions.json",
+        "sha256": "0d4ffa93169afdf9c484be62d6cf7c32917e64de67d4141705b26a7d2c092142"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0a9bae37e1cde7e471197dd",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-13/trading/evaluation-a0a9bae37e1cde7e471197dd/1_session.json",
+        "sha256": "06b1404f36856dcbfee43eece9d54c834b1297b78399c4fd2e9acbfd9e995438"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0a9bae37e1cde7e471197dd",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-13/trading/evaluation-a0a9bae37e1cde7e471197dd/5_sessions.json",
+        "sha256": "1e1a8256bd6a83d9ec18c9269cc80341ab5c12ea29cac0a2bc1fed377cb0fd28"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0a9bae37e1cde7e471197dd",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-13/trading/evaluation-a0a9bae37e1cde7e471197dd/20_sessions.json",
+        "sha256": "a9fa67c8020bb41a751fae9469ec1430c374bbc435ddd730460434ed9d41541f"
+      },
+      {
+        "evaluation_run_id": "evaluation-a0a9bae37e1cde7e471197dd",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-13/trading/evaluation-a0a9bae37e1cde7e471197dd/60_sessions.json",
+        "sha256": "c9bb0c73c8f2b0e3a191cc10114827a8063038c471634543c4d5a7ffc68d681e"
+      },
+      {
+        "evaluation_run_id": "evaluation-5ef85febb910604752ae6c4b",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-13/long-term/evaluation-5ef85febb910604752ae6c4b/20_sessions.json",
+        "sha256": "ba184ddaf03e1b0ee615c4af9d4206473c185de15ec2839b8780ce7d36b468e1"
+      },
+      {
+        "evaluation_run_id": "evaluation-5ef85febb910604752ae6c4b",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-13/long-term/evaluation-5ef85febb910604752ae6c4b/60_sessions.json",
+        "sha256": "d59f2df28502195e9ada4be03830b4a67e72f48fe32021d0517c9746f69254c5"
+      },
+      {
+        "evaluation_run_id": "evaluation-5ef85febb910604752ae6c4b",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-13/long-term/evaluation-5ef85febb910604752ae6c4b/126_sessions.json",
+        "sha256": "8c2dc3fcf8c501977ea37d89c387ed7070118079337639545867c4b065d07de1"
+      },
+      {
+        "evaluation_run_id": "evaluation-5ef85febb910604752ae6c4b",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-13/long-term/evaluation-5ef85febb910604752ae6c4b/252_sessions.json",
+        "sha256": "6693fcf5e311a18047e079d6fdef9647fb8af72fb330e99165d7321139a58f8d"
+      },
+      {
+        "evaluation_run_id": "evaluation-49565738524529f3bb22fd5f",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-14/trading/evaluation-49565738524529f3bb22fd5f/1_session.json",
+        "sha256": "6b495a14ae3294c6e198155e387813b090c205cc72701d863b5914ceb7e0a52a"
+      },
+      {
+        "evaluation_run_id": "evaluation-49565738524529f3bb22fd5f",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-14/trading/evaluation-49565738524529f3bb22fd5f/5_sessions.json",
+        "sha256": "e8d68fa14723e3b2dc1ae8b919aa10d2fcfa5cb83ac304fecf312851a12fa06d"
+      },
+      {
+        "evaluation_run_id": "evaluation-49565738524529f3bb22fd5f",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-14/trading/evaluation-49565738524529f3bb22fd5f/20_sessions.json",
+        "sha256": "d6d20cf238c516a293cc14267d537d83912a42baa6fdf56dfa03e640bf6dc953"
+      },
+      {
+        "evaluation_run_id": "evaluation-49565738524529f3bb22fd5f",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-14/trading/evaluation-49565738524529f3bb22fd5f/60_sessions.json",
+        "sha256": "d25bcd9eab2ba8c51bd9c9cfc02e911c4e45ddc410dad7555fa82e1ec01f6e55"
+      },
+      {
+        "evaluation_run_id": "evaluation-005fa07d2a365c566a6cd4ab",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-14/long-term/evaluation-005fa07d2a365c566a6cd4ab/20_sessions.json",
+        "sha256": "40d1514b8366932ae3b50332c8c6cac39deb7c062b484c076c0bfe9cc737318b"
+      },
+      {
+        "evaluation_run_id": "evaluation-005fa07d2a365c566a6cd4ab",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-14/long-term/evaluation-005fa07d2a365c566a6cd4ab/60_sessions.json",
+        "sha256": "5f8850056e7874ff422715692fc4b3ea6710b7a370ffc8c7aa737a293f53eb6e"
+      },
+      {
+        "evaluation_run_id": "evaluation-005fa07d2a365c566a6cd4ab",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-14/long-term/evaluation-005fa07d2a365c566a6cd4ab/126_sessions.json",
+        "sha256": "6c4fdcefbe93de1132827046b04b18849ffec783dde3a3de3542d97bb77162d0"
+      },
+      {
+        "evaluation_run_id": "evaluation-005fa07d2a365c566a6cd4ab",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-14/long-term/evaluation-005fa07d2a365c566a6cd4ab/252_sessions.json",
+        "sha256": "b869b6ca6656f770dc1930c56c30449bd444d5168a8dcbbaf53a1b99f193668f"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a1aeeb59391afb268217c87",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-15/trading/evaluation-4a1aeeb59391afb268217c87/1_session.json",
+        "sha256": "3344bf4a93781b11a14df1c9582f295ad913c0d1b7239cb77d45f56b13b5c05f"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a1aeeb59391afb268217c87",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-15/trading/evaluation-4a1aeeb59391afb268217c87/5_sessions.json",
+        "sha256": "88de2a98433fdf93d581c479255b5fe697a5ebe43f1cc1141a773a2c58a03e6c"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a1aeeb59391afb268217c87",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-15/trading/evaluation-4a1aeeb59391afb268217c87/20_sessions.json",
+        "sha256": "9b68d57e4e9d2d839a3f28e43a5c07778486e9204a9cc5d45d2085d50f420ee9"
+      },
+      {
+        "evaluation_run_id": "evaluation-4a1aeeb59391afb268217c87",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-15/trading/evaluation-4a1aeeb59391afb268217c87/60_sessions.json",
+        "sha256": "77793d0e71a99aeb70172417fd5ad0a20eb146398450a8fdd1bcad40e0223217"
+      },
+      {
+        "evaluation_run_id": "evaluation-6cb586c217e6bbec1dd1f169",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-15/long-term/evaluation-6cb586c217e6bbec1dd1f169/20_sessions.json",
+        "sha256": "40fcc3e7c8c681e63bf1cb5afd8ac9504552858c3bebe364b3a3c8c3f1ae4e84"
+      },
+      {
+        "evaluation_run_id": "evaluation-6cb586c217e6bbec1dd1f169",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-15/long-term/evaluation-6cb586c217e6bbec1dd1f169/60_sessions.json",
+        "sha256": "1cf1a2e3a9a474ca36efa25ca41d117c2daba63623fc2bb85d413e70a745dfc1"
+      },
+      {
+        "evaluation_run_id": "evaluation-6cb586c217e6bbec1dd1f169",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-15/long-term/evaluation-6cb586c217e6bbec1dd1f169/126_sessions.json",
+        "sha256": "b20a7dd81e1d6a0852f58efeb3212423994083eb6b10402bc84e2322e1eb8e42"
+      },
+      {
+        "evaluation_run_id": "evaluation-6cb586c217e6bbec1dd1f169",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-15/long-term/evaluation-6cb586c217e6bbec1dd1f169/252_sessions.json",
+        "sha256": "57c576230df0c890fb1d0ce795ab237d25c753b2044f6f3aafa0dcf0638f844c"
+      },
+      {
+        "evaluation_run_id": "evaluation-7181a2a226ed34fba6518075",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-16/trading/evaluation-7181a2a226ed34fba6518075/1_session.json",
+        "sha256": "11c1574eab5c8335bc95ccbb7673070357af79d0e58342658259336bb9de6d57"
+      },
+      {
+        "evaluation_run_id": "evaluation-7181a2a226ed34fba6518075",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-16/trading/evaluation-7181a2a226ed34fba6518075/5_sessions.json",
+        "sha256": "75248d7c7be875efcec32ad295f59f33c0a69832b110994bca347d505b080ad7"
+      },
+      {
+        "evaluation_run_id": "evaluation-7181a2a226ed34fba6518075",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-16/trading/evaluation-7181a2a226ed34fba6518075/20_sessions.json",
+        "sha256": "c47ec646ec01ab81a011db429dab12b9ef166d00689fc38a0d97995bac9df948"
+      },
+      {
+        "evaluation_run_id": "evaluation-7181a2a226ed34fba6518075",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-16/trading/evaluation-7181a2a226ed34fba6518075/60_sessions.json",
+        "sha256": "3890c0e24f28b2c953a55a96714f001dd427aaf30d236a4f5a84bf73756dc845"
+      },
+      {
+        "evaluation_run_id": "evaluation-c4067bef9bfe73fb244ffda0",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-16/long-term/evaluation-c4067bef9bfe73fb244ffda0/20_sessions.json",
+        "sha256": "f944c137fe714674885ee0077c1a6f7ac367916a07c6330cb0c19770a08629d5"
+      },
+      {
+        "evaluation_run_id": "evaluation-c4067bef9bfe73fb244ffda0",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-16/long-term/evaluation-c4067bef9bfe73fb244ffda0/60_sessions.json",
+        "sha256": "88f7e1d88ca4e0fc1c36c65c7a0f4eb7bea847d3beb6adadfb8970820b6a3721"
+      },
+      {
+        "evaluation_run_id": "evaluation-c4067bef9bfe73fb244ffda0",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-16/long-term/evaluation-c4067bef9bfe73fb244ffda0/126_sessions.json",
+        "sha256": "dcc389f7ecf828d4448ec9249d4acea584776ad41623bf944268b6d4e71b7878"
+      },
+      {
+        "evaluation_run_id": "evaluation-c4067bef9bfe73fb244ffda0",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-16/long-term/evaluation-c4067bef9bfe73fb244ffda0/252_sessions.json",
+        "sha256": "97e74d318f7adb0b7412ba677d929d235658f35611759074c70ac0124431955f"
+      },
+      {
+        "evaluation_run_id": "evaluation-fbb02d58ef45513322d16887",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-19/trading/evaluation-fbb02d58ef45513322d16887/1_session.json",
+        "sha256": "2c733bc42001051f4860e6cdad1b02a304418cb4d46b5cc5619a29cd51fc92dc"
+      },
+      {
+        "evaluation_run_id": "evaluation-fbb02d58ef45513322d16887",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-19/trading/evaluation-fbb02d58ef45513322d16887/5_sessions.json",
+        "sha256": "002704fa01a886304fc72623b1dca10a803443aade5ec22ea82b6212ed1107a1"
+      },
+      {
+        "evaluation_run_id": "evaluation-fbb02d58ef45513322d16887",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-19/trading/evaluation-fbb02d58ef45513322d16887/20_sessions.json",
+        "sha256": "412be5715491d6fa8c1736f6823a9587585641e70babd0c855b122f2c3891bf4"
+      },
+      {
+        "evaluation_run_id": "evaluation-fbb02d58ef45513322d16887",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-19/trading/evaluation-fbb02d58ef45513322d16887/60_sessions.json",
+        "sha256": "e099895935039d5813a494793abc587ef4d0e3b3257f3ec97afc02e0ece0cff1"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5b34047bfec7e23884901ba",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-19/long-term/evaluation-d5b34047bfec7e23884901ba/20_sessions.json",
+        "sha256": "03339a5162c861b35e12de0cd5274a40ba57a8078dc70ae707ac9d5afc3d02fe"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5b34047bfec7e23884901ba",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-19/long-term/evaluation-d5b34047bfec7e23884901ba/60_sessions.json",
+        "sha256": "8307bb310ecc84e15e64932d518262a33463b7444de6d9844ad2f8f0a879474f"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5b34047bfec7e23884901ba",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-19/long-term/evaluation-d5b34047bfec7e23884901ba/126_sessions.json",
+        "sha256": "c3e86230435e847e22f473c10a6236f317232594ef3e82b8c59db17c66a5df45"
+      },
+      {
+        "evaluation_run_id": "evaluation-d5b34047bfec7e23884901ba",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-19/long-term/evaluation-d5b34047bfec7e23884901ba/252_sessions.json",
+        "sha256": "97fc7d18412c5acd13d97d4cdd5ac81e7c4e5315e1e4affde6c0953f0c00c223"
+      },
+      {
+        "evaluation_run_id": "evaluation-4ec65cbe2388579d36d4d360",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-20/trading/evaluation-4ec65cbe2388579d36d4d360/1_session.json",
+        "sha256": "be2a929ba669ff72c4de05ec61d67e6b59aa76b6f16bb10d56f4fde8f23d446c"
+      },
+      {
+        "evaluation_run_id": "evaluation-4ec65cbe2388579d36d4d360",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-20/trading/evaluation-4ec65cbe2388579d36d4d360/5_sessions.json",
+        "sha256": "8621e8270b8581622242d193151e3ab2450fe6e912ad795601a777601e47914b"
+      },
+      {
+        "evaluation_run_id": "evaluation-4ec65cbe2388579d36d4d360",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-20/trading/evaluation-4ec65cbe2388579d36d4d360/20_sessions.json",
+        "sha256": "e9e466701eb89c08c83a8147bf3af17da1aea9a714597b9ceccc7d8ae2d19ff8"
+      },
+      {
+        "evaluation_run_id": "evaluation-4ec65cbe2388579d36d4d360",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-20/trading/evaluation-4ec65cbe2388579d36d4d360/60_sessions.json",
+        "sha256": "50b79195d53ce19646c431038c7adc68180a1fc8bf5b480ceb5a44dddf2bb320"
+      },
+      {
+        "evaluation_run_id": "evaluation-8de4ed7dbb2d0604d6a44595",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-20/long-term/evaluation-8de4ed7dbb2d0604d6a44595/20_sessions.json",
+        "sha256": "323a09053b0c2552d55172de67e307f7699e473df7d037f8da64e2cecc3edaea"
+      },
+      {
+        "evaluation_run_id": "evaluation-8de4ed7dbb2d0604d6a44595",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-20/long-term/evaluation-8de4ed7dbb2d0604d6a44595/60_sessions.json",
+        "sha256": "fce8619b93fd3c5ed495b0585974f4fde1640741cfbf142f3c163f58dddd079d"
+      },
+      {
+        "evaluation_run_id": "evaluation-8de4ed7dbb2d0604d6a44595",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-20/long-term/evaluation-8de4ed7dbb2d0604d6a44595/126_sessions.json",
+        "sha256": "1b99307d336a06e9d5aebd477f5ec5290c0fe6d6326f45374f494d774dbe120f"
+      },
+      {
+        "evaluation_run_id": "evaluation-8de4ed7dbb2d0604d6a44595",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-20/long-term/evaluation-8de4ed7dbb2d0604d6a44595/252_sessions.json",
+        "sha256": "2ca0a3259614cde25aef6ee451d480dc51509c0380d9001a179cee3da8d14d2c"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d6445136a4a1a37a262fd4b",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-21/trading/evaluation-3d6445136a4a1a37a262fd4b/1_session.json",
+        "sha256": "3c33e6353d0c74561c0c165f5d44ef71824acbc59f1d069cbc954b171b1a2bdb"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d6445136a4a1a37a262fd4b",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-21/trading/evaluation-3d6445136a4a1a37a262fd4b/5_sessions.json",
+        "sha256": "9f16f6f73d71f922130016c3ead7de5f4bea1eb39855ca6d1167b61b04bece52"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d6445136a4a1a37a262fd4b",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-21/trading/evaluation-3d6445136a4a1a37a262fd4b/20_sessions.json",
+        "sha256": "3151d22f0c91ea7687b5298691a24de771e4a2ecedcaa5521084348aae7e878d"
+      },
+      {
+        "evaluation_run_id": "evaluation-3d6445136a4a1a37a262fd4b",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-21/trading/evaluation-3d6445136a4a1a37a262fd4b/60_sessions.json",
+        "sha256": "2fbb4d704d04f1e1c967dbe2aefc371242dfd13447e626819a3d93f9597536c5"
+      },
+      {
+        "evaluation_run_id": "evaluation-6e964bfd8275013e1d0c7d86",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-21/long-term/evaluation-6e964bfd8275013e1d0c7d86/20_sessions.json",
+        "sha256": "f670afa4a6faff756b77fb8e522d305b472174c9da04ba09d7115785f6506971"
+      },
+      {
+        "evaluation_run_id": "evaluation-6e964bfd8275013e1d0c7d86",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-21/long-term/evaluation-6e964bfd8275013e1d0c7d86/60_sessions.json",
+        "sha256": "75966c4ab6e405aba241f2051b7b26c9a78a1475158a19b687fecf585327dc81"
+      },
+      {
+        "evaluation_run_id": "evaluation-6e964bfd8275013e1d0c7d86",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-21/long-term/evaluation-6e964bfd8275013e1d0c7d86/126_sessions.json",
+        "sha256": "e5f2b528ab603a01ad6603026e16cd2af4b5a503aba9d7052afad0db2914ca7b"
+      },
+      {
+        "evaluation_run_id": "evaluation-6e964bfd8275013e1d0c7d86",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-21/long-term/evaluation-6e964bfd8275013e1d0c7d86/252_sessions.json",
+        "sha256": "b36be8dad5680009453f7befb8eaa8bf1412940686785ff253890d5ee022fdef"
+      },
+      {
+        "evaluation_run_id": "evaluation-4faf050ed0dee7a545606240",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-22/trading/evaluation-4faf050ed0dee7a545606240/1_session.json",
+        "sha256": "4f8232caa4407b25871351e5ddbaebca1a1afba724a10146af7a9fa3df55dd6f"
+      },
+      {
+        "evaluation_run_id": "evaluation-4faf050ed0dee7a545606240",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-22/trading/evaluation-4faf050ed0dee7a545606240/5_sessions.json",
+        "sha256": "b2c77dd65b8fa94baa6089507d4a726d8415194b8427d29f721b9961f7cab386"
+      },
+      {
+        "evaluation_run_id": "evaluation-4faf050ed0dee7a545606240",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-22/trading/evaluation-4faf050ed0dee7a545606240/20_sessions.json",
+        "sha256": "f0693d169acbaaea07a1d5b34ea0b184299e07ef0d63fdf8044f80b16461bd44"
+      },
+      {
+        "evaluation_run_id": "evaluation-4faf050ed0dee7a545606240",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-22/trading/evaluation-4faf050ed0dee7a545606240/60_sessions.json",
+        "sha256": "1d551422eecf2a73f3e9bde7f8511d2933feb2f8733231f87fa59c9a36f8938b"
+      },
+      {
+        "evaluation_run_id": "evaluation-607f0644934bd6ea926f9f48",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-22/long-term/evaluation-607f0644934bd6ea926f9f48/20_sessions.json",
+        "sha256": "d231b6808e90643cf579324af8365a5070180e0716ee9fdaa6280b4c15a07d58"
+      },
+      {
+        "evaluation_run_id": "evaluation-607f0644934bd6ea926f9f48",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-22/long-term/evaluation-607f0644934bd6ea926f9f48/60_sessions.json",
+        "sha256": "19b92bc03ab61b88335b193eed9fba17df63d3065656a6cbd79a37d09933bd71"
+      },
+      {
+        "evaluation_run_id": "evaluation-607f0644934bd6ea926f9f48",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-22/long-term/evaluation-607f0644934bd6ea926f9f48/126_sessions.json",
+        "sha256": "08538c3c910e6ecf75c1a4f5f56c022655ffed1d7b2c71b22b7b12689db9707c"
+      },
+      {
+        "evaluation_run_id": "evaluation-607f0644934bd6ea926f9f48",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-22/long-term/evaluation-607f0644934bd6ea926f9f48/252_sessions.json",
+        "sha256": "8f09a8d52588c013030defa8180305e296926e9de355f04440fe55231761e742"
+      },
+      {
+        "evaluation_run_id": "evaluation-87a6ce6cab705585fd33f00e",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-23/trading/evaluation-87a6ce6cab705585fd33f00e/1_session.json",
+        "sha256": "2a7c6b8dc499efda9a376c8e2dcaa22ac70a0d7ed8f14ee94e25f2640a06b6c6"
+      },
+      {
+        "evaluation_run_id": "evaluation-87a6ce6cab705585fd33f00e",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-23/trading/evaluation-87a6ce6cab705585fd33f00e/5_sessions.json",
+        "sha256": "60d6d324a6e286e20bf6e88e76b36c1f6a46b18222d9cbc2931ee9d240230933"
+      },
+      {
+        "evaluation_run_id": "evaluation-87a6ce6cab705585fd33f00e",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-23/trading/evaluation-87a6ce6cab705585fd33f00e/20_sessions.json",
+        "sha256": "d6816bacc690b3d43d25ba5d0ffe30fb9f60735a30cf1cd158b827c91b35a9d6"
+      },
+      {
+        "evaluation_run_id": "evaluation-87a6ce6cab705585fd33f00e",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-23/trading/evaluation-87a6ce6cab705585fd33f00e/60_sessions.json",
+        "sha256": "3dff744069d07360e83127199fdcd74bb6a1ef07bb1b9b83eb26b5e144cc278a"
+      },
+      {
+        "evaluation_run_id": "evaluation-f21140b99ebc0821c6832082",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-23/long-term/evaluation-f21140b99ebc0821c6832082/20_sessions.json",
+        "sha256": "02f38fca703cc1232f750b555cf31b0a03f69cb1225adcc1202a0d9e20e090bf"
+      },
+      {
+        "evaluation_run_id": "evaluation-f21140b99ebc0821c6832082",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-23/long-term/evaluation-f21140b99ebc0821c6832082/60_sessions.json",
+        "sha256": "01019dc72c09a0b3115eacaabc92dcda93e23359762357f3ccf061dacf14a595"
+      },
+      {
+        "evaluation_run_id": "evaluation-f21140b99ebc0821c6832082",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-23/long-term/evaluation-f21140b99ebc0821c6832082/126_sessions.json",
+        "sha256": "55d3960fb6b79b07fa3942884cccdf18a03161d08d3362f0d17955640bea5f25"
+      },
+      {
+        "evaluation_run_id": "evaluation-f21140b99ebc0821c6832082",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-23/long-term/evaluation-f21140b99ebc0821c6832082/252_sessions.json",
+        "sha256": "9f74a6bec1aad542ab9f11d4a19e991f225b6392efda479d7f00a2a09ff8d137"
+      },
+      {
+        "evaluation_run_id": "evaluation-2a96101cb6786862f8a23174",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-26/trading/evaluation-2a96101cb6786862f8a23174/1_session.json",
+        "sha256": "d7c10dc0db25633b3863d61eb8bacab3d0522ae8952c609be16722ba1bf98879"
+      },
+      {
+        "evaluation_run_id": "evaluation-2a96101cb6786862f8a23174",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-26/trading/evaluation-2a96101cb6786862f8a23174/5_sessions.json",
+        "sha256": "afb28f1e38907630b83fdea03777322cbe7628ac2417ea0e8e6088d7886871b4"
+      },
+      {
+        "evaluation_run_id": "evaluation-2a96101cb6786862f8a23174",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-26/trading/evaluation-2a96101cb6786862f8a23174/20_sessions.json",
+        "sha256": "2fa8a1fbd3eeec0db9c13fd99ddbd8571e267f74ff0ed73721e385fa7d0b0880"
+      },
+      {
+        "evaluation_run_id": "evaluation-2a96101cb6786862f8a23174",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-26/trading/evaluation-2a96101cb6786862f8a23174/60_sessions.json",
+        "sha256": "4c67a4127e9217cea144d37366a7aa8564183af3ec4d7b32698fc6678ecfb757"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e041484dbbf6162b1d49c4b",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-26/long-term/evaluation-5e041484dbbf6162b1d49c4b/20_sessions.json",
+        "sha256": "41b41d5873de05be07b7acefbfa93e337edf4ffb09198799c401e6e21857db54"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e041484dbbf6162b1d49c4b",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-26/long-term/evaluation-5e041484dbbf6162b1d49c4b/60_sessions.json",
+        "sha256": "5088389e552e9082dc3887164f4ee057e5735865b5ff6c405e2ca9e48b99bfe8"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e041484dbbf6162b1d49c4b",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-26/long-term/evaluation-5e041484dbbf6162b1d49c4b/126_sessions.json",
+        "sha256": "659c759349148cf6f62ccaef589ebd36713d666b3ed61aa8b14c2895d4dc1e4e"
+      },
+      {
+        "evaluation_run_id": "evaluation-5e041484dbbf6162b1d49c4b",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-26/long-term/evaluation-5e041484dbbf6162b1d49c4b/252_sessions.json",
+        "sha256": "4f752668d4401712191cf54ce18b22a57cac00b9de5aea6df8c2ad04767be7b0"
+      },
+      {
+        "evaluation_run_id": "evaluation-3086c1e3f766a336a41e6b83",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-27/trading/evaluation-3086c1e3f766a336a41e6b83/1_session.json",
+        "sha256": "b13e54d81791f080e609f441e8a2515f02b58517f4a40b0a1904197b2ace9b65"
+      },
+      {
+        "evaluation_run_id": "evaluation-3086c1e3f766a336a41e6b83",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-27/trading/evaluation-3086c1e3f766a336a41e6b83/5_sessions.json",
+        "sha256": "3f71bb60a1e7aad5295efaed4e94df103a692429414dc923140ca5ad3a35956b"
+      },
+      {
+        "evaluation_run_id": "evaluation-3086c1e3f766a336a41e6b83",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-27/trading/evaluation-3086c1e3f766a336a41e6b83/20_sessions.json",
+        "sha256": "9c328bcedf25dc64e6edc91b0697dff4cae189ec3ff06f10218bd599179200f8"
+      },
+      {
+        "evaluation_run_id": "evaluation-3086c1e3f766a336a41e6b83",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-27/trading/evaluation-3086c1e3f766a336a41e6b83/60_sessions.json",
+        "sha256": "2d05a0444f1e765696727391aa46c6f03fd46a8f82660a4c7e07cbf4873b33a9"
+      },
+      {
+        "evaluation_run_id": "evaluation-b81c2b0d7e529b2ef7b06580",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-27/long-term/evaluation-b81c2b0d7e529b2ef7b06580/20_sessions.json",
+        "sha256": "b967d2acce7a30a515a5fedb8f2ecd41c8a103baa968f16d200eed0c7d1a52a8"
+      },
+      {
+        "evaluation_run_id": "evaluation-b81c2b0d7e529b2ef7b06580",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-27/long-term/evaluation-b81c2b0d7e529b2ef7b06580/60_sessions.json",
+        "sha256": "2352860634f15278b670c518e1f7d84c7e2326907bbc17b5866218643a2d7c2b"
+      },
+      {
+        "evaluation_run_id": "evaluation-b81c2b0d7e529b2ef7b06580",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-27/long-term/evaluation-b81c2b0d7e529b2ef7b06580/126_sessions.json",
+        "sha256": "6fa9766766c96cc23b4d91c224f99ee150841c3895531b127641170729a01876"
+      },
+      {
+        "evaluation_run_id": "evaluation-b81c2b0d7e529b2ef7b06580",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-27/long-term/evaluation-b81c2b0d7e529b2ef7b06580/252_sessions.json",
+        "sha256": "9da169e8f3a8d1e1ff7c7285ebcbdba722a7a7d7f5bea2c70cdb07925a710c13"
+      },
+      {
+        "evaluation_run_id": "evaluation-bf719ba5a2a55e614748a865",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-28/trading/evaluation-bf719ba5a2a55e614748a865/1_session.json",
+        "sha256": "f51663caf69491636016ca84f6bfd034a4b2c187f7e6fd997b3e0b1aa2efc112"
+      },
+      {
+        "evaluation_run_id": "evaluation-bf719ba5a2a55e614748a865",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-28/trading/evaluation-bf719ba5a2a55e614748a865/5_sessions.json",
+        "sha256": "9d5e3defe92447c724b57ea8fb2b4c5ef8f15ef299d58953da9c64148c6d2541"
+      },
+      {
+        "evaluation_run_id": "evaluation-bf719ba5a2a55e614748a865",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-28/trading/evaluation-bf719ba5a2a55e614748a865/20_sessions.json",
+        "sha256": "1678707c4905c7c9fdf39184ca9021cda333fd772733975b432b1f629c837369"
+      },
+      {
+        "evaluation_run_id": "evaluation-bf719ba5a2a55e614748a865",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-28/trading/evaluation-bf719ba5a2a55e614748a865/60_sessions.json",
+        "sha256": "bffaf497882379979ab9973f1f7da081052e94721b3410361117c49da1cbf299"
+      },
+      {
+        "evaluation_run_id": "evaluation-3888551ab273bb68d47a2003",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-28/long-term/evaluation-3888551ab273bb68d47a2003/20_sessions.json",
+        "sha256": "c25f463b189c04a39b241830359cedf590f031cad40aa98908aa05ccfd1e0103"
+      },
+      {
+        "evaluation_run_id": "evaluation-3888551ab273bb68d47a2003",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-28/long-term/evaluation-3888551ab273bb68d47a2003/60_sessions.json",
+        "sha256": "c1cc2ac8b573a81b8f33b1926ae7a77b03f423ba33e6be6c242c5c9e88ae6411"
+      },
+      {
+        "evaluation_run_id": "evaluation-3888551ab273bb68d47a2003",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-28/long-term/evaluation-3888551ab273bb68d47a2003/126_sessions.json",
+        "sha256": "382dfa8425cf0e740968f6f184beddaeaf3a3ab1dcedeb097a663bcd8e7f365d"
+      },
+      {
+        "evaluation_run_id": "evaluation-3888551ab273bb68d47a2003",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-28/long-term/evaluation-3888551ab273bb68d47a2003/252_sessions.json",
+        "sha256": "bbb142df823241a028bedae9fe44aaec688264d348180035591e9f78dfe155a0"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cf2a11b4b8e921a8715baa8",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-29/trading/evaluation-9cf2a11b4b8e921a8715baa8/1_session.json",
+        "sha256": "b75af4940c7f13c87d75bbbffcab8be8a184e3f46bdc915869c589028596d970"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cf2a11b4b8e921a8715baa8",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-29/trading/evaluation-9cf2a11b4b8e921a8715baa8/5_sessions.json",
+        "sha256": "4832d66b66d490deefb574cadd9f8e72328176ef3d899caa689abdbf0cbe27f4"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cf2a11b4b8e921a8715baa8",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-29/trading/evaluation-9cf2a11b4b8e921a8715baa8/20_sessions.json",
+        "sha256": "9cb6106ab9aa519db4707827ad75a0187133063760554a922cc2f7b1f20049ec"
+      },
+      {
+        "evaluation_run_id": "evaluation-9cf2a11b4b8e921a8715baa8",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-29/trading/evaluation-9cf2a11b4b8e921a8715baa8/60_sessions.json",
+        "sha256": "264b096eda0170a75424b8177001a822119055fee310f6b80c46666e4a261a02"
+      },
+      {
+        "evaluation_run_id": "evaluation-1248341bf6b5c3b2b26ef5c3",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-29/long-term/evaluation-1248341bf6b5c3b2b26ef5c3/20_sessions.json",
+        "sha256": "53a6907b87c614c3fb83480e4c703b79eb87e8b3adb5d3a299e8a9a935459848"
+      },
+      {
+        "evaluation_run_id": "evaluation-1248341bf6b5c3b2b26ef5c3",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-29/long-term/evaluation-1248341bf6b5c3b2b26ef5c3/60_sessions.json",
+        "sha256": "8302e19d1308cb4f3d7590f3570e83aae4174d377cd7ef693a027e9ceacad9dc"
+      },
+      {
+        "evaluation_run_id": "evaluation-1248341bf6b5c3b2b26ef5c3",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-29/long-term/evaluation-1248341bf6b5c3b2b26ef5c3/126_sessions.json",
+        "sha256": "5a3864a951863e14b19e553e3c216a64a3d60a1715988d968d45ac9f900f2983"
+      },
+      {
+        "evaluation_run_id": "evaluation-1248341bf6b5c3b2b26ef5c3",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-29/long-term/evaluation-1248341bf6b5c3b2b26ef5c3/252_sessions.json",
+        "sha256": "0490ce487479e3d8e7ef89e58cbe6207820ab6fe4f9a8697a92660ee19236234"
+      },
+      {
+        "evaluation_run_id": "evaluation-65c00944da80c35b49c60f38",
+        "horizon_label": "1_session",
+        "path": "runs/2026-10-30/trading/evaluation-65c00944da80c35b49c60f38/1_session.json",
+        "sha256": "d017b01ffc7d5c3939e34d55456c7b99214d45bc567939d240eee45f08ca22ca"
+      },
+      {
+        "evaluation_run_id": "evaluation-65c00944da80c35b49c60f38",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-10-30/trading/evaluation-65c00944da80c35b49c60f38/5_sessions.json",
+        "sha256": "a56abfa5e549b3d23320f8cc9b5fa2d645378b617d2db33fcdad8f8df2b458c3"
+      },
+      {
+        "evaluation_run_id": "evaluation-65c00944da80c35b49c60f38",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-30/trading/evaluation-65c00944da80c35b49c60f38/20_sessions.json",
+        "sha256": "01d687329dca4f5ba29a5b304a6a0c49a277ee4940d945238898082c2a451132"
+      },
+      {
+        "evaluation_run_id": "evaluation-65c00944da80c35b49c60f38",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-30/trading/evaluation-65c00944da80c35b49c60f38/60_sessions.json",
+        "sha256": "072fc0e2f78d422e01fb4baf4437953e410d5959676c134c6dd467f205ce62d9"
+      },
+      {
+        "evaluation_run_id": "evaluation-8a5415afad2576396d4a0961",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-10-30/long-term/evaluation-8a5415afad2576396d4a0961/20_sessions.json",
+        "sha256": "4148b23761809f24de69dff573aabaa29daa5463340f3e5dfe6fe483cf4f749c"
+      },
+      {
+        "evaluation_run_id": "evaluation-8a5415afad2576396d4a0961",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-10-30/long-term/evaluation-8a5415afad2576396d4a0961/60_sessions.json",
+        "sha256": "2ef6010c52daebf0da89e0494173d08b362032dcfa18c6fe272ecd7fa12ad111"
+      },
+      {
+        "evaluation_run_id": "evaluation-8a5415afad2576396d4a0961",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-10-30/long-term/evaluation-8a5415afad2576396d4a0961/126_sessions.json",
+        "sha256": "44586bb1f9098a45bb6281ddf4d46a5913c1e40f9489c7b4f5bb316f46983d83"
+      },
+      {
+        "evaluation_run_id": "evaluation-8a5415afad2576396d4a0961",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-10-30/long-term/evaluation-8a5415afad2576396d4a0961/252_sessions.json",
+        "sha256": "4371a6857a390c5745a585ff30fddf5a0175ae7b181def6fbfba074d099759c3"
+      },
+      {
+        "evaluation_run_id": "evaluation-824e4d4c4dd5961514399624",
+        "horizon_label": "1_session",
+        "path": "runs/2026-11-03/trading/evaluation-824e4d4c4dd5961514399624/1_session.json",
+        "sha256": "decaf020bbae8db4b2f1f1d258723860cd6410800cf14516710964833afcaa38"
+      },
+      {
+        "evaluation_run_id": "evaluation-824e4d4c4dd5961514399624",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-11-03/trading/evaluation-824e4d4c4dd5961514399624/5_sessions.json",
+        "sha256": "aa2c0e1ee03d6a4a99654a400dbba173ac8d8234f180e93ca6554194f59e2ff6"
+      },
+      {
+        "evaluation_run_id": "evaluation-824e4d4c4dd5961514399624",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-03/trading/evaluation-824e4d4c4dd5961514399624/20_sessions.json",
+        "sha256": "b7ad2c2d27df87a9697ee8b9d7fbbb4cf290ec57a44be930d4140ace7597b491"
+      },
+      {
+        "evaluation_run_id": "evaluation-824e4d4c4dd5961514399624",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-03/trading/evaluation-824e4d4c4dd5961514399624/60_sessions.json",
+        "sha256": "0dde684bd20a87dc9cb017dc7940a5c0c597e011109a9efb35f9a41facc33986"
+      },
+      {
+        "evaluation_run_id": "evaluation-26970efa0474efb88c92e3d3",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-03/long-term/evaluation-26970efa0474efb88c92e3d3/20_sessions.json",
+        "sha256": "0a10a365c6eba99aa4a83577b3cb9b6af72848c2470957195918451b2f263c29"
+      },
+      {
+        "evaluation_run_id": "evaluation-26970efa0474efb88c92e3d3",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-03/long-term/evaluation-26970efa0474efb88c92e3d3/60_sessions.json",
+        "sha256": "a31b0009918a4682ff0c57e17755c706b6794ba318cc50da7c05687e3f02afea"
+      },
+      {
+        "evaluation_run_id": "evaluation-26970efa0474efb88c92e3d3",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-11-03/long-term/evaluation-26970efa0474efb88c92e3d3/126_sessions.json",
+        "sha256": "7148dcb1132737321499ddc4caf564350fb98cd7b42dc8d864f8f9eb8d13aaf9"
+      },
+      {
+        "evaluation_run_id": "evaluation-26970efa0474efb88c92e3d3",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-11-03/long-term/evaluation-26970efa0474efb88c92e3d3/252_sessions.json",
+        "sha256": "34775cc1ac1ad6286d2b28100dcc4d2fd3daf76462f6d3f76a3dc0d10e8d8d34"
+      }
+    ]
+  },
+  "benchmark_methodology": "representative-benchmarks-v1",
+  "external_passive_benchmark": {
+    "included_in_frozen_v1": false,
+    "status": "deferred_pending_license"
+  },
+  "generated_at": "2026-11-03T14:39:18Z",
+  "groups": [
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "20_sessions",
+        "sessions": 20
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "20_sessions",
+        "sessions": 20
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "60_sessions",
+        "sessions": 60
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "60_sessions",
+        "sessions": 60
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "126_sessions",
+        "sessions": 126
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "126_sessions",
+        "sessions": 126
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "252_sessions",
+        "sessions": 252
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "252_sessions",
+        "sessions": 252
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "long-term"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "1_session",
+        "sessions": 1
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "trading"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "1_session",
+        "sessions": 1
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "trading"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "5_sessions",
+        "sessions": 5
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "trading"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "5_sessions",
+        "sessions": 5
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "trading"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "20_sessions",
+        "sessions": 20
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "trading"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "20_sessions",
+        "sessions": 20
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "trading"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 39,
+      "horizon": {
+        "label": "60_sessions",
+        "sessions": 60
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "prospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
+      "strategy": "trading"
+    },
+    {
+      "analysis_eligible_run_count": 0,
+      "benchmark_methodology": "representative-benchmarks-v1",
+      "evaluation_run_count": 24,
+      "horizon": {
+        "label": "60_sessions",
+        "sessions": 60
+      },
+      "portfolios": {
+        "challenger": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        },
+        "champion": {
+          "exact_primary_dates": 0,
+          "mean_local_excess_vs_random_pct": null
+        }
+      },
+      "primary_eligible_run_count": 0,
+      "provenance": "retrospective",
+      "ranking": {
+        "final_rank_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        },
+        "score_return_spearman_ic": {
+          "mean": null,
+          "run_count": 0
+        }
+      },
+      "scope": "separate provenance and selection policy; descriptive multi-date evidence, not a skill claim",
+      "scoring_model_version": "nordic-ranking-v1",
+      "selection_configuration_id": "unverified",
+      "strategy": "trading"
+    }
+  ],
+  "legacy_policy": {
+    "historical_artifacts": "preserved unchanged; legacy renderer/API retained separately",
+    "performance_v1": "LEGACY_NON_AUTHORITATIVE",
+    "performance_v2_benchmarks": "deprecated survivor-defined diagnostics; not consumed by benchmark-v1"
+  },
+  "lifecycle": {
+    "analysis_eligible_horizon_runs": 0,
+    "evaluation_runs": 126,
+    "evaluations_with_selected_outcomes": 41,
+    "horizon_runs": 504,
+    "mature": 42050,
+    "mature_awaiting_retrieval": 25111,
+    "mature_budget_deferred": 14810,
+    "mature_failed": 0,
+    "mature_horizon_runs": 55,
+    "mature_pending": 39921,
+    "mature_priced": 2116,
+    "mature_unavailable": 13,
+    "not_mature": 187806,
+    "outcome_status_methodology": "cutoff-maturity-v1",
+    "partial_horizon_runs": 55,
+    "status_counts": {
+      "coherent_history_pending": 39921,
+      "missing_entry": 13,
+      "not_due": 187806,
+      "priced": 2116
+    },
+    "status_cutoff": "2026-11-03T14:39:18Z",
+    "total": 229856
+  },
+  "methodology": {
+    "adjustment_basis_verified": true,
+    "aggregation": "cross-sectional metrics are computed for every run; only analysis-eligible runs are aggregated",
+    "analysis_data_cutoff": "2026-11-03T14:39:18Z",
+    "analysis_eligibility": {
+      "minimum_coverage_pct": 70.0,
+      "minimum_valid_companies": 50,
+      "purpose": "research-quality aggregation guardrail; not a statistical-significance threshold"
+    },
+    "analysis_key": [
+      "strategy",
+      "scoring_model_version",
+      "horizon"
+    ],
+    "buckets": "original X rank quantiles; 10 buckets at n>=50, 5 at n>=25, 2 at n>=10, otherwise 1; floor(index * buckets / n)",
+    "cohort_returns": "observed-member diagnostics with fixed denominators; exact equal-weight returns require complete cohorts",
+    "country_analysis_eligibility": {
+      "minimum_coverage_pct": 70.0,
+      "minimum_valid_companies": 20,
+      "purpose": "research-quality aggregation guardrail; not a statistical-significance threshold"
+    },
+    "final_rank_ic": "Spearman correlation of negative recorded final rank and forward return",
+    "hierarchy": {
+      "external_passive_benchmark": {
+        "status": "deferred_pending_license"
+      },
+      "primary": "constraint-matched-random-v1",
+      "secondary": [
+        "gate-qualified-ew-v1",
+        "opportunity-universe-ew-v1",
+        "exposure-matched-opportunity-v1",
+        "matched-peers-v1"
+      ]
+    },
+    "membership": "immutable X population first; attach Y afterward without replacements",
+    "outcome_revision_policy": "latest-calculation-visible-at-data-cutoff-v1",
+    "primary_question": "Does ranking add value within the same X universe and production constraints?",
+    "return_label": "mean_local_return_pct",
+    "return_methodology": "single-response-adjusted-close-v1",
+    "score_ic": "Spearman correlation of recorded total score and forward return",
+    "selected_outcomes_hash": "ddcfab09ac83bccfc80e45a07f761789fcfe97b51c08c7a681fed55efdbb1f02"
+  },
+  "outcome_status_methodology": "cutoff-maturity-v1",
+  "schema_version": 4,
+  "warnings": [
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for long-term / nordic-ranking-v1 / 20_sessions.",
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for long-term / nordic-ranking-v1 / 60_sessions.",
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for long-term / nordic-ranking-v1 / 126_sessions.",
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for long-term / nordic-ranking-v1 / 252_sessions.",
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for trading / nordic-ranking-v1 / 1_session.",
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for trading / nordic-ranking-v1 / 5_sessions.",
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for trading / nordic-ranking-v1 / 20_sessions.",
+    "Insufficient history for reliable inference: 0 analysis-eligible evaluation dates for trading / nordic-ranking-v1 / 60_sessions.",
+    "No sufficiently covered evaluation dates are available yet for ranking-quality conclusions: long-term / nordic-ranking-v1 / 20_sessions.",
+    "No sufficiently covered evaluation dates are available yet for ranking-quality conclusions: long-term / nordic-ranking-v1 / 60_sessions.",
+    "No sufficiently covered evaluation dates are available yet for ranking-quality conclusions: trading / nordic-ranking-v1 / 1_session.",
+    "No sufficiently covered evaluation dates are available yet for ranking-quality conclusions: trading / nordic-ranking-v1 / 5_sessions.",
+    "No sufficiently covered evaluation dates are available yet for ranking-quality conclusions: trading / nordic-ranking-v1 / 20_sessions.",
+    "Partial price coverage may be systematically related to symbol resolution, country, segment, or company identity; low-coverage run metrics are therefore descriptive only.",
+    "Mixed-country figures are mean local returns/excess, not base-currency wealth returns.",
+    "X is already post-hard-gates; gate-qualified and opportunity cohorts coincide. Pre-gate value is not identifiable from retained X.",
+    "Retrospective, fixture, and prospective samples are never pooled. Repeated companies/dates are dependent; random percentiles are not significance tests.",
+    "No proprietary external passive index is included. This framework tests selection within X, not passive-market outperformance."
+  ]
+}
