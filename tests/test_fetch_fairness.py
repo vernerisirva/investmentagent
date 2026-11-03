@@ -55,14 +55,14 @@ def test_backoff_doubles_each_unproductive_fetch_day_up_to_the_cap():
     last = date(2026, 8, 11)
     at = lambda days: datetime.combine(last + timedelta(days=days), datetime.min.time(), UTC)
     assert _retry_backoff_until(None, at(0)) is None
-    assert _retry_backoff_until((0, last), at(0)) is None
-    assert _retry_backoff_until((1, last), at(0)) == last + timedelta(days=1)
-    assert _retry_backoff_until((1, last), at(1)) is None
-    assert _retry_backoff_until((3, last), at(3)) == last + timedelta(days=4)
-    assert _retry_backoff_until((3, last), at(4)) is None
+    assert _retry_backoff_until((0, last, None), at(0)) is None
+    assert _retry_backoff_until((1, last, None), at(0)) == last + timedelta(days=1)
+    assert _retry_backoff_until((1, last, None), at(1)) is None
+    assert _retry_backoff_until((3, last, None), at(3)) == last + timedelta(days=4)
+    assert _retry_backoff_until((3, last, None), at(4)) is None
     for failures in (6, 7, 40):
-        assert _retry_backoff_until((failures, last), at(31)) == last + timedelta(days=RETRY_BACKOFF_CAP_DAYS)
-        assert _retry_backoff_until((failures, last), at(RETRY_BACKOFF_CAP_DAYS)) is None
+        assert _retry_backoff_until((failures, last, None), at(31)) == last + timedelta(days=RETRY_BACKOFF_CAP_DAYS)
+        assert _retry_backoff_until((failures, last, None), at(RETRY_BACKOFF_CAP_DAYS)) is None
 
 
 def test_a_failing_security_backs_off_while_its_records_stay_budget_deferred(tmp_path):
@@ -168,3 +168,37 @@ def test_equal_priority_tasks_are_not_ordered_by_country_or_isin(tmp_path):
     assert order != sorted(order)
     assert {company[5:7] for company in order[:10]} == {"FI", "SE"}
     assert summary.provider_calls_executed == 0 and summary.work_deferred_by_budget == 10
+
+
+def test_a_newly_due_horizon_serves_never_priced_securities_first(tmp_path):
+    first_run = _snapshot(3, strategy="trading")
+    order = sorted((row.company_id for row in first_run.rows), key=lambda c: fetch_tie_break(c, "stockholm"))
+    later_run = _snapshot(3, strategy="trading", decision_at=datetime(2026, 8, 14, 8, tzinfo=UTC))
+    prices = _observations_for_snapshots((first_run, later_run), retrieved_at=FIRST)
+    served = FixtureHistoricalPriceProvider(prices)
+    refresh(tmp_path, first_run, day(0), served, budget=1)
+    assert requested(served) == [order[0]]
+    # On 2026-08-18 every security's oldest due work is the 2026-08-10 run again (5-session horizon),
+    # so only recency separates them: a never-priced security must win over the one served before.
+    save_evaluation_snapshot(tmp_path / "evaluations", later_run)
+    reset = FixtureHistoricalPriceProvider(prices)
+    summary = refresh(tmp_path, first_run, day(7), reset, budget=1)
+    assert requested(reset) == [order[1]]
+    due = {item.company_id: item for item in summary.fetch_plan}
+    assert len({(i.shortest_due_horizon_sessions, i.end_date, i.oldest_evaluation_date) for i in due.values()}) == 1
+
+
+def test_backoff_never_spends_budget_that_due_work_could_use(tmp_path):
+    first_run = _snapshot(2, strategy="trading")
+    failing, healthy = (row.company_id for row in first_run.rows)
+    later_run = _snapshot(2, strategy="trading", decision_at=datetime(2026, 8, 12, 8, tzinfo=UTC))
+    prices = {k: v for k, v in _observations_for_snapshots((first_run, later_run), retrieved_at=FIRST).items()
+              if k != failing}
+    errors = {failing: "HTTP Error 404: Not Found"}
+    refresh(tmp_path, first_run, day(0), FixtureHistoricalPriceProvider(prices, provider_errors=errors))
+    refresh(tmp_path, first_run, day(1), FixtureHistoricalPriceProvider(prices, provider_errors=errors))
+    save_evaluation_snapshot(tmp_path / "evaluations", later_run)
+    provider = FixtureHistoricalPriceProvider(prices, provider_errors=errors)
+    summary = refresh(tmp_path, first_run, day(2), provider, budget=1)
+    assert requested(provider) == [healthy]
+    assert summary.work_deferred_by_retry_backoff == 1 and summary.provider_calls_executed == 1

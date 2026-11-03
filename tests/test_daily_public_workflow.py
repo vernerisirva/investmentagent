@@ -302,3 +302,4 @@ def test_degraded_performance_records_fail_the_run_after_publication():
     assert "steps.performance_v2_analysis.outcome == 'failure'" in alert
     assert "exit 1" in alert and "always()" not in alert
     assert "id: performance_v2_outcomes" in _step(workflow, "Refresh Performance v2 outcomes")
+    assert "id: performance_v2_analysis" in _step(workflow, "Analyze Performance v2")
