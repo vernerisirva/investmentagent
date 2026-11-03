@@ -15,7 +15,7 @@ from investmentagent.evaluation_analysis import (
     render_performance_v2_markdown, save_analysis_json, save_analysis_markdown,
 )
 from investmentagent.evaluation_outcomes import (
-    HorizonDefinition, _initial_outcome, discover_outcome_sets, load_outcome_set,
+    HorizonDefinition, fetch_tie_break, _initial_outcome, discover_outcome_sets, load_outcome_set,
     refresh_evaluation_outcomes, refresh_outcome_store, save_outcome_set, serialize_outcome_set,
 )
 from investmentagent.experiments import serialize_experiment_snapshot
@@ -264,7 +264,8 @@ def test_planner_future_skip_mature_due_and_deterministic_budget(tmp_path):
     assert early.securities_requiring_prices == 0 and not provider.requests
     due, provider, _ = _run(tmp_path, snapshot, {}, at=DUE, budget=1, cache=cache)
     assert due.provider_calls_executed == 1 and due.work_deferred_by_budget == 2
-    assert [task.company_id for task in due.fetch_plan] == sorted(row.company_id for row in snapshot.rows)
+    assert [task.company_id for task in due.fetch_plan] == sorted(
+        (row.company_id for row in snapshot.rows), key=lambda company_id: fetch_tie_break(company_id, "stockholm"))
     assert due.lifecycle["mature_budget_deferred"] == 2
 
 

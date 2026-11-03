@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import os
 import tempfile
 from dataclasses import dataclass, replace
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from functools import cached_property
 from pathlib import Path
 from typing import Any, Iterable
@@ -17,6 +18,8 @@ from investmentagent.market_calendar import (
 )
 from investmentagent.market_prices import (
     ADJUSTED_PRICE_TYPE,
+    EODHD_CIRCUIT_DETAIL_PREFIX,
+    EODHD_MISSING_KEY_DETAIL,
     HistoricalPriceHistory,
     HistoricalPriceObservation,
     HistoricalPriceProvider,
@@ -36,6 +39,12 @@ from investmentagent.price_histories import (
 OUTCOME_SCHEMA_VERSION = 2
 OUTCOME_STORE_SCHEMA_VERSION = 2
 DEFAULT_MAX_PRICE_API_CALLS = 20
+# After n consecutive fetch days that priced nothing, a security waits min(2**(n-1), cap)
+# days before its next request, so permanent failures stop consuming the daily budget.
+RETRY_BACKOFF_CAP_DAYS = 32
+FETCH_FAILURE_STATUSES = frozenset({
+    "provider_error", "symbol_unresolved", "missing_entry", "missing_exit", "corporate_action_unsupported",
+})
 OUTCOME_STATUSES = {
     "not_due",
     "priced",
@@ -385,6 +394,7 @@ class OutcomeRefreshSummary:
     provider_calls_executed: int = 0
     api_budget: int | None = None
     work_deferred_by_budget: int = 0
+    work_deferred_by_retry_backoff: int = 0
     deferred_api_calls: int = 0
     observations_stored: int = 0
     provider_errors: int = 0
@@ -417,6 +427,7 @@ class PriceFetchPlanItem:
     shortest_due_horizon_sessions: int
     oldest_evaluation_date: date
     deferred_by_budget: bool = False
+    retry_backoff_until: date | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -435,6 +446,7 @@ class PriceFetchPlanItem:
             "shortest_due_horizon_sessions": self.shortest_due_horizon_sessions,
             "oldest_evaluation_date": self.oldest_evaluation_date.isoformat(),
             "deferred_by_budget": self.deferred_by_budget,
+            "retry_backoff_until": _format_date(self.retry_backoff_until),
         }
 
 
@@ -654,31 +666,42 @@ def _refresh_outcome_store_with_cache(
         tasks.append((key, task))
     tasks.sort(key=lambda item: (
         not item[1].has_unestablished_entry, item[1].shortest_due_horizon_sessions,
-        item[1].end_date, item[1].oldest_evaluation_date, item[1].company_id, item[1].market,
+        item[1].end_date, item[1].oldest_evaluation_date,
+        fetch_tie_break(item[1].company_id, item[1].market),
     ))
-    plan, planned_calls = [], 0
-    for key, task in tasks:
-        if planned_calls + task.estimated_api_calls <= max_price_api_calls:
-            planned_calls += task.estimated_api_calls
-        else:
-            task = replace(task, deferred_by_budget=True)
-        plan.append((key, task))
+    retry_states = _retry_states(prepared_runs)
+    plan, planned_calls, used = [], 0, 0
     calls_before = _provider_api_call_count(provider)
     fetched = {}
     observations_stored = provider_errors = unresolved_symbols = 0
-    if not dry_run:
-        for key, task in plan:
-            if task.deferred_by_budget:
-                continue
-            history, batch = _fetch_batch(
-                provider, requirements[key].security, task.market, task.start_date,
-                task.end_date, retrieved_at, task.provider_symbol,
-            )
-            fetched[key] = (history, batch)
-            if batch is not None and archive.store(batch):
-                observations_stored += len(batch.observations)
-            provider_errors += history.status == "provider_error"
-            unresolved_symbols += history.status == "symbol_unresolved"
+    for key, task in tasks:
+        backoff_until = _retry_backoff_until(retry_states.get(key), retrieved_at)
+        if backoff_until is not None:
+            plan.append((key, replace(task, deferred_by_budget=True, retry_backoff_until=backoff_until)))
+            continue
+        # Estimates are upper bounds; fetching in order against the calls actually used lets a
+        # later task take budget that an earlier multi-candidate estimate did not need.
+        if task.estimated_api_calls > max_price_api_calls - used:
+            plan.append((key, replace(task, deferred_by_budget=True)))
+            continue
+        planned_calls += task.estimated_api_calls
+        plan.append((key, task))
+        if dry_run:
+            used += task.estimated_api_calls
+            continue
+        before = _provider_api_call_count(provider)
+        history, batch = _fetch_batch(
+            provider, requirements[key].security, task.market, task.start_date,
+            task.end_date, retrieved_at, task.provider_symbol,
+        )
+        # A request the provider refused to send still uses one unit, so an open error
+        # circuit cannot turn the whole backlog into same-day failures.
+        used += max(_provider_api_call_count(provider) - before, min(task.estimated_api_calls, 1))
+        fetched[key] = (history, batch)
+        if batch is not None and archive.store(batch):
+            observations_stored += len(batch.observations)
+        provider_errors += history.status == "provider_error"
+        unresolved_symbols += history.status == "symbol_unresolved"
     executed = _provider_api_call_count(provider) - calls_before
     if executed > max_price_api_calls:
         raise RuntimeError("historical-price provider exceeded the API-call budget")
@@ -726,6 +749,7 @@ def _refresh_outcome_store_with_cache(
         cache_hits=2 * len(hits), cache_misses=sum(len(r.required_dates) for r in requirements.values()),
         provider_calls_planned=planned_calls, provider_calls_executed=executed,
         api_budget=max_price_api_calls, work_deferred_by_budget=len(deferred),
+        work_deferred_by_retry_backoff=sum(t.retry_backoff_until is not None for t in deferred),
         deferred_api_calls=sum(t.estimated_api_calls for t in deferred),
         observations_stored=observations_stored, provider_errors=provider_errors,
         unresolved_symbols=unresolved_symbols, revisions_detected=revisions_detected,
@@ -808,6 +832,50 @@ def _build_outcome_set(
         outcomes=tuple(outcomes),
         revisions=tuple(revisions.values()),
     )
+
+
+def fetch_tie_break(company_id: str, market: str) -> str:
+    """Identity-neutral order among otherwise equal fetch tasks; ISIN order put whole countries first."""
+    return hashlib.sha256(f"{company_id}|{market}".encode("utf-8")).hexdigest()
+
+
+def _retry_states(prepared_runs: list[_PreparedEvaluationOutcomes]) -> dict[tuple[str, str], tuple[int, date]]:
+    """Trailing fetch days that priced nothing, and the last fetch day, per security.
+
+    Derived only from stored outcome revisions, so the state is reproducible and cannot go stale.
+    A day counts as a fetch only if a request produced a priced or failed record; failures the
+    provider returned without sending a request are not attempts.
+    """
+    days: dict[tuple[str, str], dict[date, bool]] = {}
+    for prepared in prepared_runs:
+        if prepared.existing is None:
+            continue
+        for record in (*prepared.existing.revisions, *prepared.existing.outcomes):
+            if record.calculated_at is None:
+                continue
+            if record.status == "priced":
+                productive = True
+            elif record.status in FETCH_FAILURE_STATUSES and not (record.detail or "").startswith(
+                    (EODHD_CIRCUIT_DETAIL_PREFIX, EODHD_MISSING_KEY_DETAIL)):
+                productive = False
+            else:
+                continue
+            history = days.setdefault((record.company_id, record.market), {})
+            day = record.calculated_at.date()
+            history[day] = history.get(day, False) or productive
+    states = {}
+    for key, history in days.items():
+        ordered = sorted(history, reverse=True)
+        failures = next((index for index, day in enumerate(ordered) if history[day]), len(ordered))
+        states[key] = (failures, ordered[0])
+    return states
+
+
+def _retry_backoff_until(state: tuple[int, date] | None, retrieved_at: datetime) -> date | None:
+    if state is None or state[0] == 0:
+        return None
+    eligible = state[1] + timedelta(days=min(2 ** (state[0] - 1), RETRY_BACKOFF_CAP_DAYS))
+    return eligible if retrieved_at.date() < eligible else None
 
 
 def _estimated_provider_api_calls(
