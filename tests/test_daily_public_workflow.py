@@ -303,3 +303,16 @@ def test_degraded_performance_records_fail_the_run_after_publication():
     assert "exit 1" in alert and "always()" not in alert
     assert "id: performance_v2_outcomes" in _step(workflow, "Refresh Performance v2 outcomes")
     assert "id: performance_v2_analysis" in _step(workflow, "Analyze Performance v2")
+
+
+def test_legacy_scorecard_uses_the_partitioned_ledger_and_cannot_block_performance_v2():
+    workflow = WORKFLOW.read_text()
+    scorecard = _step(workflow, "Update legacy performance scorecard")
+    assert "id: legacy_scorecard" in scorecard and "continue-on-error: true" in scorecard
+    assert "--ledger docs/data/performance/ledger \\" in scorecard
+    assert "--legacy-ledger docs/data/performance/ledger.json \\" in scorecard
+    assert "--ledger docs/data/performance/ledger.json" not in workflow
+    records = _step(workflow, "Commit performance records")
+    gate = records.index('if [ "${{ steps.legacy_scorecard.outcome }}" = "success" ]; then')
+    assert gate < records.index("git add docs/performance docs/data/performance")
+    assert "steps.legacy_scorecard.outcome == 'failure'" in _step(workflow, "Report degraded performance records")

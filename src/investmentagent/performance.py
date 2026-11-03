@@ -7,6 +7,12 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
+from investmentagent.ledger_storage import (
+    load_partitioned_ledger,
+    save_partitioned_ledger,
+    serialize_ledger,
+)
+
 
 LEDGER_SCHEMA_VERSION = 1
 HORIZONS = ("1d", "5d", "20d", "60d")
@@ -72,10 +78,22 @@ def empty_ledger() -> dict[str, Any]:
     return {"schema_version": LEDGER_SCHEMA_VERSION, "picks": [], "market_snapshots": {}}
 
 
-def load_ledger(path: Path) -> dict[str, Any]:
-    if not path.exists():
+def load_ledger(path: Path, *, legacy_seed: Path | None = None) -> dict[str, Any]:
+    """Read a single-file ledger (a `.json` path) or a partitioned ledger directory.
+
+    A partitioned ledger that does not exist yet starts from `legacy_seed`, a single-file
+    ledger that is only ever read.
+    """
+    if legacy_seed is not None and legacy_seed.suffix != ".json":
+        raise ValueError("legacy ledger seed must be a single-file .json ledger")
+    if path.suffix != ".json":
+        ledger = load_partitioned_ledger(path, legacy_seed=legacy_seed)
+        if ledger is None:
+            return load_ledger(legacy_seed) if legacy_seed is not None else empty_ledger()
+    elif not path.exists():
         return empty_ledger()
-    ledger = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        ledger = json.loads(path.read_text(encoding="utf-8"))
     if ledger.get("schema_version") != LEDGER_SCHEMA_VERSION:
         raise ValueError(
             f"unsupported performance ledger schema: {ledger.get('schema_version')}"
@@ -86,12 +104,12 @@ def load_ledger(path: Path) -> dict[str, Any]:
     return ledger
 
 
-def save_ledger(path: Path, ledger: dict[str, Any]) -> None:
+def save_ledger(path: Path, ledger: dict[str, Any], *, legacy_seed: Path | None = None) -> None:
+    if path.suffix != ".json":
+        save_partitioned_ledger(path, ledger, legacy_seed=legacy_seed)
+        return
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(ledger, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    path.write_text(serialize_ledger(ledger), encoding="utf-8")
 
 
 def add_report_picks(
