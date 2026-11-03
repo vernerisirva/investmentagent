@@ -541,8 +541,9 @@ def test_coherent_revisions_change_returns_not_membership_and_respect_cutoff(tmp
 def test_workflow_stages_plans_and_uses_versioned_analysis_without_index_api():
     from pathlib import Path
     workflow = Path(".github/workflows/daily-public-watchlist.yml").read_text()
-    assert "cutoff-maturity-v1/representative-benchmarks-v1/performance-v2.json" in workflow
-    assert "git push origin HEAD:codex/investmentagent-live-data" in workflow
+    assert '--output-dir "$ANALYSIS_ROOT/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2"' in workflow
+    assert "--output-json" not in workflow
+    assert "git push origin HEAD:codex/investmentagent-live-data" in Path(".github/scripts/publish-staged.sh").read_text()
     assert '"$EVALUATION_ROOT"' in workflow
     assert "--max-price-api-calls 20" in workflow
     assert "--reprice" not in workflow

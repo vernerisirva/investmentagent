@@ -1,8 +1,12 @@
+import subprocess
 from pathlib import Path
+
+import pytest
 
 
 WORKFLOW = Path(".github/workflows/daily-public-watchlist.yml")
 PAGES_WORKFLOW = Path(".github/workflows/pages.yml")
+PUBLISH_SCRIPT = Path(".github/scripts/publish-staged.sh")
 
 
 def test_scheduled_report_decision_allows_delayed_runs_after_checkout():
@@ -44,9 +48,11 @@ def test_scheduled_report_decision_requires_all_daily_report_types_before_skippi
 
 def test_report_commit_keeps_scheduler_branch_in_sync():
     workflow = WORKFLOW.read_text()
+    publisher = PUBLISH_SCRIPT.read_text()
 
-    assert "git push origin HEAD:main" in workflow
-    assert "git push origin HEAD:codex/investmentagent-live-data" in workflow
+    assert "git push origin HEAD:main" in publisher
+    assert "git push origin HEAD:codex/investmentagent-live-data" in publisher
+    assert workflow.count("bash .github/scripts/publish-staged.sh") == 2
 
 
 def test_daily_watchlists_use_explicit_broader_enrichment_budget():
@@ -98,13 +104,13 @@ def test_daily_workflow_refreshes_performance_v2_without_blocking_publication():
 
     assert "OUTCOME_ROOT: data/evaluation-outcomes" in workflow
     assert "ANALYSIS_ROOT: data/evaluation-analysis" in workflow
-    assert "- name: Refresh Performance v2 outcomes and analysis" in workflow
+    assert "- name: Refresh Performance v2 outcomes" in workflow
     performance_v2_block = workflow[
-        workflow.index("- name: Refresh Performance v2 outcomes and analysis"):
-        workflow.index("- name: Commit public report")
+        workflow.index("- name: Refresh Performance v2 outcomes"):
+        workflow.index("- name: Commit performance records")
     ]
-    assert "continue-on-error: true" in performance_v2_block
-    assert "timeout-minutes: 45" in performance_v2_block
+    assert performance_v2_block.count("continue-on-error: true") == 2
+    assert performance_v2_block.count("timeout-minutes: 45") == 2
     assert "EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}" in performance_v2_block
     assert "investmentagent evaluate outcomes" in performance_v2_block
     assert "investmentagent evaluate analyze" in performance_v2_block
@@ -152,9 +158,10 @@ def test_daily_workflow_keeps_global_ai_out_of_performance_update():
     workflow = WORKFLOW.read_text()
     performance_block = workflow[
         workflow.index("investmentagent performance update"):
-        workflow.index('          {')
+        workflow.index("- name: Refresh Performance v2 outcomes")
     ]
 
+    assert "--report-json" in performance_block
     assert "global-ai" not in performance_block
 
 
@@ -166,3 +173,93 @@ def test_pages_deploy_workflow_uses_node24_compatible_actions():
     assert "actions/deploy-pages@v5" in workflow
     assert "actions/checkout@v4" not in workflow
     assert "actions/upload-artifact@v4" not in workflow
+
+
+def test_decision_time_evidence_is_published_before_any_derived_record():
+    workflow = WORKFLOW.read_text()
+    order = [workflow.index(f"- name: {name}") for name in (
+        "Generate public watchlist report", "Commit public report", "Update legacy performance scorecard",
+        "Refresh Performance v2 outcomes", "Analyze Performance v2", "Commit performance records")]
+    assert order == sorted(order)
+    generate = workflow[order[0]:order[1]]
+    evidence = workflow[order[1]:order[2]]
+    records = workflow[order[5]:]
+    assert "investmentagent performance update" not in generate
+    assert 'echo "REPORT_DATE=${report_date}" >> "$GITHUB_ENV"' in generate
+    assert '"$EVALUATION_ROOT"' in evidence and 'git add "$EXPERIMENT_ROOT"' in evidence
+    for derived in ("$OUTCOME_ROOT", "$ANALYSIS_ROOT", "docs/performance", "docs/data/performance"):
+        assert derived not in evidence
+    assert 'publish-staged.sh "reports: publish daily watchlist ${REPORT_DATE}"' in evidence
+    assert 'git add "$OUTCOME_ROOT"' in records
+    analysis_gate = records.index('if [ "${{ steps.performance_v2_analysis.outcome }}" = "success" ]; then')
+    assert analysis_gate < records.index('git add "$ANALYSIS_ROOT"')
+    assert 'publish-staged.sh "reports: update performance records ${REPORT_DATE}"' in records
+
+
+def _git(cwd, *args):
+    return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True).stdout
+
+
+@pytest.fixture
+def publish_repo(tmp_path):
+    remote, work = tmp_path / "remote.git", tmp_path / "work"
+    subprocess.run(["git", "init", "-q", "--bare", str(remote)], check=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(work)], check=True)
+    _git(work, "config", "user.name", "test")
+    _git(work, "config", "user.email", "test@example.invalid")
+    (work / "seed.txt").write_text("seed\n")
+    _git(work, "add", "seed.txt")
+    _git(work, "commit", "-q", "-m", "seed")
+    _git(work, "remote", "add", "origin", str(remote))
+    return work, remote
+
+
+def _publish(work):
+    return subprocess.run(["bash", str(PUBLISH_SCRIPT.resolve()), "reports: test"], cwd=work,
+                          capture_output=True, text=True)
+
+
+def _sparse(path, size):
+    with path.open("wb") as handle:
+        handle.truncate(size)
+
+
+def test_publisher_pushes_staged_files_to_main_and_scheduler_branch(publish_repo):
+    work, remote = publish_repo
+    (work / "x.json").write_text("{}\n")
+    _git(work, "add", "x.json")
+    result = _publish(work)
+    assert result.returncode == 0, result.stdout + result.stderr
+    head = _git(work, "rev-parse", "HEAD")
+    assert _git(remote, "rev-parse", "main") == _git(remote, "rev-parse", "codex/investmentagent-live-data") == head
+
+
+def test_publisher_without_staged_changes_creates_no_commit(publish_repo):
+    work, _ = publish_repo
+    before = _git(work, "rev-parse", "HEAD")
+    result = _publish(work)
+    assert result.returncode == 0 and "No changes to commit" in result.stdout
+    assert _git(work, "rev-parse", "HEAD") == before
+
+
+def test_publisher_refuses_a_file_github_would_reject(publish_repo):
+    work, remote = publish_repo
+    _sparse(work / "analysis.json", 100 * 1024 * 1024 + 1)
+    _git(work, "add", "analysis.json")
+    before = _git(work, "rev-parse", "HEAD")
+    result = _publish(work)
+    assert result.returncode == 1
+    assert "::error file=analysis.json::" in result.stdout
+    assert _git(work, "rev-parse", "HEAD") == before
+    assert subprocess.run(["git", "rev-parse", "--verify", "-q", "main"], cwd=remote,
+                          capture_output=True).returncode != 0
+
+
+def test_publisher_warns_above_the_recommended_size_but_publishes(publish_repo):
+    work, remote = publish_repo
+    _sparse(work / "ledger.json", 50 * 1024 * 1024 + 1)
+    _git(work, "add", "ledger.json")
+    result = _publish(work)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "::warning file=ledger.json::" in result.stdout
+    assert _git(remote, "rev-parse", "main") == _git(work, "rev-parse", "HEAD")
