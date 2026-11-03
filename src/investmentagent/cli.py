@@ -82,6 +82,9 @@ DEFAULT_ANALYSIS_DIR = (
     "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/"
     "representative-benchmarks-v1/performance-v2"
 )
+# The single-file ledger.json is the frozen legacy ledger; it only seeds the partitioned one.
+DEFAULT_LEDGER_DIR = "docs/data/performance/ledger"
+LEGACY_LEDGER_PATH = "docs/data/performance/ledger.json"
 
 app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args_is_help=False)
 sources_app = typer.Typer(help="Inspect and validate research sources.")
@@ -997,7 +1000,14 @@ def performance_update(
     ),
     report_date_raw: str = typer.Option(..., "--report-date", help="Report date YYYY-MM-DD."),
     ledger_path: str = typer.Option(
-        "docs/data/performance/ledger.json", "--ledger", help="Performance ledger path."
+        DEFAULT_LEDGER_DIR,
+        "--ledger",
+        help="Partitioned performance ledger directory; a .json path uses a single-file ledger.",
+    ),
+    legacy_ledger_path: str = typer.Option(
+        LEGACY_LEDGER_PATH,
+        "--legacy-ledger",
+        help="Single-file ledger that seeds a partitioned ledger without an index. Never written.",
     ),
     output_path: str = typer.Option(
         "docs/performance/index.md", "--output", help="Performance scorecard Markdown path."
@@ -1014,7 +1024,8 @@ def performance_update(
 ) -> None:
     report_date = parse_report_date(report_date_raw)
     ledger_file = Path(ledger_path)
-    ledger = load_ledger(ledger_file)
+    legacy_seed = Path(legacy_ledger_path) if legacy_ledger_path else None
+    ledger = load_ledger(ledger_file, legacy_seed=legacy_seed)
     for report_json_path in report_json_paths:
         report_path = Path(report_json_path)
         report_payload = json.loads(report_path.read_text(encoding="utf-8"))
@@ -1048,7 +1059,7 @@ def performance_update(
         as_of_date=date.today(),
         price_lookup=price_lookup,
     )
-    save_ledger(ledger_file, ledger)
+    save_ledger(ledger_file, ledger, legacy_seed=legacy_seed)
     display_timestamp = generated_at or datetime.now(timezone.utc).isoformat()
     scorecard = render_scorecard_markdown(ledger, generated_at=display_timestamp)
     output_file = Path(output_path)

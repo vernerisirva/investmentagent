@@ -225,15 +225,21 @@ jobs:
           fi
           bash .github/scripts/publish-staged.sh "reports: publish daily watchlist ${REPORT_DATE}"
 
+      # The single-file ledger.json is the frozen legacy ledger (last written 2026-11-03). It only
+      # seeds the partitioned ledger directory, and the update refuses to run if it changes.
+      # A legacy scorecard failure must not block the Performance v2 steps below.
       - name: Update legacy performance scorecard
+        id: legacy_scorecard
         if: env.RUN_DAILY_REPORT == 'true'
+        continue-on-error: true
         run: |
           mkdir -p docs/performance docs/data/performance
           investmentagent performance update \
             --report-json "$RUNNER_TEMP/trading-${REPORT_DATE}.json" \
             --report-json "$RUNNER_TEMP/long-term-${REPORT_DATE}.json" \
             --report-date "$REPORT_DATE" \
-            --ledger docs/data/performance/ledger.json \
+            --ledger docs/data/performance/ledger \
+            --legacy-ledger docs/data/performance/ledger.json \
             --output docs/performance/index.md \
             --latest docs/performance/latest.md \
             --price-provider live \
@@ -291,7 +297,12 @@ jobs:
       - name: Commit performance records
         if: env.RUN_DAILY_REPORT == 'true'
         run: |
-          git add docs/performance docs/data/performance
+          # A partially updated legacy ledger or scorecard is never published either.
+          if [ "${{ steps.legacy_scorecard.outcome }}" = "success" ]; then
+            git add docs/performance docs/data/performance
+          else
+            echo "::warning::Legacy performance scorecard did not complete; publishing without it."
+          fi
           if [ -d "$OUTCOME_ROOT" ]; then
             git add "$OUTCOME_ROOT"
           fi
@@ -303,11 +314,12 @@ jobs:
           fi
           bash .github/scripts/publish-staged.sh "reports: update performance records ${REPORT_DATE}"
 
-      # Evidence is already published; this only makes a degraded refresh or analysis visible.
+      # Evidence is already published; this only makes a degraded refresh, analysis or legacy
+      # scorecard visible.
       - name: Report degraded performance records
         if: >-
           env.RUN_DAILY_REPORT == 'true' && (steps.performance_v2_outcomes.outcome == 'failure'
-          || steps.performance_v2_analysis.outcome == 'failure')
+          || steps.performance_v2_analysis.outcome == 'failure' || steps.legacy_scorecard.outcome == 'failure')
         run: |
-          echo "::error::Performance v2 outcome refresh: ${{ steps.performance_v2_outcomes.outcome }}; analysis: ${{ steps.performance_v2_analysis.outcome }}."
+          echo "::error::Performance v2 outcome refresh: ${{ steps.performance_v2_outcomes.outcome }}; analysis: ${{ steps.performance_v2_analysis.outcome }}; legacy scorecard: ${{ steps.legacy_scorecard.outcome }}."
           exit 1
