@@ -139,9 +139,12 @@ def test_published_picks_and_snapshots_cannot_be_dropped(tmp_path):
     ledger, directory = build_ledger(), tmp_path / "ledger"
     save_ledger(directory, ledger)
     before = files(directory)
+    replaced = deepcopy(ledger)
+    replaced["picks"][0]["pick_id"] = replaced["picks"][0]["pick_id"].replace("KESKO B", "OTHER")
     for damaged in (
         {**ledger, "picks": [pick for pick in ledger["picks"] if pick["report_date"] != "2026-05-12"]},
         {**ledger, "picks": ledger["picks"][1:]},
+        replaced,
         {**ledger, "market_snapshots": {k: v for k, v in ledger["market_snapshots"].items() if k != "2026-05-12"}},
     ):
         with pytest.raises(ValueError, match="drop"):

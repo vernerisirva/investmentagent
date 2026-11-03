@@ -67,14 +67,20 @@ def save_partitioned_ledger(directory: Path, ledger: dict[str, Any], *, legacy_s
                 {collection.key: day, "path": relative, "entries": len(payload), "sha256": _sha256(content)})
     index_path = directory / LEDGER_INDEX_NAME
     if index_path.exists():
-        existing = _read_index(index_path)[STORAGE_KEY]
+        published = _read_index(index_path)
+        existing = published[STORAGE_KEY]
         _check_legacy_seed(existing, legacy_seed)
         seed_sha256 = existing["legacy_seed_sha256"]
-        # A report date never loses picks; a snapshot date can be re-recorded but never disappears.
-        current = {ref["report_date"]: ref["entries"] for ref in references[_PICKS.listing]}
-        if any(current.get(ref["report_date"], 0) < ref["entries"] for ref in existing[_PICKS.listing]) or not (
-                {ref["as_of_date"] for ref in existing[_SNAPSHOTS.listing]} <= grouped[_SNAPSHOTS].keys()):
-            raise ValueError("refusing to drop previously published ledger picks or market snapshots")
+        # A report date never loses a pick; a snapshot date can be re-recorded but never disappears.
+        rewritten = {ref["report_date"]: ref["sha256"] for ref in references[_PICKS.listing]}
+        for reference in existing[_PICKS.listing]:
+            day = reference["report_date"]
+            if rewritten.get(day) != reference["sha256"] and not (
+                    {pick.get("pick_id") for pick in _read_partition(directory, _PICKS, reference, published)}
+                    <= {pick.get("pick_id") for pick in grouped[_PICKS].get(day, ())}):
+                raise ValueError(f"refusing to drop previously published ledger picks of {day}")
+        if not {ref["as_of_date"] for ref in existing[_SNAPSHOTS.listing]} <= grouped[_SNAPSHOTS].keys():
+            raise ValueError("refusing to drop previously published ledger market snapshots")
     elif directory.exists() and any(directory.iterdir()):
         raise ValueError("partitioned ledger directory has files but no index")
     else:
@@ -121,24 +127,8 @@ def load_partitioned_ledger(directory: Path, *, legacy_seed: Path | None = None)
         if days != sorted(set(days)):
             raise ValueError(f"ledger index lists {collection.folder} partitions out of date order")
         for reference in storage[collection.listing]:
-            relative = reference["path"]
-            if relative != _partition_path(collection, reference[collection.key]):
-                raise ValueError(f"ledger partition stored at an unexpected path: {relative}")
-            try:
-                content = (directory / relative).read_text(encoding="utf-8")
-            except OSError as exc:
-                raise ValueError(f"missing ledger partition: {relative}") from exc
-            if _sha256(content) != reference["sha256"]:
-                raise ValueError(f"ledger partition does not match its index digest: {relative}")
-            partition = json.loads(content)
-            payload = partition.get(collection.field) if isinstance(partition, dict) else None
-            if not isinstance(payload, collection.payload_type) or len(payload) != reference["entries"] or (
-                    partition.get("ledger_storage_layout"), partition.get("schema_version"),
-                    partition.get(collection.key)) != (storage["layout"], index.get("schema_version"), reference[collection.key]):
-                raise ValueError(f"ledger partition identity mismatch: {relative}")
+            payload = _read_partition(directory, collection, reference, index)
             if collection is _PICKS:
-                if any(pick.get("report_date") != reference["report_date"] for pick in payload):
-                    raise ValueError(f"ledger partition identity mismatch: {relative}")
                 picks.extend(payload)
             else:
                 snapshots[reference["as_of_date"]] = payload
@@ -149,6 +139,26 @@ def load_partitioned_ledger(directory: Path, *, legacy_seed: Path | None = None)
     if _sha256(serialize_ledger(ledger)) != storage["reconstructed_sha256"]:
         raise ValueError("reconstructed ledger does not match the index digest")
     return ledger
+
+
+def _read_partition(directory: Path, collection: _Collection, reference: dict[str, Any], index: dict[str, Any]) -> Any:
+    relative = reference["path"]
+    if relative != _partition_path(collection, reference[collection.key]):
+        raise ValueError(f"ledger partition stored at an unexpected path: {relative}")
+    try:
+        content = (directory / relative).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(f"missing ledger partition: {relative}") from exc
+    if _sha256(content) != reference["sha256"]:
+        raise ValueError(f"ledger partition does not match its index digest: {relative}")
+    partition = json.loads(content)
+    payload = partition.get(collection.field) if isinstance(partition, dict) else None
+    if not isinstance(payload, collection.payload_type) or len(payload) != reference["entries"] or (
+            partition.get("ledger_storage_layout"), partition.get("schema_version"), partition.get(collection.key)) != (
+            LEDGER_STORAGE_LAYOUT, index.get("schema_version"), reference[collection.key]) or (
+            collection is _PICKS and any(pick.get("report_date") != reference["report_date"] for pick in payload)):
+        raise ValueError(f"ledger partition identity mismatch: {relative}")
+    return payload
 
 
 def _read_index(path: Path) -> dict[str, Any]:
