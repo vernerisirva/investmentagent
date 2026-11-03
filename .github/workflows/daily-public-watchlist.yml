@@ -64,9 +64,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e .
 
+      # Caches are restored here and saved explicitly below, even when a later step fails,
+      # so a failed publication no longer discards that day's fundamentals or price requests.
       - name: Restore private fundamentals cache
+        id: fundamentals_cache
         if: env.RUN_DAILY_REPORT == 'true'
-        uses: actions/cache@v5
+        uses: actions/cache/restore@v5
         with:
           path: .investmentagent/fundamentals-cache.json
           key: fundamentals-statistics-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -75,8 +78,9 @@ jobs:
 
       # Operational cache, not a confidentiality boundary. No complete histories in Git.
       - name: Restore market-price histories
+        id: price_cache
         if: env.RUN_DAILY_REPORT == 'true'
-        uses: actions/cache@v5
+        uses: actions/cache/restore@v5
         with:
           path: |
             .investmentagent/market-price-cache.json
@@ -200,6 +204,14 @@ jobs:
             echo "Reports are research triage only. Not financial advice."
           } > docs/global-ai.md
 
+      - name: Save private fundamentals cache
+        if: always() && steps.fundamentals_cache.outcome == 'success'
+        continue-on-error: true
+        uses: actions/cache/save@v5
+        with:
+          path: .investmentagent/fundamentals-cache.json
+          key: ${{ steps.fundamentals_cache.outputs.cache-primary-key }}
+
       # Decision-time evidence is published before any derived record, so a failure in a
       # later step can no longer discard the day's X, plans or challenger sidecars.
       - name: Commit public report
@@ -228,6 +240,7 @@ jobs:
             --generated-at "$GENERATED_AT"
 
       - name: Refresh Performance v2 outcomes
+        id: performance_v2_outcomes
         if: env.RUN_DAILY_REPORT == 'true'
         continue-on-error: true
         timeout-minutes: 45
@@ -246,6 +259,16 @@ jobs:
               --max-price-api-calls 20 \
               --retrieved-at "$retrieved_at"
           fi
+
+      - name: Save market-price histories
+        if: always() && steps.price_cache.outcome == 'success'
+        continue-on-error: true
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            .investmentagent/market-price-cache.json
+            .investmentagent/market-price-cache.histories-v2.json
+          key: ${{ steps.price_cache.outputs.cache-primary-key }}
 
       # The single-file performance-v2.json beside the output directory is the frozen legacy
       # artifact (last generated 2026-10-30); it is no longer rewritten.
@@ -279,3 +302,12 @@ jobs:
             echo "::warning::Performance v2 analysis did not complete; publishing outcomes without it."
           fi
           bash .github/scripts/publish-staged.sh "reports: update performance records ${REPORT_DATE}"
+
+      # Evidence is already published; this only makes a degraded refresh or analysis visible.
+      - name: Report degraded performance records
+        if: >-
+          env.RUN_DAILY_REPORT == 'true' && (steps.performance_v2_outcomes.outcome == 'failure'
+          || steps.performance_v2_analysis.outcome == 'failure')
+        run: |
+          echo "::error::Performance v2 outcome refresh: ${{ steps.performance_v2_outcomes.outcome }}; analysis: ${{ steps.performance_v2_analysis.outcome }}."
+          exit 1

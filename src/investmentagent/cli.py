@@ -859,6 +859,7 @@ def evaluate_outcomes(
                 "provider_calls_executed": summary.provider_calls_executed,
                 "api_budget": summary.api_budget,
                 "work_deferred_by_budget": summary.work_deferred_by_budget,
+                "work_deferred_by_retry_backoff": summary.work_deferred_by_retry_backoff,
                 "deferred_api_calls": summary.deferred_api_calls,
                 "observations_stored": summary.observations_stored,
                 "provider_errors": summary.provider_errors,

@@ -30,6 +30,7 @@ from investmentagent.evaluation_outcomes import (
     EvaluationOutcomeSet,
     HorizonDefinition,
     discover_outcome_sets,
+    fetch_tie_break,
     load_outcome_set,
     outcome_store_path,
     refresh_evaluation_outcomes,
@@ -1206,14 +1207,12 @@ def test_api_budget_defers_deterministically_and_backlog_remains_refreshable(tmp
         max_price_api_calls=1,
     )
 
+    order = [row.company_id for row in sorted(
+        snapshot.rows, key=lambda row: fetch_tie_break(row.company_id, market_for_country(row.country)))]
     assert first.provider_calls_executed == 1
     assert first.work_deferred_by_budget == 2
-    assert first.deferred_security_ids == tuple(
-        row.company_id for row in snapshot.rows[1:]
-    )
-    assert [item.company_id for item in first.fetch_plan] == [
-        row.company_id for row in snapshot.rows
-    ]
+    assert first.deferred_security_ids == tuple(order[1:])
+    assert [item.company_id for item in first.fetch_plan] == order
     assert first.fetch_plan[0].deferred_by_budget is False
     assert all(item.deferred_by_budget for item in first.fetch_plan[1:])
     assert first.provider_errors == 0

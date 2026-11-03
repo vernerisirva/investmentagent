@@ -65,7 +65,9 @@ def test_daily_watchlists_use_explicit_broader_enrichment_budget():
 def test_daily_workflow_reuses_a_private_fundamentals_cache():
     workflow = WORKFLOW.read_text()
 
-    assert "uses: actions/cache@v5" in workflow
+    assert "uses: actions/cache/restore@v5" in workflow
+    assert "uses: actions/cache/save@v5" in workflow
+    assert "uses: actions/cache@v5" not in workflow
     assert "path: .investmentagent/fundamentals-cache.json" in workflow
     assert "--fundamentals-cache .investmentagent/fundamentals-cache.json" in workflow
     assert "--cache-max-age-days 45" in workflow
@@ -109,8 +111,10 @@ def test_daily_workflow_refreshes_performance_v2_without_blocking_publication():
         workflow.index("- name: Refresh Performance v2 outcomes"):
         workflow.index("- name: Commit performance records")
     ]
-    assert performance_v2_block.count("continue-on-error: true") == 2
-    assert performance_v2_block.count("timeout-minutes: 45") == 2
+    for step in ("- name: Refresh Performance v2 outcomes", "- name: Analyze Performance v2"):
+        block = performance_v2_block[performance_v2_block.index(step):]
+        block = block[:block.index("\n      - name:", 1) if "\n      - name:" in block[1:] else len(block)]
+        assert "continue-on-error: true" in block and "timeout-minutes: 45" in block
     assert "EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}" in performance_v2_block
     assert "investmentagent evaluate outcomes" in performance_v2_block
     assert "investmentagent evaluate analyze" in performance_v2_block
@@ -263,3 +267,38 @@ def test_publisher_warns_above_the_recommended_size_but_publishes(publish_repo):
     assert result.returncode == 0, result.stdout + result.stderr
     assert "::warning file=ledger.json::" in result.stdout
     assert _git(remote, "rev-parse", "main") == _git(work, "rev-parse", "HEAD")
+
+
+def _step(workflow, name):
+    start = workflow.index(f"- name: {name}")
+    end = workflow.find("\n      - name:", start + 1)
+    return workflow[start:] if end == -1 else workflow[start:end]
+
+
+def test_caches_are_saved_even_when_a_later_step_fails():
+    workflow = WORKFLOW.read_text()
+    order = [workflow.index(f"- name: {name}") for name in (
+        "Restore private fundamentals cache", "Generate public watchlist report", "Save private fundamentals cache",
+        "Commit public report", "Refresh Performance v2 outcomes", "Save market-price histories",
+        "Analyze Performance v2", "Commit performance records")]
+    assert order == sorted(order)
+    for restore, save, cache_id in (
+            ("Restore private fundamentals cache", "Save private fundamentals cache", "fundamentals_cache"),
+            ("Restore market-price histories", "Save market-price histories", "price_cache")):
+        restore_step, save_step = _step(workflow, restore), _step(workflow, save)
+        assert f"id: {cache_id}" in restore_step and "uses: actions/cache/restore@v5" in restore_step
+        assert f"if: always() && steps.{cache_id}.outcome == 'success'" in save_step
+        assert "continue-on-error: true" in save_step and "uses: actions/cache/save@v5" in save_step
+        assert f"key: ${{{{ steps.{cache_id}.outputs.cache-primary-key }}}}" in save_step
+        paths = restore_step[restore_step.index("path:"):restore_step.index("key:")]
+        assert paths in save_step
+
+
+def test_degraded_performance_records_fail_the_run_after_publication():
+    workflow = WORKFLOW.read_text()
+    alert = _step(workflow, "Report degraded performance records")
+    assert workflow.index("- name: Commit performance records") < workflow.index("- name: Report degraded performance records")
+    assert "steps.performance_v2_outcomes.outcome == 'failure'" in alert
+    assert "steps.performance_v2_analysis.outcome == 'failure'" in alert
+    assert "exit 1" in alert and "always()" not in alert
+    assert "id: performance_v2_outcomes" in _step(workflow, "Refresh Performance v2 outcomes")

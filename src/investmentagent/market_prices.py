@@ -19,6 +19,9 @@ EODHD_EOD_DOCUMENTATION_URL = (
     "https://eodhd.com/financial-apis/api-for-historical-data-and-volumes/"
 )
 ADJUSTED_PRICE_TYPE = "adjusted_close_total_return"
+# Provider errors returned without sending a request.
+EODHD_MISSING_KEY_DETAIL = "EODHD_API_KEY is not configured"
+EODHD_CIRCUIT_DETAIL_PREFIX = "EODHD request circuit opened"
 PRICE_HISTORY_STATUSES = {
     "ok",
     "symbol_unresolved",
@@ -330,7 +333,7 @@ class EodhdHistoricalPriceProvider:
                 self.name,
                 symbol,
                 market,
-                detail="EODHD_API_KEY is not configured",
+                detail=EODHD_MISSING_KEY_DETAIL,
             )
         if self._circuit_error is not None:
             return HistoricalPriceHistory(
@@ -399,7 +402,7 @@ class EodhdHistoricalPriceProvider:
             self._consecutive_provider_errors += 1
             if self._consecutive_provider_errors >= 3:
                 self._circuit_error = (
-                    "EODHD request circuit opened after three consecutive provider "
+                    f"{EODHD_CIRCUIT_DETAIL_PREFIX} after three consecutive provider "
                     f"errors; last error: {detail}"
                 )
                 detail = self._circuit_error
