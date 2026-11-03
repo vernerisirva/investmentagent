@@ -109,6 +109,8 @@ jobs:
 
           report_date="$(TZ=Europe/Helsinki date +%F)"
           generated_at="$(TZ=Europe/Helsinki date '+%Y-%m-%d %H:%M %Z')"
+          echo "REPORT_DATE=${report_date}" >> "$GITHUB_ENV"
+          echo "GENERATED_AT=${generated_at}" >> "$GITHUB_ENV"
 
           generate_report() {
             report_name="$1"
@@ -154,17 +156,6 @@ jobs:
             > "$RUNNER_TEMP/global-ai-output.txt"
           cp "$REPORT_ROOT/global-ai/${report_date}.md" "$REPORT_ROOT/global-ai/latest.md"
 
-          mkdir -p docs/performance docs/data/performance
-          investmentagent performance update \
-            --report-json "$RUNNER_TEMP/trading-${report_date}.json" \
-            --report-json "$RUNNER_TEMP/long-term-${report_date}.json" \
-            --report-date "$report_date" \
-            --ledger docs/data/performance/ledger.json \
-            --output docs/performance/index.md \
-            --latest docs/performance/latest.md \
-            --price-provider live \
-            --generated-at "$generated_at"
-
           {
             echo "# InvestmentAgent Daily Ideas"
             echo
@@ -209,7 +200,34 @@ jobs:
             echo "Reports are research triage only. Not financial advice."
           } > docs/global-ai.md
 
-      - name: Refresh Performance v2 outcomes and analysis
+      # Decision-time evidence is published before any derived record, so a failure in a
+      # later step can no longer discard the day's X, plans or challenger sidecars.
+      - name: Commit public report
+        if: env.RUN_DAILY_REPORT == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/index.md docs/global-ai.md "$REPORT_ROOT" "$EVALUATION_ROOT"
+          if [ -d "$EXPERIMENT_ROOT" ]; then
+            git add "$EXPERIMENT_ROOT"
+          fi
+          bash .github/scripts/publish-staged.sh "reports: publish daily watchlist ${REPORT_DATE}"
+
+      - name: Update legacy performance scorecard
+        if: env.RUN_DAILY_REPORT == 'true'
+        run: |
+          mkdir -p docs/performance docs/data/performance
+          investmentagent performance update \
+            --report-json "$RUNNER_TEMP/trading-${REPORT_DATE}.json" \
+            --report-json "$RUNNER_TEMP/long-term-${REPORT_DATE}.json" \
+            --report-date "$REPORT_DATE" \
+            --ledger docs/data/performance/ledger.json \
+            --output docs/performance/index.md \
+            --latest docs/performance/latest.md \
+            --price-provider live \
+            --generated-at "$GENERATED_AT"
+
+      - name: Refresh Performance v2 outcomes
         if: env.RUN_DAILY_REPORT == 'true'
         continue-on-error: true
         timeout-minutes: 45
@@ -229,37 +247,35 @@ jobs:
               --retrieved-at "$retrieved_at"
           fi
 
+      # The single-file performance-v2.json beside the output directory is the frozen legacy
+      # artifact (last generated 2026-10-30); it is no longer rewritten.
+      - name: Analyze Performance v2
+        id: performance_v2_analysis
+        if: env.RUN_DAILY_REPORT == 'true'
+        continue-on-error: true
+        timeout-minutes: 45
+        run: |
           analysis_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
           investmentagent evaluate analyze \
             --evaluation-root "$EVALUATION_ROOT" \
             --outcome-root "$OUTCOME_ROOT" \
             --experiment-root "$EXPERIMENT_ROOT" \
-            --output-json "$ANALYSIS_ROOT/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2.json" \
-            --output-markdown "$ANALYSIS_ROOT/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2.md" \
+            --output-dir "$ANALYSIS_ROOT/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2" \
             --return-methodology single-response-adjusted-close-v1 \
             --data-cutoff "$analysis_at" \
             --generated-at "$analysis_at"
 
-      - name: Commit public report
+      - name: Commit performance records
         if: env.RUN_DAILY_REPORT == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/index.md docs/global-ai.md "$REPORT_ROOT" docs/performance docs/data/performance "$EVALUATION_ROOT"
+          git add docs/performance docs/data/performance
           if [ -d "$OUTCOME_ROOT" ]; then
             git add "$OUTCOME_ROOT"
           fi
-          if [ -d "$EXPERIMENT_ROOT" ]; then
-            git add "$EXPERIMENT_ROOT"
-          fi
-          if [ -d "$ANALYSIS_ROOT" ]; then
+          # A partially written analysis is never published; outcomes still are.
+          if [ "${{ steps.performance_v2_analysis.outcome }}" = "success" ]; then
             git add "$ANALYSIS_ROOT"
+          else
+            echo "::warning::Performance v2 analysis did not complete; publishing outcomes without it."
           fi
-          if git diff --cached --quiet; then
-            echo "No report changes to commit."
-            exit 0
-          fi
-          report_date="$(TZ=Europe/Helsinki date +%F)"
-          git commit -m "reports: publish daily watchlist ${report_date}"
-          git push origin HEAD:main
-          git push origin HEAD:codex/investmentagent-live-data
+          bash .github/scripts/publish-staged.sh "reports: update performance records ${REPORT_DATE}"

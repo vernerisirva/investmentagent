@@ -700,7 +700,7 @@ def _refresh_outcome_store_with_cache(
                     if history is None:
                         history, batch = fetched.get((outcome.company_id, outcome.market), (None, None))
                     if history is None:
-                        current = outcome if outcome.status == "priced" else _pending_outcome(outcome, _calculation_time(provider, retrieved_at))
+                        current = outcome if _unchanged_by_deferral(outcome) else _pending_outcome(outcome, _calculation_time(provider, retrieved_at))
                     else:
                         current = _outcome_from_history(outcome, history, _calculation_time(provider, retrieved_at), batch=batch)
                     revisions_detected += current.revision_reason == "coherent_endpoint_revision"
@@ -1067,6 +1067,14 @@ def _derived_outcome(outcome: MarketOutcome, calculation_time: datetime, **chang
     ):
         values["revision_reason"] = "coherent_endpoint_revision"
     return replace(outcome, **values)
+
+
+def _unchanged_by_deferral(outcome: MarketOutcome) -> bool:
+    # A repeated budget deferral carries no new evidence: re-stamping an identical pending
+    # record would only append one revision per record per scheduled run.
+    return outcome.status == "priced" or (
+        outcome.status == "coherent_history_pending" and outcome.detail == BUDGET_DEFERRED_DETAIL
+    )
 
 
 def _pending_outcome(outcome: MarketOutcome, calculated_at: datetime, *, deferred_by_budget: bool = True) -> MarketOutcome:

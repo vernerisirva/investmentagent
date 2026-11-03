@@ -106,9 +106,11 @@ investmentagent evaluate outcomes \
 investmentagent evaluate analyze \
   --evaluation-root data/evaluations \
   --outcome-root data/evaluation-outcomes \
-  --output-json data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.json \
-  --output-markdown data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/performance-v2.md
+  --output-dir data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2
 ```
+
+The analysis is stored as an index plus one file per run horizon so no published
+file grows with the number of evaluation dates; see `PUBLICATION_STORAGE.md`.
 
 Outcomes are keyed by evaluation run, stable company identity, and horizon.
 Trading defaults to 1, 5, 20, and 60 valid market sessions; long-term defaults to

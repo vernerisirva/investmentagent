@@ -11,6 +11,7 @@ from investmentagent.evaluation import (
     save_evaluation_snapshot,
 )
 from investmentagent.benchmarks import build_benchmark_plan, save_benchmark_plan
+from investmentagent.analysis_storage import ANALYSIS_MARKDOWN_NAME, save_partitioned_analysis
 from investmentagent.evaluation_analysis import (
     analyze_outcome_store,
     save_analysis_json,
@@ -75,6 +76,12 @@ from investmentagent.reports import (
     normalize_watchlist_strategy,
 )
 
+
+# The monolithic performance-v2.json beside this directory is the frozen legacy output.
+DEFAULT_ANALYSIS_DIR = (
+    "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/"
+    "representative-benchmarks-v1/performance-v2"
+)
 
 app = typer.Typer(help="InvestmentAgent Nordic investing research CLI.", no_args_is_help=False)
 sources_app = typer.Typer(help="Inspect and validate research sources.")
@@ -890,15 +897,23 @@ def evaluate_analyze(
         "--experiment-root",
         help="Challenger experiment snapshot root.",
     ),
-    output_json: str = typer.Option(
-        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2.json",
-        "--output-json",
-        help="Machine-readable Performance v2 analysis path.",
+    output_dir: str | None = typer.Option(
+        None,
+        "--output-dir",
+        help=(
+            "Partitioned Performance v2 analysis directory (index plus one file per run horizon). "
+            f"Defaults to {DEFAULT_ANALYSIS_DIR} unless --output-json is given."
+        ),
     ),
-    output_markdown: str = typer.Option(
-        "data/evaluation-analysis/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2.md",
+    output_json: str | None = typer.Option(
+        None,
+        "--output-json",
+        help="Optional single-file analysis path; unbounded, so not for scheduled publication.",
+    ),
+    output_markdown: str | None = typer.Option(
+        None,
         "--output-markdown",
-        help="Research-oriented Performance v2 Markdown path.",
+        help="Research-oriented Performance v2 Markdown path; defaults beside the analysis output.",
     ),
     strategy: str | None = typer.Option(
         None, "--strategy", help="Optional strategy filter: trading or long-term."
@@ -917,15 +932,24 @@ def evaluate_analyze(
         None, "--data-cutoff", help="Exclude outcome revisions or price histories recorded after this time; defaults to generated-at."
     ),
 ) -> None:
+    if output_dir is None and output_json is None:
+        output_dir = DEFAULT_ANALYSIS_DIR
+    if output_markdown is None:
+        output_markdown = str(
+            Path(output_dir) / ANALYSIS_MARKDOWN_NAME if output_dir is not None
+            else Path(output_json).with_suffix(".md")
+        )
     paths = tuple(
         Path(value)
         for value in (
             evaluation_root,
             outcome_root,
             experiment_root,
+            output_dir,
             output_json,
             output_markdown,
         )
+        if value is not None
     )
     if any(_is_under_docs(path) for path in paths):
         raise typer.BadParameter("Performance v2 research data must stay outside docs/")
@@ -948,7 +972,10 @@ def evaluate_analyze(
         run_id=run_id,
         report_date=selected_date,
     )
-    save_analysis_json(Path(output_json), analysis)
+    if output_json is not None:
+        save_analysis_json(Path(output_json), analysis)
+    if output_dir is not None:
+        save_partitioned_analysis(Path(output_dir), analysis)
     save_analysis_markdown(Path(output_markdown), analysis)
     typer.echo(
         json.dumps(
