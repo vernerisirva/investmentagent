@@ -95,7 +95,9 @@ the single-file reader returns.
 The writer:
 
 - refuses to drop a report date or a snapshot date that the existing index lists, or
-  to lose a pick from a report date;
+  to lose a published pick (by `pick_id`) from a report date. A snapshot re-recorded
+  on the same date replaces that date's content, as the single file did; only its
+  date is protected;
 - refuses picks that are not in ascending report-date order, because the layout could
   not reproduce that order;
 - reloads its own output before returning.
