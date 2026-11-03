@@ -664,12 +664,15 @@ def _refresh_outcome_store_with_cache(
             requirement.oldest_evaluation_date,
         )
         tasks.append((key, task))
+    retry_states = _retry_states(prepared_runs)
     tasks.sort(key=lambda item: (
         not item[1].has_unestablished_entry, item[1].shortest_due_horizon_sessions,
         item[1].end_date, item[1].oldest_evaluation_date,
+        # Least recently priced first. When a longer horizon matures, every security shares the
+        # oldest evaluation date again, and a fixed order alone would keep serving the same ones.
+        _last_priced(retry_states.get(item[0])),
         fetch_tie_break(item[1].company_id, item[1].market),
     ))
-    retry_states = _retry_states(prepared_runs)
     plan, planned_calls, used = [], 0, 0
     calls_before = _provider_api_call_count(provider)
     fetched = {}
@@ -839,8 +842,10 @@ def fetch_tie_break(company_id: str, market: str) -> str:
     return hashlib.sha256(f"{company_id}|{market}".encode("utf-8")).hexdigest()
 
 
-def _retry_states(prepared_runs: list[_PreparedEvaluationOutcomes]) -> dict[tuple[str, str], tuple[int, date]]:
-    """Trailing fetch days that priced nothing, and the last fetch day, per security.
+def _retry_states(
+    prepared_runs: list[_PreparedEvaluationOutcomes],
+) -> dict[tuple[str, str], tuple[int, date, date | None]]:
+    """Trailing fetch days that priced nothing, the last fetch day and the last priced day, per security.
 
     Derived only from stored outcome revisions, so the state is reproducible and cannot go stale.
     A day counts as a fetch only if a request produced a priced or failed record; failures the
@@ -867,11 +872,15 @@ def _retry_states(prepared_runs: list[_PreparedEvaluationOutcomes]) -> dict[tupl
     for key, history in days.items():
         ordered = sorted(history, reverse=True)
         failures = next((index for index, day in enumerate(ordered) if history[day]), len(ordered))
-        states[key] = (failures, ordered[0])
+        states[key] = (failures, ordered[0], next((day for day in ordered if history[day]), None))
     return states
 
 
-def _retry_backoff_until(state: tuple[int, date] | None, retrieved_at: datetime) -> date | None:
+def _last_priced(state: tuple[int, date, date | None] | None) -> date:
+    return state[2] if state is not None and state[2] is not None else date.min
+
+
+def _retry_backoff_until(state: tuple[int, date, date | None] | None, retrieved_at: datetime) -> date | None:
     if state is None or state[0] == 0:
         return None
     eligible = state[1] + timedelta(days=min(2 ** (state[0] - 1), RETRY_BACKOFF_CAP_DAYS))

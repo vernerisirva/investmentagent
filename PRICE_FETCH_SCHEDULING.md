@@ -25,8 +25,16 @@ eligibility, benchmark plans, analysis cutoffs or the 20-request budget.
 Refreshable work is still grouped per security, and a single request prices every due
 outcome of that security. Tasks keep the existing priority (unestablished entry,
 shortest due horizon, earliest end date, oldest unpriced evaluation date). Remaining
-ties are now broken by `SHA256(company_id|market)` instead of the company ID, so equal
-work is ordered independently of country, venue and identifier.
+ties go to the security priced least recently, never-priced first, and then to
+`SHA256(company_id|market)` instead of the company ID, so equal work is ordered
+independently of country, venue and identifier.
+
+Recency matters because a longer horizon maturing for the oldest run (60 sessions from
+2026-12-02, 126 from 2027-03-11, 252 from 2027-09-09) gives every security the same
+oldest unpriced date again. A fixed order alone then re-serves the securities that
+were served first last time, each pricing one new record, while never-priced
+securities, each worth dozens of records, wait. In the planner model this delayed
+90% coverage of the first run from 2026-12-18 to 2027-02-05.
 
 ## Retry Backoff
 
