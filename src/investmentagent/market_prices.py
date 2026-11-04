@@ -6,7 +6,7 @@ import ssl
 from dataclasses import dataclass, replace
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Callable, Iterable, Protocol
+from typing import Any, Callable, Iterable, Protocol
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 from uuid import uuid4
@@ -15,6 +15,10 @@ import certifi
 
 
 EODHD_EOD_URL = "https://eodhd.com/api/eod/{symbol}"
+# One request lists every active ticker of an exchange with its ISIN where EODHD has one.
+# https://eodhd.com/financial-apis/exchanges-api-list-of-tickers-and-trading-hours/
+EODHD_SYMBOL_LIST_URL = "https://eodhd.com/api/exchange-symbol-list/{exchange}"
+EODHD_EXCHANGE_BY_COUNTRY = {"SE": "ST", "FI": "HE"}
 EODHD_EOD_DOCUMENTATION_URL = (
     "https://eodhd.com/financial-apis/api-for-historical-data-and-volumes/"
 )
@@ -294,6 +298,8 @@ class EodhdHistoricalPriceProvider:
         self._consecutive_provider_errors = 0
         self._circuit_error: str | None = None
         self._api_call_count = 0
+        # ISIN-verified symbols tried instead of ticker-derived guesses when no symbol is given.
+        self.isin_symbols: dict[str, str] = {}
 
     @property
     def api_call_count(self) -> int:
@@ -311,7 +317,28 @@ class EodhdHistoricalPriceProvider:
     ) -> int:
         if symbol is not None:
             return 1
-        return len(eodhd_symbol_candidates(security))
+        return len(self.symbol_candidates(security))
+
+    def symbol_candidates(self, security: SecurityReference) -> tuple[str, ...]:
+        mapped = self.isin_symbols.get((security.isin or "").strip().upper())
+        return (mapped,) if mapped else eodhd_symbol_candidates(security)
+
+    def exchange_symbol_list(self, exchange: str) -> tuple[dict[str, Any], ...]:
+        """Every active ticker of one exchange; one counted request, errors free of the token."""
+        if not self.api_key:
+            raise RuntimeError(EODHD_MISSING_KEY_DETAIL)
+        if self._circuit_error is not None:
+            raise RuntimeError(self._circuit_error)
+        self._api_call_count += 1
+        try:
+            rows = json.loads(self._fetcher(_eodhd_symbol_list_url(exchange, self.api_key)))
+        except Exception as exc:
+            raise RuntimeError(_token_safe_error(exc, self.api_key)) from None
+        if isinstance(rows, dict):
+            raise RuntimeError(str(rows.get("message") or rows.get("error") or "unexpected EODHD response object"))
+        if not isinstance(rows, list) or not all(isinstance(row, dict) for row in rows):
+            raise RuntimeError("unexpected EODHD symbol list response")
+        return tuple(rows)
 
     def get_history(
         self,
@@ -343,7 +370,7 @@ class EodhdHistoricalPriceProvider:
                 market,
                 detail=self._circuit_error,
             )
-        candidates = (symbol,) if symbol else eodhd_symbol_candidates(security)
+        candidates = (symbol,) if symbol else self.symbol_candidates(security)
         if not candidates:
             return HistoricalPriceHistory(
                 "symbol_unresolved",
@@ -429,9 +456,10 @@ class EodhdHistoricalPriceProvider:
 
 
 def eodhd_symbol_candidates(security: SecurityReference) -> tuple[str, ...]:
-    suffix = {"SE": ".ST", "FI": ".HE"}.get(security.country.strip().upper())
-    if suffix is None:
+    exchange = EODHD_EXCHANGE_BY_COUNTRY.get(security.country.strip().upper())
+    if exchange is None:
         return ()
+    suffix = f".{exchange}"
     normalized = "-".join(security.ticker.strip().upper().split())
     compact = normalized.replace("-", "")
     candidates = [f"{normalized}{suffix}"]
@@ -500,6 +528,11 @@ def _eodhd_history_url(
         }
     )
     return f"{EODHD_EOD_URL.format(symbol=quote(symbol, safe=''))}?{query}"
+
+
+def _eodhd_symbol_list_url(exchange: str, token: str) -> str:
+    query = urlencode({"api_token": token, "fmt": "json"})
+    return f"{EODHD_SYMBOL_LIST_URL.format(exchange=quote(exchange, safe=''))}?{query}"
 
 
 def _fetch_eodhd_url(url: str) -> str:
