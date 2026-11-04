@@ -1,0 +1,1294 @@
+{
+  "ledger_storage_layout": "report-date-partitions-v1",
+  "picks": [
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 8.98,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 10.1%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Aallon Group Oyj is an interesting small-cap monitor, but the long-term case needs more proof because missing valuation data."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Aallon Group Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.29,
+          "currency": "EUR",
+          "excess_return_pct": 0.51,
+          "price": 9.0,
+          "return_pct": 0.22,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.95,
+          "currency": "EUR",
+          "excess_return_pct": 1.4,
+          "price": 9.02,
+          "return_pct": 0.45,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 3.59,
+          "currency": "EUR",
+          "excess_return_pct": -0.69,
+          "price": 9.24,
+          "return_pct": 2.9,
+          "status": "priced"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|FI|AALLON",
+      "rank": 1,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 0.75,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "AALLON",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": null,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Insufficient evidence",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue declined 8.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Dovre Group Oyj lacks enough durable evidence for a strong long-term thesis today; wait for clearer fundamentals, valuation, liquidity, or business evidence."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 1,
+        "reasons": [
+          "conservative balance sheet"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Insufficient evidence",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Dovre Group Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|FI|DOV1V",
+      "rank": 9,
+      "reasons": [
+        "small market cap",
+        "Insufficient evidence",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -56.75,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "DOV1V",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "No growth signal",
+        "Missing valuation data",
+        "Gate tier: Insufficient evidence"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "thin",
+      "entry_currency": "EUR",
+      "entry_price": null,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Insufficient evidence",
+        "components": {
+          "Balance sheet": {
+            "score": 1,
+            "view": "Balance sheet data is not available."
+          },
+          "Business quality": {
+            "score": 0,
+            "view": "Insufficient business and margin data."
+          },
+          "Data confidence": {
+            "score": 0,
+            "view": "No useful fundamentals or profile text are available today."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue growth is not available."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Lehto Group Oyj lacks enough durable evidence for a strong long-term thesis today; wait for clearer fundamentals, valuation, liquidity, or business evidence."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing business description",
+          "missing liquidity data",
+          "thin data quality",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 0,
+        "reasons": [],
+        "severe_proof_gap_count": 4,
+        "tier": "Insufficient evidence",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Lehto Group Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|FI|LEHTO",
+      "rank": 10,
+      "reasons": [
+        "Insufficient evidence"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -63.0,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "LEHTO",
+      "warnings": [
+        "2 stated risk(s)",
+        "thin data quality",
+        "No profitability signal",
+        "No growth signal",
+        "Missing valuation data",
+        "Missing business description",
+        "Missing liquidity data",
+        "Gate tier: Insufficient evidence"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 1.788,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Insufficient evidence",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue growth is not available."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "2cureX lacks enough durable evidence for a strong long-term thesis today; wait for clearer fundamentals, valuation, liquidity, or business evidence."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 1,
+        "reasons": [
+          "conservative balance sheet"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Insufficient evidence",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "2cureX",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.72,
+          "currency": "SEK",
+          "excess_return_pct": -0.85,
+          "price": 1.76,
+          "return_pct": -1.57,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.47,
+          "currency": "SEK",
+          "excess_return_pct": -7.25,
+          "price": 1.65,
+          "return_pct": -7.72,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 7.44,
+          "currency": "SEK",
+          "excess_return_pct": -80.71,
+          "price": 0.478,
+          "return_pct": -73.27,
+          "status": "priced"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|SE|2CUREX",
+      "rank": 8,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Insufficient evidence",
+        "First North discovery opportunity",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -48.25,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "2CUREX",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "No growth signal",
+        "Missing valuation data",
+        "Gate tier: Insufficient evidence"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 7.1,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 6.2%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "4C Group is an interesting small-cap monitor, but the long-term case needs more proof because negative operating margin."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 2,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "4C Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.72,
+          "currency": "SEK",
+          "excess_return_pct": 2.55,
+          "price": 7.23,
+          "return_pct": 1.83,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.47,
+          "currency": "SEK",
+          "excess_return_pct": 3.57,
+          "price": 7.32,
+          "return_pct": 3.1,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 7.44,
+          "currency": "SEK",
+          "excess_return_pct": -0.54,
+          "price": 7.59,
+          "return_pct": 6.9,
+          "status": "priced"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|SE|4C",
+      "rank": 6,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -33.25,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "4C",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 146.8,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 10.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "AAC Clyde Space is an interesting small-cap monitor, but the long-term case needs more proof because negative operating margin."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "AAC Clyde Space",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.72,
+          "currency": "SEK",
+          "excess_return_pct": 0.99,
+          "price": 147.2,
+          "return_pct": 0.27,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.47,
+          "currency": "SEK",
+          "excess_return_pct": 6.33,
+          "price": 155.4,
+          "return_pct": 5.86,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 7.44,
+          "currency": "SEK",
+          "excess_return_pct": -28.83,
+          "price": 115.4,
+          "return_pct": -21.39,
+          "status": "priced"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|SE|AAC",
+      "rank": 4,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -15.25,
+      "sector": "Telecommunications",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "AAC",
+      "warnings": [
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 200.0,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 4.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Absolent Air Care Group is an interesting small-cap monitor, but the long-term case needs more proof because missing valuation data."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Absolent Air Care Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.72,
+          "currency": "SEK",
+          "excess_return_pct": -0.78,
+          "price": 197.0,
+          "return_pct": -1.5,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.47,
+          "currency": "SEK",
+          "excess_return_pct": -1.53,
+          "price": 196.0,
+          "return_pct": -2.0,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 7.44,
+          "currency": "SEK",
+          "excess_return_pct": -6.94,
+          "price": 201.0,
+          "return_pct": 0.5,
+          "status": "priced"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|SE|ABSO",
+      "rank": 2,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 0.75,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ABSO",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 23.65,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 13.2%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Acconeer is an interesting small-cap monitor, but the long-term case needs more proof because negative operating margin."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Acconeer",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.72,
+          "currency": "SEK",
+          "excess_return_pct": 6.01,
+          "price": 24.9,
+          "return_pct": 5.29,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.47,
+          "currency": "SEK",
+          "excess_return_pct": -17.33,
+          "price": 19.44,
+          "return_pct": -17.8,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 7.44,
+          "currency": "SEK",
+          "excess_return_pct": -37.93,
+          "price": 16.44,
+          "return_pct": -30.49,
+          "status": "priced"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|SE|ACCON",
+      "rank": 5,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -15.25,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ACCON",
+      "warnings": [
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 4.68,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 1,
+            "view": "Weak - profitability is not yet proven."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 17.9%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "AcouSort is an interesting small-cap monitor, but the long-term case needs more proof because negative operating margin."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "negative operating margin",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 2,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "AcouSort",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.72,
+          "currency": "SEK",
+          "excess_return_pct": -5.48,
+          "price": 4.39,
+          "return_pct": -6.2,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.47,
+          "currency": "SEK",
+          "excess_return_pct": -9.36,
+          "price": 4.22,
+          "return_pct": -9.83,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 7.44,
+          "currency": "SEK",
+          "excess_return_pct": -42.48,
+          "price": 3.04,
+          "return_pct": -35.04,
+          "status": "priced"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|SE|ACOU",
+      "rank": 7,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -33.25,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ACOU",
+      "warnings": [
+        "thin liquidity",
+        "negative operating margin",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": null,
+      "entry_timestamp": "2026-06-08T05:01:30.726474+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 5,
+            "view": "Strong - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 18.7%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Train Alliance B is an interesting small-cap monitor, but the long-term case needs more proof because missing valuation data."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 3,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Train Alliance B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-06-09",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "20d": {
+          "as_of_date": "2026-07-06",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "5d": {
+          "as_of_date": "2026-06-15",
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "missing_price"
+        },
+        "60d": {
+          "as_of_date": "2026-08-31",
+          "currency": "SEK",
+          "price": 6.36,
+          "return_pct": null,
+          "status": "missing_price"
+        }
+      },
+      "pick_id": "2026-06-08|long-term|SE|TRAIN B",
+      "rank": 3,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available"
+      ],
+      "report_date": "2026-06-08",
+      "report_url": "../reports/long-term/2026-06-08.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 0.75,
+      "sector": "Industrials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "TRAIN B",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    }
+  ],
+  "report_date": "2026-06-08",
+  "schema_version": 1
+}

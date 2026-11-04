@@ -1,0 +1,2041 @@
+{
+  "ledger_storage_layout": "report-date-partitions-v1",
+  "picks": [
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 27.65,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 0.2%."
+          },
+          "Momentum": {
+            "score": 2,
+            "view": "No medium-term price context is available."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 2,
+            "view": "Valuation is available but not clearly attractive."
+          }
+        },
+        "thesis": "Admicom Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 29.89,
+          "summary": "P/E is 29.8876."
+        }
+      },
+      "name": "Admicom Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.08,
+          "currency": "EUR",
+          "excess_return_pct": 2.27,
+          "price": 28.3,
+          "return_pct": 2.35,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -1.22,
+          "currency": "EUR",
+          "excess_return_pct": -4.02,
+          "price": 26.2,
+          "return_pct": -5.24,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.94,
+          "currency": "EUR",
+          "excess_return_pct": -0.69,
+          "price": 27.2,
+          "return_pct": -1.63,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|FI|ADMCM",
+      "rank": 5,
+      "reasons": [
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 52.75,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ADMCM",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 7.28,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 3,
+            "view": "Debt/equity looks manageable on available data."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 4.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Aspo Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 5,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "adequate liquidity",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 8.84,
+          "summary": "P/E is 8.84337."
+        }
+      },
+      "name": "Aspo Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.08,
+          "currency": "EUR",
+          "excess_return_pct": -0.35,
+          "price": 7.26,
+          "return_pct": -0.27,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -1.22,
+          "currency": "EUR",
+          "excess_return_pct": -0.7,
+          "price": 7.14,
+          "return_pct": -1.92,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.94,
+          "currency": "EUR",
+          "excess_return_pct": 0.12,
+          "price": 7.22,
+          "return_pct": -0.82,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|FI|ASPO",
+      "rank": 8,
+      "reasons": [
+        "low P/E (8.84337)",
+        "small market cap",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Attractive valuation support",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data",
+        "Low live turnover"
+      ],
+      "score_total": 45.25,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "ASPO",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 5.735,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 6.5%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Outokumpu Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 6,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 11.13,
+          "summary": "P/E is 11.1318."
+        }
+      },
+      "name": "Outokumpu Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.08,
+          "currency": "EUR",
+          "excess_return_pct": -0.43,
+          "price": 5.715,
+          "return_pct": -0.35,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -1.22,
+          "currency": "EUR",
+          "excess_return_pct": -4.1,
+          "price": 5.43,
+          "return_pct": -5.32,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.94,
+          "currency": "EUR",
+          "excess_return_pct": -1.07,
+          "price": 5.62,
+          "return_pct": -2.01,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|FI|OUT1V",
+      "rank": 2,
+      "reasons": [
+        "low P/E (11.1318)",
+        "low P/B",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Attractive valuation support",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 63.0,
+      "sector": "Basic Materials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "OUT1V",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 35.8,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 11.0%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Arlandastad Group has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 5,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 11.84,
+          "summary": "P/E is 11.8387."
+        }
+      },
+      "name": "Arlandastad Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": -2.29,
+          "price": 35.0,
+          "return_pct": -2.23,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": 1.57,
+          "price": 35.2,
+          "return_pct": -1.68,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": -0.19,
+          "price": 35.3,
+          "return_pct": -1.4,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|SE|AGROUP",
+      "rank": 6,
+      "reasons": [
+        "low P/E (11.8387)",
+        "low P/B",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Fundamental watchlist candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Attractive valuation support",
+        "Business description available"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data",
+        "Low live turnover"
+      ],
+      "score_total": 52.75,
+      "sector": "Real Estate",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "AGROUP",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 121.4,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 26.8%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 4,
+            "view": "Reasonable valuation on available multiples."
+          }
+        },
+        "thesis": "Cheffelo has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 18.35,
+          "summary": "P/E is 18.3461."
+        }
+      },
+      "name": "Cheffelo",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": -2.53,
+          "price": 118.4,
+          "return_pct": -2.47,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -3.01,
+          "price": 113.8,
+          "return_pct": -6.26,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": -2.41,
+          "price": 117.0,
+          "return_pct": -3.62,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|SE|CHEF",
+      "rank": 7,
+      "reasons": [
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 52.75,
+      "sector": "Consumer Staples",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "CHEF",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 18.65,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 37.5%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 3,
+            "view": "High P/E"
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Coffee Stain Group B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 62.3,
+          "summary": "P/E is 62.3."
+        }
+      },
+      "name": "Coffee Stain Group B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": -0.06,
+          "price": 18.65,
+          "return_pct": 0.0,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": 7.38,
+          "price": 19.42,
+          "return_pct": 4.13,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": 5.61,
+          "price": 19.47,
+          "return_pct": 4.4,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|SE|COFFEE B",
+      "rank": 3,
+      "reasons": [
+        "low P/B",
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 57.75,
+      "sector": "Consumer Discretionary",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "COFFEE B",
+      "warnings": [
+        "high P/E",
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 170.8,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 13.5%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 3,
+            "view": "High P/B"
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "Expensive on available valuation multiples."
+          }
+        },
+        "thesis": "Kambi Group Plc has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 37.55,
+          "summary": "P/E is 37.5546."
+        }
+      },
+      "name": "Kambi Group Plc",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": 0.06,
+          "price": 171.0,
+          "return_pct": 0.12,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": 8.87,
+          "price": 180.4,
+          "return_pct": 5.62,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": 2.26,
+          "price": 172.6,
+          "return_pct": 1.05,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|SE|KAMBI",
+      "rank": 9,
+      "reasons": [
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 44.75,
+      "sector": "Consumer Discretionary",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "KAMBI",
+      "warnings": [
+        "high P/B",
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 266.5,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 30.5%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 3,
+            "view": "High P/B"
+          },
+          "Valuation": {
+            "score": 4,
+            "view": "Reasonable valuation on available multiples."
+          }
+        },
+        "thesis": "Nordrest Holding has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 17.03,
+          "summary": "P/E is 17.0281."
+        }
+      },
+      "name": "Nordrest Holding",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": 1.07,
+          "price": 269.5,
+          "return_pct": 1.13,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -0.13,
+          "price": 257.5,
+          "return_pct": -3.38,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": 5.9,
+          "price": 279.0,
+          "return_pct": 4.69,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|SE|NREST",
+      "rank": 10,
+      "reasons": [
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 44.75,
+      "sector": "Consumer Discretionary",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "NREST",
+      "warnings": [
+        "high P/B",
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 51.75,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 5,
+            "view": "Strong - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 21.7%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Surgical Science Sweden has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 28.63,
+          "summary": "P/E is 28.6264."
+        }
+      },
+      "name": "Surgical Science Sweden",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": 0.23,
+          "price": 51.9,
+          "return_pct": 0.29,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -0.87,
+          "price": 49.62,
+          "return_pct": -4.12,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": 1.6,
+          "price": 51.95,
+          "return_pct": 0.39,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|SE|SUS",
+      "rank": 1,
+      "reasons": [
+        "low P/B",
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 67.75,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "SUS",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 150.2,
+      "entry_timestamp": "2026-08-27T09:25:13.729926+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 5,
+            "view": "Strong revenue growth of 27.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation support: P/E is 13.9939."
+          }
+        },
+        "thesis": "Zinzino B has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 13.99,
+          "summary": "P/E is 13.9939."
+        }
+      },
+      "name": "Zinzino B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": -5.19,
+          "price": 142.5,
+          "return_pct": -5.13,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -4.94,
+          "price": 137.9,
+          "return_pct": -8.19,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": -7.45,
+          "price": 137.2,
+          "return_pct": -8.66,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|long-term|SE|ZZ B",
+      "rank": 4,
+      "reasons": [
+        "net cash balance sheet",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Attractive valuation support",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/long-term/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 53.5,
+      "sector": "Consumer Discretionary",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ZZ B",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 35.96,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "name": "Elisa Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.08,
+          "currency": "EUR",
+          "excess_return_pct": 0.36,
+          "price": 36.12,
+          "return_pct": 0.44,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -1.22,
+          "currency": "EUR",
+          "excess_return_pct": 5.73,
+          "price": 37.58,
+          "return_pct": 4.51,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.94,
+          "currency": "EUR",
+          "excess_return_pct": 0.55,
+          "price": 35.82,
+          "return_pct": -0.39,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|FI|ELISA",
+      "rank": 9,
+      "reasons": [
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": -2.0,
+      "sector": "Telecommunications",
+      "segment": "main_market",
+      "strategy": "trading",
+      "ticker": "ELISA",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 30.64,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "name": "Konecranes Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.08,
+          "currency": "EUR",
+          "excess_return_pct": -0.47,
+          "price": 30.52,
+          "return_pct": -0.39,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -1.22,
+          "currency": "EUR",
+          "excess_return_pct": -1.65,
+          "price": 29.76,
+          "return_pct": -2.87,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.94,
+          "currency": "EUR",
+          "excess_return_pct": -4.67,
+          "price": 28.92,
+          "return_pct": -5.61,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|FI|KCR",
+      "rank": 10,
+      "reasons": [
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": -2.0,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "trading",
+      "ticker": "KCR",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 9.948,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "name": "Stora Enso Oyj R",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.08,
+          "currency": "EUR",
+          "excess_return_pct": 1.9,
+          "price": 10.145,
+          "return_pct": 1.98,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -1.22,
+          "currency": "EUR",
+          "excess_return_pct": 8.98,
+          "price": 10.72,
+          "return_pct": 7.76,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.94,
+          "currency": "EUR",
+          "excess_return_pct": 3.17,
+          "price": 10.17,
+          "return_pct": 2.23,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|FI|STERV",
+      "rank": 8,
+      "reasons": [
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 0.25,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "trading",
+      "ticker": "STERV",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 7.36,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "AlzeCure Pharma",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": 7.28,
+          "price": 7.9,
+          "return_pct": 7.34,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": 5.42,
+          "price": 7.52,
+          "return_pct": 2.17,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": 10.99,
+          "price": 8.08,
+          "return_pct": 9.78,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|SE|ALZCUR",
+      "rank": 1,
+      "reasons": [
+        "Strong intraday momentum (+17.19%)",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 9.75,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "ALZCUR",
+      "warnings": [
+        "high P/B",
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 121.4,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "Cheffelo",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": -2.53,
+          "price": 118.4,
+          "return_pct": -2.47,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -3.01,
+          "price": 113.8,
+          "return_pct": -6.26,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": -2.41,
+          "price": 117.0,
+          "return_pct": -3.62,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|SE|CHEF",
+      "rank": 4,
+      "reasons": [
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 5.75,
+      "sector": "Consumer Staples",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "CHEF",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 39.8,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "CombinedX",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": -2.32,
+          "price": 38.9,
+          "return_pct": -2.26,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -35.19,
+          "price": 24.5,
+          "return_pct": -38.44,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": -1.3,
+          "price": 38.8,
+          "return_pct": -2.51,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|SE|CX",
+      "rank": 6,
+      "reasons": [
+        "Positive intraday momentum (+6.41%)",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 3.75,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "CX",
+      "warnings": [
+        "thin liquidity",
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 21.8,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq Stockholm",
+      "name": "Elon",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": 19.21,
+          "price": 26.0,
+          "return_pct": 19.27,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": 50.5,
+          "price": 32.1,
+          "return_pct": 47.25,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": 48.46,
+          "price": 32.1,
+          "return_pct": 47.25,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|SE|ELON",
+      "rank": 3,
+      "reasons": [
+        "Strong intraday momentum (+14.73%)",
+        "Moderate live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 6.0,
+      "sector": "Consumer Discretionary",
+      "segment": "main_market",
+      "strategy": "trading",
+      "ticker": "ELON",
+      "warnings": [
+        "thin liquidity",
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 61.56,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq Stockholm",
+      "name": "Kinnevik B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": 3.25,
+          "price": 63.6,
+          "return_pct": 3.31,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": 0.07,
+          "price": 59.6,
+          "return_pct": -3.18,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": -0.02,
+          "price": 60.8,
+          "return_pct": -1.23,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|SE|KINV B",
+      "rank": 5,
+      "reasons": [
+        "Positive intraday momentum (+5.12%)",
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 4.75,
+      "sector": "Financials",
+      "segment": "main_market",
+      "strategy": "trading",
+      "ticker": "KINV B",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 51.75,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "Surgical Science Sweden",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": 0.23,
+          "price": 51.9,
+          "return_pct": 0.29,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -0.87,
+          "price": 49.62,
+          "return_pct": -4.12,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": 1.6,
+          "price": 51.95,
+          "return_pct": 0.39,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|SE|SUS",
+      "rank": 2,
+      "reasons": [
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 8.0,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "SUS",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 150.2,
+      "entry_timestamp": "2026-08-27T09:24:31.134584+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "name": "Zinzino B",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-28",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.06,
+          "currency": "SEK",
+          "excess_return_pct": -5.19,
+          "price": 142.5,
+          "return_pct": -5.13,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-24",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.25,
+          "currency": "SEK",
+          "excess_return_pct": -4.94,
+          "price": 137.9,
+          "return_pct": -8.19,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-03",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.21,
+          "currency": "SEK",
+          "excess_return_pct": -7.45,
+          "price": 137.2,
+          "return_pct": -8.66,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-27|trading|SE|ZZ B",
+      "rank": 7,
+      "reasons": [
+        "High live turnover",
+        "trading strategy adjustment applied"
+      ],
+      "report_date": "2026-08-27",
+      "report_url": "../reports/trading/2026-08-27.html",
+      "risks": [
+        "Sparse live-source data"
+      ],
+      "score_total": 2.0,
+      "sector": "Consumer Discretionary",
+      "segment": "first_north",
+      "strategy": "trading",
+      "ticker": "ZZ B",
+      "warnings": [
+        "1 stated risk(s)",
+        "partial data quality"
+      ]
+    }
+  ],
+  "report_date": "2026-08-27",
+  "schema_version": 1
+}

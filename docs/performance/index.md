@@ -4,16 +4,16 @@
 
 > LEGACY_NON_AUTHORITATIVE: Performance v1 benchmark values are retained for historical reference, not InvestmentAgent validation evidence. They are not comparable with representative-benchmarks-v1.
 
-Generated: 2026-11-03 16:35 EET
+Generated: 2026-11-04 08:00 EET
 
 ## Market Context
 
-- Latest snapshot: 2026-11-03
+- Latest snapshot: 2026-11-04
 - Market tone: Mixed / quiet
-- Companies tracked: 934
-- Large positive movers: 30
-- Sharp selloffs: 51
-- Active turnover signals: 488
+- Companies tracked: 933
+- Large positive movers: 0
+- Sharp selloffs: 0
+- Active turnover signals: 0
 
 ## Trading Ideas
 
@@ -21,7 +21,7 @@ Generated: 2026-11-03 16:35 EET
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 121 | 51.2% | +0.63% | +0.09% |
+| 1d | 131 | 49.6% | +0.55% | 0% |
 | 5d | 104 | 54.8% | +1.87% | +0.55% |
 | 20d | 108 | 40.7% | -0.9% | -2.16% |
 | 60d | 40 | 45% | -8.66% | -1.27% |
@@ -30,7 +30,7 @@ Generated: 2026-11-03 16:35 EET
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -15.56% | 34.7% | 2 | 4.31% | +1.71% | -1.52% | 38.3% |
+| 1d | -15.56% | 36.6% | 2 | 4.15% | +1.51% | -1.39% | 37.4% |
 | 5d | -57.02% | 44.2% | 6 | 11.99% | +8.88% | -8.66% | 28.1% |
 | 20d | -81.3% | 58.3% | 16 | 20.55% | +12.6% | -19.09% | 23.5% |
 | 60d | -85.26% | 55% | 17 | 21.95% | +25.63% | -34.29% | 12.5% |
@@ -55,14 +55,14 @@ Generated: 2026-11-03 16:35 EET
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: Trading strategy adjustment applied | 100 | -3.19% | 40% |
-| Country: SE | 88 | -2.36% | 42% |
-| Reason: High live turnover | 87 | -2.83% | 40.2% |
-| Segment: First north | 67 | -3.17% | 41.8% |
-| Segment: Main market | 54 | +0.25% | 44.4% |
+| Reason: Trading strategy adjustment applied | 110 | -2.93% | 39.1% |
+| Reason: High live turnover | 97 | -2.58% | 39.2% |
+| Country: SE | 95 | -2.22% | 41.1% |
+| Segment: First north | 70 | -3.05% | 41.4% |
+| Segment: Main market | 61 | +0.17% | 42.6% |
 | Reason: Live price available from Nasdaq Nordic | 40 | +8.61% | 60% |
+| Country: FI | 36 | +0.22% | 44.4% |
 | Reason: Small market cap | 36 | +8.02% | 61.1% |
-| Country: FI | 33 | +0.28% | 45.5% |
 | Reason: First North listing | 33 | +7.36% | 60.6% |
 | Reason: Moderate live turnover | 11 | -3.13% | 36.4% |
 | Reason: Positive intraday momentum (+5.12%) | 1 | -3.18% | 0% |
@@ -70,11 +70,11 @@ Generated: 2026-11-03 16:35 EET
 
 ### Trading Learning Suggestions
 
-- Reason: Trading strategy adjustment applied has produced a negative average return of -3.19% across 100 completed observations. Review whether its scoring weight should change.
-- Country: SE has produced a negative average return of -2.36% across 88 completed observations. Review whether its scoring weight should change.
-- Reason: High live turnover has produced a negative average return of -2.83% across 87 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a negative average return of -3.17% across 67 completed observations. Review whether its scoring weight should change.
-- Segment: Main market has produced a positive average return of +0.25% across 54 completed observations. Review whether its scoring weight should change.
+- Reason: Trading strategy adjustment applied has produced a negative average return of -2.93% across 110 completed observations. Review whether its scoring weight should change.
+- Reason: High live turnover has produced a negative average return of -2.58% across 97 completed observations. Review whether its scoring weight should change.
+- Country: SE has produced a negative average return of -2.22% across 95 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a negative average return of -3.05% across 70 completed observations. Review whether its scoring weight should change.
+- Segment: Main market has produced a positive average return of +0.17% across 61 completed observations. Review whether its scoring weight should change.
 
 ## Long-Term Research Candidates
 
@@ -84,23 +84,23 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 491 | 41.8% | -0.07% | 0% |
-| 5d | 461 | 40.6% | -0.44% | -0.38% |
-| 20d | 310 | 34.2% | -1.76% | -1.57% |
+| 1d | 501 | 41.9% | -0.07% | 0% |
+| 5d | 471 | 40.3% | -0.37% | -0.39% |
+| 20d | 320 | 34.4% | -1.76% | -1.57% |
 | 60d | 1 | 0% | -9.73% | -9.73% |
 
 ### Risk And Benchmark
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -14.76% | 48.5% | 2 | 2.02% | +0.07% | -0.14% | 46.8% |
-| 5d | -24.05% | 53.6% | 7 | 3.8% | +0.47% | -0.91% | 49.5% |
-| 20d | -25.29% | 64.8% | 25 | 6.37% | +2.39% | -4.15% | 47.1% |
+| 1d | -14.76% | 48.5% | 2 | 2.01% | +0.06% | -0.14% | 46.9% |
+| 5d | -24.05% | 53.9% | 7 | 4.1% | +0.44% | -0.81% | 49.5% |
+| 20d | -25.29% | 64.7% | 27 | 6.57% | +2.66% | -4.42% | 46.2% |
 | 60d | -9.73% | 100% | 0 | 0% | +7.64% | -17.37% | 0% |
 
 ### Best Long-Term Research Picks
 
-- **Avtech Sweden B (AVT B)** - 5d return **+23.57%** ([report](../reports/long-term/2026-10-27.html))
+- **Avtech Sweden B (AVT B)** - 5d return **+34.23%** ([report](../reports/long-term/2026-10-28.html))
 - **Surgical Science Sweden (SUS)** - 20d return **+17.73%** ([report](../reports/long-term/2026-09-25.html))
 - **Humble Group (HUMBLE)** - 20d return **+16.05%** ([report](../reports/long-term/2026-09-24.html))
 - **Apetit Oyj (APETIT)** - 20d return **+8.75%** ([report](../reports/long-term/2026-08-26.html))
@@ -109,7 +109,7 @@ _Only high-conviction and fundamental watchlist names count here._
 ### Worst Long-Term Research Picks
 
 - **Green Landscaping Group (GREEN)** - 20d return **-25.29%** ([report](../reports/long-term/2026-09-18.html))
-- **Guldbrev Holding (GULD)** - 20d return **-23.89%** ([report](../reports/long-term/2026-10-06.html))
+- **Guldbrev Holding (GULD)** - 20d return **-24.71%** ([report](../reports/long-term/2026-10-07.html))
 - **Outokumpu Oyj (OUT1V)** - 20d return **-15.6%** ([report](../reports/long-term/2026-09-28.html))
 - **Alexandria Group Oyj (ALEX)** - 20d return **-15.23%** ([report](../reports/long-term/2026-08-25.html))
 
@@ -117,26 +117,26 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate severe proof gaps: 0 | 491 | -1.11% | 36% |
-| Quality: Business description available | 491 | -1.11% | 36% |
-| Quality: Positive operating margin | 491 | -1.11% | 36% |
-| Reason: Business description available | 491 | -1.11% | 36% |
-| Reason: Positive operating margin | 491 | -1.11% | 36% |
-| Gate: High-conviction candidate | 490 | -1.09% | 36.1% |
-| Reason: Gate tier: High-conviction candidate | 490 | -1.09% | 36.1% |
-| Valuation proxy: Pe ratio | 484 | -1.09% | 36% |
-| Quality: Revenue growth | 470 | -1.14% | 35.1% |
-| Reason: Revenue growth | 470 | -1.14% | 35.1% |
-| Reason: Adequate liquidity | 438 | -1.08% | 37% |
-| Bucket: Quality small-cap candidate | 420 | -1.13% | 36% |
+| Gate severe proof gaps: 0 | 501 | -1.12% | 36.1% |
+| Quality: Business description available | 501 | -1.12% | 36.1% |
+| Quality: Positive operating margin | 501 | -1.12% | 36.1% |
+| Reason: Business description available | 501 | -1.12% | 36.1% |
+| Reason: Positive operating margin | 501 | -1.12% | 36.1% |
+| Gate: High-conviction candidate | 500 | -1.1% | 36.2% |
+| Reason: Gate tier: High-conviction candidate | 500 | -1.1% | 36.2% |
+| Valuation proxy: Pe ratio | 494 | -1.11% | 36% |
+| Quality: Revenue growth | 479 | -1.17% | 34.9% |
+| Reason: Revenue growth | 479 | -1.17% | 34.9% |
+| Reason: Adequate liquidity | 447 | -1.09% | 36.9% |
+| Bucket: Quality small-cap candidate | 428 | -1.16% | 35.5% |
 
 ### Long-Term Research Learning Suggestions
 
-- Gate severe proof gaps: 0 has produced a negative average return of -1.11% across 491 completed observations. Review whether its scoring weight should change.
-- Quality: Business description available has produced a negative average return of -1.11% across 491 completed observations. Review whether its scoring weight should change.
-- Quality: Positive operating margin has produced a negative average return of -1.11% across 491 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available has produced a negative average return of -1.11% across 491 completed observations. Review whether its scoring weight should change.
-- Reason: Positive operating margin has produced a negative average return of -1.11% across 491 completed observations. Review whether its scoring weight should change.
+- Gate severe proof gaps: 0 has produced a negative average return of -1.12% across 501 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a negative average return of -1.12% across 501 completed observations. Review whether its scoring weight should change.
+- Quality: Positive operating margin has produced a negative average return of -1.12% across 501 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a negative average return of -1.12% across 501 completed observations. Review whether its scoring weight should change.
+- Reason: Positive operating margin has produced a negative average return of -1.12% across 501 completed observations. Review whether its scoring weight should change.
 
 ## Speculative Monitors
 
@@ -149,7 +149,7 @@ _Tracked separately because the gate did not classify these as research candidat
 | 1d | 320 | 34.1% | +0.12% | 0% |
 | 5d | 314 | 40.4% | +0.31% | 0% |
 | 20d | 331 | 39.6% | -0.21% | -1.42% |
-| 60d | 293 | 33.8% | -6% | -6.45% |
+| 60d | 303 | 33.3% | -6.31% | -7% |
 
 ### Risk And Benchmark
 
@@ -158,7 +158,7 @@ _Tracked separately because the gate did not classify these as research candidat
 | 1d | -30.88% | 40.6% | 7 | 6.14% | +0.53% | -0.41% | 42.8% |
 | 5d | -28.75% | 47.5% | 16 | 9.24% | +2.95% | -2.64% | 34.7% |
 | 20d | -40.69% | 57.7% | 56 | 15.18% | +2.02% | -2.23% | 33.2% |
-| 60d | -67.16% | 64.8% | 127 | 21.83% | +2.88% | -8.88% | 26.3% |
+| 60d | -67.16% | 65.3% | 133 | 21.92% | +2.71% | -9.02% | 26.4% |
 
 ### Best Speculative Monitor Picks
 
@@ -178,26 +178,26 @@ _Tracked separately because the gate did not classify these as research candidat
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate: Speculative monitor | 397 | -5.41% | 33% |
-| Proof gap: Missing valuation data | 397 | -5.41% | 33% |
-| Quality: Business description available | 397 | -5.41% | 33% |
-| Reason: Business description available | 397 | -5.41% | 33% |
-| Bucket: Speculative small-cap monitor | 394 | -5.47% | 33% |
-| Reason: Small market cap | 388 | -5.65% | 32.2% |
-| Reason: First North discovery opportunity | 343 | -6.45% | 30.6% |
-| Reason: First North listing | 343 | -6.45% | 30.6% |
-| Segment: First north | 343 | -6.45% | 30.6% |
-| Quality: Revenue growth | 332 | -6.28% | 32.5% |
-| Reason: Revenue growth | 332 | -6.28% | 32.5% |
-| Gate severe proof gaps: 1 | 328 | -6.3% | 29.3% |
+| Gate: Speculative monitor | 397 | -5.68% | 32.7% |
+| Proof gap: Missing valuation data | 397 | -5.68% | 32.7% |
+| Quality: Business description available | 397 | -5.68% | 32.7% |
+| Reason: Business description available | 397 | -5.68% | 32.7% |
+| Bucket: Speculative small-cap monitor | 394 | -5.74% | 32.7% |
+| Reason: Small market cap | 388 | -5.87% | 32.2% |
+| Reason: First North discovery opportunity | 343 | -6.68% | 30.6% |
+| Reason: First North listing | 343 | -6.68% | 30.6% |
+| Segment: First north | 343 | -6.68% | 30.6% |
+| Quality: Revenue growth | 332 | -6.39% | 32.2% |
+| Reason: Revenue growth | 332 | -6.39% | 32.2% |
+| Gate severe proof gaps: 1 | 328 | -6.63% | 29% |
 
 ### Speculative Monitor Learning Suggestions
 
-- Gate: Speculative monitor has produced a negative average return of -5.41% across 397 completed observations. Review whether its scoring weight should change.
-- Proof gap: Missing valuation data has produced a negative average return of -5.41% across 397 completed observations. Review whether its scoring weight should change.
-- Quality: Business description available has produced a negative average return of -5.41% across 397 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available has produced a negative average return of -5.41% across 397 completed observations. Review whether its scoring weight should change.
-- Bucket: Speculative small-cap monitor has produced a negative average return of -5.47% across 394 completed observations. Review whether its scoring weight should change.
+- Gate: Speculative monitor has produced a negative average return of -5.68% across 397 completed observations. Review whether its scoring weight should change.
+- Proof gap: Missing valuation data has produced a negative average return of -5.68% across 397 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a negative average return of -5.68% across 397 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a negative average return of -5.68% across 397 completed observations. Review whether its scoring weight should change.
+- Bucket: Speculative small-cap monitor has produced a negative average return of -5.74% across 394 completed observations. Review whether its scoring weight should change.
 
 ## Insufficient Evidence Audit
 

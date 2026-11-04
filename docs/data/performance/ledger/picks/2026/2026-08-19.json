@@ -1,0 +1,1335 @@
+{
+  "ledger_storage_layout": "report-date-partitions-v1",
+  "picks": [
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 27.1,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 8.7%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Admicom Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Admicom Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": -1.36,
+          "price": 26.6,
+          "return_pct": -1.85,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": -4.12,
+          "price": 25.9,
+          "return_pct": -4.43,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": -0.64,
+          "price": 27.2,
+          "return_pct": 0.37,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|ADMCM",
+      "rank": 3,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 0.75,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ADMCM",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 3.855,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 6.6%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Anora Group Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Anora Group Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": -0.42,
+          "price": 3.82,
+          "return_pct": -0.91,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": 2.77,
+          "price": 3.95,
+          "return_pct": 2.46,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": 0.03,
+          "price": 3.895,
+          "return_pct": 1.04,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|ANORA",
+      "rank": 5,
+      "reasons": [
+        "small market cap",
+        "Speculative small-cap monitor",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -7.75,
+      "sector": "Consumer Staples",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "ANORA",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 15.84,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 3.3%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Atria Oyj A is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Atria Oyj A",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": 0.62,
+          "price": 15.86,
+          "return_pct": 0.13,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": 3.09,
+          "price": 16.28,
+          "return_pct": 2.78,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": 1.52,
+          "price": 16.24,
+          "return_pct": 2.53,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|ATRAV",
+      "rank": 6,
+      "reasons": [
+        "small market cap",
+        "Speculative small-cap monitor",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -7.75,
+      "sector": "Consumer Staples",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "ATRAV",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 1.84,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 3.6%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "CapMan Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "CapMan Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": 0.6,
+          "price": 1.842,
+          "return_pct": 0.11,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": -4.26,
+          "price": 1.756,
+          "return_pct": -4.57,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": -1.34,
+          "price": 1.834,
+          "return_pct": -0.33,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|CAPMAN",
+      "rank": 7,
+      "reasons": [
+        "small market cap",
+        "Speculative small-cap monitor",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -7.75,
+      "sector": "Financials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "CAPMAN",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 7.98,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 2.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Detection Technology Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Detection Technology Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": 0.49,
+          "price": 7.98,
+          "return_pct": 0.0,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": -5.71,
+          "price": 7.5,
+          "return_pct": -6.02,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": -0.76,
+          "price": 8.0,
+          "return_pct": 0.25,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|DETEC",
+      "rank": 4,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 0.75,
+      "sector": "Health Care",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "DETEC",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 3.8,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 5.1%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Enersense International Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Enersense International Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": 1.02,
+          "price": 3.82,
+          "return_pct": 0.53,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": 20.31,
+          "price": 4.56,
+          "return_pct": 20.0,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": 0.57,
+          "price": 3.86,
+          "return_pct": 1.58,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|ESENSE",
+      "rank": 8,
+      "reasons": [
+        "small market cap",
+        "Speculative small-cap monitor",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -7.75,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "ESENSE",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 10.9,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 12.9%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Gofore Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Gofore Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": 4.16,
+          "price": 11.3,
+          "return_pct": 3.67,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": 5.81,
+          "price": 11.5,
+          "return_pct": 5.5,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": 3.76,
+          "price": 11.42,
+          "return_pct": 4.77,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|GOFORE",
+      "rank": 9,
+      "reasons": [
+        "small market cap",
+        "Speculative small-cap monitor",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -7.75,
+      "sector": "Technology",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "GOFORE",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 8.15,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 4.8%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Incap Oyj is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Incap Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.49,
+          "currency": "EUR",
+          "excess_return_pct": -0.61,
+          "price": 8.06,
+          "return_pct": -1.1,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.31,
+          "currency": "EUR",
+          "excess_return_pct": 0.06,
+          "price": 8.13,
+          "return_pct": -0.25,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 1.01,
+          "currency": "EUR",
+          "excess_return_pct": 1.08,
+          "price": 8.32,
+          "return_pct": 2.09,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|FI|ICP1V",
+      "rank": 10,
+      "reasons": [
+        "small market cap",
+        "Speculative small-cap monitor",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": -7.75,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "ICP1V",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 119.4,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 10.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "AAC Clyde Space is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "AAC Clyde Space",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.07,
+          "currency": "SEK",
+          "excess_return_pct": -1.75,
+          "price": 117.4,
+          "return_pct": -1.68,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -2.63,
+          "currency": "SEK",
+          "excess_return_pct": -9.6,
+          "price": 104.8,
+          "return_pct": -12.23,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.73,
+          "currency": "SEK",
+          "excess_return_pct": -2.24,
+          "price": 117.6,
+          "return_pct": -1.51,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|SE|AAC",
+      "rank": 1,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 0.75,
+      "sector": "Telecommunications",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "AAC",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 16.04,
+      "entry_timestamp": "2026-08-19T05:07:37.826131+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Speculative small-cap monitor",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 3,
+            "view": "Clear business profile, but margin data is missing."
+          },
+          "Data confidence": {
+            "score": 3,
+            "view": "Some fundamentals are available; verify in reports."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 13.2%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Profitability risk needs manual confirmation."
+          },
+          "Valuation": {
+            "score": 1,
+            "view": "No valuation multiple is available."
+          }
+        },
+        "thesis": "Acconeer is an interesting small-cap monitor, but the long-term case needs more proof because no profitability signal."
+      },
+      "long_term_gate": {
+        "blockers": [
+          "no profitability signal",
+          "missing valuation support"
+        ],
+        "durable_anchor_count": 4,
+        "reasons": [
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available"
+        ],
+        "severe_proof_gap_count": 1,
+        "tier": "Speculative monitor",
+        "valuation": {
+          "has_support": false,
+          "is_attractive": false,
+          "primary_kind": null,
+          "primary_value": null,
+          "summary": "No valuation metric or proxy is available."
+        }
+      },
+      "name": "Acconeer",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-20",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.07,
+          "currency": "SEK",
+          "excess_return_pct": 0.3,
+          "price": 16.1,
+          "return_pct": 0.37,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-16",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -2.63,
+          "currency": "SEK",
+          "excess_return_pct": -22.81,
+          "price": 11.96,
+          "return_pct": -25.44,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-08-26",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.73,
+          "currency": "SEK",
+          "excess_return_pct": 6.63,
+          "price": 17.22,
+          "return_pct": 7.36,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-19|long-term|SE|ACCON",
+      "rank": 2,
+      "reasons": [
+        "small market cap",
+        "First North listing",
+        "Speculative small-cap monitor",
+        "First North discovery opportunity",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-19",
+      "report_url": "../reports/long-term/2026-08-19.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 0.75,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ACCON",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality",
+        "No profitability signal",
+        "Missing valuation data",
+        "Gate tier: Speculative monitor"
+      ]
+    }
+  ],
+  "report_date": "2026-08-19",
+  "schema_version": 1
+}

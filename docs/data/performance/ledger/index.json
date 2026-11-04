@@ -1,0 +1,1503 @@
+{
+  "ledger_storage": {
+    "layout": "report-date-partitions-v1",
+    "legacy_seed_sha256": "11d9aab89e90ccffc68193cde135da82eafff94d2611eae1c97a19667c0ca5de",
+    "market_snapshot_count": 122,
+    "market_snapshot_partitions": [
+      {
+        "as_of_date": "2026-05-15",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-05-15.json",
+        "sha256": "660c9c64d7c54185a68a218931c3d7e1e8f5a436b17bb28387259d1f6cca84c8"
+      },
+      {
+        "as_of_date": "2026-05-18",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-05-18.json",
+        "sha256": "93093e7f7c616017977eea44d6c58cb1427d3cb92d32e54ff68234c6f35170a9"
+      },
+      {
+        "as_of_date": "2026-05-19",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-05-19.json",
+        "sha256": "07c32aa19042b9150ef7a0eebd06ab803683732ecbfac1c571390fd5b12e86a4"
+      },
+      {
+        "as_of_date": "2026-05-20",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-05-20.json",
+        "sha256": "ec46c7434f80ad87e5302e72e0c983efb6ce53ed0105f0c48f16970e10053173"
+      },
+      {
+        "as_of_date": "2026-05-21",
+        "entries": 793,
+        "path": "market-snapshots/2026/2026-05-21.json",
+        "sha256": "c9b04b28e3f14b6e5da0c69762e7328d9765a9c1420eb07228ab338d75c537ad"
+      },
+      {
+        "as_of_date": "2026-05-22",
+        "entries": 28,
+        "path": "market-snapshots/2026/2026-05-22.json",
+        "sha256": "46c0ee7d1b20c978e5813142a6d72100f5590d96d3e5873210b78db2bcee359c"
+      },
+      {
+        "as_of_date": "2026-05-25",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-05-25.json",
+        "sha256": "10be25f2e45b18d0d708594a92cd9e415f99bfbcba19b003e4aec53afbb1f938"
+      },
+      {
+        "as_of_date": "2026-05-26",
+        "entries": 422,
+        "path": "market-snapshots/2026/2026-05-26.json",
+        "sha256": "1b58b3497cc0fdb7bc10610296ae7a0dadb409f3c77252af5247913f79e6738d"
+      },
+      {
+        "as_of_date": "2026-05-27",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-05-27.json",
+        "sha256": "c364c99135c4c5d9145670477c902284f6135f6c99d1ffa28520fe64c0fd9731"
+      },
+      {
+        "as_of_date": "2026-05-28",
+        "entries": 28,
+        "path": "market-snapshots/2026/2026-05-28.json",
+        "sha256": "43928260fd6beee8a7f979fb14f51b1619b7d4469dabb2957eda13715073a661"
+      },
+      {
+        "as_of_date": "2026-05-29",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-05-29.json",
+        "sha256": "0557e56e529eeb502a4fbfb3dbaa94a1d40f7687fbe8a3b3418f8bdaf2426ccc"
+      },
+      {
+        "as_of_date": "2026-06-01",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-06-01.json",
+        "sha256": "6d69175f222b5b6a7257e465e994fdb0da43e73d3e3eeb51997125bb4628abff"
+      },
+      {
+        "as_of_date": "2026-06-02",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-06-02.json",
+        "sha256": "bb717c488ef09d4b75c3890afcc2995c920aca79d65df2182c78f4eba3cf1a40"
+      },
+      {
+        "as_of_date": "2026-06-03",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-06-03.json",
+        "sha256": "d3985f389e60b872ea8a7b39be0d276f191d3225b388b4c3798c5270eed77315"
+      },
+      {
+        "as_of_date": "2026-06-04",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-04.json",
+        "sha256": "57d1727cc52a25de1bad47f76fa02072096c9aefcb327b203f5a8695a19165ad"
+      },
+      {
+        "as_of_date": "2026-06-05",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-06-05.json",
+        "sha256": "0fdd3074cb21b1a08bef1c1a68c8915b2e6d3fa540a37234ffa6f9d2362db1ae"
+      },
+      {
+        "as_of_date": "2026-06-08",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-06-08.json",
+        "sha256": "3f6790afd559d75448faab63d83bf36c4669bebd6b21be7c4dc566aaa532b376"
+      },
+      {
+        "as_of_date": "2026-06-09",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-06-09.json",
+        "sha256": "f7c724f009a7154c0dce36daae25187a26f789b45ab6c1994788da016ecf0c58"
+      },
+      {
+        "as_of_date": "2026-06-10",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-06-10.json",
+        "sha256": "e17cb09f21df4dc5ed4666ce8adf1df9f0453620300dce4d0675384d8bf604f8"
+      },
+      {
+        "as_of_date": "2026-06-11",
+        "entries": 537,
+        "path": "market-snapshots/2026/2026-06-11.json",
+        "sha256": "ff202c86f7650296fe18c9cb00f0e538380907c6fcfea72ee58b4c6904c1ea3b"
+      },
+      {
+        "as_of_date": "2026-06-12",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-12.json",
+        "sha256": "d0810af75ac7052e884614b1df7809df5a923b6eaa6e4757e8ca79b4d887f017"
+      },
+      {
+        "as_of_date": "2026-06-15",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-06-15.json",
+        "sha256": "393d1bbcdea8df7a07f6631ee8f12c67bed17e26898b0b3c18b5120a08cd6307"
+      },
+      {
+        "as_of_date": "2026-06-16",
+        "entries": 938,
+        "path": "market-snapshots/2026/2026-06-16.json",
+        "sha256": "689a0c5064f9a47f77f23009cdefe4287321418175bcfa957213735500a1100c"
+      },
+      {
+        "as_of_date": "2026-06-17",
+        "entries": 938,
+        "path": "market-snapshots/2026/2026-06-17.json",
+        "sha256": "43f5c096bb0f6dafb8fb605704a5ccd1c230de608c887ca00beea0e38a903d91"
+      },
+      {
+        "as_of_date": "2026-06-18",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-18.json",
+        "sha256": "a61c0f2302ef77a908327f588e6a664b734b285fa9d4ac787846c88d441f7619"
+      },
+      {
+        "as_of_date": "2026-06-22",
+        "entries": 940,
+        "path": "market-snapshots/2026/2026-06-22.json",
+        "sha256": "1e192834e5ea6a0ab7537b3ff74ed4e9abc70d53570a2a546eea979cf38f2d5a"
+      },
+      {
+        "as_of_date": "2026-06-23",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-23.json",
+        "sha256": "97ddca7365d7cf0d9f6e896f1afcfe89eb8326552d13ae60156e41dd36a5c5e9"
+      },
+      {
+        "as_of_date": "2026-06-24",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-24.json",
+        "sha256": "329a6d54f9761096fd9d3d8c2f667a04d8a2ede6b98e20ce3d152cff0cce1250"
+      },
+      {
+        "as_of_date": "2026-06-25",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-25.json",
+        "sha256": "7e2e165f94e768b60cc9e977e59dae39184c75007d4f36aab2b3cd476eb0a5d9"
+      },
+      {
+        "as_of_date": "2026-06-26",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-26.json",
+        "sha256": "b8bf6157502ee0954c8f48d41160d1cd08436ab71565a6d3778904b67b645673"
+      },
+      {
+        "as_of_date": "2026-06-29",
+        "entries": 941,
+        "path": "market-snapshots/2026/2026-06-29.json",
+        "sha256": "892b3ac8b2f7a63eb45a211a81a117df131133e9143437fc42a810897280f07f"
+      },
+      {
+        "as_of_date": "2026-06-30",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-06-30.json",
+        "sha256": "e65d297d999f638e436650922e6c40e34c4c123590916a0b4dcb351b47220893"
+      },
+      {
+        "as_of_date": "2026-07-01",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-01.json",
+        "sha256": "604ff0089074354073db1e232bb19391624716cad9afaf2ba743e4a1f9277eb1"
+      },
+      {
+        "as_of_date": "2026-07-02",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-02.json",
+        "sha256": "b5b67a0af2b7a19955c54cae1c8e72fcab279060e96d57bd5dcabd6969d52374"
+      },
+      {
+        "as_of_date": "2026-07-03",
+        "entries": 940,
+        "path": "market-snapshots/2026/2026-07-03.json",
+        "sha256": "8963c0682f4a1edd9ff89aef5bb90e1c24db89ebb23c72c073856a15c28ac06b"
+      },
+      {
+        "as_of_date": "2026-07-06",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-06.json",
+        "sha256": "f87d8901deceefcec878a9d65fc06b9b0ca58f9c1ebcc6be38d0c2a2313b066e"
+      },
+      {
+        "as_of_date": "2026-07-07",
+        "entries": 540,
+        "path": "market-snapshots/2026/2026-07-07.json",
+        "sha256": "fa2762c8fe3f6a3bc1e696242bfbf91def647aa4e021c850aac65035fc84cf11"
+      },
+      {
+        "as_of_date": "2026-07-08",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-08.json",
+        "sha256": "7814fb0bc6540e6a3313712f7d1022ee9f90fa92c04787d7b2c64d16a956bd59"
+      },
+      {
+        "as_of_date": "2026-07-09",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-09.json",
+        "sha256": "df4f7d83b41fdd3f431e4b37ab585a03038643db53d96bf5d9a88c8f230f253a"
+      },
+      {
+        "as_of_date": "2026-07-10",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-10.json",
+        "sha256": "d7a2aa4f426fbf22e5c7c67562506a6e008340c863ac7b155a68b9c018cfd57e"
+      },
+      {
+        "as_of_date": "2026-07-13",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-13.json",
+        "sha256": "133d2450b4b20216a57129473e0bd595c1aa2213ccd8671ab16a9cce729186ac"
+      },
+      {
+        "as_of_date": "2026-07-14",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-14.json",
+        "sha256": "ea2c58d5b66ef750dc1e589b24d42f0062a0b96ab04e7d2aac1685cfdea3f774"
+      },
+      {
+        "as_of_date": "2026-07-15",
+        "entries": 941,
+        "path": "market-snapshots/2026/2026-07-15.json",
+        "sha256": "38ce4260ea52b5e34a24d87909af82ba104d5cb1c001223554480897e3064f75"
+      },
+      {
+        "as_of_date": "2026-07-16",
+        "entries": 941,
+        "path": "market-snapshots/2026/2026-07-16.json",
+        "sha256": "829f8b2bf2dca4f65df74b9b2dac47ec06a4c4a9d1411f0f9c1f05b306e951df"
+      },
+      {
+        "as_of_date": "2026-07-17",
+        "entries": 940,
+        "path": "market-snapshots/2026/2026-07-17.json",
+        "sha256": "ee83813f05088f9dbfce2a86fb5d781d1507c9dbdbd059b8b005c540a8ed7556"
+      },
+      {
+        "as_of_date": "2026-07-20",
+        "entries": 426,
+        "path": "market-snapshots/2026/2026-07-20.json",
+        "sha256": "a8f0aa2e35587884b2b0ff1f3b95c84289c977379f2abdf483ac0f81a5c7cb40"
+      },
+      {
+        "as_of_date": "2026-07-21",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-21.json",
+        "sha256": "9a0b90314097b064c946ef9cf982410c4e20a5f982d7147ff99b9ab5ac32ec3e"
+      },
+      {
+        "as_of_date": "2026-07-22",
+        "entries": 540,
+        "path": "market-snapshots/2026/2026-07-22.json",
+        "sha256": "928ebc81c744f4cbea2fcb2c32b9315fcc9e20cabcf1a47db6f80d8e58164931"
+      },
+      {
+        "as_of_date": "2026-07-23",
+        "entries": 940,
+        "path": "market-snapshots/2026/2026-07-23.json",
+        "sha256": "7c9d8b2901117051a6b05eedfc5fbc13e1e0a02882c35ca0890b4d63c910abec"
+      },
+      {
+        "as_of_date": "2026-07-24",
+        "entries": 571,
+        "path": "market-snapshots/2026/2026-07-24.json",
+        "sha256": "cca099d9aaaddcc8a0ec264489af8a1188e0f197e5b7b32436be6db5f3728db8"
+      },
+      {
+        "as_of_date": "2026-07-27",
+        "entries": 26,
+        "path": "market-snapshots/2026/2026-07-27.json",
+        "sha256": "4db839005fa66f996dd1d8089fee05ca4496858ccaa0f6e127834c945d5ca001"
+      },
+      {
+        "as_of_date": "2026-07-28",
+        "entries": 940,
+        "path": "market-snapshots/2026/2026-07-28.json",
+        "sha256": "613549b82b4c1ba6ce3bf836afa7ff1fb5045d64ebc987d56b44342f95afdd13"
+      },
+      {
+        "as_of_date": "2026-07-29",
+        "entries": 939,
+        "path": "market-snapshots/2026/2026-07-29.json",
+        "sha256": "3028a46d56e91a865aa842e2ba0a0570570fca71de05258aad445e2b827c57f6"
+      },
+      {
+        "as_of_date": "2026-07-30",
+        "entries": 25,
+        "path": "market-snapshots/2026/2026-07-30.json",
+        "sha256": "0e55762b7f89185c9720719176d07ee4f41f6558bae9e6fa43ed2995e96ae306"
+      },
+      {
+        "as_of_date": "2026-07-31",
+        "entries": 71,
+        "path": "market-snapshots/2026/2026-07-31.json",
+        "sha256": "4f750ddaa5ba763b976fd46f74ae05fd8cdc73d51d25a54ddb74d20eed4d567f"
+      },
+      {
+        "as_of_date": "2026-08-03",
+        "entries": 25,
+        "path": "market-snapshots/2026/2026-08-03.json",
+        "sha256": "e7c6cb56982511e5e2095e54046f41586c279c2c250186fbd60e763a81d213a8"
+      },
+      {
+        "as_of_date": "2026-08-04",
+        "entries": 25,
+        "path": "market-snapshots/2026/2026-08-04.json",
+        "sha256": "f160972b8d5e5e600e5d584bac12e82755b8c97949428bc612508d0df5f56cef"
+      },
+      {
+        "as_of_date": "2026-08-05",
+        "entries": 25,
+        "path": "market-snapshots/2026/2026-08-05.json",
+        "sha256": "6981da0ef142940e392d852cda13eb19a117a363098e753079f789221dac55a1"
+      },
+      {
+        "as_of_date": "2026-08-06",
+        "entries": 25,
+        "path": "market-snapshots/2026/2026-08-06.json",
+        "sha256": "eca1fb72db38b089ac118460326cf3e9d0ab3b4bfff15eb84f62407edba7d0d1"
+      },
+      {
+        "as_of_date": "2026-08-07",
+        "entries": 25,
+        "path": "market-snapshots/2026/2026-08-07.json",
+        "sha256": "2d38c0ac80ee87c6eace04ad9be2c795fd2470ded481b61ba14dba8c9e01d79e"
+      },
+      {
+        "as_of_date": "2026-08-10",
+        "entries": 938,
+        "path": "market-snapshots/2026/2026-08-10.json",
+        "sha256": "c2afc6e80cbdc534ab5a32263b4be1465e11f230c6d1bd4bb4d4b9f743b68d41"
+      },
+      {
+        "as_of_date": "2026-08-11",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-08-11.json",
+        "sha256": "ddf9a7edea591b57ae10c783751f68459bf6d7088c17302345ec1c1116d36504"
+      },
+      {
+        "as_of_date": "2026-08-12",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-08-12.json",
+        "sha256": "32513e459cd929d8dc89bd07414a6443a2439a6e1b0ae0293e8643ecd7dd0a89"
+      },
+      {
+        "as_of_date": "2026-08-13",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-08-13.json",
+        "sha256": "d8125c6e264ca27ae9e7140d26f54f0f26c17ebdda05bc959a710e8489ca80d8"
+      },
+      {
+        "as_of_date": "2026-08-14",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-08-14.json",
+        "sha256": "f90f2d18128c6ae3427e77ff119b30fbd57cd99b8aec09b0c28f0e1b3b502587"
+      },
+      {
+        "as_of_date": "2026-08-17",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-08-17.json",
+        "sha256": "8f4617f8db32e62e2ba94852e86249efc4a3f32216e97de4e9c7dbaafb81c7b8"
+      },
+      {
+        "as_of_date": "2026-08-18",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-08-18.json",
+        "sha256": "870d3088e99c128ff8f90af7193268128f6c445825f4d2f4ad5546f9629a0553"
+      },
+      {
+        "as_of_date": "2026-08-19",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-08-19.json",
+        "sha256": "7f44fd07f88415f5c2f9327ad046635db93e8303868eab4ba0ec16929d0abdab"
+      },
+      {
+        "as_of_date": "2026-08-20",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-08-20.json",
+        "sha256": "8c56367909e77bb692945202751ad4877382b6a1b097f54c9b7fe46e179f5075"
+      },
+      {
+        "as_of_date": "2026-08-21",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-08-21.json",
+        "sha256": "6c49ea1a3ef2eb32bc97e60f944d4d0921177f6c76ee3d2e820802be12deb7a9"
+      },
+      {
+        "as_of_date": "2026-08-24",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-08-24.json",
+        "sha256": "a8fa5eb6fece5c63da95ae01a2fddd719f3a9fe64e94a1fb1d3d4faecacd20a7"
+      },
+      {
+        "as_of_date": "2026-08-25",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-08-25.json",
+        "sha256": "1066510fc281fa7ddc59635048eb42251ef34ed0fd8edcb9972d2e6777bcdbf8"
+      },
+      {
+        "as_of_date": "2026-08-26",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-08-26.json",
+        "sha256": "c0082d49c812355871010cf1f5e171a389603e3c5db3839f8f3c6186b10f99f4"
+      },
+      {
+        "as_of_date": "2026-08-27",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-08-27.json",
+        "sha256": "ce951e2571cd3db7805596253a614ee6779178257473d6021571e097856449e6"
+      },
+      {
+        "as_of_date": "2026-08-28",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-08-28.json",
+        "sha256": "77d0823e12b93173e0adbd5c21ab512ad2d2edf8929c55e4e6293421aceaa352"
+      },
+      {
+        "as_of_date": "2026-08-31",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-08-31.json",
+        "sha256": "3e15e2d4039e9d2b200a36e4412ddbc887caf0c18cfed1f6a1ea5c4d113b8649"
+      },
+      {
+        "as_of_date": "2026-09-01",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-01.json",
+        "sha256": "e4d66ddc5791f001002f565e345cb90e2a5d3c943f3f7270556c46704c16e0ad"
+      },
+      {
+        "as_of_date": "2026-09-02",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-02.json",
+        "sha256": "603d90267c93d2b15726bb5bbefcdb7ed3b26860d6c35eb82e6d1637605f8f59"
+      },
+      {
+        "as_of_date": "2026-09-03",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-03.json",
+        "sha256": "5666088a437be09facd86cfda5e7df8fe1f21281ee8fe81a538b5c36b80eb02e"
+      },
+      {
+        "as_of_date": "2026-09-04",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-04.json",
+        "sha256": "662894b22c0fe8b267f8ae38a0611b9234247aa07af74c3ded8659e56c20da6c"
+      },
+      {
+        "as_of_date": "2026-09-07",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-07.json",
+        "sha256": "a3e1f47472c273bdd2aade5bdade1a31a89c0a2bce0d49eae2856ab75149a76c"
+      },
+      {
+        "as_of_date": "2026-09-08",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-08.json",
+        "sha256": "978c5fd7a761fd8e2ca6ef7745e8926dd631ca5e8b04e132572840992af0b02a"
+      },
+      {
+        "as_of_date": "2026-09-09",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-09.json",
+        "sha256": "7d417ba251b300050bdaa4141aa7d0bc54c12da4c08f626fe04d3dcd27b86303"
+      },
+      {
+        "as_of_date": "2026-09-10",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-10.json",
+        "sha256": "9cc9c94f34ad1bd970cff8bb3fc1b333f78c0a3dab96995928834d927d4ca1e6"
+      },
+      {
+        "as_of_date": "2026-09-11",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-11.json",
+        "sha256": "e8b34dff078300c8cb07149558974cd66e541a4a2621867df807a48c67a0f6da"
+      },
+      {
+        "as_of_date": "2026-09-14",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-14.json",
+        "sha256": "f2448d99e71264bb6af5a7535029fde8b5260d7fd22a45cd771ee83cc92b895a"
+      },
+      {
+        "as_of_date": "2026-09-15",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-15.json",
+        "sha256": "95c165206e4606fcebd303209134e21b91af67b2007b52b10eb4d51b1eb7daff"
+      },
+      {
+        "as_of_date": "2026-09-16",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-16.json",
+        "sha256": "f5ca8028495bb0c3152516fddfd6a4ef0320ac2211d9ca2782f9be67f0f7addd"
+      },
+      {
+        "as_of_date": "2026-09-17",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-17.json",
+        "sha256": "776c1417d1947235d3132e6297ad0efbb8d057d37082c4da4ff3921632131d2a"
+      },
+      {
+        "as_of_date": "2026-09-18",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-18.json",
+        "sha256": "107b38ed09b872c12eb6ad0c0caf5824c8acf4ccdda480b9bdeaedeea4e15498"
+      },
+      {
+        "as_of_date": "2026-09-21",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-21.json",
+        "sha256": "d3ca2da5b10442c7e2c21c7657a6ca29ca8f9733d3552b73e8ab811c9efb60dd"
+      },
+      {
+        "as_of_date": "2026-09-22",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-22.json",
+        "sha256": "cda787e39d00ab378d0ee3f2ed244e0a132e64b8ef05f4188f32a31f2ff2bb3d"
+      },
+      {
+        "as_of_date": "2026-09-23",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-09-23.json",
+        "sha256": "2b5002fec0b39068b0e3a471b872314263325913815f10d5e2c3fef42320eb8b"
+      },
+      {
+        "as_of_date": "2026-09-24",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-24.json",
+        "sha256": "1835d1d5238d1ab17c319b00ef30697a8b9f9ae4949181baa0d2e6931b6d05aa"
+      },
+      {
+        "as_of_date": "2026-09-25",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-09-25.json",
+        "sha256": "70faeb6984e9f681844051c01bc11e497e16a3070f083e3f504718a998e4144f"
+      },
+      {
+        "as_of_date": "2026-09-28",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-09-28.json",
+        "sha256": "9f73ea348707bc4ad399857b806b8e80208b89f11240044e7ca9400a3a9e0b0c"
+      },
+      {
+        "as_of_date": "2026-09-29",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-09-29.json",
+        "sha256": "c0f3da2ee410d7c4207ca43ce3f4759566f4a2b1d4735503c5730b8fd7d2f45d"
+      },
+      {
+        "as_of_date": "2026-09-30",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-09-30.json",
+        "sha256": "5c0105ac044044089784b121c45b5da3acaaed4cb19ab5ce03d5a7f269ecea59"
+      },
+      {
+        "as_of_date": "2026-10-01",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-10-01.json",
+        "sha256": "6d62c935a340c67f363469005a334f1f347ae221a7a678dc96689240f9dcb92b"
+      },
+      {
+        "as_of_date": "2026-10-02",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-10-02.json",
+        "sha256": "e2bf3776625f79e0f267c7cd90f266c43e56f3900ec9470a9e7d4723a273abc8"
+      },
+      {
+        "as_of_date": "2026-10-05",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-10-05.json",
+        "sha256": "0530f06dd41c7acb9a34c7bd1f7964445abe8b1afe3ab81db27aaf1c44801ff6"
+      },
+      {
+        "as_of_date": "2026-10-06",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-10-06.json",
+        "sha256": "38e13feb3fca104c3fa5ad2e1b61fb01053b441b1b89499775dcb8f36b657c1e"
+      },
+      {
+        "as_of_date": "2026-10-07",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-10-07.json",
+        "sha256": "d9fee99f0545c11a9a619a74cc1ea2836b891288fb74f9c28df10c01eb0721ba"
+      },
+      {
+        "as_of_date": "2026-10-08",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-10-08.json",
+        "sha256": "494e54a4b3e1250ae5fb41a6ec61ba2b431cfead9b04ce08f151905b86f0c4b3"
+      },
+      {
+        "as_of_date": "2026-10-09",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-10-09.json",
+        "sha256": "b451db0232f14159d6d9d1dcd34d444e57f961f44bbcdb85e79ccae31f84f533"
+      },
+      {
+        "as_of_date": "2026-10-12",
+        "entries": 937,
+        "path": "market-snapshots/2026/2026-10-12.json",
+        "sha256": "9523716991055f425d64227f4d42b77470636b9827625f1999c33459d291abe9"
+      },
+      {
+        "as_of_date": "2026-10-13",
+        "entries": 936,
+        "path": "market-snapshots/2026/2026-10-13.json",
+        "sha256": "8339b98a37793c529e7192e51b3cb6a999fb55fbfd4ab8f533c03d83a73c3708"
+      },
+      {
+        "as_of_date": "2026-10-14",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-10-14.json",
+        "sha256": "a1b076f94f1062b517d98c005351aa65994d66e63dcf70658e569ea0e09e108b"
+      },
+      {
+        "as_of_date": "2026-10-15",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-10-15.json",
+        "sha256": "d5fc074fb35524abba62aedc541dbf579ce226a7481f0c4ae348576b29e43350"
+      },
+      {
+        "as_of_date": "2026-10-16",
+        "entries": 935,
+        "path": "market-snapshots/2026/2026-10-16.json",
+        "sha256": "c5b9bce0b9306af2fd4ddc6986ca0e74ba688d0aea473d8979e31a9aed63569a"
+      },
+      {
+        "as_of_date": "2026-10-19",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-10-19.json",
+        "sha256": "120afd1fe2d936ccd1bf3a699c144e8f0cfa53435e9c54276b7cca6b32dc8bce"
+      },
+      {
+        "as_of_date": "2026-10-20",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-10-20.json",
+        "sha256": "a3f04a359e709ac18ccb288f97cf726d76b4224db915449e67ddd72fafa23d71"
+      },
+      {
+        "as_of_date": "2026-10-21",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-10-21.json",
+        "sha256": "cf28bb008d872897a1d6ff56ee94efc6c4604eaca6dd198e49f382181ba8cd92"
+      },
+      {
+        "as_of_date": "2026-10-22",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-10-22.json",
+        "sha256": "e2ac07cf431641b34f2488d6b529cf9664505a9e34f2c001fc7e06e34ba6673d"
+      },
+      {
+        "as_of_date": "2026-10-23",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-10-23.json",
+        "sha256": "328b3e33f072859a12f143c27714d250828b1a07d963ece5a5a92718c0e2925d"
+      },
+      {
+        "as_of_date": "2026-10-26",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-10-26.json",
+        "sha256": "d76dbccef5ebfebd7ab517b0a6ab5c908c36f723a49e56e80618c77aeec32e4b"
+      },
+      {
+        "as_of_date": "2026-10-27",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-10-27.json",
+        "sha256": "2768ffd5cbb40ff7e04bc9d2a8a4ed95562cc19533a983dd1bed1dc02e4fe2a9"
+      },
+      {
+        "as_of_date": "2026-10-28",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-10-28.json",
+        "sha256": "375c996ddef6b8c62592e9ba3bf625064b85f413359c95c9928b99ebf731b132"
+      },
+      {
+        "as_of_date": "2026-10-29",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-10-29.json",
+        "sha256": "ac23649ec49a2958bec005cfccb61edacc5bb8bec3c551857a162a68a4217354"
+      },
+      {
+        "as_of_date": "2026-10-30",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-10-30.json",
+        "sha256": "ddda8beafb6ea95a53cbb9befb617738726a66109d5fc1c29c6333d25279ff18"
+      },
+      {
+        "as_of_date": "2026-11-03",
+        "entries": 934,
+        "path": "market-snapshots/2026/2026-11-03.json",
+        "sha256": "be0cc7d60dbacb9271914e9e389a8067a14e4d9a5983124a215ca3a17daab78c"
+      },
+      {
+        "as_of_date": "2026-11-04",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-11-04.json",
+        "sha256": "114ce2008006518aa357a97fb102930aabaee25d6c13cdee0c4c4fbb545716bd"
+      }
+    ],
+    "pick_count": 1409,
+    "pick_partitions": [
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-11.json",
+        "report_date": "2026-05-11",
+        "sha256": "b4985e690853ec572654f006469f4b7576486111e63147c3c1f21110a1fac2a1"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-12.json",
+        "report_date": "2026-05-12",
+        "sha256": "0a238b78633f581baa21079ee90d5c81e105ad080f0432b2c5f9c9afde2d5665"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-13.json",
+        "report_date": "2026-05-13",
+        "sha256": "3ab7efea2de85dc9f560c0c90e2f650744bc79c58145f771dfa0ad4371a0d83b"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-14.json",
+        "report_date": "2026-05-14",
+        "sha256": "8f6b07c6e35480de23f4c03bf84a1de915a6ea8ccc5adfb35086a9c28232f875"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-15.json",
+        "report_date": "2026-05-15",
+        "sha256": "6882bf713046c8121821db831a74898c0aa5893f73ca8f29b6129856d14eeb54"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-18.json",
+        "report_date": "2026-05-18",
+        "sha256": "3117489123b24f3bb2a56cd0ba01b923d2b38f786100f527ebcbddfd6301abbd"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-19.json",
+        "report_date": "2026-05-19",
+        "sha256": "73f1c6dda9c500fd18a18ead343577e73d915674a8068fc5950799f2b3be1ee0"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-05-20.json",
+        "report_date": "2026-05-20",
+        "sha256": "64896de98e967c56d77339e8ab27489ed290ffa1bb242765e5ffeceac9bcf06c"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-05-21.json",
+        "report_date": "2026-05-21",
+        "sha256": "2e92873c0340ecf95b718a8dbd8a77c76dbe492ac4bbe15a9f5c6541ea974f2d"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-05-22.json",
+        "report_date": "2026-05-22",
+        "sha256": "95e42828ad9d37e01f32731b171e6fbcc9ff2b04bd3a49dcee276683733a9dbf"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-05-25.json",
+        "report_date": "2026-05-25",
+        "sha256": "7b84cae806ab02c53964424199b43592608c58867f76e32b2d1062cc74bc6616"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-05-26.json",
+        "report_date": "2026-05-26",
+        "sha256": "11cdc3281c827b4ef999aeb103e6abb62db08c52abbecb29679ad53044d45077"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-05-27.json",
+        "report_date": "2026-05-27",
+        "sha256": "dbb5b187efb3c0d097c6c6c7f9d69ec688a1c45368b5d2903386ea3bd4d3808c"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-05-28.json",
+        "report_date": "2026-05-28",
+        "sha256": "2acbce148eb10276faeeab4ae1f905b36e16f47cd49577c913c0ef4f19e2f2e4"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-05-29.json",
+        "report_date": "2026-05-29",
+        "sha256": "3408b5f133dfa683981d4949264bcd225be0ef0fe655cc0f4e1367f5cb5f0fed"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-01.json",
+        "report_date": "2026-06-01",
+        "sha256": "c57291404945906acf1c0f70447397217d88ee12d97d0cc5ad935baad446f346"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-02.json",
+        "report_date": "2026-06-02",
+        "sha256": "2cf995f5e051161d25df61d59c30ec0b6f59ef528e12df53553c77ffc64b5d8c"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-03.json",
+        "report_date": "2026-06-03",
+        "sha256": "0780ed2f23a500befd9ec93d91ed0ec0f1ad6abfeea75a6345102072f86fc5bb"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-04.json",
+        "report_date": "2026-06-04",
+        "sha256": "88522850dbf3291906929c11a2228adf3a8a811485d9197b30a10b469ea2c602"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-05.json",
+        "report_date": "2026-06-05",
+        "sha256": "52f03d296f7555fd23ae526ffed48a4c75a5f37c997e68c760696ede7d899b83"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-08.json",
+        "report_date": "2026-06-08",
+        "sha256": "2d058fccfa1414d87571aa21e982b63306d791b504a0062231c9ac822fdd2937"
+      },
+      {
+        "entries": 24,
+        "path": "picks/2026/2026-06-09.json",
+        "report_date": "2026-06-09",
+        "sha256": "498666f060105397edf59cd7eb5f2bc4cfbfd7c2bdc797a0349c8240c0123743"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-10.json",
+        "report_date": "2026-06-10",
+        "sha256": "8c8d88888994e3a3d06d333465b56e8efc5c5a51466b885270203bfc60953a78"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-11.json",
+        "report_date": "2026-06-11",
+        "sha256": "23d5c6c649a096b25e4882a17df6f34dd39e8b38ebe2169ad5f27e0cfa77fbb4"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-12.json",
+        "report_date": "2026-06-12",
+        "sha256": "b34a05b3f2ad95ed40857c352740f016ab83963c7125feafe398a486c2acdefa"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-15.json",
+        "report_date": "2026-06-15",
+        "sha256": "4fbec5517464fe6ec0e876e107d049b6fb1da884959cda061c5d490006b000d6"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-16.json",
+        "report_date": "2026-06-16",
+        "sha256": "61b02f8be8cecee631735733367c59abca754a793b19f0bbb4a5a7a886ca1133"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-17.json",
+        "report_date": "2026-06-17",
+        "sha256": "f9c46ff81889c89183723632b2ff23e863ef207ca40bab7cc87c8ffb92f3efb3"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-18.json",
+        "report_date": "2026-06-18",
+        "sha256": "987cfe438513df3a8a1ab994f76cdc3ec502c7a755325273540e9a832fdb314b"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-22.json",
+        "report_date": "2026-06-22",
+        "sha256": "30fbfe13422c217986c9f065bc25d9d88d9492853c349737c35224eff7cc5d2e"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-23.json",
+        "report_date": "2026-06-23",
+        "sha256": "7906fe6152c6330fde7d9694fa68c21bf6a527a35d276235a58815f056b3cb8e"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-24.json",
+        "report_date": "2026-06-24",
+        "sha256": "f326d944e3b434c0f70d8bc5d8772aea8846f26b63972df6fc5927719ca17511"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-25.json",
+        "report_date": "2026-06-25",
+        "sha256": "011147c739f833d623a19305177eb2d487723f9f5d193eefb9e5158c12e32b35"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-26.json",
+        "report_date": "2026-06-26",
+        "sha256": "a4103fd6b7dde990f661a297b3a10a967123096811475a190dc7fc3e2dc37795"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-29.json",
+        "report_date": "2026-06-29",
+        "sha256": "d5b26c4572825540b687cdaff055dbed02377cbfd634582670f843e490f75bb3"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-06-30.json",
+        "report_date": "2026-06-30",
+        "sha256": "612231f334a5215a021152de4fd0bd307628aa7a577cbbddc1347ed9b227b7cc"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-01.json",
+        "report_date": "2026-07-01",
+        "sha256": "1392660de7316ec3613dcb84064d55409182d92d4b5db3b674ee3b266c09fb10"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-02.json",
+        "report_date": "2026-07-02",
+        "sha256": "809d30e916d02f984a7a69475a52ee0cc9b1ba68bfd69c2c73fc36f3b3d5db36"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-03.json",
+        "report_date": "2026-07-03",
+        "sha256": "735e98a0343b62c06e6235f71a10937157dcc2cb5df60e9b0e420d10e1df22bf"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-06.json",
+        "report_date": "2026-07-06",
+        "sha256": "4f9ef20c8b3c6f6d89a651b89b15ea1da6ba8f47a4d12c8ba861215df69aa873"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-07.json",
+        "report_date": "2026-07-07",
+        "sha256": "b77fd1a1f0510b267d99fb7cebf81103685049d871889a7c0c9298ac7ac97fce"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-08.json",
+        "report_date": "2026-07-08",
+        "sha256": "b4f8262ba0d1bff40aa89aaeaf2c7cd560f6f36d9fc3ec91bf7c3bc74f686886"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-09.json",
+        "report_date": "2026-07-09",
+        "sha256": "8f9ddafd73ddb60290481c745171fc6dc6e1cc45becd2de95b35ffc11cbea849"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-10.json",
+        "report_date": "2026-07-10",
+        "sha256": "d7972223adb71d218c9ffdf5f59b1ee04fc5757504f94664639183aaa49ca5ae"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-13.json",
+        "report_date": "2026-07-13",
+        "sha256": "3e1c16159135f8f3a244eebdc793276e819e5c74c33f6fd2679e740d00f2215c"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-14.json",
+        "report_date": "2026-07-14",
+        "sha256": "305dbe70cc819b5b19f7b407e3469bd656019e6e4c83743bce89e46aedc5d1ea"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-15.json",
+        "report_date": "2026-07-15",
+        "sha256": "1cb32042b3fbbd12af3118607ba606de3255025946bc15e5b2d44506477a94c1"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-16.json",
+        "report_date": "2026-07-16",
+        "sha256": "42f0ea8d985c955f8aa67f0fb6c18ac0a44071f42dbcb2e0f3eeb9aff912d330"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-17.json",
+        "report_date": "2026-07-17",
+        "sha256": "17b2564d956c1e2a0706864fba91f2af048ab165bc0fc451bfcdc17e935b86df"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-20.json",
+        "report_date": "2026-07-20",
+        "sha256": "3e792ad394ecf7d271c50addfc170d23510134421b4ef9443139e99cbaf0663e"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-21.json",
+        "report_date": "2026-07-21",
+        "sha256": "3faa48a0ee8879cb90d682306a700b34eccf8ccb9717b7dde94f7d938821b74a"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-22.json",
+        "report_date": "2026-07-22",
+        "sha256": "98fa181cd0f180c0023106c420cbbc43eb8635b857efb7fd6ed4ff0157b84603"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-23.json",
+        "report_date": "2026-07-23",
+        "sha256": "f726108b4a2bb2661bbb8a34dc2f60e08de6464d686ea59d1ee0b9f926a3f46d"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-24.json",
+        "report_date": "2026-07-24",
+        "sha256": "6946c9e97bef6e85e11f99b332e98f8d18d09808dcdc5c71a9aa44a1a2035045"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-27.json",
+        "report_date": "2026-07-27",
+        "sha256": "6c1199ea4771c48b9adfdba795d63c85be43ace936a00f259ca88b9dda61d115"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-28.json",
+        "report_date": "2026-07-28",
+        "sha256": "3593b627badd481d0ba8231895e27b8d6fa2ea73a312c5df93624a28d133369a"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-29.json",
+        "report_date": "2026-07-29",
+        "sha256": "b2cb588f9d6caf5a0bc61a124294eed176a7bb7e3db9cefea03a53743a51d510"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-30.json",
+        "report_date": "2026-07-30",
+        "sha256": "8227fb8aee92422fb21f7e4c60654facec4dda11fda21e03f46d8c4c8c467580"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-07-31.json",
+        "report_date": "2026-07-31",
+        "sha256": "a3f8841fc91142cfeb762a97ff75c89135234cbf1ace848510b438707afa8edd"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-03.json",
+        "report_date": "2026-08-03",
+        "sha256": "70ed7f20e4656365e4c01fb912f906f046503b0de69847dbe3f68ea98726b4d4"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-04.json",
+        "report_date": "2026-08-04",
+        "sha256": "c742c8c76b504fba78ed1d5d4bb34bbac219f514bb9e8b74101427a8ca84db59"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-05.json",
+        "report_date": "2026-08-05",
+        "sha256": "25c8e0246a6237af6666e9c5ad5921dcda1b3e9005cc5cf41e3a5255be4ebc4a"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-06.json",
+        "report_date": "2026-08-06",
+        "sha256": "ab6c6dd2c4de5a06e846dd974670a3a98498fd5d4282f8ea83760d4418956eab"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-07.json",
+        "report_date": "2026-08-07",
+        "sha256": "e336ab37f9504e99ba66c5cbb5addb33280628a138e9e962693704d7513ec837"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-10.json",
+        "report_date": "2026-08-10",
+        "sha256": "ea1a52d147b15adccf0e82882c4d5fa5d5ecc99cf259d5e969b1d609d1f7f955"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-11.json",
+        "report_date": "2026-08-11",
+        "sha256": "6a605096f0cab9efa127e2142d8a49e3e73e6c326f6a82f7a746837908b0e201"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-12.json",
+        "report_date": "2026-08-12",
+        "sha256": "4d0cd4a1db7106b5f4d2b21e761a6c48fb77b0e16932e3711c5462ea65fef380"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-13.json",
+        "report_date": "2026-08-13",
+        "sha256": "6eb30638a96900db8ce69d5cd6a1aebe7398603f0290bf999cbfc6d2171df771"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-14.json",
+        "report_date": "2026-08-14",
+        "sha256": "5a81ba29b5e32e16e1981db1eeee2f50672f38f65ecf14e0d15a199053205ca2"
+      },
+      {
+        "entries": 14,
+        "path": "picks/2026/2026-08-17.json",
+        "report_date": "2026-08-17",
+        "sha256": "eb8a701a7cf7f1f4501bc3c73ff424c74807970c940b03683b89c0c1a2b22bbc"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-18.json",
+        "report_date": "2026-08-18",
+        "sha256": "8146d7a34190545040f882f94065d9653d02e6c0b726aae77f409085bc431bb5"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-19.json",
+        "report_date": "2026-08-19",
+        "sha256": "ccd7b3e1b75464061dc974e65f280eaacd84e2cf7ce396d38778c044ecc0829b"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-20.json",
+        "report_date": "2026-08-20",
+        "sha256": "94e9231a1d216a5255157cda36b16feea5064026cfdf80a580761f2b30debeb7"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-21.json",
+        "report_date": "2026-08-21",
+        "sha256": "029ba1d8a1078e14582e4288248a93da88ac9a32a542ee7227a02083b1d25293"
+      },
+      {
+        "entries": 30,
+        "path": "picks/2026/2026-08-24.json",
+        "report_date": "2026-08-24",
+        "sha256": "c2171bd23dd84dc45752e0ecf4597ee7d7ba93ab6982fbaf3686af42d85132bd"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-25.json",
+        "report_date": "2026-08-25",
+        "sha256": "92d27464c6282db0ce267da41306c7ff0aefa80115217205b75867003292f54e"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-26.json",
+        "report_date": "2026-08-26",
+        "sha256": "a036bc002482c7795c2ad613e46836942057396cb3e0b160a4c31653edbbf787"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-08-27.json",
+        "report_date": "2026-08-27",
+        "sha256": "914868a8ed7a7093b9ad96aca412e49895aa05f760255027c93dec4f163eae4b"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-08-28.json",
+        "report_date": "2026-08-28",
+        "sha256": "b5c8e429c2f9e09081330dab42d1ddca85f6ee9529e439b25692c81040fc8597"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-08-31.json",
+        "report_date": "2026-08-31",
+        "sha256": "ec0d988f39dfef15af8a72cf13d4cbaa065e175eed5157daa765e01e7bb1d1d0"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-01.json",
+        "report_date": "2026-09-01",
+        "sha256": "2850334fadb70fa296b73cae01086ab544b8e66d6fb79d0933cb8f25f9569f89"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-02.json",
+        "report_date": "2026-09-02",
+        "sha256": "bf7de9b4b2d26ccae78ef4fcae34be6615d168fdda1ff84ac3b5e335ceedb43d"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-03.json",
+        "report_date": "2026-09-03",
+        "sha256": "b7789e470e6a3525b8ed4d457067cde180641d0e07f052e638e26278899a6eb7"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-04.json",
+        "report_date": "2026-09-04",
+        "sha256": "ac638c4d215123384b0a920d5ed741602764443640d0a78ecb7e040f9ea368af"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-07.json",
+        "report_date": "2026-09-07",
+        "sha256": "f4dac37d151e6e2e132ade0cbffdb28b5b8c2f6511e6dcb37979f17984f698d9"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-08.json",
+        "report_date": "2026-09-08",
+        "sha256": "3aaf8c5c873dbdccc4abb1845c9607aef524b1cabe86d98618ce37665a19e889"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-09.json",
+        "report_date": "2026-09-09",
+        "sha256": "549d01f22ce0146c225eba2d6c635c33fb7747b2174520aa326e31092402599f"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-10.json",
+        "report_date": "2026-09-10",
+        "sha256": "5173fd3ce445e8a27c908374c377ebca7a9a8d037aa3b64664f6fb48ff6853b9"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-11.json",
+        "report_date": "2026-09-11",
+        "sha256": "e163f42d5973a65dc745b38c684130d116f596ed7de014d11aa5e75587c78327"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-14.json",
+        "report_date": "2026-09-14",
+        "sha256": "84c51a6beff48edd2d7dca16a47beefb2de928ab531b463bc3ae051eb87b5231"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-15.json",
+        "report_date": "2026-09-15",
+        "sha256": "964068035eb97e6663c7c5990e0a72ed44a519a6825edbc001ae87376f79f313"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-16.json",
+        "report_date": "2026-09-16",
+        "sha256": "d275e18ddfc20500393800c324aa2503a32469332a81081d50d9c52e76751b3b"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-17.json",
+        "report_date": "2026-09-17",
+        "sha256": "1521be4c3af930c2c8230c496453a661d280e3f81f14c501fd9741b6c9330661"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-18.json",
+        "report_date": "2026-09-18",
+        "sha256": "8e66710bbe81c8c78b61c594e0d96d39b04c87295cc48f7f01545abf19375a84"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-21.json",
+        "report_date": "2026-09-21",
+        "sha256": "4cb0b18080bab95ed6d79ae424675c33ce916d9b19739c44f21d334f68c7a5f4"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-22.json",
+        "report_date": "2026-09-22",
+        "sha256": "4ad07d06c73c295172004ed50ef4f84d7083b04cdf8e7ed2e7a33ce0cd1e9a20"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-23.json",
+        "report_date": "2026-09-23",
+        "sha256": "8446911e18f7ad50571093938fc0ff08bebc88eaf36948fa1da692b534c68475"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-24.json",
+        "report_date": "2026-09-24",
+        "sha256": "5569f01685914023168cdd7d0847acddf359d29b52b99e8767c3b3177d3f24a5"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-25.json",
+        "report_date": "2026-09-25",
+        "sha256": "99025cd6c14b9a73129eb7b80b9d5d52fcbf4c91ff9ca64220a7cfc8d66a0fe7"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-28.json",
+        "report_date": "2026-09-28",
+        "sha256": "025174d23a1a945e13c62d757a45211b0e1e4fbe8cd723e9b37f58a6eb74bc43"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-29.json",
+        "report_date": "2026-09-29",
+        "sha256": "1b77cfd6a085d10c4ab5231c54e2d850fe6a205fc17e83720caffa62787c7ff8"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-09-30.json",
+        "report_date": "2026-09-30",
+        "sha256": "511bb9109fbc78c8639b449d61fa639963fb08dc70f59790b254fc5da5555ff0"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-01.json",
+        "report_date": "2026-10-01",
+        "sha256": "6c7b27e2e7d486106fa7447244d380038622a34365611581e2e6a334df38503f"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-02.json",
+        "report_date": "2026-10-02",
+        "sha256": "2efcb3362ffb4cec240ac2df4e1003e1b0c76135e730874ebb0cc06c4d36b1a8"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-05.json",
+        "report_date": "2026-10-05",
+        "sha256": "8bd39eecebfe587cf26ed23bce69ac0debc7045b5547dcbe79b695ead479c116"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-06.json",
+        "report_date": "2026-10-06",
+        "sha256": "e3079fb7d58259865a69e0b73f800c789985711d7492968d8a5fe5597247dc48"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-07.json",
+        "report_date": "2026-10-07",
+        "sha256": "7644d192d350d3d388c256e966774c2a9d843cb8e7a93f64276418b85c7d80f5"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-08.json",
+        "report_date": "2026-10-08",
+        "sha256": "15670f300aeecf09e87fa281e650a1e76fa95f838b255cb48d7cccd8ef66a5b9"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-09.json",
+        "report_date": "2026-10-09",
+        "sha256": "bf7592544ec153cf72bddcb0753cf9f2286e86ff6e2425638b32dd16308f8ade"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-12.json",
+        "report_date": "2026-10-12",
+        "sha256": "7ccab44599912c066d9b5a9c2b1efb5d7c6387c7f1c8059440d2a3561fcbd291"
+      },
+      {
+        "entries": 11,
+        "path": "picks/2026/2026-10-13.json",
+        "report_date": "2026-10-13",
+        "sha256": "5faf328856b7e0776be3cd349220af8e25856422c6bfa015f86026907edca243"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-14.json",
+        "report_date": "2026-10-14",
+        "sha256": "4dbd534f6b0f59a677e22af214c758358853458420a5ff6188dc4b80d73ee71f"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-15.json",
+        "report_date": "2026-10-15",
+        "sha256": "4335b314a749401b6a41fa4b52b03f524830765ec836579d45e46e1f04e16931"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-16.json",
+        "report_date": "2026-10-16",
+        "sha256": "41a51273afe084b7fbfe545c8df7a5c6895e25b06b6f46bdb327f87024b5fac9"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-19.json",
+        "report_date": "2026-10-19",
+        "sha256": "8a0f4b99feba4a790f4272ceb5652c7357388d6842ed6de539979404575cf168"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-20.json",
+        "report_date": "2026-10-20",
+        "sha256": "2f369256cd24af2e82d7a6fbf30e196f8f0f2f16775e9f5f9dccdb54d5f16860"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-21.json",
+        "report_date": "2026-10-21",
+        "sha256": "6078bd1a1ee8833d0b6f8332dd822b5ce840c320280ea3be433aff29bcee2712"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-22.json",
+        "report_date": "2026-10-22",
+        "sha256": "2aaa5badc35a485341a2bd13436a8413e8b8757a96e24793b2f97f00a1bb2bd1"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-23.json",
+        "report_date": "2026-10-23",
+        "sha256": "399e076ca085f846beda22e937b56dbe4df1958651fdc50010b396f386a4e801"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-26.json",
+        "report_date": "2026-10-26",
+        "sha256": "72fb0d655bf892ea5a2071f4dcc29e498af3cbb1372b0712f11c1fdbd57edcc0"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-27.json",
+        "report_date": "2026-10-27",
+        "sha256": "68c7a11d2fa0802b203dae7f6359b919138c201ef1baa8f4e2a031819583aaf1"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-28.json",
+        "report_date": "2026-10-28",
+        "sha256": "628b955a476e6f110e2c8834b46e15aa3eeb1953bf0a81e7576d8e34eb5e25fa"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-29.json",
+        "report_date": "2026-10-29",
+        "sha256": "6b72a72d0ebf0f75dbff92ce7dafa26e07421c0cd18b7a7ac869d368dfdba92f"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-10-30.json",
+        "report_date": "2026-10-30",
+        "sha256": "bf5b7f77fc20eb7c8bd85719e040ec5ef557b52f4ced24d8af39c709b31c2bb2"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-11-03.json",
+        "report_date": "2026-11-03",
+        "sha256": "1c68aaac08d5311df8b1ed34b3d5cf25a0958d2f3e405efbf821b008e6e5adf4"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-11-04.json",
+        "report_date": "2026-11-04",
+        "sha256": "4d95517e5c49fffbc808dc0d7dde25a83c6a5fa45bb648f8e99cec7446abb11d"
+      }
+    ],
+    "reconstructed_sha256": "b498952144d839efee63b401b79132c699b33a205ea3c895d393fd9a220f56b6",
+    "reconstruction": "picks are the pick partitions' picks concatenated in listed order; market_snapshots maps each listed as_of_date to its partition's market_snapshot"
+  },
+  "schema_version": 1
+}

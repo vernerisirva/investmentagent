@@ -1,0 +1,429 @@
+{
+  "as_of_date": "2026-06-18",
+  "ledger_storage_layout": "report-date-partitions-v1",
+  "market_snapshot": {
+    "FI|PALLAS": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "FI",
+      "currency": "EUR",
+      "name": "Pallas Air Oyj",
+      "price": 0.71,
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "sector": "Industrials",
+      "segment": "first_north",
+      "ticker": "PALLAS"
+    },
+    "SE|ACRI A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Acrinova A",
+      "price": 8.74,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Real Estate",
+      "segment": "main_market",
+      "ticker": "ACRI A"
+    },
+    "SE|AINO": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Aino Health",
+      "price": 0.122,
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "sector": "Health Care",
+      "segment": "first_north",
+      "ticker": "AINO"
+    },
+    "SE|ATIN": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Athanase Innovation",
+      "price": 17.8,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Real Estate",
+      "segment": "first_north",
+      "ticker": "ATIN"
+    },
+    "SE|BAWAT": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Bawat Water Technologies",
+      "price": 1.14,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Industrials",
+      "segment": "first_north",
+      "ticker": "BAWAT"
+    },
+    "SE|BINERO": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Binero Group",
+      "price": 1.76,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Technology",
+      "segment": "first_north",
+      "ticker": "BINERO"
+    },
+    "SE|BONAV A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Bonava A",
+      "price": 8.5,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Consumer Discretionary",
+      "segment": "main_market",
+      "ticker": "BONAV A"
+    },
+    "SE|CAT A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Catella A",
+      "price": 19.7,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Financials",
+      "segment": "main_market",
+      "ticker": "CAT A"
+    },
+    "SE|CORE A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Corem Property Group A",
+      "price": 3.37,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Real Estate",
+      "segment": "main_market",
+      "ticker": "CORE A"
+    },
+    "SE|ELUX A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Electrolux A",
+      "price": 28.2,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Consumer Discretionary",
+      "segment": "main_market",
+      "ticker": "ELUX A"
+    },
+    "SE|HAKI A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "HAKI Safety A",
+      "price": 23.8,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Industrials",
+      "segment": "main_market",
+      "ticker": "HAKI A"
+    },
+    "SE|HELIO": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Heliospectra",
+      "price": 0.0865,
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "sector": "Industrials",
+      "segment": "first_north",
+      "ticker": "HELIO"
+    },
+    "SE|MODEL": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Modelon",
+      "price": 7.75,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Technology",
+      "segment": "first_north",
+      "ticker": "MODEL"
+    },
+    "SE|MSON A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Midsona A",
+      "price": 15.2,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Consumer Staples",
+      "segment": "main_market",
+      "ticker": "MSON A"
+    },
+    "SE|MTG A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Modern Times Group A",
+      "price": 131.0,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Consumer Discretionary",
+      "segment": "main_market",
+      "ticker": "MTG A"
+    },
+    "SE|MTI": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "MTI Investment",
+      "price": 0.705,
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "sector": "Financials",
+      "segment": "first_north",
+      "ticker": "MTI"
+    },
+    "SE|NANOC B": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "NanoCap Group B",
+      "price": 4.6,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Consumer Discretionary",
+      "segment": "first_north",
+      "ticker": "NANOC B"
+    },
+    "SE|NICO": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Nicoccino Holding",
+      "price": 1.0,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Consumer Staples",
+      "segment": "first_north",
+      "ticker": "NICO"
+    },
+    "SE|ORTI A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Ortivus A",
+      "price": 2.3,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Health Care",
+      "segment": "first_north",
+      "ticker": "ORTI A"
+    },
+    "SE|RATO A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Ratos A",
+      "price": 33.8,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Financials",
+      "segment": "main_market",
+      "ticker": "RATO A"
+    },
+    "SE|RPLAN": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Ranplan Group",
+      "price": 0.27,
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "sector": "Technology",
+      "segment": "first_north",
+      "ticker": "RPLAN"
+    },
+    "SE|STAR A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Starbreeze A",
+      "price": 0.1185,
+      "risks": [
+        "Sparse live-source data",
+        "Speculative low-price share",
+        "Missing live turnover"
+      ],
+      "sector": "Consumer Discretionary",
+      "segment": "main_market",
+      "ticker": "STAR A"
+    },
+    "SE|STE A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Stora Enso A",
+      "price": 107.0,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Basic Materials",
+      "segment": "main_market",
+      "ticker": "STE A"
+    },
+    "SE|SVOL A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Svolder A",
+      "price": 92.0,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Financials",
+      "segment": "main_market",
+      "ticker": "SVOL A"
+    },
+    "SE|TEL2 A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Tele2 A",
+      "price": 176.0,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Telecommunications",
+      "segment": "main_market",
+      "ticker": "TEL2 A"
+    },
+    "SE|VPLAY A": {
+      "catalysts": [
+        "Live price available from Nasdaq Nordic"
+      ],
+      "country": "SE",
+      "currency": "SEK",
+      "name": "Viaplay Group A",
+      "price": 2.86,
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "sector": "Telecommunications",
+      "segment": "main_market",
+      "ticker": "VPLAY A"
+    }
+  },
+  "schema_version": 1
+}

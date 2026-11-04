@@ -1,0 +1,1345 @@
+{
+  "ledger_storage_layout": "report-date-partitions-v1",
+  "picks": [
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 27.2,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 0.2%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 2,
+            "view": "Valuation is available but not clearly attractive."
+          }
+        },
+        "thesis": "Admicom Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 29.89,
+          "summary": "P/E is 29.8876."
+        }
+      },
+      "name": "Admicom Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.23,
+          "currency": "EUR",
+          "excess_return_pct": 1.42,
+          "price": 27.65,
+          "return_pct": 1.65,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.76,
+          "currency": "EUR",
+          "excess_return_pct": -3.84,
+          "price": 25.95,
+          "return_pct": -4.6,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.53,
+          "currency": "EUR",
+          "excess_return_pct": 0.53,
+          "price": 27.2,
+          "return_pct": 0.0,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|FI|ADMCM",
+      "rank": 3,
+      "reasons": [
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 49.75,
+      "sector": "Technology",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ADMCM",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 15.0,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq First North Growth Market Finland",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 5,
+            "view": "Strong - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 12.2%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 4,
+            "view": "Reasonable valuation on available multiples."
+          }
+        },
+        "thesis": "Alexandria Group Oyj has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 6,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 20.0,
+          "summary": "P/E is 20."
+        }
+      },
+      "name": "Alexandria Group Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.23,
+          "currency": "EUR",
+          "excess_return_pct": -0.56,
+          "price": 14.95,
+          "return_pct": -0.33,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.76,
+          "currency": "EUR",
+          "excess_return_pct": -12.24,
+          "price": 13.05,
+          "return_pct": -13.0,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.53,
+          "currency": "EUR",
+          "excess_return_pct": -2.14,
+          "price": 14.6,
+          "return_pct": -2.67,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|FI|ALEX",
+      "rank": 8,
+      "reasons": [
+        "net cash balance sheet",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Fundamental watchlist candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 28.75,
+      "sector": "Financials",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "ALEX",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 12.0,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 1.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Apetit Oyj has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 5,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 8.65,
+          "summary": "P/E is 8.64583."
+        }
+      },
+      "name": "Apetit Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.23,
+          "currency": "EUR",
+          "excess_return_pct": 3.52,
+          "price": 12.45,
+          "return_pct": 3.75,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.76,
+          "currency": "EUR",
+          "excess_return_pct": 9.51,
+          "price": 13.05,
+          "return_pct": 8.75,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.53,
+          "currency": "EUR",
+          "excess_return_pct": 0.53,
+          "price": 12.0,
+          "return_pct": 0.0,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|FI|APETIT",
+      "rank": 4,
+      "reasons": [
+        "low P/E (8.64583)",
+        "low P/B",
+        "small market cap",
+        "Gate tier: High-conviction candidate",
+        "Fundamental watchlist candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Attractive valuation support",
+        "Business description available"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 44.25,
+      "sector": "Consumer Staples",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "APETIT",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 8.91,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 8.4%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 3,
+            "view": "High P/E"
+          },
+          "Valuation": {
+            "score": 4,
+            "view": "Reasonable valuation on available multiples."
+          }
+        },
+        "thesis": "Nokia Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 74.2,
+          "summary": "P/E is 74.2."
+        }
+      },
+      "name": "Nokia Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.23,
+          "currency": "EUR",
+          "excess_return_pct": 3.09,
+          "price": 9.206,
+          "return_pct": 3.32,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.76,
+          "currency": "EUR",
+          "excess_return_pct": 4.96,
+          "price": 9.284,
+          "return_pct": 4.2,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.53,
+          "currency": "EUR",
+          "excess_return_pct": -3.17,
+          "price": 8.58,
+          "return_pct": -3.7,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|FI|NOKIA",
+      "rank": 10,
+      "reasons": [
+        "net cash balance sheet",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 26.0,
+      "sector": "Telecommunications",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "NOKIA",
+      "warnings": [
+        "high P/E",
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 5.57,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 6.5%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Outokumpu Oyj has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 6,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 11.13,
+          "summary": "P/E is 11.1318."
+        }
+      },
+      "name": "Outokumpu Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.23,
+          "currency": "EUR",
+          "excess_return_pct": 2.73,
+          "price": 5.735,
+          "return_pct": 2.96,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.76,
+          "currency": "EUR",
+          "excess_return_pct": -3.55,
+          "price": 5.33,
+          "return_pct": -4.31,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.53,
+          "currency": "EUR",
+          "excess_return_pct": 2.24,
+          "price": 5.665,
+          "return_pct": 1.71,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|FI|OUT1V",
+      "rank": 1,
+      "reasons": [
+        "low P/E (11.1318)",
+        "low P/B",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Attractive valuation support",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 60.0,
+      "sector": "Basic Materials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "OUT1V",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 2.485,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 2.8%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 4,
+            "view": "No specific risk flag surfaced in the current screen."
+          },
+          "Valuation": {
+            "score": 4,
+            "view": "Reasonable valuation on available multiples."
+          }
+        },
+        "thesis": "Raisio Oyj Vaihto-osake has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 18.88,
+          "summary": "P/E is 18.8846."
+        }
+      },
+      "name": "Raisio Oyj Vaihto-osake",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.23,
+          "currency": "EUR",
+          "excess_return_pct": 0.37,
+          "price": 2.5,
+          "return_pct": 0.6,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.76,
+          "currency": "EUR",
+          "excess_return_pct": -7.29,
+          "price": 2.285,
+          "return_pct": -8.05,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.53,
+          "currency": "EUR",
+          "excess_return_pct": -0.27,
+          "price": 2.465,
+          "return_pct": -0.8,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|FI|RAIVV",
+      "rank": 5,
+      "reasons": [
+        "net cash balance sheet",
+        "small market cap",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 41.25,
+      "sector": "Consumer Staples",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "RAIVV",
+      "warnings": [
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "FI",
+      "data_quality": "partial",
+      "entry_currency": "EUR",
+      "entry_price": 14.75,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq Helsinki",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 1,
+            "view": "Revenue declined 24.6%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Raute Oyj has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 5,
+        "reasons": [
+          "positive operating margin",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 7.77,
+          "summary": "P/E is 7.76596."
+        }
+      },
+      "name": "Raute Oyj",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.23,
+          "currency": "EUR",
+          "excess_return_pct": -0.23,
+          "price": 14.75,
+          "return_pct": 0.0,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.76,
+          "currency": "EUR",
+          "excess_return_pct": 2.45,
+          "price": 15.0,
+          "return_pct": 1.69,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.53,
+          "currency": "EUR",
+          "excess_return_pct": -0.49,
+          "price": 14.6,
+          "return_pct": -1.02,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|FI|RAUTE",
+      "rank": 7,
+      "reasons": [
+        "low P/E (7.76596)",
+        "net cash balance sheet",
+        "small market cap",
+        "Gate tier: High-conviction candidate",
+        "Fundamental watchlist candidate",
+        "Positive operating margin",
+        "Conservative balance sheet",
+        "Attractive valuation support",
+        "Business description available"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 31.25,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "RAUTE",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality",
+        "No growth signal"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 419.8,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq Stockholm",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 3,
+            "view": "Debt/equity looks manageable on available data."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 3,
+            "view": "Modest revenue growth of 4.1%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 3,
+            "view": "High P/B"
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "TRATON has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 5,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "adequate liquidity",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 10.42,
+          "summary": "P/E is 10.4178."
+        }
+      },
+      "name": "TRATON",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.02,
+          "currency": "SEK",
+          "excess_return_pct": 2.02,
+          "price": 428.2,
+          "return_pct": 2.0,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.09,
+          "currency": "SEK",
+          "excess_return_pct": 0.14,
+          "price": 407.4,
+          "return_pct": -2.95,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.12,
+          "currency": "SEK",
+          "excess_return_pct": 0.79,
+          "price": 418.4,
+          "return_pct": -0.33,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|SE|8TRA",
+      "rank": 6,
+      "reasons": [
+        "low P/E (10.4178)",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Attractive valuation support",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 32.0,
+      "sector": "Industrials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "8TRA",
+      "warnings": [
+        "high P/B",
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 35.6,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq First North Growth Market Sweden",
+      "long_term_conviction": {
+        "bucket": "Fundamental watchlist candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 4,
+            "view": "Balance sheet looks conservative on available metrics."
+          },
+          "Business quality": {
+            "score": 4,
+            "view": "Good - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 11.0%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 2,
+            "view": "Liquidity risk could make entry and exit difficult."
+          },
+          "Valuation": {
+            "score": 5,
+            "view": "Attractive valuation on available P/E or P/B metrics."
+          }
+        },
+        "thesis": "Arlandastad Group has enough fundamental evidence for manual research, but at least one proof gap should be checked before it becomes a high-priority idea."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 5,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "conservative balance sheet",
+          "business description available",
+          "attractive valuation support",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": true,
+          "primary_kind": "pe_ratio",
+          "primary_value": 11.84,
+          "summary": "P/E is 11.8387."
+        }
+      },
+      "name": "Arlandastad Group",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.02,
+          "currency": "SEK",
+          "excess_return_pct": 0.58,
+          "price": 35.8,
+          "return_pct": 0.56,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.09,
+          "currency": "SEK",
+          "excess_return_pct": 2.25,
+          "price": 35.3,
+          "return_pct": -0.84,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.12,
+          "currency": "SEK",
+          "excess_return_pct": 1.96,
+          "price": 35.9,
+          "return_pct": 0.84,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|SE|AGROUP",
+      "rank": 2,
+      "reasons": [
+        "low P/E (11.8387)",
+        "low P/B",
+        "small market cap",
+        "First North listing",
+        "Gate tier: High-conviction candidate",
+        "Fundamental watchlist candidate",
+        "First North discovery opportunity",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Attractive valuation support",
+        "Business description available"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 52.75,
+      "sector": "Real Estate",
+      "segment": "first_north",
+      "strategy": "long-term",
+      "ticker": "AGROUP",
+      "warnings": [
+        "thin liquidity",
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    },
+    {
+      "country": "SE",
+      "data_quality": "partial",
+      "entry_currency": "SEK",
+      "entry_price": 722.6,
+      "entry_timestamp": "2026-08-26T05:07:01.922565+00:00",
+      "exchange": "Nasdaq Stockholm",
+      "long_term_conviction": {
+        "bucket": "Quality small-cap candidate",
+        "components": {
+          "Balance sheet": {
+            "score": 5,
+            "view": "Net cash and conservative debt/equity."
+          },
+          "Business quality": {
+            "score": 5,
+            "view": "Strong - profitable business with a clear profile."
+          },
+          "Data confidence": {
+            "score": 4,
+            "view": "Several fundamentals plus profile text are available."
+          },
+          "Growth": {
+            "score": 4,
+            "view": "Healthy revenue growth of 5.5%."
+          },
+          "Momentum": {
+            "score": 1,
+            "view": "Intraday move is not enough for a long-term thesis."
+          },
+          "Risk": {
+            "score": 3,
+            "view": "High P/B"
+          },
+          "Valuation": {
+            "score": 4,
+            "view": "Reasonable valuation on available multiples."
+          }
+        },
+        "thesis": "Lundin Gold has multiple long-term quality signals for a small-cap research queue; verify valuation, reporting cadence, and liquidity before acting."
+      },
+      "long_term_gate": {
+        "blockers": [],
+        "durable_anchor_count": 7,
+        "reasons": [
+          "positive operating margin",
+          "revenue growth",
+          "net cash balance sheet",
+          "conservative balance sheet",
+          "adequate liquidity",
+          "business description available",
+          "valuation data available",
+          "valuation support available"
+        ],
+        "severe_proof_gap_count": 0,
+        "tier": "High-conviction candidate",
+        "valuation": {
+          "has_support": true,
+          "is_attractive": false,
+          "primary_kind": "pe_ratio",
+          "primary_value": 17.74,
+          "summary": "P/E is 17.7396."
+        }
+      },
+      "name": "Lundin Gold",
+      "outcomes": {
+        "1d": {
+          "as_of_date": "2026-08-27",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.02,
+          "currency": "SEK",
+          "excess_return_pct": 0.41,
+          "price": 725.4,
+          "return_pct": 0.39,
+          "status": "priced"
+        },
+        "20d": {
+          "as_of_date": "2026-09-23",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -3.09,
+          "currency": "SEK",
+          "excess_return_pct": -6.79,
+          "price": 651.2,
+          "return_pct": -9.88,
+          "status": "priced"
+        },
+        "5d": {
+          "as_of_date": "2026-09-02",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -1.12,
+          "currency": "SEK",
+          "excess_return_pct": -6.8,
+          "price": 665.4,
+          "return_pct": -7.92,
+          "status": "priced"
+        },
+        "60d": {
+          "as_of_date": null,
+          "currency": null,
+          "price": null,
+          "return_pct": null,
+          "status": "not_due"
+        }
+      },
+      "pick_id": "2026-08-26|long-term|SE|LUG",
+      "rank": 9,
+      "reasons": [
+        "net cash balance sheet",
+        "Gate tier: High-conviction candidate",
+        "Quality small-cap candidate",
+        "Positive operating margin",
+        "Revenue growth",
+        "Conservative balance sheet",
+        "Valuation data available",
+        "Business description available",
+        "Adequate liquidity"
+      ],
+      "report_date": "2026-08-26",
+      "report_url": "../reports/long-term/2026-08-26.html",
+      "risks": [
+        "Sparse live-source data",
+        "Missing live turnover"
+      ],
+      "score_total": 28.0,
+      "sector": "Basic Materials",
+      "segment": "main_market",
+      "strategy": "long-term",
+      "ticker": "LUG",
+      "warnings": [
+        "high P/B",
+        "2 stated risk(s)",
+        "partial data quality"
+      ]
+    }
+  ],
+  "report_date": "2026-08-26",
+  "schema_version": 1
+}
