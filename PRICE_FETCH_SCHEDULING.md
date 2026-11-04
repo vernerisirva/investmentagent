@@ -61,6 +61,66 @@ estimate did not need goes to later tasks and the hard limit still holds. Every
 fetched task uses at least one unit, even if the provider sent no request, so an open
 error circuit cannot mark the whole backlog failed in one run.
 
+## ISIN-Verified Symbols
+
+EODHD symbols were guessed from the ticker in the evaluation universe: the ticker plus
+`.HE` or `.ST`, with spaces as hyphens or removed. When EODHD uses another code, for
+example for a share class or a renamed instrument, the security never prices.
+- **Waste:** EODHD charges a failed lookup like a successful one, so each attempt also
+  used budget.
+- **Affected on 2026-11-04:** five FI securities that are in every long-term X,
+  KPYOSK, ILKKA, PALLAS, SAVOX and LEHTO (four HTTP 404s and one empty response).
+
+A security is *symbol-seeking* when **all** of these hold:
+- it has no symbol from an established outcome, the history archive or the legacy cache;
+- it has never priced;
+- at least one of its own fetch days failed (the same retry state as the backoff).
+
+Symbol-seeking securities are looked up in EODHD's exchange symbol list for `HE` or
+`ST`. That is one request for every active ticker of the exchange, with its ISIN where
+EODHD has one. The list request:
+- is made at the start of the run, before any price, whenever a symbol-seeking security
+  exists on that exchange, whether that security is due today or in backoff;
+- is made at most once per exchange in 28 days, whether it succeeded or not;
+- is counted in the same 20-call budget. On those days it takes the call of the last
+  fetch that would otherwise have fit. With no call left, nothing is requested or
+  recorded and the next run tries again;
+- is made only when the provider would actually send it. A missing key or an open error
+  circuit is not an attempt.
+
+Requesting the list before any price matters. The planner serves work by due date, and
+a never-priced security collects so much due work that it sorts late. On 2026-12-01
+the five FI securities sit at positions 363–655 of 912 tasks while about 16 fit the
+budget, so a lookup made just before their own fetch would not happen for weeks.
+
+One list decides every symbol-seeking security on that exchange. A mapping is accepted
+only for **exactly one** listed row with the same ISIN, in the security's currency
+(`EUR` for `HE`, `SEK` for `ST`), whose name shares at least one word with the
+security's name (ignoring accents and words such as Oyj or Group). Otherwise the
+security keeps its ticker guesses, and the reason is recorded: `not_listed`,
+`ambiguous`, `currency_mismatch`, `name_mismatch`, `invalid_code` or `no_isin`.
+
+A mapped symbol replaces the ticker guesses for that security alone, as one candidate
+that needs one call.
+- **No pinning:** a failed attempt records no symbol, exactly as a failed guess did, so
+  it does not pin the security to the mapping.
+- **Establishing a symbol:** only a priced response establishes the symbol, after which
+  the security's own outcomes and archive supply it.
+- **Precedence:** a security that has ever priced, or that has any established symbol,
+  never consults a mapping, so its symbol cannot change.
+- **Backoff:** unchanged. A mapping is tried at the security's next scheduled retry.
+
+Decisions and list provenance (time, status, row counts and a SHA-256 of the parsed
+list, never the token) are kept in
+`data/evaluation-outcomes/symbol-mappings/eodhd-isin-v1.json`. The file is published with
+the outcome stores. Each priced outcome already records the `provider_symbol` it used.
+The refresh summary reports `symbol_list_calls` and `isin_symbol_fetches`, and each plan
+item reports its `isin_symbol`.
+
+No return, entry, exit, status, horizon, eligibility or benchmark rule changes. A
+security priced this way is the same ISIN-identified security, priced through the same
+single-response adjusted-close method.
+
 ## Workflow
 
 Both caches are restored with `actions/cache/restore` and saved with

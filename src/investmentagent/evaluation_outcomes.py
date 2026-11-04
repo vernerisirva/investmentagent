@@ -34,6 +34,7 @@ from investmentagent.price_histories import (
     COHERENT_RETURN_METHOD, LEGACY_RETURN_METHOD, OUTCOME_REVISION_POLICY,
     EndpointEvidence, PriceHistoryBatch, HistoryArchive, HistoryMetadata, content_hash,
 )
+from investmentagent.symbol_mapping import IsinSymbolResolver
 
 
 OUTCOME_SCHEMA_VERSION = 2
@@ -410,6 +411,8 @@ class OutcomeRefreshSummary:
     records_missing_metadata: int = 0
     dry_run: bool = False
     lifecycle: dict[str, Any] | None = None
+    symbol_list_calls: int = 0
+    isin_symbol_fetches: int = 0
 
 
 @dataclass(frozen=True)
@@ -428,6 +431,7 @@ class PriceFetchPlanItem:
     oldest_evaluation_date: date
     deferred_by_budget: bool = False
     retry_backoff_until: date | None = None
+    isin_symbol: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -447,6 +451,7 @@ class PriceFetchPlanItem:
             "oldest_evaluation_date": self.oldest_evaluation_date.isoformat(),
             "deferred_by_budget": self.deferred_by_budget,
             "retry_backoff_until": _format_date(self.retry_backoff_until),
+            "isin_symbol": self.isin_symbol,
         }
 
 
@@ -574,6 +579,7 @@ def _refresh_outcome_store_with_cache(
     prepared_runs = []
     paths = {}
     requirements = {}
+    names = {}
     hits = {}
     security_identities = {}
     legacy_skipped = reusable = refetch = missing_metadata = 0
@@ -627,6 +633,7 @@ def _refresh_outcome_store_with_cache(
                         outcome.horizon_sessions, snapshot.report_date,
                     )
                     requirements[key] = requirement
+                    names[key] = company.row.name
                 if (requirement.security.isin, requirement.security.country, requirement.security.exchange) != (
                     security.isin, security.country, security.exchange,
                 ):
@@ -640,6 +647,7 @@ def _refresh_outcome_store_with_cache(
                 requirement.shortest_due_horizon_sessions = min(requirement.shortest_due_horizon_sessions, outcome.horizon_sessions)
                 requirement.oldest_evaluation_date = min(requirement.oldest_evaluation_date, snapshot.report_date)
 
+    resolver = IsinSymbolResolver(provider, outcome_root, dry_run=dry_run) if IsinSymbolResolver.supported(provider) else None
     tasks = []
     for key, requirement in requirements.items():
         if len(requirement.known_symbols) > 1:
@@ -662,9 +670,13 @@ def _refresh_outcome_store_with_cache(
             _estimated_provider_api_calls(provider, requirement.security, symbol=symbol),
             requirement.has_unestablished_entry, requirement.shortest_due_horizon_sessions,
             requirement.oldest_evaluation_date,
+            isin_symbol=resolver.mapped_symbol(requirement.security) if resolver is not None and symbol is None else None,
         )
         tasks.append((key, task))
     retry_states = _retry_states(prepared_runs)
+    # Only a security whose own attempts failed and that has no symbol at all looks up its ISIN.
+    seeking = {key for key, task in tasks if task.provider_symbol is None and _symbol_seeking(retry_states.get(key))}
+    seekers = [(requirements[key].security, names.get(key)) for key in sorted(seeking)]
     tasks.sort(key=lambda item: (
         not item[1].has_unestablished_entry, item[1].shortest_due_horizon_sessions,
         item[1].end_date, item[1].oldest_evaluation_date,
@@ -677,6 +689,13 @@ def _refresh_outcome_store_with_cache(
     calls_before = _provider_api_call_count(provider)
     fetched = {}
     observations_stored = provider_errors = unresolved_symbols = 0
+    if resolver is not None and seekers:
+        # Requested before any price, so a security far back in the queue is decided in time.
+        used = planned_calls = resolver.refresh_lists(seekers, now=retrieved_at, calls_left=max_price_api_calls)
+        tasks = [(key, replace(task, isin_symbol=resolver.mapped_symbol(requirements[key].security),
+                               estimated_api_calls=_estimated_provider_api_calls(
+                                   provider, requirements[key].security, symbol=None)))
+                 if key in seeking else (key, task) for key, task in tasks]
     for key, task in tasks:
         backoff_until = _retry_backoff_until(retry_states.get(key), retrieved_at)
         if backoff_until is not None:
@@ -705,6 +724,9 @@ def _refresh_outcome_store_with_cache(
             observations_stored += len(batch.observations)
         provider_errors += history.status == "provider_error"
         unresolved_symbols += history.status == "symbol_unresolved"
+    # Saved before anything else can fail, so a list request is never repeated for lack of a record.
+    if resolver is not None:
+        resolver.save()
     executed = _provider_api_call_count(provider) - calls_before
     if executed > max_price_api_calls:
         raise RuntimeError("historical-price provider exceeded the API-call budget")
@@ -753,6 +775,8 @@ def _refresh_outcome_store_with_cache(
         provider_calls_planned=planned_calls, provider_calls_executed=executed,
         api_budget=max_price_api_calls, work_deferred_by_budget=len(deferred),
         work_deferred_by_retry_backoff=sum(t.retry_backoff_until is not None for t in deferred),
+        symbol_list_calls=resolver.list_calls if resolver is not None else 0,
+        isin_symbol_fetches=sum(bool(task.isin_symbol) and not task.deferred_by_budget for _, task in plan),
         deferred_api_calls=sum(t.estimated_api_calls for t in deferred),
         observations_stored=observations_stored, provider_errors=provider_errors,
         unresolved_symbols=unresolved_symbols, revisions_detected=revisions_detected,
@@ -874,6 +898,10 @@ def _retry_states(
         failures = next((index for index, day in enumerate(ordered) if history[day]), len(ordered))
         states[key] = (failures, ordered[0], next((day for day in ordered if history[day]), None))
     return states
+
+
+def _symbol_seeking(state: tuple[int, date, date | None] | None) -> bool:
+    return state is not None and state[0] > 0 and state[2] is None
 
 
 def _last_priced(state: tuple[int, date, date | None] | None) -> date:
