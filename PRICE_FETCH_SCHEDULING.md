@@ -83,7 +83,8 @@ EODHD has one. The list request:
   exists on that exchange, whether that security is due today or in backoff;
 - is made at most once per exchange in 28 days, whether it succeeded or not;
 - is counted in the same 20-call budget. On those days it takes the call of the last
-  fetch that would otherwise have fit;
+  fetch that would otherwise have fit. With no call left, nothing is requested or
+  recorded and the next run tries again;
 - is made only when the provider would actually send it. A missing key or an open error
   circuit is not an attempt.
 
