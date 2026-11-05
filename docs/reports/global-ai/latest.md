@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-11-04 08:00 EET
+- generated_at: 2026-11-05 08:26 EET
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -49,7 +49,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Large-scale AI infrastructure, recommendation systems, open model strategy, and advertising optimization.
 **Score:** 66
-**Valuation:** P/E 21.1597; P/B 5.81972
+**Valuation:** P/E 21.1883; P/B 5.8276
 **Quality:** Operating margin 35.4%; debt/equity 0.4216
 **Growth:** Revenue growth 26.1%
 **Data quality:** partial
@@ -72,9 +72,9 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths.
 **Score:** 64
-**Valuation:** P/E 29.6006; P/B 8.92017
-**Quality:** Operating margin 45.1%; debt/equity 0.2912
-**Growth:** Revenue growth 17.7%
+**Valuation:** P/E 26.4731; P/B 8.22386
+**Quality:** Operating margin 49.8%; debt/equity 0.2847
+**Growth:** Revenue growth 18.8%
 **Data quality:** partial
 
 #### Reasons
@@ -95,7 +95,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
 **Score:** 59
-**Valuation:** P/E 28.4109; P/B 83.6616
+**Valuation:** P/E 25.5781; P/B 75.3199
 **Quality:** Operating margin 58.7%; debt/equity 0.1162
 **Growth:** Revenue growth 50.9%
 **Data quality:** partial
@@ -113,23 +113,24 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 #### Evidence
 - [Finimpulse fundamentals lookup (TSM)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-### #5 Adobe (ADBE)
-`US` | NASDAQ | `Enterprise AI software`
+### #5 Oracle (ORCL)
+`US` | NYSE | `Cloud AI platform`
 
-**AI thesis:** Creative Cloud and Document Cloud integrate generative AI into established professional workflows.
-**Score:** 57
-**Valuation:** P/E 13.9453; P/B 8.30126
-**Quality:** Operating margin 34.8%; debt/equity 0.5769
-**Growth:** Revenue growth 12.9%
+**AI thesis:** Cloud infrastructure expansion and database footprint create enterprise AI infrastructure exposure.
+**Score:** 58
+**Valuation:** P/E 19.3934; P/B 6.05274
+**Quality:** Operating margin 35.6%; debt/equity 2.5172
+**Growth:** Revenue growth 29.6%
 **Data quality:** partial
 
 #### Reasons
 - reasonable P/E
 - profitable AI-exposed business
-- enterprise AI software exposure
+- strong revenue growth
+- direct AI infrastructure exposure
 
 #### Risks
-- None provided.
+- high debt/equity
 
 #### Evidence
-- [Finimpulse fundamentals lookup (ADBE)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+- [Finimpulse fundamentals lookup (ORCL)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
