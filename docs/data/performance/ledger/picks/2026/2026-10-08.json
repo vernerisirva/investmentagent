@@ -76,11 +76,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -2.42,
+          "currency": "EUR",
+          "excess_return_pct": 3.77,
+          "price": 3.0,
+          "return_pct": 1.35,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -205,11 +208,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -2.42,
+          "currency": "EUR",
+          "excess_return_pct": -4.85,
+          "price": 4.594,
+          "return_pct": -7.27,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -336,11 +342,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -2.42,
+          "currency": "EUR",
+          "excess_return_pct": -1.42,
+          "price": 7.27,
+          "return_pct": -3.84,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -468,11 +477,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 18.64,
+          "currency": "SEK",
+          "excess_return_pct": -1.34,
+          "price": 3.525,
+          "return_pct": 17.3,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -601,11 +613,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 18.64,
+          "currency": "SEK",
+          "excess_return_pct": -18.52,
+          "price": 85.1,
+          "return_pct": 0.12,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -731,11 +746,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 18.64,
+          "currency": "SEK",
+          "excess_return_pct": -25.27,
+          "price": 1.606,
+          "return_pct": -6.63,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -861,11 +879,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 18.64,
+          "currency": "SEK",
+          "excess_return_pct": -39.85,
+          "price": 13.0,
+          "return_pct": -21.21,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -993,11 +1014,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 18.64,
+          "currency": "SEK",
+          "excess_return_pct": -18.79,
+          "price": 13.0,
+          "return_pct": -0.15,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -1127,11 +1151,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 18.64,
+          "currency": "SEK",
+          "excess_return_pct": -2.17,
+          "price": 59.75,
+          "return_pct": 16.47,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",
@@ -1260,11 +1287,14 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-05",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 18.64,
+          "currency": "SEK",
+          "excess_return_pct": -15.19,
+          "price": 270.0,
+          "return_pct": 3.45,
+          "status": "priced"
         },
         "5d": {
           "as_of_date": "2026-10-15",

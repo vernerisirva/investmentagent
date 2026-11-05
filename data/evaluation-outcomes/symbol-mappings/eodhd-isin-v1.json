@@ -1,0 +1,59 @@
+{
+  "decisions": {
+    "FI0009014708": {
+      "company_id": "isin:FI0009014708",
+      "decided_at": "2026-11-05T06:27:53+00:00",
+      "decision": "not_listed",
+      "exchange": "HE",
+      "listed": [],
+      "name": "KPY osk",
+      "ticker": "KPYOSK"
+    },
+    "FI0009800205": {
+      "company_id": "isin:FI0009800205",
+      "decided_at": "2026-11-05T06:27:53+00:00",
+      "decision": "not_listed",
+      "exchange": "HE",
+      "listed": [],
+      "name": "Ilkka Oyj 2",
+      "ticker": "ILKKA"
+    },
+    "FI4000081138": {
+      "company_id": "isin:FI4000081138",
+      "decided_at": "2026-11-05T06:27:53+00:00",
+      "decision": "not_listed",
+      "exchange": "HE",
+      "listed": [],
+      "name": "Lehto Group Oyj",
+      "ticker": "LEHTO"
+    },
+    "FI4000575048": {
+      "company_id": "isin:FI4000575048",
+      "decided_at": "2026-11-05T06:27:53+00:00",
+      "decision": "not_listed",
+      "exchange": "HE",
+      "listed": [],
+      "name": "Pallas Air Oyj",
+      "ticker": "PALLAS"
+    },
+    "FI4000602958": {
+      "company_id": "isin:FI4000602958",
+      "decided_at": "2026-11-05T06:27:53+00:00",
+      "decision": "not_listed",
+      "exchange": "HE",
+      "listed": [],
+      "name": "Savox Communications Oyj",
+      "ticker": "SAVOX"
+    }
+  },
+  "exchange_lists": {
+    "HE": {
+      "attempted_at": "2026-11-05T06:27:53+00:00",
+      "response_sha256": "3ae2551c2934781d3c1966381b270182f4622daab673acfe5b60b76afe7d011c",
+      "rows": 195,
+      "rows_with_isin": 161,
+      "status": "ok"
+    }
+  },
+  "mapping_methodology": "eodhd-exchange-symbol-list-isin-v1"
+}
