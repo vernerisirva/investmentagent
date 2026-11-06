@@ -294,3 +294,13 @@ def test_pages_contain_only_markdown_safe_html(tmp_path, case):
         assert set(re.findall(r"</?([A-Za-z][\w-]*)", page)) <= ALLOWED_TAGS
         assert page.count("<details") == page.count("</details>")
         assert "{{" not in page and "{%" not in page
+
+
+@pytest.mark.parametrize("reference", [{"path": ""}, {"path": "../index.json"}, {}, "runs/x.json"])
+def test_malformed_partition_references_fail_closed(tmp_path, case, reference):
+    directory = _save(tmp_path, build_analysis(case))
+    index = json.loads((directory / "index.json").read_text())
+    index["analysis_storage"]["run_metric_partitions"][0] = reference
+    (directory / "index.json").write_text(json.dumps(index))
+    with pytest.raises(AnalysisUnavailable, match="reference unusable"):
+        load_analysis_summary(directory)

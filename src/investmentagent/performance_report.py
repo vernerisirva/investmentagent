@@ -116,13 +116,13 @@ def load_analysis_summary(directory: Path) -> AnalysisSummary:
         raise AnalysisUnavailable("analysis index partition count mismatch")
     runs = []
     for reference in references:
-        relative = reference.get("path", "")
         try:
+            relative = reference["path"]
             if relative != _relative_path(relative):
                 raise ValueError("unsafe analysis partition path")
             raw = (directory / relative).read_bytes()
-        except (OSError, ValueError) as exc:
-            raise AnalysisUnavailable(f"analysis partition unavailable: {relative}") from exc
+        except (OSError, ValueError, IndexError, KeyError, TypeError) as exc:
+            raise AnalysisUnavailable(f"analysis partition reference unusable: {reference!r:.120}") from exc
         if hashlib.sha256(raw).hexdigest() != reference.get("sha256"):
             raise AnalysisUnavailable(f"analysis partition does not match its index digest: {relative}")
         try:
