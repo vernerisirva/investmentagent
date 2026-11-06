@@ -412,14 +412,19 @@ def test_render_scorecard_markdown_includes_strategy_sections_and_disclaimer():
         generated_at="2026-05-16 08:48 EEST",
     )
 
-    assert "# InvestmentAgent Performance" in output
+    assert "# InvestmentAgent Performance v1 Scorecard (Legacy Archive)" in output
     assert "Research triage only. Not financial advice." in output
+    assert "LEGACY_NON_AUTHORITATIVE" in output
+    assert "[Performance v2](index.html)" in output
     assert "## Trading Ideas" in output
     assert "| 5d | 1 | 100% | +20% | +20% |" in output
     assert "## Long-Term Research Candidates" in output
     assert "## Speculative Monitors" in output
     assert "## Insufficient Evidence Audit" in output
-    assert "### Trading Learning Suggestions" in output
+    assert "### Trading Archived Signal Notes" in output
+    assert "Learning Suggestions" not in output
+    assert "scoring weight should change" not in output
+    assert "never applied" in output
 
 
 def test_render_scorecard_markdown_includes_risk_and_benchmark_table():
@@ -443,7 +448,11 @@ def test_render_scorecard_markdown_includes_risk_and_benchmark_table():
     )
 
     assert "### Risk And Benchmark" in output
-    assert "| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |" in output
+    assert (
+        "| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Legacy v1 Benchmark | "
+        "Legacy v1 Excess | Legacy v1 Excess Hit Rate |"
+    ) in output
+    assert "| Excess Return |" not in output
     assert "| 1d | +20% | 0% | 0 | 0% | +5% | +15% | 100% |" in output
 
 
@@ -541,10 +550,11 @@ def test_render_scorecard_markdown_keeps_strategy_details_separate():
     long_term_section = output.split("## Long-Term Research Candidates")[1]
 
     assert "### Horizon Scorecard\n\n| Horizon | Completed" in output
-    assert "### Best Trading Picks" in trading_section
+    assert "### Largest Legacy Trading Gains" in trading_section
+    assert "not representative" in trading_section
     assert "Trading Winner" in trading_section
     assert "Long-Term Winner" not in trading_section
-    assert "### Best Long-Term Research Picks" in long_term_section
+    assert "### Largest Legacy Long-Term Research Gains" in long_term_section
     assert "Long-Term Winner" in long_term_section
     assert "Trading Winner" not in long_term_section
     assert "| Signal | Observations | Average Return | Hit Rate |" in output
@@ -916,5 +926,5 @@ def test_learning_suggestions_require_minimum_sample_size():
     ledger = update_due_outcomes(ledger, as_of_date=date(2026, 5, 16), price_lookup=lookup)
 
     assert learning_suggestions(ledger) == [
-        "No learning suggestions yet. At least 10 completed observations are needed for a signal."
+        "No signal notes yet. At least 10 completed observations are needed for a signal."
     ]
