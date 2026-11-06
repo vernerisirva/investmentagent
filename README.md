@@ -124,6 +124,13 @@ provider later revises an established adjusted entry, the record is excluded wit
 an explicit corporate-action status instead of being silently rewritten. Missing
 entries, exits, mappings, and provider failures remain visible.
 
+Analysis reads stores only from the layout the refresh writes,
+`<report date>/<strategy>/<run id>.json`, with a legacy store's coherent repair beside
+it as `<run id>.coherent-v1.json`, and parses each one strictly. Supporting documents
+live in their own top-level directory (`symbol-mappings/`) and are never read as
+stores. Any other JSON file under the root stops the analysis rather than being
+skipped.
+
 Outcome refresh first plans the union of due entry and exit sessions across all
 selected evaluation dates and both strategies. Accepted adjusted-close
 observations are reused from the private normalized cache by stable company ID,
