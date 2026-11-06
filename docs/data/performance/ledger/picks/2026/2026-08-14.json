@@ -97,11 +97,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": 5.27,
+          "price": 27.25,
+          "return_pct": -0.73,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|ADMCM",
@@ -231,11 +234,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": 5.63,
+          "price": 15.98,
+          "return_pct": -0.37,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|ATRAV",
@@ -363,11 +369,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": -2.17,
+          "price": 1.708,
+          "return_pct": -8.17,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|CAPMAN",
@@ -495,11 +504,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": 14.13,
+          "price": 8.78,
+          "return_pct": 8.13,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|ICP1V",
@@ -627,11 +639,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": 16.86,
+          "price": 2.5,
+          "return_pct": 10.86,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|LINDEX",
@@ -759,11 +774,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": 4.16,
+          "price": 9.62,
+          "return_pct": -1.84,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|MEKKO",
@@ -891,11 +909,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": -3.42,
+          "price": 2.26,
+          "return_pct": -9.42,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|RAIVV",
@@ -1023,11 +1044,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -6.0,
+          "currency": "EUR",
+          "excess_return_pct": -15.8,
+          "price": 10.62,
+          "return_pct": -21.8,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|FI|REG1V",
@@ -1155,11 +1179,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 3.61,
+          "currency": "SEK",
+          "excess_return_pct": -30.27,
+          "price": 95.2,
+          "return_pct": -26.66,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|SE|AAC",
@@ -1289,11 +1316,14 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-06",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 3.61,
+          "currency": "SEK",
+          "excess_return_pct": -43.45,
+          "price": 10.3,
+          "return_pct": -39.84,
+          "status": "priced"
         }
       },
       "pick_id": "2026-08-14|long-term|SE|ACCON",
