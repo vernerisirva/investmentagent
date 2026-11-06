@@ -1163,7 +1163,7 @@ def _run_summary_line(metadata: dict[str, Any], comparison: ReportComparison, se
     countries = " · ".join(f"{country} {count}" for country, count in comparison.country_counts.items())
     parts = [
         f"**Decision time:** {_display_timestamp(decision_at)}",
-        f"**Eligible universe (X):** {comparison.universe_size} companies"
+        f"**Eligible universe (X):** {_companies(comparison.universe_size)}"
         + (f" ({countries})" if countries else ""),
         f"**Selected:** {selected}",
     ]
@@ -1386,7 +1386,9 @@ def _why_it_ranks_lines(item, idea: IdeaComparison, metadata, strategy) -> list[
             f"({_points(idea.universe_median_score)})"
         )
     if idea.score_percentile is not None:
-        score_line += f"; higher than {_whole(idea.score_percentile)}% of the other {total - 1} companies in X"
+        score_line += (
+            f"; higher than {_whole(idea.score_percentile)}% of the other {_companies(total - 1)} in X"
+        )
     lines.append(score_line + ".")
     contributions, deductions = [], []
     for name, label in _COMPONENT_LABELS.items():
@@ -1408,7 +1410,7 @@ def _why_it_ranks_lines(item, idea: IdeaComparison, metadata, strategy) -> list[
 
 def _component_table_lines(idea: IdeaComparison) -> list[str]:
     lines = [
-        f"Score components (points) and position among the {idea.universe_size} companies in X:",
+        f"Score components (points) and position among the {_companies(idea.universe_size)} in X:",
         "",
         "| Score component | Points | Position in X |",
         "| --- | ---: | --- |",
@@ -1433,8 +1435,8 @@ def _component_table_lines(idea: IdeaComparison) -> list[str]:
 def _peer_comparison_lines(idea: IdeaComparison) -> list[str]:
     lines = [
         (
-            f"Listing peers: {_market_label(idea)}, {idea.listing_group_size} other companies "
-            f"(mixed industries). All eligible X: {idea.universe_size - 1} other companies. "
+            f"Listing peers: {_market_label(idea)}, {_companies(idea.listing_group_size, 'other')} "
+            f"(mixed industries). All eligible X: {_companies(idea.universe_size - 1, 'other')}. "
             "n = usable observations / peers; invalid multiples and missing values are "
             "excluded and counted."
         ),
@@ -1617,6 +1619,11 @@ def _format_metric(unit: str, value: float | None) -> str:
     if abs(value) < 10:
         return f"{value:.2f}"
     return f"{value:.1f}"
+
+
+def _companies(count: int, qualifier: str = "") -> str:
+    noun = "company" if count == 1 else "companies"
+    return f"{count} {qualifier + ' ' if qualifier else ''}{noun}"
 
 
 def _points(value: float) -> str:

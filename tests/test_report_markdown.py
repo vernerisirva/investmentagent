@@ -148,3 +148,15 @@ def test_static_output_is_safe_for_the_jekyll_build(strategy):
     assert set(relative) == {"../../performance/", "../../performance/#metric-definitions"}
     anchors = set(re.findall(r'<a id="([^"]+)"></a>', text))
     assert {link[1:] for link in links if link.startswith("#")} <= anchors
+
+
+def test_counts_use_singular_and_plural_nouns():
+    items = _universe()[:2]
+    rows = comparison_rows(items, strategy="trading")
+    comparison = compare_ideas(rows, [rows[0].company_id], strategy="trading", public_limit=1,
+                               decision_at="2026-11-06T06:21:00Z", cache_recorded=False)
+    text = render_watchlist_report_markdown(items[:1], METADATA, CHECKS, comparison)
+    assert "**Eligible universe (X):** 2 companies (SE 2)" in text
+    assert "Listing peers: SE main market, 1 other company (mixed industries)" in text
+    assert "All eligible X: 1 other company." in text
+    assert "1 companies" not in text and "1 other companies" not in text
