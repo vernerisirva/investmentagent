@@ -11,7 +11,9 @@ from functools import cached_property
 from pathlib import Path
 from typing import Any, Iterable
 
-from investmentagent.evaluation import EvaluationCompanyRow, EvaluationSnapshot, load_evaluation_snapshot
+from investmentagent.evaluation import (
+    EVALUATION_STRATEGIES, EvaluationCompanyRow, EvaluationSnapshot, load_evaluation_snapshot,
+)
 from investmentagent.market_calendar import (
     market_for_country,
     market_session,
@@ -34,11 +36,14 @@ from investmentagent.price_histories import (
     COHERENT_RETURN_METHOD, LEGACY_RETURN_METHOD, OUTCOME_REVISION_POLICY,
     EndpointEvidence, PriceHistoryBatch, HistoryArchive, HistoryMetadata, content_hash,
 )
-from investmentagent.symbol_mapping import IsinSymbolResolver
+from investmentagent.symbol_mapping import SYMBOL_MAPPING_FILE, IsinSymbolResolver
 
 
 OUTCOME_SCHEMA_VERSION = 2
 OUTCOME_STORE_SCHEMA_VERSION = 2
+# Supporting documents kept under the outcome root, each family in its own top-level directory
+# whose name can never be a report date. They are not outcome stores and are never parsed as one.
+OUTCOME_ROOT_AUXILIARY_DIRECTORIES = frozenset({SYMBOL_MAPPING_FILE.parts[0]})
 DEFAULT_MAX_PRICE_API_CALLS = 20
 # After n consecutive fetch days that priced nothing, a security waits min(2**(n-1), cap)
 # days before its next request, so permanent failures stop consuming the daily budget.
@@ -983,14 +988,41 @@ def discover_evaluation_snapshots(
     return tuple(sorted(snapshots, key=lambda item: (item.decision_at, item.strategy)))
 
 
-def discover_outcome_sets(root: Path) -> tuple[EvaluationOutcomeSet, ...]:
+def outcome_store_files(root: Path) -> tuple[Path, ...]:
+    """Outcome-store files under root, in path order, by the layout outcome_store_path writes.
+
+    A store is a JSON file in a <report-date>/<strategy>/ directory: <run-id>.json, and beside
+    a legacy store its <run-id>.coherent-v1.json repair. Every such file is parsed strictly, so
+    a malformed or unsupported store there still fails. Documents in a registered auxiliary
+    directory, such as the ISIN symbol mappings, are never parsed as stores. Any other JSON
+    document fails closed, so a misplaced store cannot silently drop out of an analysis.
+    """
     if not root.exists():
         return ()
-    stores = tuple(load_outcome_set(path) for path in sorted(root.rglob("*.json")))
+    files = []
+    for path in sorted(root.rglob("*.json")):
+        parts = path.relative_to(root).parts
+        if len(parts) > 1 and parts[0] in OUTCOME_ROOT_AUXILIARY_DIRECTORIES:
+            continue
+        if len(parts) != 3 or not _is_report_date(parts[0]) or parts[1] not in EVALUATION_STRATEGIES:
+            raise ValueError(f"unexpected document outside the outcome-store layout: {path}")
+        files.append(path)
+    return tuple(files)
+
+
+def discover_outcome_sets(root: Path) -> tuple[EvaluationOutcomeSet, ...]:
+    stores = tuple(load_outcome_set(path) for path in outcome_store_files(root))
     run_ids = [(store.evaluation_run_id, store.return_methodology) for store in stores]
     if len(run_ids) != len(set(run_ids)):
         raise ValueError("duplicate outcome stores discovered")
     return stores
+
+
+def _is_report_date(value: str) -> bool:
+    try:
+        return date.fromisoformat(value).isoformat() == value
+    except ValueError:
+        return False
 
 
 def outcome_store_path(root: Path, snapshot: EvaluationSnapshot) -> Path:

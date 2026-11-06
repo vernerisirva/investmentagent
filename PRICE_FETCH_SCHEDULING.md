@@ -113,7 +113,10 @@ that needs one call.
 Decisions and list provenance (time, status, row counts and a SHA-256 of the parsed
 list, never the token) are kept in
 `data/evaluation-outcomes/symbol-mappings/eodhd-isin-v1.json`. The file is published with
-the outcome stores. Each priced outcome already records the `provider_symbol` it used.
+the outcome stores but is not one: outcome discovery reads only the
+`<report date>/<strategy>/` store layout and never parses `symbol-mappings/`. (Before
+that rule, the 2026-11-05 and 2026-11-06 analyses failed on this file.) Each priced
+outcome already records the `provider_symbol` it used.
 The refresh summary reports `symbol_list_calls` and `isin_symbol_fetches`, and each plan
 item reports its `isin_symbol`.
 
