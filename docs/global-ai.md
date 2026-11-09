@@ -1,6 +1,6 @@
 # InvestmentAgent Global AI
 
-Generated: 2026-11-06 08:20 EET
+Generated: 2026-11-09 08:00 EET
 
 ## Latest Report
 
@@ -8,6 +8,6 @@ Generated: 2026-11-06 08:20 EET
 
 ## Dated Reports
 
-- [Global AI Top 5 2026-11-06](reports/global-ai/2026-11-06.html)
+- [Global AI Top 5 2026-11-09](reports/global-ai/2026-11-09.html)
 
 Reports are research triage only. Not financial advice.
