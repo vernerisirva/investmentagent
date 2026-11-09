@@ -5,9 +5,9 @@
       "lifecycle.status_cutoff"
     ],
     "layout": "run-horizon-partitions-v1",
-    "reconstructed_sha256": "ff886a86f3a40b83b848cc3820dfe788dcb2dc1ffc91b0a2563775126890e98a",
+    "reconstructed_sha256": "1c4b56336d2b188d65ef8db2f1691446abd246f63600a51d8199affee44ca09e",
     "reconstruction": "run_metrics are the partitions' run_metric objects in listed order, each with lifecycle.status_cutoff restored from this index's lifecycle.status_cutoff",
-    "run_metric_count": 512,
+    "run_metric_count": 536,
     "run_metric_partitions": [
       {
         "evaluation_run_id": "evaluation-168eecb567bd90cb623f05b0",
@@ -139,7 +139,7 @@
         "evaluation_run_id": "evaluation-3d5dab0a06f3c4c00e94002c",
         "horizon_label": "60_sessions",
         "path": "runs/2026-08-12/long-term/evaluation-3d5dab0a06f3c4c00e94002c/60_sessions.json",
-        "sha256": "497689982faa1c7e110f38716be8fcadd6015c849f231d34afecc751f017d874"
+        "sha256": "2294d72ae59f771ee969163ae952ff1988b6cd35b43e69a5e72d435850424faa"
       },
       {
         "evaluation_run_id": "evaluation-3d5dab0a06f3c4c00e94002c",
@@ -187,7 +187,7 @@
         "evaluation_run_id": "evaluation-d6a15674a03c14bb0bfa4945",
         "horizon_label": "60_sessions",
         "path": "runs/2026-08-13/long-term/evaluation-d6a15674a03c14bb0bfa4945/60_sessions.json",
-        "sha256": "511c18ca6763cb3714ef2260cafbe21352ae9243c678326d664b9ad4775035d3"
+        "sha256": "5d995d927e223d554809aae5ffa0994a07b524de9a558a0c0729d3f1bcdcc0f1"
       },
       {
         "evaluation_run_id": "evaluation-d6a15674a03c14bb0bfa4945",
@@ -235,7 +235,7 @@
         "evaluation_run_id": "evaluation-030283115f7c19e3bd950cb3",
         "horizon_label": "60_sessions",
         "path": "runs/2026-08-14/long-term/evaluation-030283115f7c19e3bd950cb3/60_sessions.json",
-        "sha256": "e8a8ad9ccaa14b48cc0adb084027c7d1735d53f2b8d5fdfcab4396f3486f4913"
+        "sha256": "7d64b896ddcef402f75372ef959391d91e4417f974758c527666e5af740be59f"
       },
       {
         "evaluation_run_id": "evaluation-030283115f7c19e3bd950cb3",
@@ -1189,7 +1189,7 @@
         "evaluation_run_id": "evaluation-48931e4017a6d7e52b4e8bd5",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-09/long-term/evaluation-48931e4017a6d7e52b4e8bd5/20_sessions.json",
-        "sha256": "3ffce91eb2299f27d9b7fecd05ef09aefe31e4f281f31dec6165adee9c8e365e"
+        "sha256": "d6429418ff5ae980a3255a7acce9793215947b9ce5ad6d91af8ad1aac8534a36"
       },
       {
         "evaluation_run_id": "evaluation-48931e4017a6d7e52b4e8bd5",
@@ -1237,7 +1237,7 @@
         "evaluation_run_id": "evaluation-a0d27438a20d2f176079021c",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-10/long-term/evaluation-a0d27438a20d2f176079021c/20_sessions.json",
-        "sha256": "c45e19f60c5b3c23dc0e16405c1ea8f02af7c77ab8124f71d78433b24df32627"
+        "sha256": "8c24c37a307f158e2fb5c26b0d531ffeeceb520872a4b67ab7fc86e4fa175b4c"
       },
       {
         "evaluation_run_id": "evaluation-a0d27438a20d2f176079021c",
@@ -1285,7 +1285,7 @@
         "evaluation_run_id": "evaluation-a9bb708a3b811600e888b9b0",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-11/long-term/evaluation-a9bb708a3b811600e888b9b0/20_sessions.json",
-        "sha256": "d2cc5dbbb0510506405feae2e4f7149029ea321f3873ab3740dcb951e5040a4b"
+        "sha256": "aff6b6a8093d55cb9b2a708abe834f57d1f9887cc5ae3d0930a4024b52e4a479"
       },
       {
         "evaluation_run_id": "evaluation-a9bb708a3b811600e888b9b0",
@@ -1333,7 +1333,7 @@
         "evaluation_run_id": "evaluation-f68f1b28c4dc4ff12b36e887",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-14/long-term/evaluation-f68f1b28c4dc4ff12b36e887/20_sessions.json",
-        "sha256": "45ad175b3af5572c867ece3b0c574550c5f86c8a94ee897408a848fc2c353402"
+        "sha256": "1154c672bf2e079f557de4d99236d566755075ea1251a058a3b56a3d95b154db"
       },
       {
         "evaluation_run_id": "evaluation-f68f1b28c4dc4ff12b36e887",
@@ -1381,7 +1381,7 @@
         "evaluation_run_id": "evaluation-d738c9d7b584c14b2661ef3f",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-15/long-term/evaluation-d738c9d7b584c14b2661ef3f/20_sessions.json",
-        "sha256": "3105b64e592629d1ab04ab5ad161722348e9d8b14d8b25eed78f0e259fad8a0e"
+        "sha256": "57c99834857a49d68a804f84fbee990ed2587df12280433bce91a2fa10290c65"
       },
       {
         "evaluation_run_id": "evaluation-d738c9d7b584c14b2661ef3f",
@@ -1429,7 +1429,7 @@
         "evaluation_run_id": "evaluation-604a6deec973b3e7678399d9",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-16/long-term/evaluation-604a6deec973b3e7678399d9/20_sessions.json",
-        "sha256": "95cd72e271bb659afb1f30f18c922ac5a71d3c48f04ca9e4c74ae777ec28edd2"
+        "sha256": "34dfc9de2d243c5a335bebd7bd9b497243cf838ba009350e5479ed455cea2bb1"
       },
       {
         "evaluation_run_id": "evaluation-604a6deec973b3e7678399d9",
@@ -1477,7 +1477,7 @@
         "evaluation_run_id": "evaluation-258a58a33bc1451525ba9ea8",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-17/long-term/evaluation-258a58a33bc1451525ba9ea8/20_sessions.json",
-        "sha256": "8c8bc38b83ca41f13e25c74cab9429e85030b71f2b63eb20e9db639e04b6dd0a"
+        "sha256": "95741a1743e3374c913476460374a735e4087d46572c28f7f0532c2a32120b50"
       },
       {
         "evaluation_run_id": "evaluation-258a58a33bc1451525ba9ea8",
@@ -1525,7 +1525,7 @@
         "evaluation_run_id": "evaluation-226879fb5a3a9e765d8f76b6",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-18/long-term/evaluation-226879fb5a3a9e765d8f76b6/20_sessions.json",
-        "sha256": "80354aa71ecba923efdaef26bb36d881a03a2756780213e986440d62e1559931"
+        "sha256": "88fc03b9de887a75a9e5921a100356bf9a93f33ee93dbec3bedbde4d9c4cc8e6"
       },
       {
         "evaluation_run_id": "evaluation-226879fb5a3a9e765d8f76b6",
@@ -1573,7 +1573,7 @@
         "evaluation_run_id": "evaluation-29d8efa649ed107e6c7df92a",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-21/long-term/evaluation-29d8efa649ed107e6c7df92a/20_sessions.json",
-        "sha256": "2e81ebef71deeb8830e28d0e053a4fbf9ba3ebba8109818ec53068da110720c3"
+        "sha256": "6b2382f28b697521f072e656363d7a75a1731074cc16eef49ad4e4fe64031668"
       },
       {
         "evaluation_run_id": "evaluation-29d8efa649ed107e6c7df92a",
@@ -1621,7 +1621,7 @@
         "evaluation_run_id": "evaluation-fb353a663517142d9521d2d0",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-22/long-term/evaluation-fb353a663517142d9521d2d0/20_sessions.json",
-        "sha256": "e73d8edc5fb8c0a699af706d5df24a74311366e27871847b91a57af9ab987989"
+        "sha256": "827ecebe5b96340822f78f3feb0ba5f9b6dbf47c23c45e85f8f1a0dcc5c43bea"
       },
       {
         "evaluation_run_id": "evaluation-fb353a663517142d9521d2d0",
@@ -1669,7 +1669,7 @@
         "evaluation_run_id": "evaluation-7b1ffcd5210c551857f861f8",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-23/long-term/evaluation-7b1ffcd5210c551857f861f8/20_sessions.json",
-        "sha256": "f6521fb820df309b619c04063ba22628ecc9de93ef1449b0b604a0ce7c76b55f"
+        "sha256": "722b2da50b5eb804ea431f2dd7a6fa42303be1196a5bebe4de5a3fa23d43de68"
       },
       {
         "evaluation_run_id": "evaluation-7b1ffcd5210c551857f861f8",
@@ -1717,7 +1717,7 @@
         "evaluation_run_id": "evaluation-6d571d30fdd53990ebbb64e0",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-24/long-term/evaluation-6d571d30fdd53990ebbb64e0/20_sessions.json",
-        "sha256": "315b6152b387167b2f94da23008a47a80106d17a670aa37cbbe2e31637972168"
+        "sha256": "fcd996cae57121b74406fb18f9ff3794582c6e480b2fee83a3de5b476d9bf18c"
       },
       {
         "evaluation_run_id": "evaluation-6d571d30fdd53990ebbb64e0",
@@ -1765,7 +1765,7 @@
         "evaluation_run_id": "evaluation-d81fc48de3b84ec8427b6fed",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-25/long-term/evaluation-d81fc48de3b84ec8427b6fed/20_sessions.json",
-        "sha256": "559f5cf7ff29800c647dfaac02418df43dbeb98a00a938facb9962e09e54ac39"
+        "sha256": "c03bf337c0125597a93568c84f560cc36703aa92a47304d3f0f226dd26356aea"
       },
       {
         "evaluation_run_id": "evaluation-d81fc48de3b84ec8427b6fed",
@@ -1813,7 +1813,7 @@
         "evaluation_run_id": "evaluation-255a47044c5aaa6be010ae7b",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-28/long-term/evaluation-255a47044c5aaa6be010ae7b/20_sessions.json",
-        "sha256": "655a6ac316c1b9eccee2bc19a222c95bd17fa96857808f38463d3c3a44eee8aa"
+        "sha256": "6e4e6fc349935cd2775c7814531e3a0ae97f03420ac06f906a5d890a02b1bc28"
       },
       {
         "evaluation_run_id": "evaluation-255a47044c5aaa6be010ae7b",
@@ -1861,7 +1861,7 @@
         "evaluation_run_id": "evaluation-df3fddc5d2782d234ef661f5",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-29/long-term/evaluation-df3fddc5d2782d234ef661f5/20_sessions.json",
-        "sha256": "e9587642e197a5f0d65ade9b496333f2874f0dea7405aeb58d9ea138379a4ec9"
+        "sha256": "d8c813f80a5b2b74371816f09b683723f2b3035c86d675168c016f26f822ddc1"
       },
       {
         "evaluation_run_id": "evaluation-df3fddc5d2782d234ef661f5",
@@ -1909,7 +1909,7 @@
         "evaluation_run_id": "evaluation-052b0645d0e975911a561e97",
         "horizon_label": "20_sessions",
         "path": "runs/2026-09-30/long-term/evaluation-052b0645d0e975911a561e97/20_sessions.json",
-        "sha256": "69f2d9956454ad844801e62249cbded14e65aaca3a718073a3a56ca0eab8855e"
+        "sha256": "2016be6f5ef92859b92d5052d6b41043bd5a8a67cba41b9cfe644ce8cf11a730"
       },
       {
         "evaluation_run_id": "evaluation-052b0645d0e975911a561e97",
@@ -1957,7 +1957,7 @@
         "evaluation_run_id": "evaluation-44c0ff03d6ff8f6f1e595c12",
         "horizon_label": "20_sessions",
         "path": "runs/2026-10-01/long-term/evaluation-44c0ff03d6ff8f6f1e595c12/20_sessions.json",
-        "sha256": "32979751e89d4f97e5b988e553e680cf71221eb1590d6cce4229bb4aab4bd5f0"
+        "sha256": "92b20aa443aef79c62e7b0c90a47b147c40a3079ec1417fab1e55084860c9d63"
       },
       {
         "evaluation_run_id": "evaluation-44c0ff03d6ff8f6f1e595c12",
@@ -2005,7 +2005,7 @@
         "evaluation_run_id": "evaluation-409f8cfd1eaed7722895e810",
         "horizon_label": "20_sessions",
         "path": "runs/2026-10-02/long-term/evaluation-409f8cfd1eaed7722895e810/20_sessions.json",
-        "sha256": "338b3d1cc714821b5ed6684f06b055ed81c1c6cdc15b82d39022f53e7e6bd13d"
+        "sha256": "cf342d95fec8db808d8f0eb88fe15bcabdcc5196ea6cab404cb0bc2dd00598d4"
       },
       {
         "evaluation_run_id": "evaluation-409f8cfd1eaed7722895e810",
@@ -2053,7 +2053,7 @@
         "evaluation_run_id": "evaluation-8bbd7b13d652c1d248620530",
         "horizon_label": "20_sessions",
         "path": "runs/2026-10-05/long-term/evaluation-8bbd7b13d652c1d248620530/20_sessions.json",
-        "sha256": "fd1c2cd642678cb4485083feb57116213f5035c41e9ab7f90d35bdfe30085563"
+        "sha256": "0f07095a8374ca0cf15392cd4ec8f3e457dd441e382506142ff73774f4071a1f"
       },
       {
         "evaluation_run_id": "evaluation-8bbd7b13d652c1d248620530",
@@ -2101,7 +2101,7 @@
         "evaluation_run_id": "evaluation-968c69239a544b5ca566ace6",
         "horizon_label": "20_sessions",
         "path": "runs/2026-10-06/long-term/evaluation-968c69239a544b5ca566ace6/20_sessions.json",
-        "sha256": "b13678f2b3325003a5a7a48e86dadf6768c54ef946f01d198d57ddde49c044e1"
+        "sha256": "4255cb461e331135d546472a180a2432c2bc5a0e75cdd2ffe25dea29675e9632"
       },
       {
         "evaluation_run_id": "evaluation-968c69239a544b5ca566ace6",
@@ -2149,7 +2149,7 @@
         "evaluation_run_id": "evaluation-d5eff75eb1ecd5f3af1bcf07",
         "horizon_label": "20_sessions",
         "path": "runs/2026-10-07/long-term/evaluation-d5eff75eb1ecd5f3af1bcf07/20_sessions.json",
-        "sha256": "6d7fb1afcec7b4259af9520e65af69f45e5f3cc8d7d832d3e5fb1d06b1a68894"
+        "sha256": "547387b4ac8b567fb9ff48dc3525ef70155fc1540edb29d05c38d439f2240a64"
       },
       {
         "evaluation_run_id": "evaluation-d5eff75eb1ecd5f3af1bcf07",
@@ -2197,7 +2197,7 @@
         "evaluation_run_id": "evaluation-d29902fb915462b5367682f0",
         "horizon_label": "20_sessions",
         "path": "runs/2026-10-08/long-term/evaluation-d29902fb915462b5367682f0/20_sessions.json",
-        "sha256": "68e9af89aad1d04a3b83d59fc70ad2d42f27843582fac80a55170b11f71e7443"
+        "sha256": "08f2725bc616b1300d81daef0d91c682a7a6caa009016afbe8c43b51e1ac0e22"
       },
       {
         "evaluation_run_id": "evaluation-d29902fb915462b5367682f0",
@@ -2245,7 +2245,7 @@
         "evaluation_run_id": "evaluation-68c3cb99568df5e436f08c52",
         "horizon_label": "20_sessions",
         "path": "runs/2026-10-09/long-term/evaluation-68c3cb99568df5e436f08c52/20_sessions.json",
-        "sha256": "14e4c3e43ce8bb786aa3ba0d1fef03172211fa1c78f1f47cca5f7b70a0280d36"
+        "sha256": "1d2182d9859bd12f98e1a566f086255263737081f86334fd9d29a61b008562ea"
       },
       {
         "evaluation_run_id": "evaluation-68c3cb99568df5e436f08c52",
@@ -2989,7 +2989,7 @@
         "evaluation_run_id": "evaluation-824e4d4c4dd5961514399624",
         "horizon_label": "1_session",
         "path": "runs/2026-11-03/trading/evaluation-824e4d4c4dd5961514399624/1_session.json",
-        "sha256": "decaf020bbae8db4b2f1f1d258723860cd6410800cf14516710964833afcaa38"
+        "sha256": "5fa639f16ac6fab8f4bcda1c5f6e184c7af08b06359b33b3615e47fabd21ebc0"
       },
       {
         "evaluation_run_id": "evaluation-824e4d4c4dd5961514399624",
@@ -3080,6 +3080,150 @@
         "horizon_label": "252_sessions",
         "path": "runs/2026-11-04/long-term/evaluation-1102b480833b8592f5262f9d/252_sessions.json",
         "sha256": "a6b03b24ae3ceb5541bdc009feebcbba3cac503f85892e29d9cf762988e31d9a"
+      },
+      {
+        "evaluation_run_id": "evaluation-80ce4c8b0c68787975b1b4cd",
+        "horizon_label": "1_session",
+        "path": "runs/2026-11-05/trading/evaluation-80ce4c8b0c68787975b1b4cd/1_session.json",
+        "sha256": "ef3e3979df3ad2ef0013780d7ab234b35d6ded484ae2987c75202a4a2f9930cc"
+      },
+      {
+        "evaluation_run_id": "evaluation-80ce4c8b0c68787975b1b4cd",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-11-05/trading/evaluation-80ce4c8b0c68787975b1b4cd/5_sessions.json",
+        "sha256": "560889348422734d77c48c94b5c96941c765fa1ef2953930aff2db010d8a44f1"
+      },
+      {
+        "evaluation_run_id": "evaluation-80ce4c8b0c68787975b1b4cd",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-05/trading/evaluation-80ce4c8b0c68787975b1b4cd/20_sessions.json",
+        "sha256": "034c99e22f68d1f47c5abf3ce1cc4823992da83bafed22e6b9b99754cc8ab8a9"
+      },
+      {
+        "evaluation_run_id": "evaluation-80ce4c8b0c68787975b1b4cd",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-05/trading/evaluation-80ce4c8b0c68787975b1b4cd/60_sessions.json",
+        "sha256": "b74701d2f52a7390188d8164b967a6da67dff25c2793ec369ed618442892f8cf"
+      },
+      {
+        "evaluation_run_id": "evaluation-3f9ff93466367541ebd09cfa",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-05/long-term/evaluation-3f9ff93466367541ebd09cfa/20_sessions.json",
+        "sha256": "353643d981439a3dd1fd996896765e4b3672485aaafbd1c5008138e4deff5193"
+      },
+      {
+        "evaluation_run_id": "evaluation-3f9ff93466367541ebd09cfa",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-05/long-term/evaluation-3f9ff93466367541ebd09cfa/60_sessions.json",
+        "sha256": "7e4d32cc670a85e43626eaec8e295c03cd71f310ad5c315f57ac437439904bcf"
+      },
+      {
+        "evaluation_run_id": "evaluation-3f9ff93466367541ebd09cfa",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-11-05/long-term/evaluation-3f9ff93466367541ebd09cfa/126_sessions.json",
+        "sha256": "fbcc0e8ca29dd22f48f1e9d97a55cd816719ca1ab5f7c678d69222e919d5f2e6"
+      },
+      {
+        "evaluation_run_id": "evaluation-3f9ff93466367541ebd09cfa",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-11-05/long-term/evaluation-3f9ff93466367541ebd09cfa/252_sessions.json",
+        "sha256": "06d68e1018654122c94c3bcbad114370408c33ec5e9176b4ff148ecdadabaac9"
+      },
+      {
+        "evaluation_run_id": "evaluation-56dc09b16f9e1129ba024ed1",
+        "horizon_label": "1_session",
+        "path": "runs/2026-11-06/trading/evaluation-56dc09b16f9e1129ba024ed1/1_session.json",
+        "sha256": "2688e28100132a05345a842f564d575ea0738ae2188a1194807fc5873da0bbbf"
+      },
+      {
+        "evaluation_run_id": "evaluation-56dc09b16f9e1129ba024ed1",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-11-06/trading/evaluation-56dc09b16f9e1129ba024ed1/5_sessions.json",
+        "sha256": "56c48491e0b8c5e1bc3755813ac53f2d0913cfafc98a425f58ca3dac1907c54a"
+      },
+      {
+        "evaluation_run_id": "evaluation-56dc09b16f9e1129ba024ed1",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-06/trading/evaluation-56dc09b16f9e1129ba024ed1/20_sessions.json",
+        "sha256": "21c6b9d1f08d24a481701e5c479f5b25ef0917a2795047601681a517b649c309"
+      },
+      {
+        "evaluation_run_id": "evaluation-56dc09b16f9e1129ba024ed1",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-06/trading/evaluation-56dc09b16f9e1129ba024ed1/60_sessions.json",
+        "sha256": "dc0cce19d0ed23a6db9b8a4a29c36d10c5740b145382c68d3a248a5fc83d6720"
+      },
+      {
+        "evaluation_run_id": "evaluation-85fe8775537b4868a2b43b30",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-06/long-term/evaluation-85fe8775537b4868a2b43b30/20_sessions.json",
+        "sha256": "10f9b76ed1b2c64a931b55b2d9f9b5fa47f38db1fa81875d0048757fad26bbe9"
+      },
+      {
+        "evaluation_run_id": "evaluation-85fe8775537b4868a2b43b30",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-06/long-term/evaluation-85fe8775537b4868a2b43b30/60_sessions.json",
+        "sha256": "3028f6af695f58efb4a6097be34bfc16d6acb1316f16cd40438b359cb2c6db5e"
+      },
+      {
+        "evaluation_run_id": "evaluation-85fe8775537b4868a2b43b30",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-11-06/long-term/evaluation-85fe8775537b4868a2b43b30/126_sessions.json",
+        "sha256": "e374010761c790bc3eb911232c05a68e57dad2e6a9d9d7db69277a70c3a1d220"
+      },
+      {
+        "evaluation_run_id": "evaluation-85fe8775537b4868a2b43b30",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-11-06/long-term/evaluation-85fe8775537b4868a2b43b30/252_sessions.json",
+        "sha256": "768fdf5108fc8896790d127f7ed44b86e11a36b3c766ce97f6786fa7f681dc7f"
+      },
+      {
+        "evaluation_run_id": "evaluation-fcfe2b4af06dbd4cc6ec0534",
+        "horizon_label": "1_session",
+        "path": "runs/2026-11-09/trading/evaluation-fcfe2b4af06dbd4cc6ec0534/1_session.json",
+        "sha256": "0af142ae8f1794fa7049233b1b9cf7ce872a32127b2cff0646fc443c6e6509c5"
+      },
+      {
+        "evaluation_run_id": "evaluation-fcfe2b4af06dbd4cc6ec0534",
+        "horizon_label": "5_sessions",
+        "path": "runs/2026-11-09/trading/evaluation-fcfe2b4af06dbd4cc6ec0534/5_sessions.json",
+        "sha256": "36c2068898808a09e23c32e7ff358e9f58adb1198be47b96e87ddfef13d36a7f"
+      },
+      {
+        "evaluation_run_id": "evaluation-fcfe2b4af06dbd4cc6ec0534",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-09/trading/evaluation-fcfe2b4af06dbd4cc6ec0534/20_sessions.json",
+        "sha256": "f7bb24b488658c10f6d09629f7bc26b08fc2ee595ca1f50bc40ab4795861fa76"
+      },
+      {
+        "evaluation_run_id": "evaluation-fcfe2b4af06dbd4cc6ec0534",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-09/trading/evaluation-fcfe2b4af06dbd4cc6ec0534/60_sessions.json",
+        "sha256": "3f616cd7b1ccb5f214d1485c0147d3c056f4aad5bd5e6ff400ffc6da9435b6c8"
+      },
+      {
+        "evaluation_run_id": "evaluation-c20fa4138e629ad0a7bc5c18",
+        "horizon_label": "20_sessions",
+        "path": "runs/2026-11-09/long-term/evaluation-c20fa4138e629ad0a7bc5c18/20_sessions.json",
+        "sha256": "2b522e2167619762ccd559a203107daf60546f313e55834fec50438952d2dcd2"
+      },
+      {
+        "evaluation_run_id": "evaluation-c20fa4138e629ad0a7bc5c18",
+        "horizon_label": "60_sessions",
+        "path": "runs/2026-11-09/long-term/evaluation-c20fa4138e629ad0a7bc5c18/60_sessions.json",
+        "sha256": "e678e25ab48c9f2845b488dca66fe336b66ea13c45cc0c47b414ebaf185ca46e"
+      },
+      {
+        "evaluation_run_id": "evaluation-c20fa4138e629ad0a7bc5c18",
+        "horizon_label": "126_sessions",
+        "path": "runs/2026-11-09/long-term/evaluation-c20fa4138e629ad0a7bc5c18/126_sessions.json",
+        "sha256": "488d77f66acf5786efccbc09b4564a9479f6cadbf3b7b8269748cc7de2c1fa79"
+      },
+      {
+        "evaluation_run_id": "evaluation-c20fa4138e629ad0a7bc5c18",
+        "horizon_label": "252_sessions",
+        "path": "runs/2026-11-09/long-term/evaluation-c20fa4138e629ad0a7bc5c18/252_sessions.json",
+        "sha256": "b3611618864be18dadbf07f22fb73b4d21d38a8db9eba9b32fbaca84ab4a9215"
       }
     ]
   },
@@ -3088,12 +3232,12 @@
     "included_in_frozen_v1": false,
     "status": "deferred_pending_license"
   },
-  "generated_at": "2026-11-04T06:09:22Z",
+  "generated_at": "2026-11-09T06:04:09Z",
   "groups": [
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "20_sessions",
         "sessions": 20
@@ -3163,7 +3307,7 @@
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "60_sessions",
         "sessions": 60
@@ -3233,7 +3377,7 @@
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "126_sessions",
         "sessions": 126
@@ -3303,7 +3447,7 @@
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "252_sessions",
         "sessions": 252
@@ -3373,7 +3517,7 @@
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "1_session",
         "sessions": 1
@@ -3443,7 +3587,7 @@
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "5_sessions",
         "sessions": 5
@@ -3513,7 +3657,7 @@
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "20_sessions",
         "sessions": 20
@@ -3583,7 +3727,7 @@
     {
       "analysis_eligible_run_count": 0,
       "benchmark_methodology": "representative-benchmarks-v1",
-      "evaluation_run_count": 40,
+      "evaluation_run_count": 43,
       "horizon": {
         "label": "60_sessions",
         "sessions": 60
@@ -3658,33 +3802,32 @@
   },
   "lifecycle": {
     "analysis_eligible_horizon_runs": 0,
-    "evaluation_runs": 128,
-    "evaluations_with_selected_outcomes": 42,
-    "horizon_runs": 512,
-    "mature": 43838,
-    "mature_awaiting_retrieval": 26005,
-    "mature_budget_deferred": 15329,
+    "evaluation_runs": 134,
+    "evaluations_with_selected_outcomes": 45,
+    "horizon_runs": 536,
+    "mature": 49537,
+    "mature_awaiting_retrieval": 28687,
+    "mature_budget_deferred": 17170,
     "mature_failed": 0,
-    "mature_horizon_runs": 57,
-    "mature_pending": 41334,
-    "mature_priced": 2476,
-    "mature_unavailable": 28,
-    "not_mature": 189578,
+    "mature_horizon_runs": 64,
+    "mature_pending": 45857,
+    "mature_priced": 3680,
+    "mature_unavailable": 0,
+    "not_mature": 194559,
     "outcome_status_methodology": "cutoff-maturity-v1",
-    "partial_horizon_runs": 57,
+    "partial_horizon_runs": 64,
     "status_counts": {
-      "coherent_history_pending": 41334,
-      "missing_exit": 28,
-      "not_due": 189578,
-      "priced": 2476
+      "coherent_history_pending": 45857,
+      "not_due": 194559,
+      "priced": 3680
     },
-    "status_cutoff": "2026-11-04T06:09:22Z",
-    "total": 233416
+    "status_cutoff": "2026-11-09T06:04:09Z",
+    "total": 244096
   },
   "methodology": {
     "adjustment_basis_verified": true,
     "aggregation": "cross-sectional metrics are computed for every run; only analysis-eligible runs are aggregated",
-    "analysis_data_cutoff": "2026-11-04T06:09:22Z",
+    "analysis_data_cutoff": "2026-11-09T06:04:09Z",
     "analysis_eligibility": {
       "minimum_coverage_pct": 70.0,
       "minimum_valid_companies": 50,
@@ -3721,7 +3864,7 @@
     "return_label": "mean_local_return_pct",
     "return_methodology": "single-response-adjusted-close-v1",
     "score_ic": "Spearman correlation of recorded total score and forward return",
-    "selected_outcomes_hash": "ebd7ea9f5ed3af03987f3d3f918589a816637b2201b764becfbb48d159a19738"
+    "selected_outcomes_hash": "9854506aecea1b8dcfecff206eafea9af63fb9de96bf7eb72007d60fe8f6ef0d"
   },
   "outcome_status_methodology": "cutoff-maturity-v1",
   "schema_version": 4,
