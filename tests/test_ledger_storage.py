@@ -310,8 +310,9 @@ def test_cli_migrates_the_legacy_ledger_and_then_reads_only_the_partitions(tmp_p
     directory = Path(DEFAULT_LEDGER_DIR)
     assert (directory / LEDGER_INDEX_NAME).is_file()
     assert serialize_ledger(load_ledger(directory)) == (single / "ledger.json").read_text(encoding="utf-8")
-    assert Path("docs/performance/index.md").read_text(encoding="utf-8") == (single / "index.md").read_text(
+    assert Path("docs/performance/legacy.md").read_text(encoding="utf-8") == (single / "index.md").read_text(
         encoding="utf-8")
+    assert not Path("docs/performance/index.md").exists()  # the authoritative page is never overwritten
 
     third = update(DAYS[2])
     assert third.exit_code == 0, third.output

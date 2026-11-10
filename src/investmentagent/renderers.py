@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
@@ -11,6 +12,16 @@ from investmentagent.long_term_quality import (
     assess_long_term_gate,
     assess_long_term_quality,
     assess_valuation_support,
+)
+from investmentagent.report_comparisons import (
+    ALL_ELIGIBLE,
+    LISTING_PEERS,
+    PEER_MINIMUM_OBSERVATIONS,
+    IdeaComparison,
+    MetricComparison,
+    PeerStat,
+    ReportComparison,
+    relative_summary,
 )
 from investmentagent.models import (
     Company,
@@ -96,15 +107,30 @@ def render_watchlist_report_json(
 
 
 def render_watchlist_report_markdown(
-    items: list[WatchlistItem], metadata: dict[str, Any], source_checks
+    items: list[WatchlistItem], metadata: dict[str, Any], source_checks,
+    comparison: ReportComparison | None = None, *, comparison_error: str | None = None,
 ) -> str:
     strategy = str(metadata.get("strategy") or "").strip().lower()
     subtitle = _watchlist_report_subtitle(strategy)
+    if comparison is not None:
+        return _render_compared_watchlist_markdown(
+            items, metadata, source_checks, comparison, strategy, subtitle
+        )
+    notice = (
+        [
+            "> Decision-time peer comparisons are unavailable for this run "
+            f"({comparison_error}); the ranking and selection are unaffected.",
+            "",
+        ]
+        if comparison_error
+        else []
+    )
     lines = [
         f"# {_watchlist_report_title(strategy)}",
         "",
         f"> {DISCLAIMER}",
         "",
+        *notice,
         *(["_" + subtitle + "_", ""] if subtitle else []),
         "## Metadata",
         *_metadata_lines(metadata),
@@ -1037,3 +1063,583 @@ def _stringify(value: Enum | str | DataQuality) -> str:
     if isinstance(value, Enum):
         return str(value.value)
     return str(value)
+
+
+# --- Decision-time comparison layout (presentation only) -------------------------------
+
+PERFORMANCE_PAGE_LINK = "../../performance/"
+METRIC_DEFINITIONS_LINK = "../../performance/#metric-definitions"
+_COMPONENT_LABELS = {
+    "value": "Value",
+    "discovery": "Discovery",
+    "quality_adjustment": "Quality adjustment",
+    "catalyst": "Catalyst",
+    "risk_penalty": "Risk penalty",
+    "data_quality_penalty": "Data-quality penalty",
+}
+_GATE_TIER_SHORT = {
+    LongTermGateTier.HIGH_CONVICTION.value: "High-conviction",
+    LongTermGateTier.FUNDAMENTAL_WATCHLIST.value: "Fundamental watchlist",
+    LongTermGateTier.SPECULATIVE_MONITOR.value: "Speculative monitor",
+    LongTermGateTier.INSUFFICIENT_EVIDENCE.value: "Insufficient evidence",
+}
+_RISK_CHECKS = (
+    "Checked: model risk flags, liquidity, leverage, profitability, valuation extremes, "
+    "price weakness, data quality and fundamentals freshness."
+)
+
+
+def _render_compared_watchlist_markdown(
+    items: list[WatchlistItem], metadata: dict[str, Any], source_checks,
+    comparison: ReportComparison, strategy: str, subtitle: str,
+) -> str:
+    if len(items) != len(comparison.ideas) or any(
+        item.rank != idea.row.rank or item.research.company.ticker != idea.row.ticker
+        for item, idea in zip(items, comparison.ideas)
+    ):
+        raise ValueError("comparison does not describe the selected watchlist items")
+    paired = list(zip(items, comparison.ideas))
+    lines = [
+        f"# {_watchlist_report_title(strategy)}",
+        "",
+        f"> {DISCLAIMER}",
+        "",
+        *(["_" + subtitle + "_", ""] if subtitle else []),
+        _run_summary_line(metadata, comparison, len(items)),
+        "",
+        (
+            "> **How to read this page.** Rank and score are decision-time ranking signals, "
+            "not forecasts or probabilities of outperforming. Peer comparisons use the "
+            "fundamentals the ranking used at decision time; *listing peers* share country "
+            "and listing venue only and span many industries. "
+            f"[What the track record shows so far]({PERFORMANCE_PAGE_LINK}) · "
+            f"[Metric definitions]({METRIC_DEFINITIONS_LINK})"
+        ),
+        "",
+    ]
+    if paired:
+        lines.extend([
+            "## Summary",
+            "",
+            *_compared_summary_table(paired, strategy),
+            "",
+            "**Relative comparison with listing peers**",
+            "",
+            *[
+                f"- **#{item.rank} {item.research.company.ticker}:** {relative_summary(idea)}"
+                for item, idea in paired
+            ],
+            "",
+            "## Watchlist",
+            "",
+        ])
+        if strategy == "long-term":
+            lines.extend(_compared_long_term_sections(paired, metadata, comparison))
+        else:
+            lines.extend(_compared_item_sections(paired, metadata, comparison, strategy))
+        lines.append("")
+    else:
+        lines.extend(["## Watchlist", "", *_empty_watchlist_lines(strategy, comparison), ""])
+    lines.extend([
+        "## Run Diagnostics",
+        "",
+        '<details markdown="1">',
+        "<summary>Metadata and source checks</summary>",
+        "",
+        "### Metadata",
+        *_metadata_lines(metadata),
+        "",
+        "### Source Checks",
+        *[f"- {check.name}: {check.status} - {check.detail}" for check in source_checks],
+        "",
+        "</details>",
+    ])
+    return "\n".join(lines)
+
+
+def _run_summary_line(metadata: dict[str, Any], comparison: ReportComparison, selected: int) -> str:
+    evaluation = metadata.get("evaluation") or {}
+    decision_at = evaluation.get("decision_at") or comparison.decision_at or metadata.get("generated_at")
+    countries = " · ".join(f"{country} {count}" for country, count in comparison.country_counts.items())
+    parts = [
+        f"**Decision time:** {_display_timestamp(decision_at)}",
+        f"**Eligible universe (X):** {_companies(comparison.universe_size)}"
+        + (f" ({countries})" if countries else ""),
+        f"**Selected:** {selected}",
+    ]
+    if evaluation.get("scoring_model_version"):
+        parts.append(f"**Model:** `{evaluation['scoring_model_version']}`")
+    if evaluation.get("run_id"):
+        parts.append(f"**Run:** `{evaluation['run_id']}`")
+    return " · ".join(parts)
+
+
+def _display_timestamp(value: Any) -> str:
+    if not value:
+        return "not recorded"
+    text = str(value)
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return text
+    if parsed.tzinfo is None:
+        return text
+    return parsed.astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+
+def _empty_watchlist_lines(strategy: str, comparison: ReportComparison) -> list[str]:
+    screened = comparison.source_universe_size
+    screened_text = f"the {screened} listed companies screened" if screened else "the companies screened"
+    if strategy == "trading":
+        return [
+            (
+                f"**No trading candidates at decision time.** None of {screened_text} showed a "
+                "qualifying short-term setup (strong momentum, unusual turnover or an "
+                "event-style catalyst), so no trading ideas are published today. This is "
+                "common when the decision is taken before the market opens and is not a "
+                "pipeline failure; the empty universe is still recorded for evaluation."
+            ),
+        ]
+    return [
+        (
+            f"**No candidates at decision time.** None of {screened_text} passed this "
+            "strategy's eligibility filters, so no ideas are published today."
+        ),
+    ]
+
+
+def _compared_summary_table(paired, strategy: str) -> list[str]:
+    long_term = strategy == "long-term"
+    header = ["#", "Company", "Market", "Score", "Score percentile in X"]
+    align = ["---:", "---", "---", "---:", "---:"]
+    if long_term:
+        header.append("Gate tier")
+        align.append("---")
+    header.extend(["Data", "P/E vs listing peers", "Op. margin vs listing peers", "Main risks"])
+    align.extend(["---", "---", "---", "---"])
+    lines = ["| " + " | ".join(header) + " |", "| " + " | ".join(align) + " |"]
+    for item, idea in paired:
+        company = item.research.company
+        risks = _risk_items(item, idea)
+        risk_text = "; ".join(short for short, _ in risks[:2]) if risks else "None flagged"
+        if len(risks) > 2:
+            risk_text += f" (+{len(risks) - 2} more)"
+        cells = [
+            str(item.rank),
+            f"[{_table_cell(company.name)} ({_table_cell(company.ticker)})](#idea-{item.rank})",
+            _market_label(idea),
+            f"{item.score.total:g}",
+            _ordinal_or_na(idea.score_percentile),
+        ]
+        if long_term:
+            cells.append(_GATE_TIER_SHORT.get(idea.row.gate_tier or "", idea.row.gate_tier or "n/a"))
+        cells.extend([
+            _data_cell(idea),
+            _summary_metric_cell(idea.metric("pe_ratio")),
+            _summary_metric_cell(idea.metric("operating_margin_pct")),
+            _table_cell(risk_text),
+        ])
+        lines.append("| " + " | ".join(cells) + " |")
+    return lines
+
+
+def _market_label(idea: IdeaComparison) -> str:
+    return f"{idea.row.country} {_venue_label(idea.row.venue)}"
+
+
+def _venue_label(venue: str) -> str:
+    return {"main_market": "main market", "first_north": "First North",
+            "spotlight": "Spotlight"}.get(venue, venue.replace("_", " "))
+
+
+def _data_cell(idea: IdeaComparison) -> str:
+    text = idea.row.data_quality
+    if idea.fundamentals_age_days is not None:
+        text += f", {idea.fundamentals_age_days} d old"
+    if idea.row.cache_state in {"stale", "missing"}:
+        text += f" ({idea.row.cache_state})"
+    return text
+
+
+def _summary_metric_cell(item: MetricComparison) -> str:
+    if item.value_status == "missing":
+        return "Missing"
+    if item.value_status == "invalid":
+        return "Not meaningful"
+    stat = item.level(LISTING_PEERS)
+    value = _format_metric(item.spec.unit, item.value)
+    if stat is None or stat.status != "ok" or stat.percentile is None:
+        return f"{value} (peers unavailable)"
+    return f"{value} ({_position_phrase(item, stat.percentile)})"
+
+
+def _compared_long_term_sections(paired, metadata, comparison) -> list[str]:
+    lines: list[str] = []
+    research_tiers = {
+        LongTermGateTier.HIGH_CONVICTION.value,
+        LongTermGateTier.FUNDAMENTAL_WATCHLIST.value,
+    }
+    if not any(idea.row.gate_tier in research_tiers for _, idea in paired):
+        lines.extend([
+            (
+                "_No long-term research candidates passed the gate today. "
+                "Rows below are speculative monitors or evidence-audit rows, "
+                "not primary long-term investment ideas._"
+            ),
+            "",
+        ])
+    for tier, heading in LONG_TERM_TIER_HEADINGS.items():
+        tier_pairs = [pair for pair in paired if pair[1].row.gate_tier == tier.value]
+        if not tier_pairs:
+            continue
+        lines.extend([f"## {heading}", ""])
+        if tier == LongTermGateTier.SPECULATIVE_MONITOR:
+            lines.extend([
+                "_These are not primary long-term investment ideas; they need "
+                "valuation or stronger proof before promotion._",
+                "",
+            ])
+        lines.extend(_compared_item_sections(tier_pairs, metadata, comparison, "long-term"))
+        lines.append("")
+    if lines and lines[-1] == "":
+        lines.pop()
+    return lines
+
+
+def _compared_item_sections(paired, metadata, comparison, strategy: str) -> list[str]:
+    lines: list[str] = []
+    for item, idea in paired:
+        company = item.research.company
+        lines.extend([
+            f'<a id="idea-{item.rank}"></a>',
+            "",
+            f"## #{item.rank} {company.name} ({company.ticker})",
+            "",
+            f"`{company.country}` | {company.exchange} | `{_stringify(company.segment)}`",
+            "",
+            f"**What the company does:** {_company_description(item)}",
+            "",
+            f"**Score:** {item.score.total:g}",
+            f"**Data quality:** {_stringify(item.research.data_quality)}",
+            "",
+            *_why_it_ranks_lines(item, idea, metadata, strategy),
+            f"**Relative to listing peers:** {relative_summary(idea)}",
+            "",
+            "### Risks to weigh",
+            *[f"- {detail}" for _, detail in _risk_items(item, idea)],
+            f"- {_RISK_CHECKS}",
+            "",
+            *_evidence_gap_lines(idea, comparison),
+            '<details markdown="1">',
+            "<summary>Score components and decision-time peer comparison</summary>",
+            "",
+            *_component_table_lines(idea),
+            "",
+            *_peer_comparison_lines(idea),
+            "</details>",
+            "",
+        ])
+        if strategy == "long-term":
+            lines.extend(_long_term_conviction_lines(item))
+        lines.extend([
+            "### Reasons",
+            *_public_reason_lines(item.score.reasons),
+            "",
+            "### Evidence",
+            *_markdown_evidence_lines(item.research.evidence),
+            "",
+        ])
+    if lines and lines[-1] == "":
+        lines.pop()
+    return lines
+
+
+def _why_it_ranks_lines(item, idea: IdeaComparison, metadata, strategy) -> list[str]:
+    total = idea.universe_size
+    lines = ["### Why it ranks here"]
+    if strategy == "long-term":
+        order = "long-term ranking orders companies by gate tier, then score"
+    else:
+        order = "ranking orders companies by score"
+    if idea.included_by_country_minimum:
+        minimum = ", ".join(
+            f"{country}:{count}" for country, count in (metadata.get("min_country_counts") or {}).items()
+        ) or "country minimum"
+        lines.append(
+            f"- **Selection:** rank {item.rank} of {total}; included by the minimum-country "
+            f"rule ({minimum}). Without it the company would rank {idea.base_rank} of {total} "
+            f"({order})."
+        )
+    else:
+        lines.append(f"- **Selection:** rank {item.rank} of {total}; {order}.")
+    if strategy == "long-term" and idea.row.gate_tier:
+        tiers = [tier.value for tier in LONG_TERM_TIER_HEADINGS]
+        position = tiers.index(idea.row.gate_tier) + 1 if idea.row.gate_tier in tiers else None
+        tier_text = f" (tier {position} of {len(tiers)})" if position else ""
+        lines.append(f"- **Gate tier:** {idea.row.gate_tier}{tier_text}.")
+    difference = idea.score_minus_median
+    score_line = f"- **Score:** {item.score.total:g}"
+    if difference is not None and idea.universe_median_score is not None:
+        direction = "above" if difference >= 0 else "below"
+        score_line += (
+            f", {_points(abs(difference))} points {direction} the X median "
+            f"({_points(idea.universe_median_score)})"
+        )
+    if idea.score_percentile is not None:
+        score_line += (
+            f"; higher than {_whole(idea.score_percentile)}% of the other {_companies(total - 1)} in X"
+        )
+    lines.append(score_line + ".")
+    contributions, deductions = [], []
+    for name, label in _COMPONENT_LABELS.items():
+        points = idea.row.components.get(name)
+        if not points:
+            continue
+        (deductions if name.endswith("penalty") else contributions).append((points, label))
+    if contributions:
+        top = sorted(contributions, key=lambda pair: (-pair[0], pair[1]))[:2]
+        lines.append("- **Largest contributions:** " + ", ".join(
+            f"{label} (+{_points(points)})" for points, label in top) + ".")
+    if deductions:
+        top = sorted(deductions, key=lambda pair: (-pair[0], pair[1]))[:2]
+        lines.append("- **Largest deductions:** " + ", ".join(
+            f"{label} (-{_points(points)})" for points, label in top) + ".")
+    lines.append("")
+    return lines
+
+
+def _component_table_lines(idea: IdeaComparison) -> list[str]:
+    lines = [
+        f"Score components (points) and position among the {_companies(idea.universe_size)} in X:",
+        "",
+        "| Score component | Points | Position in X |",
+        "| --- | ---: | --- |",
+    ]
+    for name, label in _COMPONENT_LABELS.items():
+        if name not in idea.row.components:
+            continue
+        points = idea.row.components[name]
+        percentile = idea.component_percentiles.get(name)
+        penalty = name.endswith("penalty")
+        signed = f"-{_points(points)}" if penalty and points else (f"+{_points(points)}" if points else "0")
+        if percentile is None:
+            position = "n/a"
+        elif penalty:
+            position = f"smaller penalty than {_whole(percentile)}% of X"
+        else:
+            position = f"higher than {_whole(percentile)}% of X"
+        lines.append(f"| {label} | {signed} | {position} |")
+    return lines
+
+
+def _peer_comparison_lines(idea: IdeaComparison) -> list[str]:
+    lines = [
+        (
+            f"Listing peers: {_market_label(idea)}, {_companies(idea.listing_group_size, 'other')} "
+            f"(mixed industries). All eligible X: {_companies(idea.universe_size - 1, 'other')}. "
+            "n = usable observations / peers; invalid multiples and missing values are "
+            "excluded and counted."
+        ),
+        "",
+        f"| Metric | Value | Listing peers ({_market_label(idea)}) | All eligible X |",
+        "| --- | ---: | --- | --- |",
+    ]
+    for item in idea.metrics:
+        lines.append(
+            f"| {item.spec.label} | {_value_cell(item)} | "
+            f"{_peer_cell(item, item.level(LISTING_PEERS))} | {_peer_cell(item, item.level(ALL_ELIGIBLE))} |"
+        )
+    lines.append("")
+    return lines
+
+
+def _value_cell(item: MetricComparison) -> str:
+    if item.value_status == "missing":
+        return "Missing"
+    if item.value_status == "invalid":
+        return _table_cell(item.spec.invalid_label)
+    return _format_metric(item.spec.unit, item.value)
+
+
+def _peer_cell(item: MetricComparison, stat: PeerStat | None) -> str:
+    if stat is None:
+        return "Unavailable"
+    extras = []
+    if stat.invalid:
+        extras.append(f"{stat.invalid} not meaningful")
+    if stat.missing:
+        extras.append(f"{stat.missing} missing")
+    counts = f"n={stat.usable}/{stat.population}" + (f" ({', '.join(extras)})" if extras else "")
+    if stat.median is None:
+        return f"Unavailable: fewer than {PEER_MINIMUM_OBSERVATIONS} comparable peers · {counts}"
+    median = f"median {_format_metric(item.spec.unit, stat.median)}"
+    if stat.status == "ok" and stat.percentile is not None:
+        return f"{median}; {_position_phrase(item, stat.percentile)} · {counts}"
+    return f"{median} · {counts}"
+
+
+def _position_phrase(item: MetricComparison, percentile: float) -> str:
+    return f"{item.spec.favourable_phrase} {_whole(percentile)}%"
+
+
+def _evidence_gap_lines(idea: IdeaComparison, comparison: ReportComparison) -> list[str]:
+    row = idea.row
+    lines = ["### Evidence gaps and freshness"]
+    if not comparison.cache_recorded:
+        lines.append("- Fundamentals freshness was not recorded for this run.")
+    elif row.cache_state == "disabled":
+        lines.append(
+            "- The fundamentals cache was not used in this run, so retrieval dates are not recorded."
+        )
+    elif row.retrieved_at is None:
+        state = row.cache_state or "not recorded"
+        lines.append(f"- No cached fundamentals were recorded for this company (cache state: {state}).")
+    else:
+        lines.append(
+            f"- Fundamentals retrieved {row.retrieved_at[:10]}, {idea.fundamentals_age_days} days "
+            f"before the decision (cache state: {row.cache_state})."
+        )
+    if idea.listing_group_fresh_share is not None and row.cache_state != "disabled":
+        lines.append(
+            f"- {_whole(idea.listing_group_fresh_share)}% of listing peers had fresh fundamentals "
+            "at decision time."
+        )
+    missing = [_INPUT_LABELS.get(key, key) for key in row.missing_inputs]
+    lines.append(
+        "- Missing inputs: " + ", ".join(missing) + "." if missing
+        else "- All compared inputs were available."
+    )
+    lines.append(f"- Data quality: {row.data_quality}.")
+    lines.append("")
+    return lines
+
+
+_INPUT_LABELS = {
+    "pe_ratio": "P/E",
+    "price_to_book": "P/B",
+    "ev_to_ebit": "EV/EBIT",
+    "operating_margin_pct": "operating margin",
+    "revenue_growth_pct": "revenue growth",
+    "debt_to_equity": "debt/equity",
+    "market_cap_eur_m": "market cap",
+    "average_daily_value_eur": "average daily traded value",
+    "one_year_return_pct": "one-year return",
+    "distance_from_52w_high_pct": "distance from 52-week high",
+}
+
+
+def _risk_items(item: WatchlistItem, idea: IdeaComparison) -> list[tuple[str, str]]:
+    """Negative evidence, most specific first. Uses only existing signals and peer positions."""
+    risks: list[tuple[str, str]] = []
+    seen: set[str] = set()
+
+    def add(short: str, detail: str) -> None:
+        key = short.lower()
+        if key not in seen:
+            seen.add(key)
+            risks.append((short, detail))
+
+    for signal in _public_risk_items(item.score.warnings):
+        if signal.lower().startswith("gate tier: "):
+            add(signal, f"{signal} (not a primary research tier).")
+        else:
+            add(signal, f"{signal} (model warning).")
+    for metric in idea.metrics:
+        if metric.value_status == "invalid":
+            reason = metric.spec.invalid_label.removeprefix("Not meaningful").strip(" ()")
+            add(metric.spec.invalid_risk or f"{metric.spec.label} not meaningful",
+                f"{metric.spec.label} is not meaningful: {reason or 'invalid value'}; "
+                "it is excluded from peer comparisons.")
+    margin = idea.metric("operating_margin_pct")
+    if (margin.value_status == "valid" and margin.value is not None and margin.value < 0
+            and not any("margin" in key for key in seen)):
+        add("Negative operating margin", f"Operating margin of {margin.value:.1f}%.")
+    financials = item.research.financials
+    if financials.one_year_return_pct is not None and financials.one_year_return_pct <= -25:
+        add(
+            f"One-year return {financials.one_year_return_pct:.1f}%",
+            f"One-year share-price return of {financials.one_year_return_pct:.1f}%; the model "
+            "counts this as a contrarian discovery signal, so verify why the market discounted it.",
+        )
+    if financials.distance_from_52w_high_pct is not None and financials.distance_from_52w_high_pct <= -35:
+        add(
+            f"{abs(financials.distance_from_52w_high_pct):.1f}% below 52-week high",
+            f"Share price {abs(financials.distance_from_52w_high_pct):.1f}% below its 52-week "
+            "high; the model counts this as a contrarian discovery signal.",
+        )
+    row = idea.row
+    if row.cache_state == "stale":
+        add("Stale fundamentals",
+            f"Fundamentals are {idea.fundamentals_age_days} days old and were marked stale by "
+            "the run's freshness policy.")
+    elif row.cache_state == "missing":
+        add("No cached fundamentals", "No cached fundamentals were available at decision time.")
+    liquidity = idea.metric("average_daily_value_eur").level(LISTING_PEERS)
+    if (liquidity is not None and liquidity.status == "ok" and liquidity.percentile is not None
+            and liquidity.percentile <= 25 and not any("liquidity" in key for key in seen)):
+        add("Low trading volume vs peers",
+            f"Less traded than {_whole(100 - liquidity.percentile)}% of listing peers; entry and exit "
+            "may be costly.")
+    leverage = idea.metric("debt_to_equity").level(LISTING_PEERS)
+    if (leverage is not None and leverage.status == "ok" and leverage.percentile is not None
+            and leverage.percentile <= 25 and not any("debt" in key for key in seen)):
+        add("High leverage vs peers",
+            f"More leveraged than {_whole(100 - leverage.percentile)}% of listing peers.")
+    stated = [risk.strip() for risk in item.research.risks if risk.strip()]
+    if stated:
+        penalty = min(len(stated) * 3.0, 15.0)
+        add(
+            "Stated risks",
+            f"{len(stated)} stated risk(s) cost {penalty:g} risk-penalty points: "
+            + "; ".join(_capitalize_first(risk) for risk in stated) + ".",
+        )
+    quality = item.research.data_quality.value
+    if quality != DataQuality.GOOD.value:
+        add(
+            f"{_capitalize_first(quality)} data",
+            f"{_capitalize_first(quality)} data quality "
+            f"({item.score.data_quality_penalty:g}-point data-quality penalty).",
+        )
+    return risks
+
+
+def _format_metric(unit: str, value: float | None) -> str:
+    if value is None:
+        return "n/a"
+    if unit == "%":
+        return f"{value:.1f}%"
+    if unit == "EUR m":
+        return f"{value:,.0f}" if abs(value) >= 100 else f"{value:.1f}"
+    if unit == "EUR":
+        if abs(value) >= 1_000_000:
+            return f"{value / 1_000_000:.1f}m"
+        if abs(value) >= 1_000:
+            return f"{value / 1_000:.0f}k"
+        return f"{value:.0f}"
+    if abs(value) < 10:
+        return f"{value:.2f}"
+    return f"{value:.1f}"
+
+
+def _companies(count: int, qualifier: str = "") -> str:
+    noun = "company" if count == 1 else "companies"
+    return f"{count} {qualifier + ' ' if qualifier else ''}{noun}"
+
+
+def _points(value: float) -> str:
+    return f"{round(value, 2):g}"
+
+
+def _whole(value: float) -> int:
+    return int(math.floor(value + 0.5))
+
+
+def _ordinal_or_na(value: float | None) -> str:
+    if value is None:
+        return "n/a"
+    number = _whole(value)
+    if 10 <= number % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(number % 10, "th")
+    return f"{number}{suffix}"
