@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-11-09 08:00 EET
+- generated_at: 2026-11-10 09:02 EET
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
