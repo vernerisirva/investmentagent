@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-11-10 09:02 EET
+- generated_at: 2026-11-17 19:04 EET
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -26,7 +26,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Owns frontier model research, search distribution, cloud AI infrastructure, and TPU compute capacity.
 **Score:** 67
-**Valuation:** P/E 14.647; P/B 5.22853
+**Valuation:** P/E 14.9368; P/B 5.33199
 **Quality:** Operating margin 31.8%; debt/equity 0.2219
 **Growth:** Revenue growth 24.7%
 **Data quality:** partial
@@ -49,7 +49,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Large-scale AI infrastructure, recommendation systems, open model strategy, and advertising optimization.
 **Score:** 66
-**Valuation:** P/E 21.1883; P/B 5.8276
+**Valuation:** P/E 21.883; P/B 6.01865
 **Quality:** Operating margin 35.4%; debt/equity 0.4216
 **Growth:** Revenue growth 26.1%
 **Data quality:** partial
@@ -72,8 +72,8 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths.
 **Score:** 64
-**Valuation:** P/E 26.4731; P/B 8.22386
-**Quality:** Operating margin 49.8%; debt/equity 0.2847
+**Valuation:** P/E 27.5689; P/B 8.33799
+**Quality:** Operating margin 47.1%; debt/equity 0.2847
 **Growth:** Revenue growth 18.8%
 **Data quality:** partial
 
@@ -95,8 +95,8 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
 **Score:** 59
-**Valuation:** P/E 25.5781; P/B 75.3199
-**Quality:** Operating margin 58.7%; debt/equity 0.1162
+**Valuation:** P/E 26.7887; P/B 78.8848
+**Quality:** Operating margin 58.0%; debt/equity 0.1162
 **Growth:** Revenue growth 50.9%
 **Data quality:** partial
 
@@ -118,8 +118,8 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Cloud infrastructure expansion and database footprint create enterprise AI infrastructure exposure.
 **Score:** 58
-**Valuation:** P/E 19.3934; P/B 6.05274
-**Quality:** Operating margin 35.6%; debt/equity 2.5172
+**Valuation:** P/E 18.4986; P/B 6.27959
+**Quality:** Operating margin 34.3%; debt/equity 2.5172
 **Growth:** Revenue growth 29.6%
 **Data quality:** partial
 
