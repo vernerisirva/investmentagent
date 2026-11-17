@@ -4,16 +4,16 @@
 
 > LEGACY_NON_AUTHORITATIVE: Performance v1 benchmark values are retained for historical reference, not InvestmentAgent validation evidence. They are not comparable with representative-benchmarks-v1.
 
-Generated: 2026-11-10 09:02 EET
+Generated: 2026-11-17 19:04 EET
 
 ## Market Context
 
-- Latest snapshot: 2026-11-10
+- Latest snapshot: 2026-11-17
 - Market tone: Mixed / quiet
 - Companies tracked: 933
-- Large positive movers: 0
-- Sharp selloffs: 0
-- Active turnover signals: 0
+- Large positive movers: 42
+- Sharp selloffs: 45
+- Active turnover signals: 510
 
 ## Trading Ideas
 
@@ -85,18 +85,18 @@ _Only high-conviction and fundamental watchlist names count here._
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
 | 1d | 541 | 43.1% | -0.08% | 0% |
-| 5d | 501 | 40.1% | -0.5% | -0.4% |
-| 20d | 360 | 36.1% | -1.84% | -1.52% |
-| 60d | 1 | 0% | -9.73% | -9.73% |
+| 5d | 511 | 39.9% | -0.5% | -0.41% |
+| 20d | 370 | 36.2% | -1.81% | -1.52% |
+| 60d | 11 | 9.1% | -9.81% | -5.77% |
 
 ### Risk And Benchmark
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1d | -14.76% | 47% | 3 | 2.09% | +0.07% | -0.15% | 47.5% |
-| 5d | -24.05% | 54.5% | 11 | 4.27% | +0.4% | -0.9% | 48.7% |
-| 20d | -27% | 63.1% | 33 | 7.17% | +3.35% | -5.19% | 43.1% |
-| 60d | -9.73% | 100% | 0 | 0% | +7.64% | -17.37% | 0% |
+| 5d | -24.05% | 54.8% | 11 | 4.25% | +0.36% | -0.86% | 48.5% |
+| 20d | -27% | 63% | 34 | 7.18% | +3.18% | -4.99% | 43.5% |
+| 60d | -37.35% | 90.9% | 3 | 10.79% | +2.17% | -11.98% | 18.2% |
 
 ### Best Long-Term Research Picks
 
@@ -108,35 +108,36 @@ _Only high-conviction and fundamental watchlist names count here._
 
 ### Worst Long-Term Research Picks
 
+- **4C Group (4C)** - 60d return **-37.35%** ([report](../reports/long-term/2026-08-25.html))
 - **Outokumpu Oyj (OUT1V)** - 20d return **-27%** ([report](../reports/long-term/2026-10-13.html))
 - **Green Landscaping Group (GREEN)** - 20d return **-25.29%** ([report](../reports/long-term/2026-09-18.html))
 - **Guldbrev Holding (GULD)** - 20d return **-24.71%** ([report](../reports/long-term/2026-10-07.html))
-- **Zinzino B (ZZ B)** - 5d return **-16%** ([report](../reports/long-term/2026-10-29.html))
+- **Alexandria Group Oyj (ALEX)** - 60d return **-20.86%** ([report](../reports/long-term/2026-08-25.html))
 
 ### Long-Term Research Signal Review
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate severe proof gaps: 0 | 551 | -1.35% | 38.3% |
-| Quality: Business description available | 551 | -1.35% | 38.3% |
-| Quality: Positive operating margin | 551 | -1.35% | 38.3% |
-| Reason: Business description available | 551 | -1.35% | 38.3% |
-| Reason: Positive operating margin | 551 | -1.35% | 38.3% |
-| Gate: High-conviction candidate | 550 | -1.33% | 38.4% |
-| Reason: Gate tier: High-conviction candidate | 550 | -1.33% | 38.4% |
-| Valuation proxy: Pe ratio | 544 | -1.34% | 38.2% |
-| Quality: Revenue growth | 524 | -1.4% | 37.2% |
-| Reason: Revenue growth | 524 | -1.4% | 37.2% |
-| Reason: Adequate liquidity | 486 | -1.35% | 39.3% |
-| Quality: Attractive valuation | 467 | -2.05% | 33.6% |
+| Gate severe proof gaps: 0 | 561 | -1.42% | 38.1% |
+| Quality: Business description available | 561 | -1.42% | 38.1% |
+| Quality: Positive operating margin | 561 | -1.42% | 38.1% |
+| Reason: Business description available | 561 | -1.42% | 38.1% |
+| Reason: Positive operating margin | 561 | -1.42% | 38.1% |
+| Gate: High-conviction candidate | 560 | -1.41% | 38.2% |
+| Reason: Gate tier: High-conviction candidate | 560 | -1.41% | 38.2% |
+| Valuation proxy: Pe ratio | 554 | -1.41% | 38.1% |
+| Quality: Revenue growth | 533 | -1.47% | 37.3% |
+| Reason: Revenue growth | 533 | -1.47% | 37.3% |
+| Reason: Adequate liquidity | 494 | -1.31% | 39.7% |
+| Quality: Attractive valuation | 476 | -2.02% | 33.8% |
 
 ### Long-Term Research Learning Suggestions
 
-- Gate severe proof gaps: 0 has produced a negative average return of -1.35% across 551 completed observations. Review whether its scoring weight should change.
-- Quality: Business description available has produced a negative average return of -1.35% across 551 completed observations. Review whether its scoring weight should change.
-- Quality: Positive operating margin has produced a negative average return of -1.35% across 551 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available has produced a negative average return of -1.35% across 551 completed observations. Review whether its scoring weight should change.
-- Reason: Positive operating margin has produced a negative average return of -1.35% across 551 completed observations. Review whether its scoring weight should change.
+- Gate severe proof gaps: 0 has produced a negative average return of -1.42% across 561 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a negative average return of -1.42% across 561 completed observations. Review whether its scoring weight should change.
+- Quality: Positive operating margin has produced a negative average return of -1.42% across 561 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a negative average return of -1.42% across 561 completed observations. Review whether its scoring weight should change.
+- Reason: Positive operating margin has produced a negative average return of -1.42% across 561 completed observations. Review whether its scoring weight should change.
 
 ## Speculative Monitors
 

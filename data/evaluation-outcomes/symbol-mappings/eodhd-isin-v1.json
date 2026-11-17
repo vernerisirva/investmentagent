@@ -44,6 +44,24 @@
       "listed": [],
       "name": "Savox Communications Oyj",
       "ticker": "SAVOX"
+    },
+    "SE0010415281": {
+      "company_id": "isin:SE0010415281",
+      "decided_at": "2026-11-17T17:07:20+00:00",
+      "decision": "mapped",
+      "exchange": "ST",
+      "listed": [
+        {
+          "code": "ANOT",
+          "currency": "SEK",
+          "exchange": "ST",
+          "name": "INQ Group AB (publ)",
+          "type": "Common Stock"
+        }
+      ],
+      "name": "INQ Group",
+      "symbol": "ANOT.ST",
+      "ticker": "INQ"
     }
   },
   "exchange_lists": {
@@ -52,6 +70,13 @@
       "response_sha256": "3ae2551c2934781d3c1966381b270182f4622daab673acfe5b60b76afe7d011c",
       "rows": 195,
       "rows_with_isin": 161,
+      "status": "ok"
+    },
+    "ST": {
+      "attempted_at": "2026-11-17T17:07:20+00:00",
+      "response_sha256": "f4ed17ffa5a485ab05e9b79f6a080ee38321a8ad7788f7c58d33eb3cb9afe933",
+      "rows": 982,
+      "rows_with_isin": 758,
       "status": "ok"
     }
   },

@@ -77,11 +77,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -207,11 +207,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -340,11 +340,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -472,11 +472,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -605,11 +605,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -736,11 +736,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -869,11 +869,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -1003,11 +1003,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -1136,11 +1136,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",
@@ -1268,11 +1268,11 @@
           "status": "priced"
         },
         "20d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         },
         "5d": {
           "as_of_date": "2026-10-23",

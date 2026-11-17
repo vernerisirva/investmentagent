@@ -97,11 +97,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|FI|ADMCM",
@@ -231,11 +231,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|FI|ANORA",
@@ -363,11 +363,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|FI|ATRAV",
@@ -495,11 +495,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|FI|CAPMAN",
@@ -627,11 +627,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|FI|DETEC",
@@ -761,11 +761,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|FI|LEMON",
@@ -895,11 +895,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|FI|TEKOVA",
@@ -1029,11 +1029,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|SE|AAC",
@@ -1163,11 +1163,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|SE|ACCON",
@@ -1297,11 +1297,11 @@
           "status": "priced"
         },
         "60d": {
-          "as_of_date": null,
+          "as_of_date": "2026-11-17",
           "currency": null,
           "price": null,
           "return_pct": null,
-          "status": "not_due"
+          "status": "missed_window"
         }
       },
       "pick_id": "2026-08-21|long-term|SE|NANOFS",

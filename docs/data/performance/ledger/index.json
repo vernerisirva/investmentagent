@@ -2,7 +2,7 @@
   "ledger_storage": {
     "layout": "report-date-partitions-v1",
     "legacy_seed_sha256": "11d9aab89e90ccffc68193cde135da82eafff94d2611eae1c97a19667c0ca5de",
-    "market_snapshot_count": 126,
+    "market_snapshot_count": 127,
     "market_snapshot_partitions": [
       {
         "as_of_date": "2026-05-15",
@@ -759,9 +759,15 @@
         "entries": 933,
         "path": "market-snapshots/2026/2026-11-10.json",
         "sha256": "1bc72d2ad5f41a93b3faa273ff9bf573ba3db527c9d591d55ec86b33cd03c8d7"
+      },
+      {
+        "as_of_date": "2026-11-17",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-11-17.json",
+        "sha256": "89ca0c50b4ecea211ef50dfa3f7d0bd1ad00a893ccf2db0e35e83ef0229ecea6"
       }
     ],
-    "pick_count": 1449,
+    "pick_count": 1469,
     "pick_partitions": [
       {
         "entries": 20,
@@ -1193,31 +1199,31 @@
         "entries": 10,
         "path": "picks/2026/2026-08-19.json",
         "report_date": "2026-08-19",
-        "sha256": "ccd7b3e1b75464061dc974e65f280eaacd84e2cf7ce396d38778c044ecc0829b"
+        "sha256": "e794d8282eee8964873b009a56195d0abf0ffd6c5c6bc1fbc1c0fef2b65efb47"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-08-20.json",
         "report_date": "2026-08-20",
-        "sha256": "94e9231a1d216a5255157cda36b16feea5064026cfdf80a580761f2b30debeb7"
+        "sha256": "711e98de6e79c8cef08dc91bd9b43a486f933b115760f19f4995582fef541280"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-08-21.json",
         "report_date": "2026-08-21",
-        "sha256": "029ba1d8a1078e14582e4288248a93da88ac9a32a542ee7227a02083b1d25293"
+        "sha256": "72133f73e33d50ce9a1dbf4bb57426eae31c4ed663b997ed8d3b2aa6526fe38b"
       },
       {
         "entries": 30,
         "path": "picks/2026/2026-08-24.json",
         "report_date": "2026-08-24",
-        "sha256": "c2171bd23dd84dc45752e0ecf4597ee7d7ba93ab6982fbaf3686af42d85132bd"
+        "sha256": "b9f725c181a76c9107a635ba1432090b716ff06c58e41c892924d13be999187f"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-08-25.json",
         "report_date": "2026-08-25",
-        "sha256": "92d27464c6282db0ce267da41306c7ff0aefa80115217205b75867003292f54e"
+        "sha256": "a45f71bebd9e98470949d398772a852780420ab29f683df868ec372d87ef9e78"
       },
       {
         "entries": 10,
@@ -1433,31 +1439,31 @@
         "entries": 10,
         "path": "picks/2026/2026-10-14.json",
         "report_date": "2026-10-14",
-        "sha256": "4dbd534f6b0f59a677e22af214c758358853458420a5ff6188dc4b80d73ee71f"
+        "sha256": "8c2d4e4b91f764fcafc50a6ca7905d3c1852eaa86208a8a7adf5aefe9e3e1269"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-10-15.json",
         "report_date": "2026-10-15",
-        "sha256": "4335b314a749401b6a41fa4b52b03f524830765ec836579d45e46e1f04e16931"
+        "sha256": "3a319a4337c65d17b4455d5f4cce48f3717077c2b1510e998018e2b038c21dc6"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-10-16.json",
         "report_date": "2026-10-16",
-        "sha256": "41a51273afe084b7fbfe545c8df7a5c6895e25b06b6f46bdb327f87024b5fac9"
+        "sha256": "334348357b7e1593cfdfa1f89d30c60021f9614716c8a6fbb7e4fcabdcd3310e"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-10-19.json",
         "report_date": "2026-10-19",
-        "sha256": "8a0f4b99feba4a790f4272ceb5652c7357388d6842ed6de539979404575cf168"
+        "sha256": "24fa64d9abaffc0d621ac586119de266a47e7adc766c516f84dda88e1347d3f7"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-10-20.json",
         "report_date": "2026-10-20",
-        "sha256": "2f369256cd24af2e82d7a6fbf30e196f8f0f2f16775e9f5f9dccdb54d5f16860"
+        "sha256": "8314fe52ac2a9847bbf025da0fc4d0017758a9456dd7156e5ac7b1ac02728b3e"
       },
       {
         "entries": 10,
@@ -1517,34 +1523,40 @@
         "entries": 10,
         "path": "picks/2026/2026-11-04.json",
         "report_date": "2026-11-04",
-        "sha256": "c7a51b7f2542e170b4a76983265bafb7b1faa5b1594fb8d64b1b3a72ef40bb15"
+        "sha256": "8f7160a5100b45e4aa7ba9cc19a4e5a1d1bef3a85227d543b81c42e90fd5cfe9"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-11-05.json",
         "report_date": "2026-11-05",
-        "sha256": "3e0e8d8ae72e4d9419b79648bcd85a653836519de24db8bc44237129643618b4"
+        "sha256": "ad38ca2a3849938e3b5248aef8614cc1ae5bc3b42381937d56062d7194476a14"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-11-06.json",
         "report_date": "2026-11-06",
-        "sha256": "00b0da7ed207e4fa504521bb431029dd50657c00d566966ceb259826a49a3ab3"
+        "sha256": "d4d5230f29a0ce03529157c3a2f6a2e588225b220ed22d912d0273ac84f2af3b"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-11-09.json",
         "report_date": "2026-11-09",
-        "sha256": "9af1485c42f1c917706565be0bbf581169041cf9a15f831c702d5a9c19fc600e"
+        "sha256": "be1d1a5034443144462cedb04ecb75c6ceeaba14576dc04172143dffd815839d"
       },
       {
         "entries": 10,
         "path": "picks/2026/2026-11-10.json",
         "report_date": "2026-11-10",
-        "sha256": "5305ba6a608c3b48ee737a024088efab8debe975abe400dc86333d5228b6608d"
+        "sha256": "0ed1b9dc67dc72e4a87ff45669d5edc2d1c7224ae8af822076cafd6754b29643"
+      },
+      {
+        "entries": 20,
+        "path": "picks/2026/2026-11-17.json",
+        "report_date": "2026-11-17",
+        "sha256": "b3d682c2f189b26c6ab866081246eeed6a1532209eb470fa137d24442f1bac52"
       }
     ],
-    "reconstructed_sha256": "16c45beac08f9d1afcc284444234a7dbc4c14ab68731e3326852a2c99952a6c2",
+    "reconstructed_sha256": "093d81c174e188cfcfa9f070ad54ebd1c01e049d9d0be2c895fed32dc5b08bcb",
     "reconstruction": "picks are the pick partitions' picks concatenated in listed order; market_snapshots maps each listed as_of_date to its partition's market_snapshot"
   },
   "schema_version": 1
