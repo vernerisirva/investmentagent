@@ -67,11 +67,14 @@
       "name": "Cityvarasto Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.0,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 14.6,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -193,11 +196,14 @@
       "name": "Outokumpu Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.0,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 3.518,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -317,11 +323,14 @@
       "name": "Taaleri Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.0,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 7.0,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -441,11 +450,14 @@
       "name": "Besqab",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 25.3,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -565,11 +577,14 @@
       "name": "ByggPartner Gruppen",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 36.2,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -691,11 +706,14 @@
       "name": "CombinedX",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 24.7,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -818,11 +836,14 @@
       "name": "Guldbrev Holding",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 12.75,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -943,11 +964,14 @@
       "name": "Lea Bank",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 12.78,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1070,11 +1094,14 @@
       "name": "Surgical Science Sweden",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 58.5,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1197,11 +1224,14 @@
       "name": "Zinzino B",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 117.5,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1266,11 +1296,14 @@
       "name": "Lumo Kodit Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.0,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 7.075,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1325,11 +1358,14 @@
       "name": "Outokumpu Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.0,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 3.518,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1384,11 +1420,14 @@
       "name": "Tieto Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": 0.0,
+          "currency": "EUR",
+          "excess_return_pct": 0.0,
+          "price": 18.24,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1443,11 +1482,14 @@
       "name": "Bonava B",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 7.41,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1502,11 +1544,14 @@
       "name": "Dustin Group",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 1.622,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1561,11 +1606,14 @@
       "name": "HEBA B",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 23.9,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1620,11 +1668,14 @@
       "name": "Humble Group",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 6.08,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1679,11 +1730,14 @@
       "name": "John Mattson Fastighetsföret.",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 53.7,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1738,11 +1792,14 @@
       "name": "Pricer B",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 5.64,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1799,11 +1856,14 @@
       "name": "Surgical Science Sweden",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-18",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": 0.0,
+          "currency": "SEK",
+          "excess_return_pct": 0.0,
+          "price": 58.5,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
