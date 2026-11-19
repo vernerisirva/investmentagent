@@ -67,11 +67,14 @@
       "name": "Cityvarasto Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.46,
+          "currency": "EUR",
+          "excess_return_pct": 0.46,
+          "price": 14.6,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -194,11 +197,14 @@
       "name": "Saga Furs Oyj C",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.46,
+          "currency": "EUR",
+          "excess_return_pct": -0.86,
+          "price": 14.9,
+          "return_pct": -1.32,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -321,11 +327,14 @@
       "name": "Taaleri Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.46,
+          "currency": "EUR",
+          "excess_return_pct": 0.32,
+          "price": 6.99,
+          "return_pct": -0.14,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -447,11 +456,14 @@
       "name": "Tecnotree Oyj",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight FI market",
+          "benchmark_return_pct": -0.46,
+          "currency": "EUR",
+          "excess_return_pct": 0.46,
+          "price": 6.07,
+          "return_pct": 0.0,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -574,11 +586,14 @@
       "name": "ByggPartner Gruppen",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.32,
+          "currency": "SEK",
+          "excess_return_pct": -0.23,
+          "price": 36.0,
+          "return_pct": -0.55,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -701,11 +716,14 @@
       "name": "CombinedX",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.32,
+          "currency": "SEK",
+          "excess_return_pct": -1.3,
+          "price": 24.3,
+          "return_pct": -1.62,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -829,11 +847,14 @@
       "name": "Guldbrev Holding",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.32,
+          "currency": "SEK",
+          "excess_return_pct": -2.43,
+          "price": 12.4,
+          "return_pct": -2.75,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -955,11 +976,14 @@
       "name": "Lea Bank",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.32,
+          "currency": "SEK",
+          "excess_return_pct": 0.79,
+          "price": 12.84,
+          "return_pct": 0.47,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1083,11 +1107,14 @@
       "name": "Surgical Science Sweden",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.32,
+          "currency": "SEK",
+          "excess_return_pct": 2.71,
+          "price": 59.9,
+          "return_pct": 2.39,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,
@@ -1211,11 +1238,14 @@
       "name": "Zinzino B",
       "outcomes": {
         "1d": {
-          "as_of_date": null,
-          "currency": null,
-          "price": null,
-          "return_pct": null,
-          "status": "not_due"
+          "as_of_date": "2026-11-19",
+          "benchmark_label": "Equal-weight SE market",
+          "benchmark_return_pct": -0.32,
+          "currency": "SEK",
+          "excess_return_pct": 1.17,
+          "price": 118.5,
+          "return_pct": 0.85,
+          "status": "priced"
         },
         "20d": {
           "as_of_date": null,

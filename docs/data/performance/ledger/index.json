@@ -2,7 +2,7 @@
   "ledger_storage": {
     "layout": "report-date-partitions-v1",
     "legacy_seed_sha256": "11d9aab89e90ccffc68193cde135da82eafff94d2611eae1c97a19667c0ca5de",
-    "market_snapshot_count": 128,
+    "market_snapshot_count": 129,
     "market_snapshot_partitions": [
       {
         "as_of_date": "2026-05-15",
@@ -771,9 +771,15 @@
         "entries": 933,
         "path": "market-snapshots/2026/2026-11-18.json",
         "sha256": "500a3ba2086e0d326dd7f7628a6bff5da080f443c89c45f516e16aa04de52e3f"
+      },
+      {
+        "as_of_date": "2026-11-19",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-11-19.json",
+        "sha256": "62cf40fea5497ba5c959a9f3c05b2367835e2dffa8fc3921ff756e179f470d2e"
       }
     ],
-    "pick_count": 1479,
+    "pick_count": 1489,
     "pick_partitions": [
       {
         "entries": 20,
@@ -1241,7 +1247,7 @@
         "entries": 20,
         "path": "picks/2026/2026-08-27.json",
         "report_date": "2026-08-27",
-        "sha256": "914868a8ed7a7093b9ad96aca412e49895aa05f760255027c93dec4f163eae4b"
+        "sha256": "a46d195f0ed42c1ab1b429064d74b117c182e5e60a4339052f945ccc2095ed32"
       },
       {
         "entries": 20,
@@ -1481,7 +1487,7 @@
         "entries": 10,
         "path": "picks/2026/2026-10-22.json",
         "report_date": "2026-10-22",
-        "sha256": "2aaa5badc35a485341a2bd13436a8413e8b8757a96e24793b2f97f00a1bb2bd1"
+        "sha256": "75ffa41a6406936c83a10f80c62959f1e863c3d1df0a0b1de807753d7226f426"
       },
       {
         "entries": 10,
@@ -1565,10 +1571,16 @@
         "entries": 10,
         "path": "picks/2026/2026-11-18.json",
         "report_date": "2026-11-18",
-        "sha256": "8b1761ceeaecd368134934468acbbd04bb18c0994c60173571e8dd8e93ff33a2"
+        "sha256": "94a00b188c997dbcaccadea87b5b1467a5dd43c534872025c8e6033a263eb6cc"
+      },
+      {
+        "entries": 10,
+        "path": "picks/2026/2026-11-19.json",
+        "report_date": "2026-11-19",
+        "sha256": "ce15062d9e97ac3c17c1aa45f55fa23a0ff12c18c075a8d64b7df8c6f6764aff"
       }
     ],
-    "reconstructed_sha256": "c5b90b00792e86418e35363219a2af86ff21ec886576191765817692d6561111",
+    "reconstructed_sha256": "f04a3540baa8083f88697e10bb13bd36c0d064d657500b4f2edd06d0c098b469",
     "reconstruction": "picks are the pick partitions' picks concatenated in listed order; market_snapshots maps each listed as_of_date to its partition's market_snapshot"
   },
   "schema_version": 1
