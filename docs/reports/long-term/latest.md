@@ -5,13 +5,13 @@
 _Longer-horizon candidates based on business quality, valuation, growth, balance sheet, and risk._
 
 ## Metadata
-- generated_at: 2026-11-18T07:09:26.136523+00:00
+- generated_at: 2026-11-19T07:09:04.325864+00:00
 - provider: live
 - fundamentals: finimpulse
 - countries: SE, FI
 - limit: 10
 - enrichment_limit: 30
-- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 926, 'cache_misses': 1, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 926, 'fresh_companies': 785, 'stale_companies': 141, 'missing_companies': 1, 'oldest_retrieved_at': '2026-09-25T05:06:44.748082Z', 'newest_retrieved_at': '2026-11-18T07:09:25.609755Z', 'country_coverage': {'SE': {'eligible': 729, 'cached': 729, 'fresh': 588, 'stale': 141, 'missing': 0}, 'FI': {'eligible': 198, 'cached': 197, 'fresh': 197, 'stale': 0, 'missing': 1}}}
+- enrichment: {'eligible_universe_size': 927, 'enrichment_budget': 30, 'refresh_budget': 30, 'selected_candidates': 30, 'attempts': 30, 'successful_enrichments': 29, 'cutoff_tie_count': 2, 'cutoff_tie_excluded': 0, 'cache_enabled': True, 'cache_hits': 926, 'cache_misses': 1, 'cache_max_age_days': 45, 'eligible_companies': 927, 'cached_companies': 926, 'fresh_companies': 788, 'stale_companies': 138, 'missing_companies': 1, 'oldest_retrieved_at': '2026-09-28T05:11:20.577292Z', 'newest_retrieved_at': '2026-11-19T07:09:03.786525Z', 'country_coverage': {'SE': {'eligible': 729, 'cached': 729, 'fresh': 591, 'stale': 138, 'missing': 0}, 'FI': {'eligible': 198, 'cached': 197, 'fresh': 197, 'stale': 0, 'missing': 1}}}
 - fundamentals_cache: {'enabled': True, 'max_age_days': 45}
 - include_first_north: True
 - min_market_cap: None
@@ -19,16 +19,16 @@ _Longer-horizon candidates based on business quality, valuation, growth, balance
 - sector: None
 - strategy: long-term
 - min_country_counts: {'FI': 3}
-- evaluation: {'run_id': 'evaluation-b01feb9e6a3eaaa2c4273f12', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-11-18T07:09:26.136523Z'}
+- evaluation: {'run_id': 'evaluation-2bd40610532bbb4f32d83e9c', 'scoring_model_version': 'nordic-ranking-v1', 'decision_at': '2026-11-19T07:09:04.325864Z'}
 
 ## Source Checks
 - nasdaq nordic live data: ok - universe coverage: total=935, SE=737, FI=198; STO/main_market=408, HEL/main_market=150, STO/first_north=329, HEL/first_north=48; source=https://api.nasdaq.com/api/nordic/screener/shares
-- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=926/927 (fresh=785, stale=141, missing=1); cache hits=926; cache misses=1; cutoff ties=2 (0 excluded)
-- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 28/29; direct valuation 28/29; proxy inputs 28/29; missing valuation support 1/29
+- fundamentals enrichment: ok - eligible=927; budget=30; selected=30; attempts=30; successful=29; cache coverage=926/927 (fresh=788, stale=138, missing=1); cache hits=926; cache misses=1; cutoff ties=2 (0 excluded)
+- finimpulse fundamentals: warning - 29/30 Finimpulse lookups parsed; valuation support 29/29; direct valuation 28/29; proxy inputs 28/29; missing valuation support 0/29
 - eodhd fundamentals: warning - EODHD_API_KEY is not configured
-- valuation fallback: warning - 0/2 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
-- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/2 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
-- valuation fallback: warning - 0/2 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/2 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: EODHD_API_KEY is not configured
+- free fundamentals: warning - No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
+- valuation fallback: warning - 0/1 fallback lookups parsed; 0 fallback valuation enrichments; fallback source: No successful Yahoo-style fundamentals lookups (0/1 Yahoo-style lookups parsed): HTTP Error 401: Unauthorized
 
 ## Watchlist
 
