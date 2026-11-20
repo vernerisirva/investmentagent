@@ -256,14 +256,39 @@ Trading ideas require a short-term setup, such as strong momentum, unusual turno
 Both public lists use `--min-country FI:3`, so each top 10 includes at least three Finnish companies when enough Finnish candidates are available.
 Long-term reports also include a conviction bucket, a plain-English thesis, and component scores for business quality, valuation, growth, balance sheet, momentum, risk, and data confidence.
 
-The performance page tracks published picks over 1d, 5d, 20d, and 60d horizons. It includes hit rate, average return, downside/risk metrics, broad market context, and same-country equal-weight benchmark comparison when matching market snapshots are available. It summarizes results publicly and may suggest scoring ideas after enough observations, but it does not change ranking weights automatically.
+Each idea report opens with a summary table and explains every selected company with
+decision-time context from the same scoring run: rank and score percentile within the
+eligible universe (X), the score components that drove the rank and how unusual they are,
+whether the minimum-country rule included it, its position against listing peers (same
+country and venue; mixed industries) and against all of X for P/E, P/B, EV/EBIT, operating
+margin, revenue growth, debt/equity, market cap and liquidity, fundamentals age, missing
+inputs and the risks to weigh. Zero or negative multiples are reported as not meaningful,
+fewer than five comparable peers as unavailable. Nothing is recomputed for past dates: X
+does not retain raw fundamentals, so historical reports stay as published. A trading report
+with no candidates says so explicitly. These comparisons are presentation only; they never
+change ranking, X, benchmark plans or the JSON report.
+
+The performance page (`investmentagent evaluate report`) is rendered from the published
+Performance v2 analysis after the daily analysis step. It reads the partitioned index and
+verifies every partition digest; inconsistent files make it say "unavailable" instead of
+showing figures. It shows how evidence is accumulating per strategy and horizon, reports
+benchmark-relative aggregates only once the frozen minimum of 20 analysis-eligible decision
+dates is met, lists per-date results only for analysis-eligible dates, and states that
+risk-adjusted alpha is not yet estimable. It also writes the overview landing page with the
+latest production date, methodology, evidence counts, price coverage, benchmark availability,
+analysis freshness and production gaps.
+
+The earlier Performance v1 scorecard is kept as a legacy, non-authoritative archive at
+`performance/legacy.html`. It pools overlapping daily picks and a retired same-country
+benchmark; its automatic signal notes are descriptive only and never change scoring weights.
 
 Public pages:
 
 - Latest landing page: `https://vernerisirva.github.io/investmentagent/`
 - Latest trading ideas: `https://vernerisirva.github.io/investmentagent/reports/trading/latest.html`
 - Latest long-term ideas: `https://vernerisirva.github.io/investmentagent/reports/long-term/latest.html`
-- Performance scorecard: `https://vernerisirva.github.io/investmentagent/performance/`
+- Performance v2 (authoritative): `https://vernerisirva.github.io/investmentagent/performance/`
+- Legacy Performance v1 scorecard: `https://vernerisirva.github.io/investmentagent/performance/legacy.html`
 - Dated trading ideas: `https://vernerisirva.github.io/investmentagent/reports/trading/YYYY-MM-DD.html`
 - Dated long-term ideas: `https://vernerisirva.github.io/investmentagent/reports/long-term/YYYY-MM-DD.html`
 

@@ -177,7 +177,8 @@ jobs:
             echo
             echo "## Performance"
             echo
-            echo "- [Performance Scorecard](performance/index.html)"
+            echo "- [Performance v2 (authoritative evidence)](performance/index.html)"
+            echo "- [Legacy Performance v1 scorecard (non-authoritative archive)](performance/legacy.html)"
             echo
             echo "## Dated Reports"
             echo
@@ -240,8 +241,7 @@ jobs:
             --report-date "$REPORT_DATE" \
             --ledger docs/data/performance/ledger \
             --legacy-ledger docs/data/performance/ledger.json \
-            --output docs/performance/index.md \
-            --latest docs/performance/latest.md \
+            --output docs/performance/legacy.md \
             --price-provider live \
             --generated-at "$GENERATED_AT"
 
@@ -294,12 +294,31 @@ jobs:
             --data-cutoff "$analysis_at" \
             --generated-at "$analysis_at"
 
+      # Presentation only: renders the overview and Performance v2 pages from the analysis
+      # files on disk, verifying every partition digest; reads no prices and calls no provider.
+      # Inconsistent analysis files render as "unavailable" instead of stale figures.
+      - name: Render public performance pages
+        id: public_pages
+        if: env.RUN_DAILY_REPORT == 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          investmentagent evaluate report \
+            --analysis-dir "$ANALYSIS_ROOT/fixed-decision-membership-v1/cutoff-maturity-v1/representative-benchmarks-v1/performance-v2" \
+            --evaluation-root "$EVALUATION_ROOT" \
+            --output docs/performance/index.md \
+            --latest docs/performance/latest.md \
+            --overview docs/index.md \
+            --docs-root docs \
+            --analysis-outcome "${{ steps.performance_v2_analysis.outcome }}" \
+            --generated-at "$GENERATED_AT"
+
       - name: Commit performance records
         if: env.RUN_DAILY_REPORT == 'true'
         run: |
           # A partially updated legacy ledger or scorecard is never published either.
           if [ "${{ steps.legacy_scorecard.outcome }}" = "success" ]; then
-            git add docs/performance docs/data/performance
+            git add docs/performance/legacy.md docs/data/performance
           else
             echo "::warning::Legacy performance scorecard did not complete; publishing without it."
           fi
@@ -312,14 +331,21 @@ jobs:
           else
             echo "::warning::Performance v2 analysis did not complete; publishing outcomes without it."
           fi
+          # The overview and Performance v2 pages are published only when fully rendered.
+          if [ "${{ steps.public_pages.outcome }}" = "success" ]; then
+            git add docs/index.md docs/performance/index.md docs/performance/latest.md
+          else
+            echo "::warning::Public performance pages did not render; the previous pages stay published."
+          fi
           bash .github/scripts/publish-staged.sh "reports: update performance records ${REPORT_DATE}"
 
-      # Evidence is already published; this only makes a degraded refresh, analysis or legacy
-      # scorecard visible.
+      # Evidence is already published; this only makes a degraded refresh, analysis, legacy
+      # scorecard or public-page render visible.
       - name: Report degraded performance records
         if: >-
           env.RUN_DAILY_REPORT == 'true' && (steps.performance_v2_outcomes.outcome == 'failure'
-          || steps.performance_v2_analysis.outcome == 'failure' || steps.legacy_scorecard.outcome == 'failure')
+          || steps.performance_v2_analysis.outcome == 'failure' || steps.legacy_scorecard.outcome == 'failure'
+          || steps.public_pages.outcome == 'failure')
         run: |
-          echo "::error::Performance v2 outcome refresh: ${{ steps.performance_v2_outcomes.outcome }}; analysis: ${{ steps.performance_v2_analysis.outcome }}; legacy scorecard: ${{ steps.legacy_scorecard.outcome }}."
+          echo "::error::Performance v2 outcome refresh: ${{ steps.performance_v2_outcomes.outcome }}; analysis: ${{ steps.performance_v2_analysis.outcome }}; legacy scorecard: ${{ steps.legacy_scorecard.outcome }}; public pages: ${{ steps.public_pages.outcome }}."
           exit 1

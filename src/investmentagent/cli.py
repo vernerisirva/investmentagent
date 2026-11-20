@@ -41,6 +41,7 @@ from investmentagent.fundamentals_cache import (
     DEFAULT_FUNDAMENTALS_MAX_AGE_DAYS,
     FileFundamentalsCache,
     FundamentalsFreshnessPolicy,
+    company_cache_identity,
 )
 from investmentagent.global_ai import build_global_ai_top5
 from investmentagent.market_calendar import market_day_status
@@ -60,6 +61,15 @@ from investmentagent.performance import (
     save_ledger,
     update_due_outcomes,
 )
+from investmentagent.performance_report import (
+    AnalysisUnavailable,
+    load_analysis_summary,
+    render_overview_page,
+    render_performance_page,
+    report_files_for,
+    scan_evaluations,
+)
+from investmentagent.report_comparisons import compare_ideas, comparison_rows
 from investmentagent.renderers import (
     render_deep_dive_json,
     render_deep_dive_text,
@@ -236,13 +246,17 @@ def _raise_for_source_errors(provider) -> None:
             raise typer.BadParameter(f"{check.name}: {check.status} - {check.detail}")
 
 
-def _save_watchlist_report(path: str, items, metadata: dict, source_checks) -> None:
+def _save_watchlist_report(
+    path: str, items, metadata: dict, source_checks, comparison=None, comparison_error=None
+) -> None:
     report_path = Path(path)
     suffix = report_path.suffix.lower()
     if suffix == ".json":
         content = render_watchlist_report_json(items, metadata, source_checks)
     elif suffix in {".md", ".markdown"}:
-        content = render_watchlist_report_markdown(items, metadata, source_checks)
+        content = render_watchlist_report_markdown(
+            items, metadata, source_checks, comparison, comparison_error=comparison_error
+        )
     else:
         raise typer.BadParameter("save path must end in .json, .md, or .markdown")
     report_path.parent.mkdir(parents=True, exist_ok=True)
@@ -561,6 +575,7 @@ def watchlist(
         "strategy": normalized_strategy,
         "min_country_counts": min_country_counts,
     }
+    evaluation_snapshot = None
     if evaluation_dir is not None:
         report_day = (
             explicit_evaluation_report_date
@@ -639,8 +654,20 @@ def watchlist(
             production_context=production_context,
         )
         save_benchmark_plan(Path(evaluation_dir), evaluation_snapshot, benchmark_plan)
+    comparison, comparison_error = None, None
+    if any(Path(path).suffix.lower() in {".md", ".markdown"} for path in save_paths or ()):
+        try:
+            comparison = _decision_time_comparison(
+                build_result, items, strategy=normalized_strategy, limit=limit,
+                metadata=metadata, evaluation_snapshot=evaluation_snapshot,
+            )
+        except Exception as exc:  # presentation only: never block evidence or reports
+            comparison_error = type(exc).__name__
+            typer.echo(f"report comparison error: {exc}", err=True)
     for save_path in save_paths or ():
-        _save_watchlist_report(save_path, items, metadata, source_checks)
+        _save_watchlist_report(
+            save_path, items, metadata, source_checks, comparison, comparison_error
+        )
 
     if normalized_output == "text":
         if verbose:
@@ -651,6 +678,22 @@ def watchlist(
     if normalized_output == "json":
         typer.echo(render_watchlist_json(items))
         return
+
+
+def _decision_time_comparison(build_result, items, *, strategy, limit, metadata, evaluation_snapshot):
+    """Peer comparisons from this run's own ranked universe; nothing from other dates."""
+    rows = comparison_rows(
+        build_result.ranked_items, strategy=strategy,
+        evaluation_rows=evaluation_snapshot.rows if evaluation_snapshot is not None else None,
+    )
+    evaluation = metadata.get("evaluation") or {}
+    return compare_ideas(
+        rows, [company_cache_identity(item.research.company) for item in items],
+        strategy=strategy, public_limit=limit,
+        decision_at=evaluation.get("decision_at") or metadata.get("generated_at"),
+        cache_recorded=evaluation_snapshot is not None,
+        source_universe_size=build_result.diagnostics.source_universe_size,
+    )
 
 
 @app.command("deep-dive")
@@ -995,6 +1038,67 @@ def evaluate_analyze(
     )
 
 
+ANALYSIS_STEP_OUTCOMES = ("success", "failure", "cancelled", "skipped")
+
+
+@evaluate_app.command("report")
+def evaluate_report(
+    analysis_dir: str = typer.Option(
+        DEFAULT_ANALYSIS_DIR, "--analysis-dir", help="Partitioned Performance v2 analysis directory."
+    ),
+    evaluation_root: str = typer.Option(
+        "data/evaluations", "--evaluation-root", help="Evaluation snapshot root (headers only)."
+    ),
+    output_path: str = typer.Option(
+        "docs/performance/index.md", "--output", help="Public Performance v2 page."
+    ),
+    latest_path: str | None = typer.Option(None, "--latest", help="Optional copy of the page."),
+    overview_path: str | None = typer.Option(
+        None, "--overview", help="Optional public overview (landing) page."
+    ),
+    docs_root: str = typer.Option("docs", "--docs-root", help="Published site root."),
+    analysis_outcome: str | None = typer.Option(
+        None,
+        "--analysis-outcome",
+        help="This run's analysis step outcome: success, failure, cancelled or skipped.",
+    ),
+    generated_at: str | None = typer.Option(
+        None, "--generated-at", help="Display timestamp for the pages."
+    ),
+) -> None:
+    """Render public pages from the published analysis; reads local files only."""
+    outcome = (analysis_outcome or "").strip().lower() or None
+    if outcome is not None and outcome not in ANALYSIS_STEP_OUTCOMES:
+        raise typer.BadParameter(
+            "analysis outcome must be one of: " + ", ".join(ANALYSIS_STEP_OUTCOMES)
+        )
+    evaluations = scan_evaluations(Path(evaluation_root))
+    try:
+        summary, reason = load_analysis_summary(Path(analysis_dir)), None
+    except AnalysisUnavailable as exc:
+        summary, reason = None, str(exc)
+        typer.echo(f"Performance v2 analysis unavailable: {exc}", err=True)
+    display = generated_at or datetime.now(timezone.utc).isoformat()
+    pages = {}
+    page = render_performance_page(
+        summary, evaluations=evaluations, generated_at=display,
+        analysis_outcome=outcome, unavailable_reason=reason,
+    ) + "\n"
+    pages[Path(output_path)] = page
+    if latest_path is not None:
+        pages[Path(latest_path)] = page
+    if overview_path is not None:
+        latest_date = max((run.report_date for run in evaluations), default=None)
+        pages[Path(overview_path)] = render_overview_page(
+            summary, evaluations=evaluations, generated_at=display,
+            report_files=report_files_for(Path(docs_root), latest_date),
+            analysis_outcome=outcome, unavailable_reason=reason,
+        ) + "\n"
+    for path, content in pages.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+
 @performance_app.command("update")
 def performance_update(
     report_json_paths: list[str] = typer.Option(
@@ -1012,7 +1116,7 @@ def performance_update(
         help="Single-file ledger that seeds a partitioned ledger without an index. Never written.",
     ),
     output_path: str = typer.Option(
-        "docs/performance/index.md", "--output", help="Performance scorecard Markdown path."
+        "docs/performance/legacy.md", "--output", help="Legacy Performance v1 scorecard Markdown path."
     ),
     latest_path: str | None = typer.Option(
         None, "--latest", help="Optional latest scorecard copy path."
