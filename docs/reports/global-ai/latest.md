@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-11-19 09:08 EET
+- generated_at: 2026-11-20 08:58 EET
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -90,7 +90,30 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 #### Evidence
 - [Finimpulse fundamentals lookup (MSFT)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
 
-### #4 Taiwan Semiconductor Manufacturing (TSM)
+### #4 ASML Holding (ASML)
+`NL` | NASDAQ | `Semiconductor equipment`
+
+**AI thesis:** Critical lithography supplier for advanced chips used in AI accelerators and high-performance computing.
+**Score:** 59
+**Valuation:** P/E 34.3324; P/B 1198.05
+**Quality:** Operating margin 38.5%; debt/equity 0.089
+**Growth:** Revenue growth 55.2%
+**Data quality:** partial
+
+#### Reasons
+- reasonable P/E
+- profitable AI-exposed business
+- conservative balance sheet
+- strong revenue growth
+- direct AI infrastructure exposure
+
+#### Risks
+- valuation risk: high P/B
+
+#### Evidence
+- [Finimpulse fundamentals lookup (ASML)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
+
+### #5 Taiwan Semiconductor Manufacturing (TSM)
 `TW` | NYSE | `AI compute manufacturing`
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
@@ -112,25 +135,3 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 #### Evidence
 - [Finimpulse fundamentals lookup (TSM)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
-
-### #5 Oracle (ORCL)
-`US` | NYSE | `Cloud AI platform`
-
-**AI thesis:** Cloud infrastructure expansion and database footprint create enterprise AI infrastructure exposure.
-**Score:** 58
-**Valuation:** P/E 18.0206; P/B 5.57083
-**Quality:** Operating margin 34.3%; debt/equity 2.5172
-**Growth:** Revenue growth 29.6%
-**Data quality:** partial
-
-#### Reasons
-- reasonable P/E
-- profitable AI-exposed business
-- strong revenue growth
-- direct AI infrastructure exposure
-
-#### Risks
-- high debt/equity
-
-#### Evidence
-- [Finimpulse fundamentals lookup (ORCL)](https://developers.finimpulse.com/v1/statistics/general/) (finimpulse)
