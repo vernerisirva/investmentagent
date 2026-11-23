@@ -17,7 +17,8 @@
     },
     "analysis_eligible": false,
     "analysis_ineligibility_reasons": [
-      "horizon is not due"
+      "outcome coverage 0.0% is below 70%",
+      "valid company count 0 is below 50"
     ],
     "benchmark_methodology": "representative-benchmarks-v1",
     "coherent_return_basis": true,
@@ -978,19 +979,19 @@
       "sessions": 60,
       "unit": "market_sessions"
     },
-    "is_due": false,
+    "is_due": true,
     "lifecycle": {
-      "mature": 0,
-      "mature_awaiting_retrieval": 0,
+      "mature": 892,
+      "mature_awaiting_retrieval": 892,
       "mature_budget_deferred": 0,
       "mature_failed": 0,
-      "mature_pending": 0,
+      "mature_pending": 892,
       "mature_priced": 0,
       "mature_unavailable": 0,
-      "not_mature": 892,
+      "not_mature": 0,
       "outcome_status_methodology": "cutoff-maturity-v1",
       "status_counts": {
-        "not_due": 892
+        "coherent_history_pending": 892
       },
       "total": 892
     },

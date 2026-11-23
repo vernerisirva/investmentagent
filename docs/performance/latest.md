@@ -4,11 +4,11 @@
 
 > LEGACY_NON_AUTHORITATIVE: Performance v1 benchmark values are retained for historical reference, not InvestmentAgent validation evidence. They are not comparable with representative-benchmarks-v1.
 
-Generated: 2026-11-20 08:58 EET
+Generated: 2026-11-23 09:19 EET
 
 ## Market Context
 
-- Latest snapshot: 2026-11-20
+- Latest snapshot: 2026-11-23
 - Market tone: Mixed / quiet
 - Companies tracked: 933
 - Large positive movers: 0
@@ -84,19 +84,19 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 571 | 42.6% | -0.06% | 0% |
+| 1d | 581 | 42% | -0.09% | 0% |
 | 5d | 511 | 39.9% | -0.5% | -0.41% |
-| 20d | 400 | 36.8% | -1.74% | -1.52% |
-| 60d | 41 | 26.8% | -7.69% | -4.29% |
+| 20d | 410 | 36.6% | -1.76% | -1.52% |
+| 60d | 51 | 29.4% | -6.98% | -3.76% |
 
 ### Risk And Benchmark
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -14.76% | 45.9% | 3 | 2.06% | +0.05% | -0.11% | 47.3% |
+| 1d | -14.76% | 46.5% | 3 | 2.07% | +0.02% | -0.11% | 47.7% |
 | 5d | -24.05% | 54.8% | 11 | 4.25% | +0.36% | -0.86% | 48.5% |
-| 20d | -27% | 62.3% | 37 | 7.13% | +2.72% | -4.46% | 44.5% |
-| 60d | -40.05% | 73.2% | 13 | 14.16% | +0.26% | -7.95% | 34.1% |
+| 20d | -27% | 62.4% | 38 | 7.12% | +2.55% | -4.31% | 45.1% |
+| 60d | -42.5% | 70.6% | 15 | 14.44% | +0.14% | -7.12% | 35.3% |
 
 ### Best Long-Term Research Picks
 
@@ -108,7 +108,7 @@ _Only high-conviction and fundamental watchlist names count here._
 
 ### Worst Long-Term Research Picks
 
-- **Outokumpu Oyj (OUT1V)** - 60d return **-40.05%** ([report](../reports/long-term/2026-08-27.html))
+- **Outokumpu Oyj (OUT1V)** - 60d return **-42.5%** ([report](../reports/long-term/2026-08-31.html))
 - **4C Group (4C)** - 60d return **-37.35%** ([report](../reports/long-term/2026-08-25.html))
 - **Cheffelo (CHEF)** - 60d return **-31.22%** ([report](../reports/long-term/2026-08-27.html))
 - **Green Landscaping Group (GREEN)** - 20d return **-25.29%** ([report](../reports/long-term/2026-09-18.html))
@@ -118,26 +118,26 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate severe proof gaps: 0 | 591 | -1.6% | 38.1% |
-| Quality: Business description available | 591 | -1.6% | 38.1% |
-| Quality: Positive operating margin | 591 | -1.6% | 38.1% |
-| Reason: Business description available | 591 | -1.6% | 38.1% |
-| Reason: Positive operating margin | 591 | -1.6% | 38.1% |
-| Gate: High-conviction candidate | 590 | -1.59% | 38.1% |
-| Reason: Gate tier: High-conviction candidate | 590 | -1.59% | 38.1% |
-| Valuation proxy: Pe ratio | 584 | -1.62% | 37.8% |
-| Quality: Revenue growth | 560 | -1.62% | 38% |
-| Reason: Revenue growth | 560 | -1.62% | 38% |
-| Reason: Adequate liquidity | 517 | -1.45% | 40% |
-| Quality: Attractive valuation | 503 | -2.22% | 33.6% |
+| Gate severe proof gaps: 0 | 601 | -1.68% | 37.8% |
+| Quality: Business description available | 601 | -1.68% | 37.8% |
+| Quality: Positive operating margin | 601 | -1.68% | 37.8% |
+| Reason: Business description available | 601 | -1.68% | 37.8% |
+| Reason: Positive operating margin | 601 | -1.68% | 37.8% |
+| Gate: High-conviction candidate | 600 | -1.67% | 37.8% |
+| Reason: Gate tier: High-conviction candidate | 600 | -1.67% | 37.8% |
+| Valuation proxy: Pe ratio | 594 | -1.71% | 37.4% |
+| Quality: Revenue growth | 569 | -1.68% | 38% |
+| Reason: Revenue growth | 569 | -1.68% | 38% |
+| Reason: Adequate liquidity | 524 | -1.51% | 40.1% |
+| Quality: Attractive valuation | 512 | -2.36% | 32.8% |
 
 ### Long-Term Research Learning Suggestions
 
-- Gate severe proof gaps: 0 has produced a negative average return of -1.6% across 591 completed observations. Review whether its scoring weight should change.
-- Quality: Business description available has produced a negative average return of -1.6% across 591 completed observations. Review whether its scoring weight should change.
-- Quality: Positive operating margin has produced a negative average return of -1.6% across 591 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available has produced a negative average return of -1.6% across 591 completed observations. Review whether its scoring weight should change.
-- Reason: Positive operating margin has produced a negative average return of -1.6% across 591 completed observations. Review whether its scoring weight should change.
+- Gate severe proof gaps: 0 has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
+- Quality: Positive operating margin has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
+- Reason: Positive operating margin has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
 
 ## Speculative Monitors
 
