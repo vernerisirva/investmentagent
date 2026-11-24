@@ -4,16 +4,16 @@
 
 > LEGACY_NON_AUTHORITATIVE: Performance v1 benchmark values are retained for historical reference, not InvestmentAgent validation evidence. They are not comparable with representative-benchmarks-v1.
 
-Generated: 2026-11-23 09:19 EET
+Generated: 2026-11-24 11:41 EET
 
 ## Market Context
 
-- Latest snapshot: 2026-11-23
+- Latest snapshot: 2026-11-24
 - Market tone: Mixed / quiet
 - Companies tracked: 933
-- Large positive movers: 0
-- Sharp selloffs: 0
-- Active turnover signals: 0
+- Large positive movers: 24
+- Sharp selloffs: 26
+- Active turnover signals: 331
 
 ## Trading Ideas
 
@@ -22,7 +22,7 @@ Generated: 2026-11-23 09:19 EET
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
 | 1d | 141 | 46.1% | +0.51% | 0% |
-| 5d | 114 | 55.3% | +1.72% | +0.55% |
+| 5d | 124 | 54% | +1.55% | +0.43% |
 | 20d | 109 | 41.3% | -0.88% | -2.09% |
 | 60d | 60 | 41.7% | -6.35% | -6.03% |
 
@@ -31,7 +31,7 @@ Generated: 2026-11-23 09:19 EET
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1d | -15.56% | 34% | 2 | 4.01% | +1.36% | -1.25% | 33.7% |
-| 5d | -57.02% | 43.9% | 7 | 11.69% | +7.72% | -7.5% | 31.1% |
+| 5d | -57.02% | 45.2% | 7 | 11.27% | +6.58% | -6.42% | 35.7% |
 | 20d | -81.3% | 57.8% | 16 | 20.46% | +12.57% | -18.96% | 23.2% |
 | 60d | -85.26% | 58.3% | 25 | 29.91% | +17.52% | -23.88% | 23.3% |
 
@@ -55,13 +55,13 @@ Generated: 2026-11-23 09:19 EET
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: Trading strategy adjustment applied | 120 | -2.57% | 40.8% |
-| Reason: High live turnover | 107 | -3.07% | 41.1% |
-| Country: SE | 102 | -0.84% | 46.1% |
-| Segment: First north | 71 | -3.57% | 43.7% |
-| Segment: Main market | 70 | +0.92% | 42.9% |
+| Reason: Trading strategy adjustment applied | 120 | -2.61% | 44.2% |
+| Reason: High live turnover | 107 | -3.1% | 44.9% |
+| Country: SE | 102 | -0.82% | 50% |
+| Segment: First north | 71 | -3.48% | 45.1% |
+| Segment: Main market | 70 | +0.77% | 47.1% |
 | Reason: Live price available from Nasdaq Nordic | 40 | +8.61% | 60% |
-| Country: FI | 39 | -2.64% | 35.9% |
+| Country: FI | 39 | -2.8% | 35.9% |
 | Reason: Small market cap | 36 | +8.02% | 61.1% |
 | Reason: First North listing | 33 | +7.36% | 60.6% |
 | Reason: Moderate live turnover | 11 | +5.26% | 36.4% |
@@ -70,11 +70,11 @@ Generated: 2026-11-23 09:19 EET
 
 ### Trading Learning Suggestions
 
-- Reason: Trading strategy adjustment applied has produced a negative average return of -2.57% across 120 completed observations. Review whether its scoring weight should change.
-- Reason: High live turnover has produced a negative average return of -3.07% across 107 completed observations. Review whether its scoring weight should change.
-- Country: SE has produced a negative average return of -0.84% across 102 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a negative average return of -3.57% across 71 completed observations. Review whether its scoring weight should change.
-- Segment: Main market has produced a positive average return of +0.92% across 70 completed observations. Review whether its scoring weight should change.
+- Reason: Trading strategy adjustment applied has produced a negative average return of -2.61% across 120 completed observations. Review whether its scoring weight should change.
+- Reason: High live turnover has produced a negative average return of -3.1% across 107 completed observations. Review whether its scoring weight should change.
+- Country: SE has produced a negative average return of -0.82% across 102 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a negative average return of -3.48% across 71 completed observations. Review whether its scoring weight should change.
+- Segment: Main market has produced a positive average return of +0.77% across 70 completed observations. Review whether its scoring weight should change.
 
 ## Long-Term Research Candidates
 
@@ -84,19 +84,19 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 581 | 42% | -0.09% | 0% |
-| 5d | 511 | 39.9% | -0.5% | -0.41% |
-| 20d | 410 | 36.6% | -1.76% | -1.52% |
-| 60d | 51 | 29.4% | -6.98% | -3.76% |
+| 1d | 591 | 42% | -0.09% | 0% |
+| 5d | 521 | 39.7% | -0.51% | -0.41% |
+| 20d | 420 | 36.7% | -1.76% | -1.52% |
+| 60d | 61 | 34.4% | -6.14% | -3.4% |
 
 ### Risk And Benchmark
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -14.76% | 46.5% | 3 | 2.07% | +0.02% | -0.11% | 47.7% |
-| 5d | -24.05% | 54.8% | 11 | 4.25% | +0.36% | -0.86% | 48.5% |
-| 20d | -27% | 62.4% | 38 | 7.12% | +2.55% | -4.31% | 45.1% |
-| 60d | -42.5% | 70.6% | 15 | 14.44% | +0.14% | -7.12% | 35.3% |
+| 1d | -14.76% | 46.5% | 3 | 2.06% | +0.03% | -0.12% | 47.4% |
+| 5d | -24.05% | 54.9% | 11 | 4.24% | +0.32% | -0.83% | 48.6% |
+| 20d | -27% | 62.4% | 39 | 7.13% | +2.4% | -4.16% | 45.5% |
+| 60d | -42.5% | 65.6% | 17 | 14.79% | +0.13% | -6.27% | 39.3% |
 
 ### Best Long-Term Research Picks
 
@@ -118,26 +118,26 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate severe proof gaps: 0 | 601 | -1.68% | 37.8% |
-| Quality: Business description available | 601 | -1.68% | 37.8% |
-| Quality: Positive operating margin | 601 | -1.68% | 37.8% |
-| Reason: Business description available | 601 | -1.68% | 37.8% |
-| Reason: Positive operating margin | 601 | -1.68% | 37.8% |
-| Gate: High-conviction candidate | 600 | -1.67% | 37.8% |
-| Reason: Gate tier: High-conviction candidate | 600 | -1.67% | 37.8% |
-| Valuation proxy: Pe ratio | 594 | -1.71% | 37.4% |
-| Quality: Revenue growth | 569 | -1.68% | 38% |
-| Reason: Revenue growth | 569 | -1.68% | 38% |
-| Reason: Adequate liquidity | 524 | -1.51% | 40.1% |
-| Quality: Attractive valuation | 512 | -2.36% | 32.8% |
+| Gate severe proof gaps: 0 | 611 | -1.75% | 38.8% |
+| Quality: Business description available | 611 | -1.75% | 38.8% |
+| Quality: Positive operating margin | 611 | -1.75% | 38.8% |
+| Reason: Business description available | 611 | -1.75% | 38.8% |
+| Reason: Positive operating margin | 611 | -1.75% | 38.8% |
+| Gate: High-conviction candidate | 610 | -1.74% | 38.9% |
+| Reason: Gate tier: High-conviction candidate | 610 | -1.74% | 38.9% |
+| Valuation proxy: Pe ratio | 604 | -1.79% | 38.2% |
+| Quality: Revenue growth | 578 | -1.73% | 39.3% |
+| Reason: Revenue growth | 578 | -1.73% | 39.3% |
+| Reason: Adequate liquidity | 531 | -1.55% | 41.2% |
+| Quality: Attractive valuation | 521 | -2.53% | 33.4% |
 
 ### Long-Term Research Learning Suggestions
 
-- Gate severe proof gaps: 0 has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
-- Quality: Business description available has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
-- Quality: Positive operating margin has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
-- Reason: Positive operating margin has produced a negative average return of -1.68% across 601 completed observations. Review whether its scoring weight should change.
+- Gate severe proof gaps: 0 has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
+- Quality: Positive operating margin has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
+- Reason: Positive operating margin has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
 
 ## Speculative Monitors
 
