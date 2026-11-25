@@ -4,16 +4,16 @@
 
 > LEGACY_NON_AUTHORITATIVE: Performance v1 benchmark values are retained for historical reference, not InvestmentAgent validation evidence. They are not comparable with representative-benchmarks-v1.
 
-Generated: 2026-11-24 11:41 EET
+Generated: 2026-11-25 10:13 EET
 
 ## Market Context
 
-- Latest snapshot: 2026-11-24
+- Latest snapshot: 2026-11-25
 - Market tone: Mixed / quiet
 - Companies tracked: 933
-- Large positive movers: 24
-- Sharp selloffs: 26
-- Active turnover signals: 331
+- Large positive movers: 0
+- Sharp selloffs: 0
+- Active turnover signals: 1
 
 ## Trading Ideas
 
@@ -21,7 +21,7 @@ Generated: 2026-11-24 11:41 EET
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 141 | 46.1% | +0.51% | 0% |
+| 1d | 151 | 45% | +0.44% | 0% |
 | 5d | 124 | 54% | +1.55% | +0.43% |
 | 20d | 109 | 41.3% | -0.88% | -2.09% |
 | 60d | 60 | 41.7% | -6.35% | -6.03% |
@@ -30,7 +30,7 @@ Generated: 2026-11-24 11:41 EET
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -15.56% | 34% | 2 | 4.01% | +1.36% | -1.25% | 33.7% |
+| 1d | -15.56% | 35.8% | 2 | 3.9% | +1.17% | -1.12% | 35.1% |
 | 5d | -57.02% | 45.2% | 7 | 11.27% | +6.58% | -6.42% | 35.7% |
 | 20d | -81.3% | 57.8% | 16 | 20.46% | +12.57% | -18.96% | 23.2% |
 | 60d | -85.26% | 58.3% | 25 | 29.91% | +17.52% | -23.88% | 23.3% |
@@ -55,26 +55,26 @@ Generated: 2026-11-24 11:41 EET
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Reason: Trading strategy adjustment applied | 120 | -2.61% | 44.2% |
-| Reason: High live turnover | 107 | -3.1% | 44.9% |
-| Country: SE | 102 | -0.82% | 50% |
-| Segment: First north | 71 | -3.48% | 45.1% |
-| Segment: Main market | 70 | +0.77% | 47.1% |
+| Reason: Trading strategy adjustment applied | 130 | -2.45% | 43.1% |
+| Reason: High live turnover | 116 | -2.89% | 44% |
+| Country: SE | 109 | -0.85% | 46.8% |
+| Segment: Main market | 76 | +0.66% | 47.4% |
+| Segment: First north | 75 | -3.31% | 42.7% |
+| Country: FI | 42 | -2.51% | 40.5% |
 | Reason: Live price available from Nasdaq Nordic | 40 | +8.61% | 60% |
-| Country: FI | 39 | -2.8% | 35.9% |
 | Reason: Small market cap | 36 | +8.02% | 61.1% |
 | Reason: First North listing | 33 | +7.36% | 60.6% |
-| Reason: Moderate live turnover | 11 | +5.26% | 36.4% |
-| Reason: Positive intraday momentum (+5.12%) | 1 | +8.67% | 100% |
+| Reason: Moderate live turnover | 12 | +4.62% | 33.3% |
+| Reason: Positive intraday momentum (+5.12%) | 2 | +3.17% | 50% |
 | Reason: Positive intraday momentum (+5.2%) | 1 | +14.25% | 100% |
 
 ### Trading Learning Suggestions
 
-- Reason: Trading strategy adjustment applied has produced a negative average return of -2.61% across 120 completed observations. Review whether its scoring weight should change.
-- Reason: High live turnover has produced a negative average return of -3.1% across 107 completed observations. Review whether its scoring weight should change.
-- Country: SE has produced a negative average return of -0.82% across 102 completed observations. Review whether its scoring weight should change.
-- Segment: First north has produced a negative average return of -3.48% across 71 completed observations. Review whether its scoring weight should change.
-- Segment: Main market has produced a positive average return of +0.77% across 70 completed observations. Review whether its scoring weight should change.
+- Reason: Trading strategy adjustment applied has produced a negative average return of -2.45% across 130 completed observations. Review whether its scoring weight should change.
+- Reason: High live turnover has produced a negative average return of -2.89% across 116 completed observations. Review whether its scoring weight should change.
+- Country: SE has produced a negative average return of -0.85% across 109 completed observations. Review whether its scoring weight should change.
+- Segment: Main market has produced a positive average return of +0.66% across 76 completed observations. Review whether its scoring weight should change.
+- Segment: First north has produced a negative average return of -3.31% across 75 completed observations. Review whether its scoring weight should change.
 
 ## Long-Term Research Candidates
 
@@ -84,31 +84,31 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Horizon | Completed | Hit Rate | Average Return | Median Return |
 | --- | ---: | ---: | ---: | ---: |
-| 1d | 591 | 42% | -0.09% | 0% |
-| 5d | 521 | 39.7% | -0.51% | -0.41% |
-| 20d | 420 | 36.7% | -1.76% | -1.52% |
-| 60d | 61 | 34.4% | -6.14% | -3.4% |
+| 1d | 601 | 41.6% | -0.1% | 0% |
+| 5d | 531 | 39.7% | -0.52% | -0.41% |
+| 20d | 430 | 36.5% | -1.76% | -1.52% |
+| 60d | 71 | 38% | -5.51% | -2.47% |
 
 ### Risk And Benchmark
 
 | Horizon | Worst Return | Loss Rate | Large Losers | Volatility | Benchmark | Excess Return | Excess Hit Rate |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1d | -14.76% | 46.5% | 3 | 2.06% | +0.03% | -0.12% | 47.4% |
-| 5d | -24.05% | 54.9% | 11 | 4.24% | +0.32% | -0.83% | 48.6% |
-| 20d | -27% | 62.4% | 39 | 7.13% | +2.4% | -4.16% | 45.5% |
-| 60d | -42.5% | 65.6% | 17 | 14.79% | +0.13% | -6.27% | 39.3% |
+| 1d | -14.76% | 46.9% | 3 | 2.06% | +0.02% | -0.12% | 47.1% |
+| 5d | -24.05% | 55% | 11 | 4.23% | +0.26% | -0.78% | 49% |
+| 20d | -27% | 62.6% | 40 | 7.17% | +2.23% | -3.99% | 46% |
+| 60d | -43.37% | 62% | 19 | 15.22% | -0.16% | -5.36% | 42.3% |
 
 ### Best Long-Term Research Picks
 
 - **Avtech Sweden B (AVT B)** - 5d return **+34.23%** ([report](../reports/long-term/2026-10-28.html))
-- **Surgical Science Sweden (SUS)** - 20d return **+17.73%** ([report](../reports/long-term/2026-09-25.html))
+- **Surgical Science Sweden (SUS)** - 60d return **+20.43%** ([report](../reports/long-term/2026-09-02.html))
 - **Humble Group (HUMBLE)** - 20d return **+16.05%** ([report](../reports/long-term/2026-09-24.html))
+- **Kinnevik B (KINV B)** - 60d return **+13.38%** ([report](../reports/long-term/2026-09-02.html))
 - **Coffee Stain Group B (COFFEE B)** - 60d return **+10.62%** ([report](../reports/long-term/2026-08-27.html))
-- **Ratos B (RATO B)** - 60d return **+9.44%** ([report](../reports/long-term/2026-08-28.html))
 
 ### Worst Long-Term Research Picks
 
-- **Outokumpu Oyj (OUT1V)** - 60d return **-42.5%** ([report](../reports/long-term/2026-08-31.html))
+- **Outokumpu Oyj (OUT1V)** - 60d return **-43.37%** ([report](../reports/long-term/2026-09-02.html))
 - **4C Group (4C)** - 60d return **-37.35%** ([report](../reports/long-term/2026-08-25.html))
 - **Cheffelo (CHEF)** - 60d return **-31.22%** ([report](../reports/long-term/2026-08-27.html))
 - **Green Landscaping Group (GREEN)** - 20d return **-25.29%** ([report](../reports/long-term/2026-09-18.html))
@@ -118,26 +118,26 @@ _Only high-conviction and fundamental watchlist names count here._
 
 | Signal | Observations | Average Return | Hit Rate |
 | --- | ---: | ---: | ---: |
-| Gate severe proof gaps: 0 | 611 | -1.75% | 38.8% |
-| Quality: Business description available | 611 | -1.75% | 38.8% |
-| Quality: Positive operating margin | 611 | -1.75% | 38.8% |
-| Reason: Business description available | 611 | -1.75% | 38.8% |
-| Reason: Positive operating margin | 611 | -1.75% | 38.8% |
-| Gate: High-conviction candidate | 610 | -1.74% | 38.9% |
-| Reason: Gate tier: High-conviction candidate | 610 | -1.74% | 38.9% |
-| Valuation proxy: Pe ratio | 604 | -1.79% | 38.2% |
-| Quality: Revenue growth | 578 | -1.73% | 39.3% |
-| Reason: Revenue growth | 578 | -1.73% | 39.3% |
-| Reason: Adequate liquidity | 531 | -1.55% | 41.2% |
-| Quality: Attractive valuation | 521 | -2.53% | 33.4% |
+| Gate severe proof gaps: 0 | 621 | -1.83% | 38.8% |
+| Quality: Business description available | 621 | -1.83% | 38.8% |
+| Quality: Positive operating margin | 621 | -1.83% | 38.8% |
+| Reason: Business description available | 621 | -1.83% | 38.8% |
+| Reason: Positive operating margin | 621 | -1.83% | 38.8% |
+| Gate: High-conviction candidate | 620 | -1.81% | 38.9% |
+| Reason: Gate tier: High-conviction candidate | 620 | -1.81% | 38.9% |
+| Valuation proxy: Pe ratio | 614 | -1.89% | 38.3% |
+| Quality: Revenue growth | 587 | -1.8% | 39.4% |
+| Reason: Revenue growth | 587 | -1.8% | 39.4% |
+| Reason: Adequate liquidity | 540 | -1.61% | 41.1% |
+| Quality: Attractive valuation | 530 | -2.68% | 33.4% |
 
 ### Long-Term Research Learning Suggestions
 
-- Gate severe proof gaps: 0 has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
-- Quality: Business description available has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
-- Quality: Positive operating margin has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
-- Reason: Business description available has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
-- Reason: Positive operating margin has produced a negative average return of -1.75% across 611 completed observations. Review whether its scoring weight should change.
+- Gate severe proof gaps: 0 has produced a negative average return of -1.83% across 621 completed observations. Review whether its scoring weight should change.
+- Quality: Business description available has produced a negative average return of -1.83% across 621 completed observations. Review whether its scoring weight should change.
+- Quality: Positive operating margin has produced a negative average return of -1.83% across 621 completed observations. Review whether its scoring weight should change.
+- Reason: Business description available has produced a negative average return of -1.83% across 621 completed observations. Review whether its scoring weight should change.
+- Reason: Positive operating margin has produced a negative average return of -1.83% across 621 completed observations. Review whether its scoring weight should change.
 
 ## Speculative Monitors
 

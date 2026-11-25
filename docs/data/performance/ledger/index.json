@@ -2,7 +2,7 @@
   "ledger_storage": {
     "layout": "report-date-partitions-v1",
     "legacy_seed_sha256": "11d9aab89e90ccffc68193cde135da82eafff94d2611eae1c97a19667c0ca5de",
-    "market_snapshot_count": 132,
+    "market_snapshot_count": 133,
     "market_snapshot_partitions": [
       {
         "as_of_date": "2026-05-15",
@@ -795,9 +795,15 @@
         "entries": 933,
         "path": "market-snapshots/2026/2026-11-24.json",
         "sha256": "043e7df61303c8ca3e914fbcd321c190d6eda89f98b39b2d4e06e1b74a47b760"
+      },
+      {
+        "as_of_date": "2026-11-25",
+        "entries": 933,
+        "path": "market-snapshots/2026/2026-11-25.json",
+        "sha256": "11af5c901558b7641f5599a8de118a4c913095b6cb1452a2f10b8927e4e9f49c"
       }
     ],
-    "pick_count": 1529,
+    "pick_count": 1540,
     "pick_partitions": [
       {
         "entries": 20,
@@ -1289,7 +1295,7 @@
         "entries": 10,
         "path": "picks/2026/2026-09-02.json",
         "report_date": "2026-09-02",
-        "sha256": "bf7de9b4b2d26ccae78ef4fcae34be6615d168fdda1ff84ac3b5e335ceedb43d"
+        "sha256": "0e9a8ead481fe8c5011625f6d1406834296a365c7678e4e3aae6eeb98ee6c749"
       },
       {
         "entries": 10,
@@ -1529,7 +1535,7 @@
         "entries": 10,
         "path": "picks/2026/2026-10-28.json",
         "report_date": "2026-10-28",
-        "sha256": "628b955a476e6f110e2c8834b46e15aa3eeb1953bf0a81e7576d8e34eb5e25fa"
+        "sha256": "973fb632389621edb60ac273b23bdc72ab433272a619cc0d14daa112a9321b51"
       },
       {
         "entries": 10,
@@ -1589,7 +1595,7 @@
         "entries": 10,
         "path": "picks/2026/2026-11-18.json",
         "report_date": "2026-11-18",
-        "sha256": "94a00b188c997dbcaccadea87b5b1467a5dd43c534872025c8e6033a263eb6cc"
+        "sha256": "a1a87864b308304564966e523e255ac4464698d5330dcab7648fb575eac1f17b"
       },
       {
         "entries": 10,
@@ -1613,10 +1619,16 @@
         "entries": 20,
         "path": "picks/2026/2026-11-24.json",
         "report_date": "2026-11-24",
-        "sha256": "49673e1aea16068ee1540cd532b16ec531faa127767e4fc786dd2a0759b76130"
+        "sha256": "d01260437587cf5fc624cbc49d0f2c2c51588969dadb21d6522093beac846914"
+      },
+      {
+        "entries": 11,
+        "path": "picks/2026/2026-11-25.json",
+        "report_date": "2026-11-25",
+        "sha256": "a217f97f39dff526ab58769baf9e7ab3d68a50372e8700b6ffaf00e3e5855258"
       }
     ],
-    "reconstructed_sha256": "42d4e03d377d3bf25f3485c7b6012c55661543f15fa677530e682218f95f4b8d",
+    "reconstructed_sha256": "f887fed3ee25a2e08f1838d18bb20b8c593ba2b2b458840e40a883f469f0a420",
     "reconstruction": "picks are the pick partitions' picks concatenated in listed order; market_snapshots maps each listed as_of_date to its partition's market_snapshot"
   },
   "schema_version": 1
