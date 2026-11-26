@@ -5,7 +5,7 @@
 _Long-term AI candidates ranked by valuation discipline, quality, growth, AI relevance, and risk._
 
 ## Metadata
-- generated_at: 2026-11-25 10:13 EET
+- generated_at: 2026-11-26 10:01 EET
 - report_type: global-ai
 - limit: 5
 - universe_size: 12
@@ -49,7 +49,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Large-scale AI infrastructure, recommendation systems, open model strategy, and advertising optimization.
 **Score:** 66
-**Valuation:** P/E 21.1146; P/B 5.80733
+**Valuation:** P/E 20.1235; P/B 5.53473
 **Quality:** Operating margin 37.8%; debt/equity 0.4216
 **Growth:** Revenue growth 26.1%
 **Data quality:** partial
@@ -72,7 +72,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Azure, Copilot, enterprise distribution, and model partnerships create broad AI monetization paths.
 **Score:** 64
-**Valuation:** P/E 26.4368; P/B 7.99561
+**Valuation:** P/E 25.0472; P/B 7.57533
 **Quality:** Operating margin 47.1%; debt/equity 0.2847
 **Growth:** Revenue growth 18.8%
 **Data quality:** partial
@@ -95,7 +95,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Critical lithography supplier for advanced chips used in AI accelerators and high-performance computing.
 **Score:** 59
-**Valuation:** P/E 34.3324; P/B 1198.05
+**Valuation:** P/E 32.064; P/B 1118.89
 **Quality:** Operating margin 38.5%; debt/equity 0.089
 **Growth:** Revenue growth 55.2%
 **Data quality:** partial
@@ -118,7 +118,7 @@ _Long-term AI candidates ranked by valuation discipline, quality, growth, AI rel
 
 **AI thesis:** Leading advanced-node foundry behind many high-end AI chips and accelerators.
 **Score:** 59
-**Valuation:** P/E 23.501; P/B 69.6526
+**Valuation:** P/E 22.1867; P/B 65.7572
 **Quality:** Operating margin 58.0%; debt/equity 0.1519
 **Growth:** Revenue growth 50.9%
 **Data quality:** partial
