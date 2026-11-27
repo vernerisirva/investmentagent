@@ -4,21 +4,19 @@
   "horizon_label": "20_sessions",
   "run_metric": {
     "analysis_eligibility": {
-      "coverage_pct": 4.377104377104377,
+      "coverage_pct": 5.836139169472503,
       "eligible": false,
       "minimum_coverage_pct": 70.0,
       "minimum_valid_companies": 50,
       "original_company_count": 891,
       "reasons": [
-        "outcome coverage 4.4% is below 70%",
-        "valid company count 39 is below 50"
+        "outcome coverage 5.8% is below 70%"
       ],
-      "valid_company_count": 39
+      "valid_company_count": 52
     },
     "analysis_eligible": false,
     "analysis_ineligibility_reasons": [
-      "outcome coverage 4.4% is below 70%",
-      "valid company count 39 is below 50"
+      "outcome coverage 5.8% is below 70%"
     ],
     "benchmark_methodology": "representative-benchmarks-v1",
     "coherent_return_basis": true,
@@ -45,30 +43,30 @@
       },
       {
         "analysis_eligibility": {
-          "coverage_pct": 5.5397727272727275,
+          "coverage_pct": 7.386363636363637,
           "eligible": false,
           "minimum_coverage_pct": 70.0,
           "minimum_valid_companies": 20,
           "original_company_count": 704,
           "reasons": [
-            "outcome coverage 5.5% is below 70%"
+            "outcome coverage 7.4% is below 70%"
           ],
-          "valid_company_count": 39
+          "valid_company_count": 52
         },
         "analysis_eligible": false,
         "country": "SE",
-        "final_rank_return_spearman_ic": 0.18582995951417003,
+        "final_rank_return_spearman_ic": 0.190728250661658,
         "original_company_count": 704,
-        "score_return_spearman_ic": 0.1809245689381096,
-        "valid_company_count": 39
+        "score_return_spearman_ic": 0.14594865780554014,
+        "valid_company_count": 52
       }
     ],
     "decision_at": "2026-10-27T06:02:17.646862Z",
     "evaluation_run_id": "evaluation-b81c2b0d7e529b2ef7b06580",
-    "final_rank_return_spearman_ic": 0.18582995951417003,
+    "final_rank_return_spearman_ic": 0.190728250661658,
     "gate_boundary": "X is post-hard-eligibility; long-term gate tiers are priorities, not exclusions",
     "gate_qualified": {
-      "coverage_pct": 4.377104377104377,
+      "coverage_pct": 5.836139169472503,
       "decision_time_member_count": 891,
       "exact_mean_local_return_pct": null,
       "member_ids": [
@@ -964,10 +962,10 @@
         "isin:SE0030690368",
         "isin:US36467X2062"
       ],
-      "missing_count": 852,
-      "observed_member_mean_local_return_pct": -6.205011678054232,
-      "observed_weight": 0.04377104377104377,
-      "priced_count": 39,
+      "missing_count": 839,
+      "observed_member_mean_local_return_pct": -5.002696721702008,
+      "observed_weight": 0.058361391694725026,
+      "priced_count": 52,
       "return_status": "incomplete",
       "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
       "weight_per_member": 0.001122334455667789
@@ -981,21 +979,21 @@
     "lifecycle": {
       "mature": 891,
       "mature_awaiting_retrieval": 0,
-      "mature_budget_deferred": 852,
+      "mature_budget_deferred": 839,
       "mature_failed": 0,
-      "mature_pending": 852,
-      "mature_priced": 39,
+      "mature_pending": 839,
+      "mature_priced": 52,
       "mature_unavailable": 0,
       "not_mature": 0,
       "outcome_status_methodology": "cutoff-maturity-v1",
       "status_counts": {
-        "coherent_history_pending": 852,
-        "priced": 39
+        "coherent_history_pending": 839,
+        "priced": 52
       },
       "total": 891
     },
     "opportunity_universe": {
-      "coverage_pct": 4.377104377104377,
+      "coverage_pct": 5.836139169472503,
       "decision_time_member_count": 891,
       "exact_mean_local_return_pct": null,
       "member_ids": [
@@ -1891,15 +1889,15 @@
         "isin:SE0030690368",
         "isin:US36467X2062"
       ],
-      "missing_count": 852,
-      "observed_member_mean_local_return_pct": -6.205011678054232,
-      "observed_weight": 0.04377104377104377,
-      "priced_count": 39,
+      "missing_count": 839,
+      "observed_member_mean_local_return_pct": -5.002696721702008,
+      "observed_weight": 0.058361391694725026,
+      "priced_count": 52,
       "return_status": "incomplete",
       "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
       "weight_per_member": 0.001122334455667789
     },
-    "outcome_coverage_pct": 4.377104377104377,
+    "outcome_coverage_pct": 5.836139169472503,
     "plan_id": "2d2b81a6df7fedfef005b669b11205980016589f709c0fbfc89b52060d81bf0e",
     "portfolios": {
       "challenger": {
@@ -1925,13 +1923,13 @@
         "decision_time_member_count": 10,
         "exact_mean_local_return_pct": null,
         "exposure_matched": {
-          "coverage_pct": 2.9975155279503105,
+          "coverage_pct": 3.690848861283644,
           "decision_time_member_count": 881,
           "exact_mean_local_return_pct": null,
-          "missing_count": 842,
-          "observed_count": 39,
-          "observed_fixed_weight_contribution_pct": -0.17913465688185048,
-          "observed_weight": 0.029975155279503105,
+          "missing_count": 829,
+          "observed_count": 52,
+          "observed_fixed_weight_contribution_pct": -0.18881186972685812,
+          "observed_weight": 0.03690848861283644,
           "return_status": "incomplete",
           "security_weights": {
             "isin:CA00830W5019": 0.0015527950310559005,
@@ -2819,7 +2817,7 @@
           "statistic_scope": "fixed exposure weights; partial contribution is not a full return or a zero-imputed estimate",
           "strata": [
             {
-              "coverage_pct": 8.0,
+              "coverage_pct": 11.466666666666667,
               "decision_time_member_count": 375,
               "exact_mean_local_return_pct": null,
               "member_ids": [
@@ -3199,10 +3197,10 @@
                 "isin:SE0030587176",
                 "isin:US36467X2062"
               ],
-              "missing_count": 345,
-              "observed_member_mean_local_return_pct": -6.429363140343386,
-              "observed_weight": 0.08,
-              "priced_count": 30,
+              "missing_count": 332,
+              "observed_member_mean_local_return_pct": -4.907573681271882,
+              "observed_weight": 0.11466666666666667,
+              "priced_count": 43,
               "return_status": "incomplete",
               "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
               "status": "available",
@@ -4962,7 +4960,7 @@
             "weight_per_member": 0.003105590062111801
           },
           "isin:SE0006625471": {
-            "coverage_pct": 8.0,
+            "coverage_pct": 11.466666666666667,
             "decision_time_member_count": 375,
             "exact_local_excess_pct": null,
             "exact_mean_local_return_pct": null,
@@ -5353,10 +5351,10 @@
               "isin:SE0030587176",
               "isin:US36467X2062"
             ],
-            "missing_count": 345,
-            "observed_member_mean_local_return_pct": -6.429363140343386,
-            "observed_weight": 0.08,
-            "priced_count": 30,
+            "missing_count": 332,
+            "observed_member_mean_local_return_pct": -4.907573681271882,
+            "observed_weight": 0.11466666666666667,
+            "priced_count": 43,
             "return_status": "incomplete",
             "selected_local_return_pct": null,
             "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
@@ -6074,7 +6072,7 @@
             "weight_per_member": 0.003105590062111801
           },
           "isin:SE0015661236": {
-            "coverage_pct": 8.0,
+            "coverage_pct": 11.466666666666667,
             "decision_time_member_count": 375,
             "exact_local_excess_pct": null,
             "exact_mean_local_return_pct": null,
@@ -6465,10 +6463,10 @@
               "isin:SE0030587176",
               "isin:US36467X2062"
             ],
-            "missing_count": 345,
-            "observed_member_mean_local_return_pct": -6.429363140343386,
-            "observed_weight": 0.08,
-            "priced_count": 30,
+            "missing_count": 332,
+            "observed_member_mean_local_return_pct": -4.907573681271882,
+            "observed_weight": 0.11466666666666667,
+            "priced_count": 43,
             "return_status": "incomplete",
             "selected_local_return_pct": null,
             "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
@@ -6884,13 +6882,13 @@
         "decision_time_member_count": 10,
         "exact_mean_local_return_pct": null,
         "exposure_matched": {
-          "coverage_pct": 2.4801153310797375,
+          "coverage_pct": 2.8258600119308013,
           "decision_time_member_count": 881,
           "exact_mean_local_return_pct": null,
-          "missing_count": 842,
-          "observed_count": 39,
-          "observed_fixed_weight_contribution_pct": -0.1431010283563581,
-          "observed_weight": 0.024801153310797373,
+          "missing_count": 829,
+          "observed_count": 52,
+          "observed_fixed_weight_contribution_pct": -0.14792676614475953,
+          "observed_weight": 0.028258600119308013,
           "return_status": "incomplete",
           "security_weights": {
             "isin:CA00830W5019": 0.0018691588785046728,
@@ -8346,7 +8344,7 @@
               "weight_per_member": 0.003115264797507788
             },
             {
-              "coverage_pct": 7.9787234042553195,
+              "coverage_pct": 11.436170212765957,
               "decision_time_member_count": 376,
               "exact_mean_local_return_pct": null,
               "member_ids": [
@@ -8727,10 +8725,10 @@
                 "isin:SE0030587176",
                 "isin:US36467X2062"
               ],
-              "missing_count": 346,
-              "observed_member_mean_local_return_pct": -6.429363140343386,
-              "observed_weight": 0.0797872340425532,
-              "priced_count": 30,
+              "missing_count": 333,
+              "observed_member_mean_local_return_pct": -4.907573681271882,
+              "observed_weight": 0.11436170212765957,
+              "priced_count": 43,
               "return_status": "incomplete",
               "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
               "status": "available",
@@ -10623,7 +10621,7 @@
             "weight_per_member": 0.003115264797507788
           },
           "isin:SE0015661236": {
-            "coverage_pct": 7.9787234042553195,
+            "coverage_pct": 11.436170212765957,
             "decision_time_member_count": 376,
             "exact_local_excess_pct": null,
             "exact_mean_local_return_pct": null,
@@ -11015,10 +11013,10 @@
               "isin:SE0030587176",
               "isin:US36467X2062"
             ],
-            "missing_count": 346,
-            "observed_member_mean_local_return_pct": -6.429363140343386,
-            "observed_weight": 0.0797872340425532,
-            "priced_count": 30,
+            "missing_count": 333,
+            "observed_member_mean_local_return_pct": -4.907573681271882,
+            "observed_weight": 0.11436170212765957,
+            "priced_count": 43,
             "return_status": "incomplete",
             "selected_local_return_pct": null,
             "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
@@ -11790,7 +11788,7 @@
       "status": "verified",
       "total_draws": 1000,
       "underlying_universe": {
-        "coverage_pct": 4.377104377104377,
+        "coverage_pct": 5.836139169472503,
         "decision_time_member_count": 891,
         "exact_mean_local_return_pct": null,
         "member_ids": [
@@ -12686,17 +12684,17 @@
           "isin:SE0030690368",
           "isin:US36467X2062"
         ],
-        "missing_count": 852,
-        "observed_member_mean_local_return_pct": -6.205011678054232,
-        "observed_weight": 0.04377104377104377,
-        "priced_count": 39,
+        "missing_count": 839,
+        "observed_member_mean_local_return_pct": -5.002696721702008,
+        "observed_weight": 0.058361391694725026,
+        "priced_count": 52,
         "return_status": "incomplete",
         "statistic_scope": "exact only with complete fixed membership; observed mean is a partial diagnostic",
         "weight_per_member": 0.001122334455667789
       }
     },
     "return_label": "mean_local_return_pct",
-    "score_return_spearman_ic": 0.1809245689381096,
+    "score_return_spearman_ic": 0.14594865780554014,
     "scoring_model_version": "nordic-ranking-v1",
     "selection_configuration_id": "71caf8dc75cec99c20683e8628dcdf8c13c9c09f35f78c0a34f2a907be878061",
     "strategy": "long-term"
