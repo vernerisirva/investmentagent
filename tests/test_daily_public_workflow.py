@@ -312,7 +312,42 @@ def test_legacy_scorecard_uses_the_partitioned_ledger_and_cannot_block_performan
     assert "--ledger docs/data/performance/ledger \\" in scorecard
     assert "--legacy-ledger docs/data/performance/ledger.json \\" in scorecard
     assert "--ledger docs/data/performance/ledger.json" not in workflow
+    assert "--output docs/performance/legacy.md \\" in scorecard
+    assert "--latest" not in scorecard
     records = _step(workflow, "Commit performance records")
     gate = records.index('if [ "${{ steps.legacy_scorecard.outcome }}" = "success" ]; then')
-    assert gate < records.index("git add docs/performance docs/data/performance")
+    assert gate < records.index("git add docs/performance/legacy.md docs/data/performance")
+    assert "git add docs/performance docs/data/performance" not in records
     assert "steps.legacy_scorecard.outcome == 'failure'" in _step(workflow, "Report degraded performance records")
+
+
+def test_public_pages_render_after_analysis_without_blocking_evidence():
+    workflow = WORKFLOW.read_text()
+    order = [workflow.index(f"- name: {name}") for name in (
+        "Commit public report", "Analyze Performance v2", "Render public performance pages",
+        "Commit performance records", "Report degraded performance records")]
+    assert order == sorted(order)
+    render = _step(workflow, "Render public performance pages")
+    assert "id: public_pages" in render and "continue-on-error: true" in render
+    assert "timeout-minutes: 10" in render
+    assert "investmentagent evaluate report" in render
+    assert '--analysis-outcome "${{ steps.performance_v2_analysis.outcome }}"' in render
+    for output in ("--output docs/performance/index.md", "--latest docs/performance/latest.md",
+                   "--overview docs/index.md"):
+        assert output in render
+    # Presentation only: no credentials, providers, repricing or network-facing options.
+    for forbidden in ("secrets.", "API_KEY", "--price-provider", "--reprice", "--price-cache"):
+        assert forbidden not in render
+    records = _step(workflow, "Commit performance records")
+    gate = records.index('if [ "${{ steps.public_pages.outcome }}" = "success" ]; then')
+    assert gate < records.index("git add docs/index.md docs/performance/index.md docs/performance/latest.md")
+    alert = _step(workflow, "Report degraded performance records")
+    assert "steps.public_pages.outcome == 'failure'" in alert
+
+
+def test_fallback_landing_page_links_authoritative_and_legacy_performance():
+    workflow = WORKFLOW.read_text()
+    generate = _step(workflow, "Generate public watchlist report")
+    assert "[Performance v2 (authoritative evidence)](performance/index.html)" in generate
+    assert "(performance/legacy.html)" in generate
+    assert "Performance Scorecard" not in generate

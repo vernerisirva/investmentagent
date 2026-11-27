@@ -74,6 +74,15 @@ LONG_TERM_PROOF_GAPS = {
 }
 
 
+LEGACY_EXTREMES_NOTE = (
+    "_Hand-picked extremes from overlapping legacy picks; not representative of the strategy._"
+)
+LEGACY_SIGNAL_NOTES_NOTE = (
+    "_Automatic, unvalidated descriptions of legacy averages. Observations overlap and repeat "
+    "the same companies. Scoring weights are frozen and these notes are never applied._"
+)
+
+
 def empty_ledger() -> dict[str, Any]:
     return {"schema_version": LEDGER_SCHEMA_VERSION, "picks": [], "market_snapshots": {}}
 
@@ -474,11 +483,18 @@ def summarize_ledger(ledger: dict[str, Any]) -> dict[str, Any]:
 def render_scorecard_markdown(ledger: dict[str, Any], *, generated_at: str) -> str:
     summary = summarize_ledger(ledger)
     lines = [
-        "# InvestmentAgent Performance",
+        "# InvestmentAgent Performance v1 Scorecard (Legacy Archive)",
         "",
         f"> {DISCLAIMER}",
         "",
         "> LEGACY_NON_AUTHORITATIVE: Performance v1 benchmark values are retained for historical reference, not InvestmentAgent validation evidence. They are not comparable with representative-benchmarks-v1.",
+        "",
+        (
+            "> **Use [Performance v2](index.html) for evidence.** This archive pools overlapping "
+            "daily picks of the same companies, measures them against a retired same-country "
+            "benchmark, and lists hand-picked extremes. None of it is evidence of skill or alpha, "
+            "and the frozen methodology never changes because of it."
+        ),
         "",
         f"Generated: {generated_at}",
         "",
@@ -521,16 +537,16 @@ def learning_suggestions(
     ]
     if not eligible:
         return [
-            "No learning suggestions yet. At least 10 completed observations are needed for a signal."
+            "No signal notes yet. At least 10 completed observations are needed for a signal."
         ]
     suggestions = []
     for signal in eligible[:5]:
         direction = "positive" if signal["average_return_pct"] > 0 else "negative"
         suggestions.append(
-            f"{_humanize_signal(signal['signal'])} has produced a {direction} "
+            f"{_humanize_signal(signal['signal'])} has a {direction} legacy "
             f"average return of {_format_percent(signal['average_return_pct'], signed=True)} "
-            f"across {signal['observations']} "
-            "completed observations. Review whether its scoring weight should change."
+            f"across {signal['observations']} overlapping completed observations "
+            "(descriptive only; not a recommendation)."
         )
     return suggestions
 
@@ -844,14 +860,16 @@ def _strategy_performance_section(
         "",
         *_risk_benchmark_table(summary, strategy),
         "",
-        f"### Best {label} Picks",
+        f"### Largest Legacy {label} Gains",
+        "",
+        LEGACY_EXTREMES_NOTE,
         "",
         *_pick_lines(
             best_picks,
             empty_label=f"No completed {label.lower()} picks yet.",
         ),
         "",
-        f"### Worst {label} Picks",
+        f"### Largest Legacy {label} Losses",
         "",
         *_pick_lines(
             worst_picks,
@@ -862,7 +880,9 @@ def _strategy_performance_section(
         "",
         *_signal_table(summary["signals_by_strategy"][strategy]),
         "",
-        f"### {label} Learning Suggestions",
+        f"### {label} Archived Signal Notes",
+        "",
+        LEGACY_SIGNAL_NOTES_NOTE,
         "",
         *[
             f"- {suggestion}"
@@ -894,14 +914,16 @@ def _long_term_segment_performance_section(
         "",
         *_long_term_segment_risk_benchmark_table(summary, segment),
         "",
-        f"### Best {label} Picks",
+        f"### Largest Legacy {label} Gains",
+        "",
+        LEGACY_EXTREMES_NOTE,
         "",
         *_pick_lines(
             best_picks,
             empty_label=f"No completed {label.lower()} picks yet.",
         ),
         "",
-        f"### Worst {label} Picks",
+        f"### Largest Legacy {label} Losses",
         "",
         *_pick_lines(
             worst_picks,
@@ -912,7 +934,9 @@ def _long_term_segment_performance_section(
         "",
         *_signal_table(summary["signals_by_long_term_segment"][segment]),
         "",
-        f"### {label} Learning Suggestions",
+        f"### {label} Archived Signal Notes",
+        "",
+        LEGACY_SIGNAL_NOTES_NOTE,
         "",
         *[
             f"- {suggestion}"
@@ -964,7 +988,7 @@ def _risk_benchmark_table(summary: dict[str, Any], strategy: str) -> list[str]:
     lines = [
         (
             "| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | "
-            "Benchmark | Excess Return | Excess Hit Rate |"
+            "Legacy v1 Benchmark | Legacy v1 Excess | Legacy v1 Excess Hit Rate |"
         ),
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
@@ -990,7 +1014,7 @@ def _long_term_segment_risk_benchmark_table(
     lines = [
         (
             "| Horizon | Worst Return | Loss Rate | Large Losers | Volatility | "
-            "Benchmark | Excess Return | Excess Hit Rate |"
+            "Legacy v1 Benchmark | Legacy v1 Excess | Legacy v1 Excess Hit Rate |"
         ),
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
